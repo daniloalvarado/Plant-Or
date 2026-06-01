@@ -734,16 +734,15 @@ export default function RegistroScreen() {
                           onDragEnd={(e) => setLocation(e.nativeEvent.coordinate)}
                         />
                       </MapView>
-                      <Button
-                        size="$3"
-                        circular
-                        icon={<MaterialCommunityIcons name="crosshairs-gps" size={20} color="white" />}
-                        position="absolute"
-                        bottom={10}
-                        right={10}
-                        bg="#1FC451"
-                        onPress={fetchLocation}
-                      />
+                      <View style={{ position: 'absolute', bottom: 10, right: 10 }}>
+                        <Button
+                          size="$3"
+                          circular
+                          icon={<MaterialCommunityIcons name="crosshairs-gps" size={20} color="white" />}
+                          bg="#1FC451"
+                          onPress={fetchLocation}
+                        />
+                      </View>
                     </View>
                   ) : (
                     <Paragraph color="rgba(255,255,255,0.7)">Obteniendo ubicación GPS...</Paragraph>

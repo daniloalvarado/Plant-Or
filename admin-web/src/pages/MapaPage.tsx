@@ -54,7 +54,7 @@ export default function MapaPage() {
 
   const filtered = mapPlantas.filter(p => {
     const matchesState = activeFilter === 'all' || p.estado_revision === activeFilter;
-    const textToSearch = `${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
+    const textToSearch = `${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.tipo_ubicacion_2 || ''} ${p.numero_casa || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
     const matchesSearch = !searchTerm || textToSearch.includes(searchTerm.toLowerCase());
     return matchesState && matchesSearch;
   })
@@ -112,6 +112,7 @@ export default function MapaPage() {
           ))}
         </div>
       </div>
+    </div>
 
       {/* Map */}
       <div className="flex-1 relative rounded-xl overflow-hidden border border-border min-h-0">

@@ -55,7 +55,9 @@ export default function MapaScreen() {
           familia,
           estado_revision,
           direccion,
-          tipo_ubicacion_1
+          tipo_ubicacion_1,
+          tipo_ubicacion_2,
+          numero_casa
         }
       `);
       setPlantas(data);
@@ -69,7 +71,7 @@ export default function MapaScreen() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredPlantas = plantas.filter(p => {
-    const textToSearch = `${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
+    const textToSearch = `${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.tipo_ubicacion_2 || ''} ${p.numero_casa || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
     return !searchTerm || textToSearch.includes(searchTerm.toLowerCase());
   });
 
@@ -198,9 +200,9 @@ export default function MapaScreen() {
           <Input 
             flex={1}
             borderWidth={0}
-            backgroundColor="transparent"
+            bg="transparent"
             color="white"
-            placeholder="Buscar por distrito, zona o calle..."
+            placeholder="Buscar por planta, calle o distrito..."
             placeholderTextColor="rgba(255,255,255,0.5)"
             value={searchTerm}
             onChangeText={setSearchTerm}
