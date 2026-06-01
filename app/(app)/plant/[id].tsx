@@ -303,6 +303,31 @@ export default function PlantDetailScreen() {
             <Text style={{ fontWeight: "bold", color: theme.text }}>Estado Fenológico:</Text> {planta?.estado_fenologico?.join(", ") || "No registrado"}
           </Text>
 
+          {/* Información del Registrador */}
+          {planta?.registrador_nombre && (
+            <>
+              <Text style={[styles.sectionTitle, { color: theme.text, marginTop: 24 }]}>Información del Registrador</Text>
+              <View style={{ backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 16, borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8, gap: 8 }}>
+                  <MaterialCommunityIcons name="account-circle" size={24} color="#1FC451" />
+                  <Text style={{ color: theme.text, fontSize: 16, fontWeight: 'bold' }}>
+                    {planta.registrador_nombre}
+                  </Text>
+                </View>
+                {(planta.registrador_facultad || planta.registrador_curso) && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginLeft: 32 }}>
+                    <MaterialCommunityIcons name="school" size={14} color="#a0a0a0" />
+                    <Text style={{ color: '#a0a0a0', fontSize: 13 }}>
+                      {planta.registrador_facultad ? `${planta.registrador_facultad}` : ''}
+                      {planta.registrador_facultad && planta.registrador_curso ? ' - ' : ''}
+                      {planta.registrador_curso ? `${planta.registrador_curso}` : ''}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </>
+          )}
+
         </View>
       </ScrollView>
     </View>

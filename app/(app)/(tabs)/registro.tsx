@@ -130,25 +130,27 @@ export default function RegistroScreen() {
     }, [user, editId])
   );
 
-  useEffect(() => {
-    if (step === 2 && !location) {
-      (async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          setErrorMsg('Se requiere permiso para acceder al GPS.');
-          return;
-        }
+  const fetchLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      setErrorMsg('Se requiere permiso para acceder al GPS.');
+      return;
+    }
 
-        try {
-          let loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-          setLocation({
-            latitude: loc.coords.latitude,
-            longitude: loc.coords.longitude,
-          });
-        } catch (err) {
-          setErrorMsg('Error obteniendo la ubicación.');
-        }
-      })();
+    try {
+      let loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+      setLocation({
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude,
+      });
+    } catch (err) {
+      setErrorMsg('Error obteniendo la ubicación.');
+    }
+  };
+
+  useEffect(() => {
+    if (step === 2 && !location && !editId) {
+      fetchLocation();
     }
   }, [step]);
 
@@ -715,7 +717,7 @@ export default function RegistroScreen() {
                   {errorMsg && step === 2 ? (
                     <Paragraph color="#ff4444">{errorMsg}</Paragraph>
                   ) : location ? (
-                    <View style={{ height: 300, borderRadius: 10, overflow: 'hidden' }}>
+                    <View style={{ height: 300, borderRadius: 10, overflow: 'hidden', position: 'relative' }}>
                       <MapView
                         style={{ flex: 1 }}
                         initialRegion={{
@@ -724,6 +726,7 @@ export default function RegistroScreen() {
                           latitudeDelta: 0.005,
                           longitudeDelta: 0.005,
                         }}
+                        onPress={(e) => setLocation(e.nativeEvent.coordinate)}
                       >
                         <Marker
                           draggable
@@ -731,12 +734,22 @@ export default function RegistroScreen() {
                           onDragEnd={(e) => setLocation(e.nativeEvent.coordinate)}
                         />
                       </MapView>
+                      <Button
+                        size="$3"
+                        circular
+                        icon={<MaterialCommunityIcons name="crosshairs-gps" size={20} color="white" />}
+                        position="absolute"
+                        bottom={10}
+                        right={10}
+                        bg="#1FC451"
+                        onPress={fetchLocation}
+                      />
                     </View>
                   ) : (
                     <Paragraph color="rgba(255,255,255,0.7)">Obteniendo ubicación GPS...</Paragraph>
                   )}
                   <Paragraph color="rgba(255,255,255,0.5)" size="$2">
-                    Mantén presionado el marcador rojo para ajustarlo si es necesario.
+                    Puedes mover el marcador manteniéndolo presionado, o tocando en cualquier parte del mapa.
                   </Paragraph>
 
                   <YStack gap="$2">

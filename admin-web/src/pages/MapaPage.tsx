@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { usePlantas } from '@/hooks/use-plantas'
 import { useNavigate } from 'react-router-dom'
-import { Leaf, MapPin, Filter } from 'lucide-react'
+import { Leaf, MapPin, Filter, Search } from 'lucide-react'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { EstadoBadge } from '@/components/EstadoBadge'
 import { useState } from 'react'
@@ -45,15 +45,19 @@ export default function MapaPage() {
   const { plantas, loading } = usePlantas()
   const navigate = useNavigate()
   const [activeFilter, setActiveFilter] = useState('all')
+  const [searchTerm, setSearchTerm] = useState('')
 
   const mapPlantas = plantas.filter(p => p.latitud && p.longitud)
 
   const counts: Record<string, number> = { all: mapPlantas.length }
   ALL_STATES.forEach(s => { counts[s] = mapPlantas.filter(p => p.estado_revision === s).length })
 
-  const filtered = activeFilter === 'all'
-    ? mapPlantas
-    : mapPlantas.filter(p => p.estado_revision === activeFilter)
+  const filtered = mapPlantas.filter(p => {
+    const matchesState = activeFilter === 'all' || p.estado_revision === activeFilter;
+    const textToSearch = `${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
+    const matchesSearch = !searchTerm || textToSearch.includes(searchTerm.toLowerCase());
+    return matchesState && matchesSearch;
+  })
 
   const center: [number, number] = [-3.74912, -73.25383]
 
@@ -67,8 +71,19 @@ export default function MapaPage() {
           <h1 className="text-3xl font-bold text-foreground">Mapa del Catálogo</h1>
           <p className="text-muted-foreground mt-1">{counts[activeFilter] ?? 0} registro(s) geolocalizado(s)</p>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+        <div className="flex flex-col gap-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Buscar por distrito, calle o nombre..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full sm:w-64 pl-9 pr-4 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#1FC451] transition-colors"
+            />
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
           <button
             onClick={() => setActiveFilter('all')}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${

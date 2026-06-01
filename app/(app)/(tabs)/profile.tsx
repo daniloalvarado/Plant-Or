@@ -10,6 +10,7 @@ import { client } from "@/lib/sanity";
 import { Image, Pressable, StyleSheet, Modal, Alert } from "react-native";
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
+import * as ImagePicker from 'expo-image-picker';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Card,
@@ -162,6 +163,37 @@ export default function Profile() {
     }
   };
 
+  const pickProfilePhoto = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      Alert.alert("Permiso denegado", "Se requiere permiso para acceder a la galería.");
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.5,
+      base64: true,
+    });
+    
+    if (!result.canceled && result.assets[0].base64) {
+      try {
+        setIsSaving(true);
+        // Clerk expect a base64 string prefix
+        const base64Image = `data:image/jpeg;base64,${result.assets[0].base64}`;
+        await user?.setProfileImage({ file: base64Image });
+        await user?.reload();
+        Alert.alert("Éxito", "Foto de perfil actualizada correctamente.");
+      } catch (err) {
+        console.error("Error al subir foto", err);
+        Alert.alert("Error", "No se pudo actualizar la foto de perfil.");
+      } finally {
+        setIsSaving(false);
+      }
+    }
+  };
+
   const saveProfile = async () => {
     setErrorMsg('');
     if (!user) return;
@@ -240,7 +272,7 @@ export default function Profile() {
             <YStack gap="$4" style={{ alignItems: "center" }}>
               {/* Profile Picture */}
               <Pressable 
-                onPress={() => setIsEditing(true)}
+                onPress={pickProfilePhoto}
                 style={({ pressed }) => [
                   {
                     borderRadius: 60,
@@ -250,6 +282,7 @@ export default function Profile() {
                     alignItems: "center",
                     justifyContent: "center",
                     backgroundColor: "#e5e7eb",
+                    position: 'relative'
                   },
                   pressed && { opacity: 0.8 }
                 ]}
@@ -264,6 +297,9 @@ export default function Profile() {
                     {initials}
                   </Text>
                 )}
+                <View style={{ position: 'absolute', bottom: 0, width: '100%', height: 30, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+                  <MaterialCommunityIcons name="camera" size={16} color="white" />
+                </View>
               </Pressable>
 
               {/* Name & Email */}

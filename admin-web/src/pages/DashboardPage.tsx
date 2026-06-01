@@ -1,13 +1,17 @@
 import React from 'react'
 import { usePlantas } from '@/hooks/use-plantas'
-import { Leaf, Clock, CheckCircle, AlertCircle, XCircle, Users, TrendingUp } from 'lucide-react'
+import { Leaf, Clock, CheckCircle, AlertCircle, XCircle, Users, TrendingUp, Send } from 'lucide-react'
 import { EstadoBadge } from '@/components/EstadoBadge'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { sendSemestralReportEmail } from '@/lib/email-service'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function DashboardPage() {
   const { plantas, loading } = usePlantas()
+  const [isSendingReports, setIsSendingReports] = useState(false)
 
   if (loading) return <LoadingSpinner />
 
@@ -45,12 +49,68 @@ export default function DashboardPage() {
     if (p.habito) habitosMap.set(p.habito, (habitosMap.get(p.habito) || 0) + 1)
   })
 
+  const handleSendSemestralReports = async () => {
+    if (!confirm("¿Estás seguro de que quieres despachar el reporte semestral a todos los estudiantes registrados? Esto podría enviar muchos correos electrónicos.")) return;
+    
+    setIsSendingReports(true);
+    let successCount = 0;
+    
+    try {
+      const studentStatsMap = new Map<string, {
+        nombre: string;
+        stats: { validados: number; observados: number; en_revision: number; rechazados: number; total: number }
+      }>();
+
+      plantas.forEach(p => {
+        const email = p.registrador_email;
+        if (!email) return;
+
+        if (!studentStatsMap.has(email)) {
+          studentStatsMap.set(email, {
+            nombre: p.registrador_nombre || 'Estudiante',
+            stats: { validados: 0, observados: 0, en_revision: 0, rechazados: 0, total: 0 }
+          });
+        }
+        
+        const entry = studentStatsMap.get(email)!;
+        entry.stats.total++;
+        if (p.estado_revision === 'Validado') entry.stats.validados++;
+        else if (p.estado_revision === 'Observado') entry.stats.observados++;
+        else if (p.estado_revision === 'En revisión') entry.stats.en_revision++;
+        else if (p.estado_revision === 'Rechazado') entry.stats.rechazados++;
+      });
+
+      const totalStudents = studentStatsMap.size;
+      
+      for (const [email, data] of studentStatsMap.entries()) {
+        const ok = await sendSemestralReportEmail(email, data.nombre, data.stats);
+        if (ok) successCount++;
+      }
+
+      toast.success(\`Reportes semestrales enviados (\${successCount} de \${totalStudents} estudiantes)\`);
+    } catch (err) {
+      console.error(err);
+      toast.error("Ocurrió un error al despachar los reportes.");
+    } finally {
+      setIsSendingReports(false);
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Resumen general del catálogo PLANT-OR</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-muted-foreground mt-1">Resumen general del catálogo PLANT-OR</p>
+        </div>
+        <button
+          onClick={handleSendSemestralReports}
+          disabled={isSendingReports}
+          className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] hover:bg-[#15963c] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+        >
+          {isSendingReports ? <LoadingSpinner text="Enviando..." /> : <><Send className="w-4 h-4" /> Despachar Reporte Semestral</>}
+        </button>
       </div>
 
       {/* Stats Grid */}

@@ -98,7 +98,63 @@ export const sendStatusEmail = async (
     console.log("Email enviado con éxito al estado:", estado_nuevo);
     return true;
   } catch (error) {
-    console.error("Error al enviar el email:", error);
+    console.error("Excepción al enviar email de Brevo:", error);
+    return false;
+  }
+};
+
+export const sendSemestralReportEmail = async (
+  email_destino: string,
+  nombre_registrador: string,
+  stats: { validados: number; observados: number; en_revision: number; rechazados: number; total: number }
+) => {
+  if (!BREVO_API_KEY || !BREVO_SENDER_EMAIL) {
+    return false;
+  }
+
+  const htmlContent = `
+<div style="font-family: 'Inter', system-ui, sans-serif, Arial; font-size: 15px; color: #333; max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #eaeaea; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+  <div style="background-color: #0a0a0a; padding: 25px; text-align: center;">
+    <h2 style="color: #1FC451; margin: 0; font-size: 22px; font-weight: 700;">PLANT-OR</h2>
+    <p style="color: #a1a1aa; margin: 5px 0 0 0; font-size: 13px;">Reporte Semestral</p>
+  </div>
+  <div style="padding: 30px;">
+    <p style="margin-top: 0; font-size: 16px;">Hola <strong>${nombre_registrador}</strong>,</p>
+    <p style="color: #555; margin-bottom: 25px;">Aquí tienes el resumen de tu participación en el proyecto PLANT-OR durante este semestre:</p>
+    
+    <div style="margin: 25px 0; padding: 18px 20px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;">
+      <ul style="list-style: none; padding: 0; margin: 0; line-height: 2;">
+        <li>🟢 <strong>Validados:</strong> ${stats.validados}</li>
+        <li>🟡 <strong>En revisión:</strong> ${stats.en_revision}</li>
+        <li>🟠 <strong>Observados:</strong> ${stats.observados}</li>
+        <li>🔴 <strong>Rechazados:</strong> ${stats.rechazados}</li>
+        <li style="border-top: 1px solid #e5e7eb; margin-top: 10px; padding-top: 10px;"><strong>Total Registrados:</strong> ${stats.total}</li>
+      </ul>
+    </div>
+
+    <p style="color: #555;">¡Gracias por tu valioso aporte al monitoreo de flora urbana!</p>
+  </div>
+</div>
+  `;
+
+  try {
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': BREVO_API_KEY,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender: { name: BREVO_SENDER_NAME, email: BREVO_SENDER_EMAIL },
+        to: [{ email: email_destino, name: nombre_registrador }],
+        subject: `Tu Reporte Semestral - PLANT-OR`,
+        htmlContent: htmlContent
+      })
+    });
+    return response.ok;
+  } catch (error) {
+    console.error("Error sending semestral email", error);
     return false;
   }
 };

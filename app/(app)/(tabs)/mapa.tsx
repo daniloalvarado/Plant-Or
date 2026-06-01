@@ -6,7 +6,7 @@ import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Text, Card, XStack, YStack, Button } from "tamagui";
+import { Text, Card, XStack, YStack, Button, Input } from "tamagui";
 import { useRouter } from "expo-router";
 
 // Estilo oscuro simple para el mapa
@@ -53,7 +53,9 @@ export default function MapaScreen() {
           longitud,
           galeria,
           familia,
-          estado_revision
+          estado_revision,
+          direccion,
+          tipo_ubicacion_1
         }
       `);
       setPlantas(data);
@@ -63,6 +65,13 @@ export default function MapaScreen() {
       setLoading(false);
     }
   };
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredPlantas = plantas.filter(p => {
+    const textToSearch = `${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
+    return !searchTerm || textToSearch.includes(searchTerm.toLowerCase());
+  });
 
   const getMarkerColor = (estado: string) => {
     switch (estado) {
@@ -107,7 +116,7 @@ export default function MapaScreen() {
         onPress={handleMapPress}
         showsUserLocation={true}
       >
-        {plantas.map((planta) => {
+        {filteredPlantas.map((planta) => {
           const color = getMarkerColor(planta.estado_revision);
           return (
             <Marker
@@ -182,12 +191,23 @@ export default function MapaScreen() {
         </View>
       )}
 
-      {/* Top Overlay: Counters + Legend */}
-      <View style={[styles.topOverlay, { top: insets.top + 10 }]}>
-        <View style={[styles.badge, { backgroundColor: "rgba(0,0,0,0.7)", paddingVertical: 8, paddingHorizontal: 16, borderRadius: 20, gap: 12 }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-            <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: '#1FC451' }} />
-            <Text style={{ color: "#fff", fontSize: 13 }} fontWeight="bold">{validadas} validadas</Text>
+      {/* Top Overlay: Search Bar */}
+      <View style={[styles.topOverlay, { top: insets.top + 10, paddingHorizontal: 16 }]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.8)', borderRadius: 12, paddingHorizontal: 12, borderWidth: 1, borderColor: 'rgba(31,196,81,0.3)', width: '100%' }}>
+          <MaterialCommunityIcons name="magnify" size={20} color="#1FC451" />
+          <Input 
+            flex={1}
+            borderWidth={0}
+            backgroundColor="transparent"
+            color="white"
+            placeholder="Buscar por distrito, zona o calle..."
+            placeholderTextColor="rgba(255,255,255,0.5)"
+            value={searchTerm}
+            onChangeText={setSearchTerm}
+            h={44}
+          />
+          <View style={{ backgroundColor: 'rgba(31,196,81,0.2)', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6, marginLeft: 8 }}>
+            <Text style={{ color: "#1FC451", fontSize: 12, fontWeight: 'bold' }}>{filteredPlantas.length}</Text>
           </View>
         </View>
       </View>
