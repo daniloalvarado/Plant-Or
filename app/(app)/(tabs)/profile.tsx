@@ -276,7 +276,6 @@ export default function Profile() {
                 style={({ pressed }) => [
                   {
                     borderRadius: 60,
-                    overflow: "hidden",
                     width: 120,
                     height: 120,
                     alignItems: "center",
@@ -287,17 +286,19 @@ export default function Profile() {
                   pressed && { opacity: 0.8 }
                 ]}
               >
-                {user?.imageUrl ? (
-                  <Image
-                    source={{ uri: user.imageUrl }}
-                    style={styles.profileImage}
-                  />
-                ) : (
-                  <Text fontSize={42} fontWeight="700" color="$color11">
-                    {initials}
-                  </Text>
-                )}
-                <View style={{ position: 'absolute', bottom: 0, width: '100%', height: 30, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ borderRadius: 60, overflow: 'hidden', width: 120, height: 120, alignItems: 'center', justifyContent: 'center', backgroundColor: '#e5e7eb' }}>
+                  {user?.imageUrl ? (
+                    <Image
+                      source={{ uri: user.imageUrl }}
+                      style={styles.profileImage}
+                    />
+                  ) : (
+                    <Text fontSize={42} fontWeight="700" color="$color11">
+                      {initials}
+                    </Text>
+                  )}
+                </View>
+                <View style={{ position: 'absolute', bottom: 0, right: 0, width: 36, height: 36, backgroundColor: '#1FC451', borderRadius: 18, alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: '#1e1e1e' }}>
                   <MaterialCommunityIcons name="camera" size={16} color="white" />
                 </View>
               </Pressable>

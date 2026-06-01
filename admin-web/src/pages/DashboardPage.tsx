@@ -87,7 +87,7 @@ export default function DashboardPage() {
         if (ok) successCount++;
       }
 
-      toast.success(\`Reportes semestrales enviados (\${successCount} de \${totalStudents} estudiantes)\`);
+      toast.success(`Reportes semestrales enviados (${successCount} de ${totalStudents} estudiantes)`);
     } catch (err) {
       console.error(err);
       toast.error("Ocurrió un error al despachar los reportes.");
