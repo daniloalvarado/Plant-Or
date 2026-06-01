@@ -580,6 +580,16 @@ export default function RegistroScreen() {
                         ? "Deberás llenar el formulario botánico completo." 
                         : "Registro rápido: Solo nombre, ubicación y fotografías."}
                     </Paragraph>
+                    {rolRegistro === 'estudiante' && (
+                      <Card mt="$2" padding="$3" bg="rgba(255, 165, 0, 0.1)" borderWidth={1} borderColor="rgba(255, 165, 0, 0.3)">
+                        <XStack gap="$2" style={{ alignItems: "center" }}>
+                          <MaterialCommunityIcons name="lightbulb-on-outline" size={16} color="#FFA500" />
+                          <Paragraph color="#FFA500" size="$2" flex={1}>
+                            <Text fontWeight="bold" color="#FFA500">Sugerencia:</Text> Llena estos datos en tu <Text color="white" fontWeight="bold" textDecorationLine="underline" onPress={() => router.push('/profile')}>Perfil Académico</Text> para que se autocompleten siempre.
+                          </Paragraph>
+                        </XStack>
+                      </Card>
+                    )}
                   </YStack>
 
                   <YStack gap="$2">
@@ -1053,10 +1063,65 @@ export default function RegistroScreen() {
                 </Card>
 
                 <Card padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0} gap="$3">
-                  <H4 color="white">3. Fotos y Botánica</H4>
+                  <H4 color="white">3. Botánica y Características</H4>
+                  <Text color="rgba(255,255,255,0.7)">Nombre Común: <Text color="white" fontWeight="bold">{nombresComunes || 'No especificado'}</Text></Text>
+                  <Text color="rgba(255,255,255,0.7)">Nombre Científico: <Text color="white" fontWeight="bold">{nombreCientifico || 'No especificado'}</Text></Text>
                   <Text color="rgba(255,255,255,0.7)">Hábito: <Text color="white" fontWeight="bold">{datosBotanicos.habito}</Text></Text>
                   <Text color="rgba(255,255,255,0.7)">Tipo de vida: <Text color="white" fontWeight="bold">{datosBotanicos.tipoVida}</Text></Text>
-                  <Text color="rgba(255,255,255,0.7)">Fotos cargadas: <Text color="white" fontWeight="bold">5/5</Text></Text>
+                  
+                  {/* Renderizar TODOS los datos marcados (Opción A) */}
+                  <View style={{ marginTop: 10, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.1)', paddingTop: 10 }}>
+                    <Text color="#1FC451" fontWeight="bold" mb="$2">Detalle Completo (Bloques):</Text>
+                    
+                    {/* Dasometría (si existe) */}
+                    {datosBotanicos.dasometria && Object.entries(datosBotanicos.dasometria).map(([k, v]) => (
+                      <Text key={`daso-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
+                        • {k.replace(/_/g, ' ')}: <Text color="white">{String(v)}</Text>
+                      </Text>
+                    ))}
+                    
+                    {/* Compartido (Fenológico, Impacto, Valor, Reproductivo) */}
+                    {datosBotanicos.compartido && Object.entries(datosBotanicos.compartido).map(([k, v]) => {
+                      if (!v || (Array.isArray(v) && v.length === 0)) return null;
+                      return (
+                        <Text key={`comp-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
+                          • {k.replace(/_/g, ' ')}: <Text color="white">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                        </Text>
+                      );
+                    })}
+
+                    {/* Hojas */}
+                    {datosBotanicos.hojas && Object.entries(datosBotanicos.hojas).map(([k, v]) => (
+                      <Text key={`hoja-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
+                        • hojas ({k.replace(/_/g, ' ')}): <Text color="white">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                      </Text>
+                    ))}
+                    
+                    {/* Tallo / Tronco */}
+                    {(datosBotanicos.tallo || datosBotanicos.tronco) && Object.entries(datosBotanicos.tallo || datosBotanicos.tronco).map(([k, v]) => (
+                      <Text key={`tronco-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
+                        • tronco/tallo ({k.replace(/_/g, ' ')}): <Text color="white">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                      </Text>
+                    ))}
+
+                    {/* Exudado */}
+                    {datosBotanicos.exudado && Object.entries(datosBotanicos.exudado).map(([k, v]) => (
+                      <Text key={`exu-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
+                        • exudado ({k.replace(/_/g, ' ')}): <Text color="white">{String(v)}</Text>
+                      </Text>
+                    ))}
+                  </View>
+                </Card>
+
+                <Card padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0} gap="$3">
+                  <H4 color="white">4. Fotografías (5)</H4>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <XStack gap="$2">
+                      {[fotos.planta_completa, fotos.hoja, fotos.flor, fotos.fruto, fotos.semilla].map((uri, idx) => (
+                        uri ? <Image key={idx} source={{ uri }} style={{ width: 64, height: 64, borderRadius: 8 }} /> : null
+                      ))}
+                    </XStack>
+                  </ScrollView>
                 </Card>
 
                 <Card padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
@@ -1103,6 +1168,7 @@ export default function RegistroScreen() {
               onPress={resetFormAndGoHome}
               icon={<MaterialCommunityIcons name="home" size={20} color="white" />}
               style={{ width: '100%' }}
+              pressStyle={{ bg: '#15963c' }}
             >
               Volver al Inicio
             </Button>

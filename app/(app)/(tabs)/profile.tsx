@@ -239,16 +239,20 @@ export default function Profile() {
           >
             <YStack gap="$4" style={{ alignItems: "center" }}>
               {/* Profile Picture */}
-              <View
-                style={{
-                  borderRadius: 60,
-                  overflow: "hidden",
-                  width: 120,
-                  height: 120,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "#e5e7eb",
-                }}
+              <Pressable 
+                onPress={() => setIsEditing(true)}
+                style={({ pressed }) => [
+                  {
+                    borderRadius: 60,
+                    overflow: "hidden",
+                    width: 120,
+                    height: 120,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#e5e7eb",
+                  },
+                  pressed && { opacity: 0.8 }
+                ]}
               >
                 {user?.imageUrl ? (
                   <Image
@@ -260,29 +264,35 @@ export default function Profile() {
                     {initials}
                   </Text>
                 )}
-              </View>
+              </Pressable>
 
               {/* Name & Email */}
-              <YStack style={{ alignItems: "center" }} gap="$2">
-                <H1
-                  fontSize={28}
-                  fontWeight="700"
-                  color="#ffffff"
-                  style={{ textAlign: "center" }}
-                >
-                  {displayName}
-                </H1>
-                {user?.primaryEmailAddress?.emailAddress && (
-                  <Text fontSize={14} color="rgba(255,255,255,0.7)">
-                    {user.primaryEmailAddress.emailAddress}
-                  </Text>
-                )}
-              </YStack>
+              <Pressable onPress={() => setIsEditing(true)}>
+                <YStack style={{ alignItems: "center" }} gap="$2">
+                  <H1
+                    fontSize={28}
+                    fontWeight="700"
+                    color="#ffffff"
+                    style={{ textAlign: "center" }}
+                  >
+                    {displayName}
+                  </H1>
+                  {user?.primaryEmailAddress?.emailAddress && (
+                    <Text fontSize={14} color="rgba(255,255,255,0.7)">
+                      {user.primaryEmailAddress.emailAddress}
+                    </Text>
+                  )}
+                  <XStack gap="$1" style={{ alignItems: "center", marginTop: 4 }}>
+                    <MaterialCommunityIcons name="pencil-outline" size={14} color="#1FC451" />
+                    <Text fontSize={12} color="#1FC451" fontWeight="bold">Toca para editar perfil académico</Text>
+                  </XStack>
+                </YStack>
+              </Pressable>
 
               {/* Plan Badge */}
               <View style={styles.proPlanBadge}>
                 <Text fontSize={13} fontWeight="700" color="#1FC451">
-                  🌱 Usuario Explorador
+                  🌱 PLANT-OR
                 </Text>
               </View>
             </YStack>
@@ -378,65 +388,7 @@ export default function Profile() {
             </YStack>
           </Card>
 
-          {/* Perfil Academico Section */}
-          <Card
-            size="$4"
-            bordered
-            bg="rgba(255,255,255,0.05)"
-            borderColor="rgba(255,255,255,0.1)"
-            padding="$5"
-          >
-            <YStack gap="$4">
-              <XStack style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                <XStack style={{ alignItems: 'center' }} gap="$2">
-                  <MaterialCommunityIcons name="school" size={24} color="#1FC451" />
-                  <H2 fontSize={18} fontWeight="700" color="#ffffff">
-                    Perfil Académico
-                  </H2>
-                </XStack>
-                <Button 
-                  size="$3" 
-                  bg="rgba(255,255,255,0.1)" 
-                  color="white" 
-                  icon={<MaterialCommunityIcons name="pencil" size={16} />}
-                  onPress={() => setIsEditing(true)}
-                >
-                  Editar
-                </Button>
-              </XStack>
 
-              {user?.unsafeMetadata?.dni || user?.unsafeMetadata?.facultad ? (
-                <YStack gap="$2" mt="$2">
-                  <XStack style={{ justifyContent: "space-between" }}>
-                    <Text color="rgba(255,255,255,0.5)">DNI:</Text>
-                    <Text color="white" fontWeight="bold">{(user.unsafeMetadata.dni as string) || '-'}</Text>
-                  </XStack>
-                  <XStack style={{ justifyContent: "space-between" }}>
-                    <Text color="rgba(255,255,255,0.5)">Facultad:</Text>
-                    <Text color="white" fontWeight="bold">{(user.unsafeMetadata.facultad as string) || '-'}</Text>
-                  </XStack>
-                  <XStack style={{ justifyContent: "space-between" }}>
-                    <Text color="rgba(255,255,255,0.5)">Escuela:</Text>
-                    <Text color="white" fontWeight="bold">{(user.unsafeMetadata.escuela as string) || '-'}</Text>
-                  </XStack>
-                  <XStack style={{ justifyContent: "space-between" }}>
-                    <Text color="rgba(255,255,255,0.5)">Curso:</Text>
-                    <Text color="white" fontWeight="bold">{(user.unsafeMetadata.curso as string) || '-'}</Text>
-                  </XStack>
-                  <XStack style={{ justifyContent: "space-between" }}>
-                    <Text color="rgba(255,255,255,0.5)">Día de Clase:</Text>
-                    <Text color="white" fontWeight="bold">{(user.unsafeMetadata.dia_clase as string) || '-'}</Text>
-                  </XStack>
-                </YStack>
-              ) : (
-                <View style={{ backgroundColor: "rgba(255,165,0,0.1)", padding: 12, borderRadius: 8 }}>
-                  <Text fontSize={13} color="#FFA500" style={{ textAlign: "center" }}>
-                    Aún no has completado tu perfil académico.
-                  </Text>
-                </View>
-              )}
-            </YStack>
-          </Card>
 
           {/* Acerca de Section */}
           <Pressable 

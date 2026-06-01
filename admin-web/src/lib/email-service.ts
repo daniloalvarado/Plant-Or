@@ -8,7 +8,8 @@ export const sendStatusEmail = async (
   nombre_planta: string,
   estado_nuevo: string,
   motivo_observacion?: string,
-  docente_nombre?: string
+  docente_nombre?: string,
+  codigo_registro?: string
 ) => {
   if (!BREVO_API_KEY || !BREVO_SENDER_EMAIL) {
     console.warn("Faltan configurar las credenciales de Brevo (VITE_BREVO_API_KEY y VITE_BREVO_SENDER_EMAIL) en .env");
@@ -49,6 +50,11 @@ export const sendStatusEmail = async (
     <p style="margin-top: 0; font-size: 16px;">Hola <strong>${nombre_registrador}</strong>,</p>
     <p style="color: #555;">Hay una actualización sobre tu registro botánico de la planta <strong>"${nombre_planta || 'la planta'}"</strong>.</p>
     
+    <div style="margin-top: 15px; padding: 15px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;">
+      <p style="margin: 0 0 5px 0;"><strong>Código de Registro:</strong> <span style="font-family: monospace; background: #e5e7eb; padding: 2px 6px; border-radius: 4px;">${codigo_registro || 'N/A'}</span></p>
+      <p style="margin: 0;"><strong>Estado:</strong> <span style="color: ${text_color}; font-weight: bold; text-transform: uppercase;">${estado_nuevo}</span></p>
+    </div>
+
     <blockquote style="margin: 25px 0; padding: 18px 20px; background-color: ${bg_color}; border-left: 5px solid ${border_color}; color: ${text_color}; font-size: 15px; line-height: 1.5; white-space: pre-line;">
       ${instructions}
     </blockquote>

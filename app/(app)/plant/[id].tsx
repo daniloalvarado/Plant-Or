@@ -195,12 +195,12 @@ export default function PlantDetailScreen() {
             <>
               <Text style={[styles.sectionTitle, { color: theme.text }]}>Datos del Árbol</Text>
               <View style={{ gap: 16, marginTop: 12, marginBottom: 24 }}>
-                <MorphInfo icon="ruler" label="Altura Total (m)" value={planta.arbol_datos.altura_total?.toString()} />
-                <MorphInfo icon="diameter-outline" label="CAP (cm)" value={planta.arbol_datos.cap?.toString()} />
-                <MorphInfo icon="tree-outline" label="Forma de Copa" value={planta.arbol_datos.forma_copa} />
-                <MorphInfo icon="texture" label="Corteza Externa" value={planta.arbol_datos.corteza_externa} />
-                <MorphInfo icon="water-outline" label="Exudado (Tipo)" value={planta.arbol_datos.exudado_tipo} />
-                <MorphInfo icon="leaf" label="Tipo de Hoja" value={planta.arbol_datos.tipo_hoja} />
+                {Object.entries(planta.arbol_datos).map(([k, v]) => {
+                  if (v === null || v === undefined || v === '') return null;
+                  return (
+                    <MorphInfo key={k} icon="leaf-circle-outline" label={k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} value={Array.isArray(v) ? v.join(", ") : String(v)} />
+                  );
+                })}
               </View>
             </>
           )}
@@ -209,10 +209,12 @@ export default function PlantDetailScreen() {
             <>
               <Text style={[styles.sectionTitle, { color: theme.text }]}>Datos de la Palmera</Text>
               <View style={{ gap: 16, marginTop: 12, marginBottom: 24 }}>
-                <MorphInfo icon="ruler" label="Altura Total (m)" value={planta.palmera_datos.altura_total?.toString()} />
-                <MorphInfo icon="texture" label="Estípite (Tallo)" value={planta.palmera_datos.tallo?.join(", ")} />
-                <MorphInfo icon="leaf" label="Tipo de Hoja" value={planta.palmera_datos.tipo_hoja} />
-                <MorphInfo icon="pine-tree" label="Tipo de Palmera" value={planta.palmera_datos.tipo_palmera} />
+                {Object.entries(planta.palmera_datos).map(([k, v]) => {
+                  if (v === null || v === undefined || v === '') return null;
+                  return (
+                    <MorphInfo key={k} icon="pine-tree" label={k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} value={Array.isArray(v) ? v.join(", ") : String(v)} />
+                  );
+                })}
               </View>
             </>
           )}
@@ -221,9 +223,40 @@ export default function PlantDetailScreen() {
             <>
               <Text style={[styles.sectionTitle, { color: theme.text }]}>Datos del Arbusto</Text>
               <View style={{ gap: 16, marginTop: 12, marginBottom: 24 }}>
-                <MorphInfo icon="ruler" label="Altura Total (m)" value={planta.arbusto_datos.altura_total?.toString()} />
-                <MorphInfo icon="shape-outline" label="Forma General" value={planta.arbusto_datos.forma_general} />
-                <MorphInfo icon="leaf" label="Tipo de Hoja" value={planta.arbusto_datos.tipo_hoja} />
+                {Object.entries(planta.arbusto_datos).map(([k, v]) => {
+                  if (v === null || v === undefined || v === '') return null;
+                  return (
+                    <MorphInfo key={k} icon="sprout-outline" label={k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} value={Array.isArray(v) ? v.join(", ") : String(v)} />
+                  );
+                })}
+              </View>
+            </>
+          )}
+          
+          {planta?.liana_datos && (
+            <>
+              <Text style={[styles.sectionTitle, { color: theme.text }]}>Datos de la Liana</Text>
+              <View style={{ gap: 16, marginTop: 12, marginBottom: 24 }}>
+                {Object.entries(planta.liana_datos).map(([k, v]) => {
+                  if (v === null || v === undefined || v === '') return null;
+                  return (
+                    <MorphInfo key={k} icon="grass" label={k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} value={Array.isArray(v) ? v.join(", ") : String(v)} />
+                  );
+                })}
+              </View>
+            </>
+          )}
+
+          {planta?.hierba_datos && (
+            <>
+              <Text style={[styles.sectionTitle, { color: theme.text }]}>Datos de la Hierba</Text>
+              <View style={{ gap: 16, marginTop: 12, marginBottom: 24 }}>
+                {Object.entries(planta.hierba_datos).map(([k, v]) => {
+                  if (v === null || v === undefined || v === '') return null;
+                  return (
+                    <MorphInfo key={k} icon="leaf" label={k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} value={Array.isArray(v) ? v.join(", ") : String(v)} />
+                  );
+                })}
               </View>
             </>
           )}
@@ -233,9 +266,12 @@ export default function PlantDetailScreen() {
             <>
               <Text style={[styles.sectionTitle, { color: theme.text, marginTop: 24 }]}>Ubicación</Text>
               {planta?.direccion ? (
-                <Text style={{ color: '#a0a0a0', fontSize: 13, marginBottom: 8 }}>
-                  📍 {planta.direccion}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8, gap: 4 }}>
+                  <MaterialCommunityIcons name="map-marker" size={16} color="#1FC451" />
+                  <Text style={{ color: '#a0a0a0', fontSize: 13, flex: 1 }}>
+                    {planta.direccion}
+                  </Text>
+                </View>
               ) : null}
               <View style={{ height: 200, borderRadius: 12, overflow: 'hidden', marginBottom: 24, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)' }}>
                 <MapView

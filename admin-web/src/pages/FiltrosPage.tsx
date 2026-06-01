@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { client } from '@/lib/sanity'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
-import { SlidersHorizontal, Plus, Trash2, ToggleLeft, ToggleRight, RefreshCw, Filter } from 'lucide-react'
+import { SlidersHorizontal, Plus, Trash2, ToggleLeft, ToggleRight, RefreshCw, Filter, BarChart2 } from 'lucide-react'
 import { CustomSelect } from '@/components/CustomSelect'
 
 const CATEGORIAS = ['Hábito', 'Tipo de vida', 'Forma', 'Color', 'Tamaño', 'Textura', 'Estructura']
@@ -28,6 +28,11 @@ export default function FiltrosPage() {
   const [showForm, setShowForm] = useState(false)
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<string>('Todas')
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  
+  // Stats
+  const [frequentData, setFrequentData] = useState<Record<string, Record<string, number>>>({})
+  const [loadingStats, setLoadingStats] = useState(false)
+  const [showStats, setShowStats] = useState(false)
 
   const fetchFiltros = useCallback(async () => {
     setLoading(true)
@@ -103,6 +108,58 @@ export default function FiltrosPage() {
 
   const activosCount = filtros.filter(f => f.activo).length
 
+  const fetchStats = async () => {
+    if (Object.keys(frequentData).length > 0) {
+      setShowStats(!showStats)
+      return
+    }
+    setLoadingStats(true)
+    try {
+      const data = await client.fetch(
+        `*[_type == "planta" && !(_id in path("drafts.**"))] { 
+          arbol_datos, palmera_datos, arbusto_datos, liana_datos, hierba_datos, estado_fenologico, impacto_urbano, valor_ornamental, estado_individuo, habito, tipo_vida 
+        }`
+      )
+      const stats: Record<string, Record<string, number>> = {}
+      
+      data.forEach((planta: any) => {
+        const processValue = (key: string, val: any) => {
+          if (!val) return
+          if (!stats[key]) stats[key] = {}
+          if (Array.isArray(val)) {
+            val.forEach(v => {
+              if (v && typeof v === 'string') {
+                stats[key][v] = (stats[key][v] || 0) + 1
+              }
+            })
+          } else if (typeof val === 'string') {
+            stats[key][val] = (stats[key][val] || 0) + 1
+          }
+        }
+  
+        if (planta.estado_fenologico) processValue('estado_fenologico', planta.estado_fenologico)
+        if (planta.impacto_urbano) processValue('impacto_urbano', planta.impacto_urbano)
+        if (planta.valor_ornamental) processValue('valor_ornamental', planta.valor_ornamental)
+        if (planta.estado_individuo) processValue('estado_individuo', planta.estado_individuo)
+        if (planta.habito) processValue('habito', planta.habito)
+        if (planta.tipo_vida) processValue('tipo_vida', planta.tipo_vida)
+        
+        const blocks = ['arbol_datos', 'palmera_datos', 'arbusto_datos', 'liana_datos', 'hierba_datos']
+        blocks.forEach(block => {
+          if (planta[block]) {
+            Object.entries(planta[block]).forEach(([k, v]) => processValue(k, v))
+          }
+        })
+      })
+      setFrequentData(stats)
+      setShowStats(true)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoadingStats(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -129,6 +186,13 @@ export default function FiltrosPage() {
               Recargar
             </span>
           </div>
+          <button
+            onClick={fetchStats}
+            className="flex items-center gap-2 px-4 py-2 bg-secondary text-foreground text-sm border border-border rounded-lg hover:bg-accent transition-colors cursor-pointer"
+          >
+            {loadingStats ? <RefreshCw className="w-4 h-4 animate-spin" /> : <BarChart2 className="w-4 h-4" />}
+            {showStats ? "Ocultar Datos Reales" : "Ver Datos Reales"}
+          </button>
           <button
             onClick={() => setShowForm(v => !v)}
             className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer"
@@ -163,6 +227,43 @@ export default function FiltrosPage() {
           a qué <strong className="text-foreground">Categoría</strong> pertenece, y puedes activarlo o desactivarlo.
         </p>
       </div>
+
+      {/* Stats Viewer */}
+      {showStats && (
+        <div className="bg-[#0A0A0A] border border-[#1FC451]/30 rounded-xl p-5 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300 shadow-[0_0_15px_rgba(31,196,81,0.1)]">
+          <div className="flex items-center justify-between">
+            <h2 className="font-bold text-[#1FC451] flex items-center gap-2 text-lg">
+              <BarChart2 className="w-5 h-5" />
+              Valores Reales Registrados
+            </h2>
+          </div>
+          <p className="text-sm text-zinc-400">
+            Copia exactamente estos valores técnicos en el campo "Dato técnico" al crear tus filtros. Muestra el top 5 de respuestas más comunes en toda la base de datos.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+            {Object.entries(frequentData)
+              .sort((a, b) => Object.keys(b[1]).length - Object.keys(a[1]).length)
+              .map(([key, counts]) => (
+              <div key={key} className="bg-black border border-zinc-800 rounded-lg p-3 hover:border-zinc-700 transition-colors">
+                <h3 className="font-bold text-xs text-zinc-300 uppercase tracking-wider mb-3 pb-2 border-b border-zinc-800">
+                  {key.replace(/_/g, ' ')}
+                </h3>
+                <div className="space-y-2">
+                  {Object.entries(counts)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5) // top 5
+                    .map(([val, count]) => (
+                    <div key={val} className="flex justify-between items-center text-xs group">
+                      <span className="text-zinc-400 truncate pr-2 group-hover:text-white transition-colors" title={val}>{val}</span>
+                      <span className="bg-zinc-800 text-[#1FC451] px-2 py-0.5 rounded font-mono font-bold">{count}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Create form */}
       {showForm && (

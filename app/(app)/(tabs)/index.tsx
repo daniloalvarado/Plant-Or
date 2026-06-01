@@ -85,7 +85,9 @@ export default function HomeScreen() {
   };
 
   const userName = user?.firstName || "Explorador";
-  const isAdmin = user?.publicMetadata?.role === "admin";
+  const userRole = user?.publicMetadata?.role as string;
+  const showBadge = userRole === "admin" || userRole === "profesor_validador";
+  const badgeText = userRole === "admin" ? "ADMIN" : userRole === "profesor_validador" ? "PROFESOR" : "";
 
   const hasValue = (obj: any, targetValue: string): boolean => {
     if (!obj) return false;
@@ -137,9 +139,9 @@ export default function HomeScreen() {
             <View>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                 <Text style={[styles.greeting, { color: '#ffffff' }]}>Hola, {userName}!</Text>
-                {isAdmin && (
+                {showBadge && (
                   <View style={{ backgroundColor: '#1FC451', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
-                    <Text style={{ fontSize: 10, fontWeight: 'bold', color: '#08130D' }}>ADMIN</Text>
+                    <Text style={{ fontSize: 10, fontWeight: 'bold', color: '#08130D' }}>{badgeText}</Text>
                   </View>
                 )}
               </View>
@@ -346,6 +348,9 @@ export default function HomeScreen() {
                 >
                   <View style={{ flex: 1 }}>
                     <Text style={{ color: theme.text, fontWeight: 'bold' }}>{planta.nombre_cientifico || 'Planta sin nombre'}</Text>
+                    <Text style={{ color: theme.icon, fontSize: 11, marginTop: 2 }}>
+                      Cód: {planta._id?.substring(0, 8).toUpperCase()}
+                    </Text>
                     {planta.estado_revision === 'Observado' ? (
                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 4 }}>
                          <Text style={{ color: "#FFA500", fontSize: 12, fontWeight: 'bold' }}>

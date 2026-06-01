@@ -69,7 +69,8 @@ export async function updatePlantaEstado(
         doc.nombre_cientifico || doc.nombres_comunes || 'Tu planta',
         estado,
         motivo,
-        docenteName
+        docenteName,
+        id // codigo_registro
       ) ?? false;
     }
   } catch (e) {
