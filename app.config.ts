@@ -6,7 +6,7 @@ export default {
     orientation: "portrait",
     icon: "./assets/images/logo_unap.png",
     scheme: "plant-or",
-    userInterfaceStyle: "automatic",
+    userInterfaceStyle: "dark",
     newArchEnabled: true,
     ios: {
       supportsTablet: true,

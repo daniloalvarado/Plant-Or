@@ -206,7 +206,7 @@ export default function MapaScreen() {
             placeholderTextColor="rgba(255,255,255,0.5)"
             value={searchTerm}
             onChangeText={setSearchTerm}
-            h={44}
+            height={44}
           />
           <View style={{ backgroundColor: 'rgba(31,196,81,0.2)', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6, marginLeft: 8 }}>
             <Text style={{ color: "#1FC451", fontSize: 12, fontWeight: 'bold' }}>{filteredPlantas.length}</Text>
