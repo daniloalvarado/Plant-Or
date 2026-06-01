@@ -117,6 +117,9 @@ export default function PlantaDetailPage() {
           {planta.nombres_comunes && (
             <p className="text-muted-foreground">{planta.nombres_comunes}</p>
           )}
+          <div className="mt-2 text-xs font-mono bg-white/5 border border-white/10 px-2 py-1 rounded inline-block text-zinc-400">
+            Cód: {planta._id}
+          </div>
         </div>
         <EstadoBadge estado={planta.estado_revision} className="mt-7" />
       </div>

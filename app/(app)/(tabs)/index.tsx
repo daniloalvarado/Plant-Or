@@ -349,7 +349,7 @@ export default function HomeScreen() {
                   <View style={{ flex: 1 }}>
                     <Text style={{ color: theme.text, fontWeight: 'bold' }}>{planta.nombre_cientifico || 'Planta sin nombre'}</Text>
                     <Text style={{ color: theme.icon, fontSize: 11, marginTop: 2 }}>
-                      Cód: {planta._id?.substring(0, 8).toUpperCase()}
+                      Cód: {planta._id}
                     </Text>
                     {planta.estado_revision === 'Observado' ? (
                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 4 }}>
