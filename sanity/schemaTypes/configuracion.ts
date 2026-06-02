@@ -47,6 +47,13 @@ export const configuracion = {
       title: 'URL del Portal de Validación',
       type: 'string',
       description: 'El enlace que aparecerá en el certificado para validar su autenticidad (Ej. plant-or.com/validar)'
+    },
+    {
+      name: 'texto_certificado',
+      title: 'Texto Central del Certificado',
+      type: 'text',
+      description: 'Plantilla del texto central. Usa la palabra especial {count} para que se reemplace por el número de plantas validadas.',
+      initialValue: 'Por haber contribuido significativamente a la catalogación y conservación de nuestra flora urbana al registrar y validar exitosamente {count} especies botánicas.'
     }
   ]
 }

@@ -12,6 +12,7 @@ import MapaPage from '@/pages/MapaPage'
 import FiltrosPage from '@/pages/FiltrosPage'
 import ConfiguracionPage from '@/pages/ConfiguracionPage'
 import ValidarCertificadoPage from '@/pages/ValidarCertificadoPage'
+import CertificadosPage from '@/pages/CertificadosPage'
 import '@/index.css'
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -67,6 +68,7 @@ function MainContent() {
                   <Route path="/mapa" element={<MapaPage />} />
                   <Route path="/filtros" element={<FiltrosPage />} />
                   <Route path="/configuracion" element={<ConfiguracionPage />} />
+                  <Route path="/certificados" element={<CertificadosPage />} />
                   <Route path="/planta/:id" element={<PlantaDetailPage />} />
                   <Route path="/perfil" element={<div className="flex justify-center"><UserProfile appearance={{ elements: { card: 'bg-[#0a0a0a] border-zinc-800' } }} /></div>} />
                   <Route path="*" element={<Navigate to="/" replace />} />

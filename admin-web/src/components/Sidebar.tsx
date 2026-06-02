@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, ClipboardList, CheckCircle, Leaf,
-  Map, ChevronLeft, ChevronRight, LogOut, Menu, SlidersHorizontal, Settings
+  Map, ChevronLeft, ChevronRight, LogOut, Menu, SlidersHorizontal, Settings, Award
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useClerk, useUser } from '@clerk/clerk-react'
@@ -15,6 +15,7 @@ const navItems = [
   { href: '/mapa', icon: Map, label: 'Mapa' },
   { href: '/filtros', icon: SlidersHorizontal, label: 'Filtros' },
   { href: '/configuracion', icon: Settings, label: 'Configuración' },
+  { href: '/certificados', icon: Award, label: 'Certificados' },
 ]
 
 export function Sidebar() {

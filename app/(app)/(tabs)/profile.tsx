@@ -3,13 +3,14 @@ import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { getUserDisplayName, getUserInitials } from "@/lib/utils/user";
 import { useUser } from "@clerk/clerk-expo";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useState, useCallback } from "react";
 import { client, urlFor } from "@/lib/sanity";
 import { Image, Pressable, StyleSheet, Modal, Alert } from "react-native";
-import * as Print from 'expo-print';
-import * as Sharing from 'expo-sharing';
+import * as Sharing from "expo-sharing";
+import * as Print from "expo-print";
+import * as FileSystem from "expo-file-system";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -59,7 +60,17 @@ export default function Profile() {
   const [isGeneratingCert, setIsGeneratingCert] = useState(false);
   const [photoOptionsVisible, setPhotoOptionsVisible] = useState(false);
 
-  const generateCertificateHTML = (name: string, date: string, code: string, type: string, total: number, period: string, config: any) => {
+  const generateCertificateHTML = (
+    name: string, 
+    date: string, 
+    code: string, 
+    type: string, 
+    count: number, 
+    period: string,
+    config: any
+  ) => {
+    const textoBase = config?.texto_certificado || 'Por haber contribuido significativamente a la catalogación y conservación de nuestra flora urbana al registrar y validar exitosamente {count} especies botánicas.';
+    const textoFinal = textoBase.replace('{count}', `<strong>${count}</strong>`);
     const firma1Url = config?.responsable_1_firma ? urlFor(config.responsable_1_firma) : '';
     const firma2Url = config?.responsable_2_firma ? urlFor(config.responsable_2_firma) : '';
     
@@ -75,7 +86,7 @@ export default function Profile() {
         .title { font-size: 44px; font-weight: bold; margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; }
         .subtitle { font-size: 22px; color: #555; margin-bottom: 25px; }
         .name { font-size: 40px; font-weight: bold; color: #15963c; border-bottom: 2px solid #1FC451; display: inline-block; padding: 0 40px 10px; margin-bottom: 25px; }
-        .text { font-size: 18px; color: #444; line-height: 1.6; max-width: 800px; margin: 0 auto 30px; }
+        .paragraph { font-size: 18px; color: #444; line-height: 1.6; max-width: 800px; margin: 0 auto 30px; }
         .details { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
         .detail-item { font-size: 16px; background: #f4f4f4; padding: 10px 20px; border-radius: 8px; border: 1px solid #ddd; }
         .footer { position: absolute; bottom: 40px; width: calc(100% - 80px); display: flex; justify-content: space-between; align-items: flex-end; }
@@ -92,17 +103,20 @@ export default function Profile() {
         <div class="bg-icon">🌿</div>
         <div class="logo">🌿 PLANT-OR</div>
         <div class="title">Certificado de Reconocimiento</div>
-        <div class="subtitle">Otorgado a</div>
+        <div class="subtitle">Otorgado a:</div>
         
         <div class="name">${name}</div>
         
-        <div class="text">
-          Por haber contribuido significativamente a la catalogación y conservación de nuestra flora urbana 
-          en el marco del proyecto de Responsabilidad Social Universitaria.
+        <div class="paragraph">
+          Por haber participado en el proyecto PLANT-OR en calidad de <strong>${type}</strong>, 
+          durante el periodo académico <strong>${period}</strong>.
         </div>
+        <p class="paragraph">
+          ${textoFinal}
+        </p>
         
         <div class="details">
-          <div class="detail-item"><strong>Registros Validados:</strong> ${total}</div>
+          <div class="detail-item"><strong>Registros Validados:</strong> ${count}</div>
           <div class="detail-item"><strong>Participación:</strong> ${type}</div>
           <div class="detail-item"><strong>Periodo:</strong> ${period}</div>
         </div>
@@ -144,6 +158,12 @@ export default function Profile() {
       // 1. Check if certificate exists
       const existingCert = await client.fetch(`*[_type == "certificado" && usuario_id == $userId][0]`, { userId: user.id });
       
+      const isStudent = !!(user.unsafeMetadata?.dni || user.unsafeMetadata?.facultad || user.unsafeMetadata?.escuela);
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth();
+      const periodCalc = `${currentYear}-${currentMonth < 7 ? 'I' : 'II'}`;
+      const tipoCalc = isStudent ? 'Estudiante' : 'Ciudadano';
+      
       let certData;
       
       if (existingCert) {
@@ -163,26 +183,32 @@ export default function Profile() {
           codigo: newCode,
           usuario_id: user.id,
           usuario_nombre: getUserDisplayName(user),
+          registros_validados: validatedCount,
+          tipo_participacion: tipoCalc,
+          periodo: periodCalc,
           fecha_emision: new Date().toISOString()
         });
       }
       
       // 1.5 Get dynamic info for certificate
       const config = await client.fetch(`*[_type == "configuracion"][0]`);
-      const isStudent = !!(user.unsafeMetadata?.dni || user.unsafeMetadata?.facultad || user.unsafeMetadata?.escuela);
-      const currentYear = new Date().getFullYear();
-      const currentMonth = new Date().getMonth();
-      const period = `${currentYear}-${currentMonth < 7 ? 'I' : 'II'}`;
       
       // 2. Generate PDF
       const dateStrFormatted = new Date(certData.fecha_emision).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+      
+      // Leer valores de certData estrictamente (prioriza lo guardado en BD, falla a calculados si es viejo)
+      const finalName = certData.usuario_nombre;
+      const finalCount = certData.registros_validados ?? validatedCount;
+      const finalType = certData.tipo_participacion || tipoCalc;
+      const finalPeriod = certData.periodo || periodCalc;
+
       const html = generateCertificateHTML(
-        certData.usuario_nombre, 
+        finalName, 
         dateStrFormatted, 
         certData.codigo,
-        isStudent ? 'Estudiante' : 'Ciudadano',
-        validatedCount,
-        period,
+        finalType,
+        finalCount,
+        finalPeriod,
         config
       );
       
@@ -193,9 +219,16 @@ export default function Profile() {
         height: 700
       });
       
+      // 2.5 Rename the file to Certificado_PlantOR.pdf
+      const renamedUri = `${FileSystem.cacheDirectory}Certificado_PlantOR.pdf`;
+      await FileSystem.moveAsync({
+        from: uri,
+        to: renamedUri
+      });
+      
       // 3. Share / Save
       if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(uri, {
+        await Sharing.shareAsync(renamedUri, {
           mimeType: 'application/pdf',
           dialogTitle: 'Mi Certificado PLANT-OR',
           UTI: 'com.adobe.pdf'
