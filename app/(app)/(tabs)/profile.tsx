@@ -6,7 +6,7 @@ import { useUser } from "@clerk/clerk-expo";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter, useFocusEffect } from "expo-router";
 import { useState, useCallback } from "react";
-import { client } from "@/lib/sanity";
+import { client, urlFor } from "@/lib/sanity";
 import { Image, Pressable, StyleSheet, Modal, Alert } from "react-native";
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
@@ -59,7 +59,11 @@ export default function Profile() {
   const [isGeneratingCert, setIsGeneratingCert] = useState(false);
   const [photoOptionsVisible, setPhotoOptionsVisible] = useState(false);
 
-  const generateCertificateHTML = (name: string, date: string, code: string) => `
+  const generateCertificateHTML = (name: string, date: string, code: string, type: string, total: number, period: string, config: any) => {
+    const firma1Url = config?.responsable_1_firma ? urlFor(config.responsable_1_firma) : '';
+    const firma2Url = config?.responsable_2_firma ? urlFor(config.responsable_2_firma) : '';
+    
+    return `
     <!DOCTYPE html>
     <html lang="es">
     <head>
@@ -67,15 +71,19 @@ export default function Profile() {
       <style>
         body { font-family: 'Helvetica', 'Arial', sans-serif; margin: 0; padding: 0; background: white; color: #08130D; }
         .container { width: 1000px; height: 700px; border: 15px solid #1FC451; padding: 40px; box-sizing: border-box; text-align: center; position: relative; }
-        .logo { font-size: 32px; font-weight: bold; color: #1FC451; margin-bottom: 20px; }
-        .title { font-size: 50px; font-weight: bold; margin: 20px 0; text-transform: uppercase; letter-spacing: 2px; }
-        .subtitle { font-size: 24px; color: #555; margin-bottom: 40px; }
-        .name { font-size: 45px; font-weight: bold; color: #15963c; border-bottom: 2px solid #1FC451; display: inline-block; padding: 0 40px 10px; margin-bottom: 40px; }
-        .text { font-size: 20px; color: #444; line-height: 1.6; max-w: 800px; margin: 0 auto 40px; }
-        .footer { position: absolute; bottom: 50px; width: calc(100% - 80px); display: flex; justify-content: space-between; align-items: flex-end; }
-        .signature { border-top: 1px solid #000; padding-top: 10px; width: 250px; text-align: center; font-size: 16px; }
-        .validation-box { text-align: right; font-size: 14px; color: #666; }
-        .code { font-weight: bold; font-family: monospace; font-size: 16px; color: #000; }
+        .logo { font-size: 32px; font-weight: bold; color: #1FC451; margin-bottom: 10px; }
+        .title { font-size: 44px; font-weight: bold; margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; }
+        .subtitle { font-size: 22px; color: #555; margin-bottom: 25px; }
+        .name { font-size: 40px; font-weight: bold; color: #15963c; border-bottom: 2px solid #1FC451; display: inline-block; padding: 0 40px 10px; margin-bottom: 25px; }
+        .text { font-size: 18px; color: #444; line-height: 1.6; max-width: 800px; margin: 0 auto 30px; }
+        .details { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .detail-item { font-size: 16px; background: #f4f4f4; padding: 10px 20px; border-radius: 8px; border: 1px solid #ddd; }
+        .footer { position: absolute; bottom: 40px; width: calc(100% - 80px); display: flex; justify-content: space-between; align-items: flex-end; }
+        .signatures-container { display: flex; gap: 40px; }
+        .signature { border-top: 1px solid #000; padding-top: 10px; width: 220px; text-align: center; font-size: 14px; position: relative; }
+        .signature-img { position: absolute; bottom: 45px; left: 50%; transform: translateX(-50%); max-height: 80px; max-width: 200px; }
+        .validation-box { text-align: right; font-size: 13px; color: #666; }
+        .code { font-weight: bold; font-family: monospace; font-size: 15px; color: #000; }
         .bg-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.05; font-size: 400px; z-index: -1; }
       </style>
     </head>
@@ -89,14 +97,30 @@ export default function Profile() {
         <div class="name">${name}</div>
         
         <div class="text">
-          Por haber completado exitosamente la meta de <strong>100 registros botánicos validados</strong> en la plataforma PLANT-OR, 
-          contribuyendo significativamente a la catalogación y conservación de nuestra flora urbana.
+          Por haber contribuido significativamente a la catalogación y conservación de nuestra flora urbana 
+          en el marco del proyecto de Responsabilidad Social Universitaria.
+        </div>
+        
+        <div class="details">
+          <div class="detail-item"><strong>Registros Validados:</strong> ${total}</div>
+          <div class="detail-item"><strong>Participación:</strong> ${type}</div>
+          <div class="detail-item"><strong>Periodo:</strong> ${period}</div>
         </div>
         
         <div class="footer">
-          <div class="signature">
-            <strong>Firma Autorizada</strong><br>
-            Proyecto PLANT-OR
+          <div class="signatures-container">
+            <div class="signature">
+              ${firma1Url ? \`<img src="\${firma1Url}" class="signature-img" />\` : ''}
+              <strong>${config?.responsable_1_nombre || 'Firma Autorizada'}</strong><br>
+              ${config?.responsable_1_cargo || 'Proyecto PLANT-OR'}
+            </div>
+            ${config?.responsable_2_nombre ? \`
+            <div class="signature">
+              \${firma2Url ? \`<img src="\${firma2Url}" class="signature-img" />\` : ''}
+              <strong>\${config.responsable_2_nombre}</strong><br>
+              \${config.responsable_2_cargo || 'Proyecto PLANT-OR'}
+            </div>
+            \` : ''}
           </div>
           
           <div class="validation-box">
@@ -109,7 +133,8 @@ export default function Profile() {
       </div>
     </body>
     </html>
-  `;
+    \`;
+  };
 
   const handleGenerateCertificate = async () => {
     if (!user) return;
@@ -142,9 +167,24 @@ export default function Profile() {
         });
       }
       
+      // 1.5 Get dynamic info for certificate
+      const config = await client.fetch(`*[_type == "configuracion"][0]`);
+      const isStudent = !!(user.unsafeMetadata?.dni || user.unsafeMetadata?.facultad || user.unsafeMetadata?.escuela);
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth();
+      const period = `${currentYear}-${currentMonth < 7 ? 'I' : 'II'}`;
+      
       // 2. Generate PDF
       const dateStrFormatted = new Date(certData.fecha_emision).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-      const html = generateCertificateHTML(certData.usuario_nombre, dateStrFormatted, certData.codigo);
+      const html = generateCertificateHTML(
+        certData.usuario_nombre, 
+        dateStrFormatted, 
+        certData.codigo,
+        isStudent ? 'Estudiante' : 'Ciudadano',
+        validatedCount,
+        period,
+        config
+      );
       
       const { uri } = await Print.printToFileAsync({
         html,
@@ -437,17 +477,17 @@ export default function Profile() {
               <XStack style={{ alignItems: 'center' }} gap="$2" mb="$1">
                 <MaterialCommunityIcons name="certificate" size={24} color="#1FC451" />
                 <H2 fontSize={18} fontWeight="700" color="#ffffff">
-                  {validatedCount >= 100 ? '¡Certificado Desbloqueado!' : 'Progreso para Certificado'}
+                  {validatedCount >= 1 ? '¡Certificado Desbloqueado!' : 'Progreso para Certificado'}
                 </H2>
               </XStack>
               
               <Text fontSize={14} color="rgba(255,255,255,0.7)">
-                {validatedCount >= 100 
-                  ? 'Has alcanzado los 100 registros validados. Ya puedes generar tu certificado oficial del proyecto.'
-                  : 'Al alcanzar 100 registros validados obtendrás un Certificado Digital oficial del proyecto. (Aplica para estudiantes y ciudadanos).'}
+                {validatedCount >= 1 
+                  ? 'Has alcanzado los requisitos. Ya puedes generar tu certificado oficial del proyecto.'
+                  : 'Al alcanzar los requisitos obtendrás un Certificado Digital oficial del proyecto. (Aplica para estudiantes y ciudadanos).'}
               </Text>
               
-              {validatedCount >= 100 ? (
+              {validatedCount >= 1 ? (
                 <Button
                   mt="$2"
                   bg="#1FC451"
@@ -462,7 +502,7 @@ export default function Profile() {
               ) : (
                 <>
                   <View style={{ width: '100%', height: 12, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 6, overflow: 'hidden', marginTop: 10 }}>
-                    <View style={{ width: `${Math.min((validatedCount / 100) * 100, 100)}%`, height: '100%', backgroundColor: '#1FC451', borderRadius: 6 }} />
+                    <View style={{ width: `${Math.min((validatedCount / 1) * 100, 100)}%`, height: '100%', backgroundColor: '#1FC451', borderRadius: 6 }} />
                   </View>
                   
                   <XStack style={{ justifyContent: 'space-between' }} mt="$1">
@@ -470,7 +510,7 @@ export default function Profile() {
                       {validatedCount} validadas
                     </Text>
                     <Text fontSize={12} color="rgba(255,255,255,0.5)">
-                      Meta: 100
+                      Meta: 1
                     </Text>
                   </XStack>
                 </>
