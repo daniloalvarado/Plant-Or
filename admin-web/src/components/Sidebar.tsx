@@ -76,28 +76,40 @@ export function Sidebar() {
 
       {/* User + Collapse */}
       <div className="border-t border-sidebar-border p-3 space-y-2">
-        {!collapsed && user && (
-          <Link to="/perfil" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 px-2 py-1.5 hover:bg-white/5 rounded-lg transition-colors cursor-pointer group">
+        {user && (
+          <Link to="/perfil" onClick={() => setMobileOpen(false)} className={cn("relative group/nav flex items-center rounded-lg transition-colors cursor-pointer", collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-2 px-2 py-1.5 hover:bg-white/5 group")}>
             <img
               src={user.imageUrl}
               alt={user.fullName || ''}
-              className="w-7 h-7 rounded-full border border-sidebar-border group-hover:border-[#1FC451] transition-colors"
+              className={cn("rounded-full border border-sidebar-border transition-colors", collapsed ? "w-8 h-8" : "w-7 h-7 group-hover:border-[#1FC451]")}
             />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-foreground truncate transition-colors">{user.fullName}</p>
-              <p className="text-xs text-muted-foreground truncate">{user.primaryEmailAddress?.emailAddress}</p>
-            </div>
+            {!collapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-foreground truncate transition-colors">{user.fullName}</p>
+                <p className="text-xs text-muted-foreground truncate">{user.primaryEmailAddress?.emailAddress}</p>
+              </div>
+            )}
+            {collapsed && (
+              <span className="absolute left-14 px-2 py-1 bg-black text-white text-xs font-bold rounded border border-zinc-800 opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                Mi Perfil
+              </span>
+            )}
           </Link>
         )}
         <button
           onClick={() => setLogoutConfirmOpen(true)}
           className={cn(
-            "flex items-center rounded-lg text-sm text-muted-foreground hover:bg-red-500/20 hover:text-white transition-colors cursor-pointer",
+            "relative group/nav flex items-center rounded-lg text-sm text-muted-foreground hover:bg-red-500/20 hover:text-white transition-colors cursor-pointer",
             collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-2 px-3 py-2 w-full"
           )}
         >
           <LogOut className="w-4 h-4 flex-shrink-0" />
           {!collapsed && <span>Cerrar sesión</span>}
+          {collapsed && (
+            <span className="absolute left-14 px-2 py-1 bg-black text-white text-xs font-bold rounded border border-zinc-800 opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+              Cerrar sesión
+            </span>
+          )}
         </button>
       </div>
     </div>

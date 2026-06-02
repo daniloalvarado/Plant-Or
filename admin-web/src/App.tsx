@@ -56,7 +56,7 @@ function MainContent() {
         <RoleCheck>
           <div className="flex min-h-screen bg-background">
             <Sidebar />
-            <main className="flex-1 overflow-y-auto">
+            <main className="flex-1 overflow-y-auto relative z-10">
               <div className="p-6 pt-20 md:p-8 md:pt-8 max-w-7xl mx-auto">
                 <Routes>
                   <Route path="/" element={<DashboardPage />} />
