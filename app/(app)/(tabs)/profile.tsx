@@ -110,17 +110,17 @@ export default function Profile() {
         <div class="footer">
           <div class="signatures-container">
             <div class="signature">
-              ${firma1Url ? \`<img src="\${firma1Url}" class="signature-img" />\` : ''}
+              ${firma1Url ? '<img src="' + firma1Url + '" class="signature-img" />' : ''}
               <strong>${config?.responsable_1_nombre || 'Firma Autorizada'}</strong><br>
               ${config?.responsable_1_cargo || 'Proyecto PLANT-OR'}
             </div>
-            ${config?.responsable_2_nombre ? \`
-            <div class="signature">
-              \${firma2Url ? \`<img src="\${firma2Url}" class="signature-img" />\` : ''}
-              <strong>\${config.responsable_2_nombre}</strong><br>
-              \${config.responsable_2_cargo || 'Proyecto PLANT-OR'}
-            </div>
-            \` : ''}
+            ${config?.responsable_2_nombre ? 
+            '<div class="signature">' +
+              (firma2Url ? '<img src="' + firma2Url + '" class="signature-img" />' : '') +
+              '<strong>' + config.responsable_2_nombre + '</strong><br>' +
+              (config.responsable_2_cargo || 'Proyecto PLANT-OR') +
+            '</div>'
+             : ''}
           </div>
           
           <div class="validation-box">
@@ -133,7 +133,7 @@ export default function Profile() {
       </div>
     </body>
     </html>
-    \`;
+    `;
   };
 
   const handleGenerateCertificate = async () => {

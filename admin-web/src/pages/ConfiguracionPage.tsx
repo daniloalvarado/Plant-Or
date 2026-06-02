@@ -186,7 +186,7 @@ export default function ConfiguracionPage() {
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <button 
                       onClick={() => firma1Ref.current?.click()}
-                      className="flex items-center gap-2 px-4 py-2 bg-primary text-black font-bold rounded-lg shadow-xl"
+                      className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] text-white font-bold rounded-lg shadow-xl cursor-pointer hover:bg-[#19a343] transition-colors"
                     >
                       <Upload className="w-4 h-4" /> Reemplazar
                     </button>
@@ -254,7 +254,7 @@ export default function ConfiguracionPage() {
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <button 
                       onClick={() => firma2Ref.current?.click()}
-                      className="flex items-center gap-2 px-4 py-2 bg-primary text-black font-bold rounded-lg shadow-xl"
+                      className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] text-white font-bold rounded-lg shadow-xl cursor-pointer hover:bg-[#19a343] transition-colors"
                     >
                       <Upload className="w-4 h-4" /> Reemplazar
                     </button>
@@ -285,7 +285,7 @@ export default function ConfiguracionPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 px-6 py-3 bg-primary text-black font-bold rounded-lg hover:bg-primary/90 transition-all disabled:opacity-50 cursor-pointer shadow-lg shadow-primary/20"
+          className="flex items-center gap-2 px-6 py-3 bg-[#1FC451] text-black font-bold rounded-lg hover:bg-[#19a343] transition-all disabled:opacity-50 cursor-pointer shadow-lg shadow-[#1FC451]/20"
         >
           {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
           Guardar Cambios de Texto
