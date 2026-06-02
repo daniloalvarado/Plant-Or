@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import MarkerClusterGroup from 'react-leaflet-cluster'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { usePlantas } from '@/hooks/use-plantas'
@@ -150,24 +151,30 @@ export default function MapaPage() {
             url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
             subdomains="abcd"
           />
-          {filtered.map(p => (
-            <Marker key={p._id} position={[p.latitud!, p.longitud!]} icon={createMarkerIcon(p.estado_revision)}>
-              <Popup className="plant-popup">
-                <div className="text-sm space-y-2 min-w-[180px]">
-                  <p className="font-bold italic text-gray-900 leading-tight">{p.nombre_cientifico || '—'}</p>
-                  {p.nombres_comunes && <p className="text-gray-500 text-xs">{p.nombres_comunes}</p>}
-                  <EstadoBadge estado={p.estado_revision} />
-                  <p className="text-xs text-gray-600">Por: {p.registrador_nombre || '—'}</p>
-                  <button
-                    onClick={() => navigate(`/planta/${p._id}`)}
-                    className="block w-full text-center text-xs font-bold text-green-700 hover:text-green-800 pt-1 border-t border-gray-200"
-                  >
-                    Ver Detalles →
-                  </button>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
+          <MarkerClusterGroup
+            chunkedLoading
+            maxClusterRadius={50}
+            showCoverageOnHover={false}
+          >
+            {filtered.map(p => (
+              <Marker key={p._id} position={[p.latitud!, p.longitud!]} icon={createMarkerIcon(p.estado_revision)}>
+                <Popup className="plant-popup">
+                  <div className="text-sm space-y-2 min-w-[180px]">
+                    <p className="font-bold italic text-gray-900 leading-tight">{p.nombre_cientifico || '—'}</p>
+                    {p.nombres_comunes && <p className="text-gray-500 text-xs">{p.nombres_comunes}</p>}
+                    <EstadoBadge estado={p.estado_revision} />
+                    <p className="text-xs text-gray-600">Por: {p.registrador_nombre || '—'}</p>
+                    <button
+                      onClick={() => navigate(`/planta/${p._id}`)}
+                      className="block w-full text-center text-xs font-bold text-green-700 hover:text-green-800 pt-1 border-t border-gray-200"
+                    >
+                      Ver Detalles →
+                    </button>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+          </MarkerClusterGroup>
         </MapContainer>
 
         {/* Legend */}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, Dimensions, Pressable, ActivityIndicator, Image } from "react-native";
-import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView from "react-native-map-clustering";
 import { client, urlFor } from "@/lib/sanity";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
@@ -118,6 +119,8 @@ export default function MapaScreen() {
         customMapStyle={colorScheme === "dark" ? darkMapStyle : []}
         onPress={handleMapPress}
         showsUserLocation={true}
+        clusterColor="#1FC451"
+        clusterTextColor="#ffffff"
       >
         {filteredPlantas.map((planta) => {
           const color = getMarkerColor(planta.estado_revision);
