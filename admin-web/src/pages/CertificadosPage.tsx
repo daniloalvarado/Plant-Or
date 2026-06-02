@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { client } from '../lib/sanity';
 import { Award, Search, Edit2, X, Save, Loader2, Calendar } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 interface Certificado {
   _id: string;
