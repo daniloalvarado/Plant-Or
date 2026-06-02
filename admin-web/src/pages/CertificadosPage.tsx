@@ -154,9 +154,9 @@ export default function CertificadosPage() {
                         </div>
                       </td>
                       <td className="p-4 text-right">
-                        <button 
+                          <button 
                           onClick={() => handleEdit(cert)}
-                          className="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-black rounded-lg transition-colors inline-flex"
+                          className="p-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg transition-colors inline-flex"
                           title="Editar Certificado"
                         >
                           <Edit2 className="w-4 h-4" />
@@ -173,9 +173,9 @@ export default function CertificadosPage() {
 
       {/* Editor Visual Modal */}
       {editingCert && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-0">
           <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" onClick={() => setEditingCert(null)} />
-          <div className="bg-card border border-border shadow-2xl rounded-2xl w-full max-w-4xl relative flex flex-col max-h-[90vh]">
+          <div className="bg-card w-full h-full relative flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-border">
               <div>
