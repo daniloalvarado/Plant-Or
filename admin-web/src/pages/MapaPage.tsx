@@ -64,6 +64,7 @@ export default function MapaPage() {
   if (loading) return <LoadingSpinner text="Cargando mapa..." />
 
   return (
+    <>
     <div className="flex flex-col h-[calc(100vh-120px)] gap-4">
       {/* Header */}
       <div className="flex flex-col gap-4 flex-shrink-0">
@@ -183,5 +184,6 @@ export default function MapaPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }

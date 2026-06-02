@@ -273,6 +273,13 @@ export default function PlantDetailScreen() {
                   </Text>
                 </View>
               ) : null}
+              <View style={{ gap: 16, marginBottom: 16 }}>
+                {planta?.distrito && <MorphInfo icon="map-marker-radius" label="Distrito" value={planta.distrito} />}
+                {planta?.tipo_ubicacion_1 && <MorphInfo icon="map-marker-path" label="Tipo Ubicación 1" value={planta.tipo_ubicacion_1} />}
+                {planta?.tipo_ubicacion_2 && <MorphInfo icon="map-marker-multiple" label="Tipo Ubicación 2" value={planta.tipo_ubicacion_2} />}
+                {planta?.numero_casa && <MorphInfo icon="home-outline" label="N° de Casa" value={planta.numero_casa} />}
+                {planta?.ubicacion_planta && <MorphInfo icon="layers-outline" label="Sustrato" value={planta.ubicacion_planta} />}
+              </View>
               <View style={{ height: 200, borderRadius: 12, overflow: 'hidden', marginBottom: 24, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)' }}>
                 <MapView
                   style={{ flex: 1 }}

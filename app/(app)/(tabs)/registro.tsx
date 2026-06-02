@@ -1077,7 +1077,10 @@ export default function RegistroScreen() {
                   <H4 color="white">2. Ubicación</H4>
                   <Text color="rgba(255,255,255,0.7)">Distrito: <Text color="white" fontWeight="bold">{distrito}</Text></Text>
                   <Text color="rgba(255,255,255,0.7)">Dirección: <Text color="white" fontWeight="bold">{direccion}</Text></Text>
-                  <Text color="rgba(255,255,255,0.7)">Tipo: <Text color="white" fontWeight="bold">{tipoUbicacion}</Text></Text>
+                  <Text color="rgba(255,255,255,0.7)">Tipo 1: <Text color="white" fontWeight="bold">{tipoUbicacion}</Text></Text>
+                  {tipoUbicacion2 ? <Text color="rgba(255,255,255,0.7)">Tipo 2: <Text color="white" fontWeight="bold">{tipoUbicacion2}</Text></Text> : null}
+                  {numeroCasa ? <Text color="rgba(255,255,255,0.7)">N° Casa: <Text color="white" fontWeight="bold">{numeroCasa}</Text></Text> : null}
+                  {sustratoPlanta ? <Text color="rgba(255,255,255,0.7)">Sustrato: <Text color="white" fontWeight="bold">{sustratoPlanta}</Text></Text> : null}
                   {location && (
                     <View style={{ height: 100, borderRadius: 8, overflow: 'hidden', marginTop: 8 }}>
                       <MapView
