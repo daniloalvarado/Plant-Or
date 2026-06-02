@@ -156,7 +156,7 @@ export default function CertificadosPage() {
                       <td className="p-4 text-right">
                           <button 
                           onClick={() => handleEdit(cert)}
-                          className="p-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg transition-colors inline-flex"
+                          className="p-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg transition-colors inline-flex cursor-pointer"
                           title="Editar Certificado"
                         >
                           <Edit2 className="w-4 h-4" />
