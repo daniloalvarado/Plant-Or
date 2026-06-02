@@ -569,38 +569,38 @@ export default function Profile() {
               <XStack gap="$3">
                 <YStack flex={1}>
                   <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Nombres</Text>
-                  <Input h={40} value={firstName} onChangeText={setFirstName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  <Input height={40} value={firstName} onChangeText={setFirstName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                 </YStack>
                 <YStack flex={1}>
                   <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Apellidos</Text>
-                  <Input h={40} value={lastName} onChangeText={setLastName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  <Input height={40} value={lastName} onChangeText={setLastName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                 </YStack>
               </XStack>
 
               <XStack gap="$3">
                 <YStack flex={1}>
                   <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>DNI (Opcional)</Text>
-                  <Input h={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  <Input height={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                 </YStack>
                 <YStack flex={1}>
                   <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Día de clase</Text>
-                  <Input h={40} value={diaClase} onChangeText={setDiaClase} placeholder="Ej. Martes" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  <Input height={40} value={diaClase} onChangeText={setDiaClase} placeholder="Ej. Martes" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                 </YStack>
               </XStack>
 
               <YStack>
                 <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Facultad</Text>
-                <Input h={40} value={facultad} onChangeText={setFacultad} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                <Input height={40} value={facultad} onChangeText={setFacultad} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
               </YStack>
 
               <XStack gap="$3">
                 <YStack flex={1}>
                   <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Escuela</Text>
-                  <Input h={40} value={escuela} onChangeText={setEscuela} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  <Input height={40} value={escuela} onChangeText={setEscuela} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                 </YStack>
                 <YStack flex={1}>
                   <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Curso</Text>
-                  <Input h={40} value={curso} onChangeText={setCurso} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  <Input height={40} value={curso} onChangeText={setCurso} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                 </YStack>
               </XStack>
 
