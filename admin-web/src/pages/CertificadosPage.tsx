@@ -122,6 +122,7 @@ export default function CertificadosPage() {
             </table>
           </div>
         </div>
+      )}
     </div>
   );
 }
