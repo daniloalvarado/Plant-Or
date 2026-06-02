@@ -313,8 +313,6 @@ export default function CertificadosPage() {
                   </div>
                 </div>
               </div>
-
-              </div>
             </div>
 
             {/* Footer */}
