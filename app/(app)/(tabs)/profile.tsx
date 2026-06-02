@@ -712,7 +712,7 @@ export default function Profile() {
               <Button bg="rgba(255,68,68,0.1)" color="#ff4444" onPress={removeProfilePhoto}>
                 Eliminar foto
               </Button>
-              <Button bg="transparent" color="white" borderWidth={1} borderColor="rgba(255,255,255,0.2)" onPress={() => setPhotoOptionsVisible(false)}>
+              <Button bg="transparent" color="white" borderWidth={1} borderColor="rgba(255,255,255,0.2)" pressStyle={{ bg: 'rgba(255,255,255,0.1)' }} onPress={() => setPhotoOptionsVisible(false)}>
                 Cancelar
               </Button>
             </YStack>

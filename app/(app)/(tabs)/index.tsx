@@ -78,6 +78,7 @@ export default function HomeScreen() {
       fetchData();
       if (params.openNotif === 'true') {
         setNotifVisible(true);
+        router.setParams({ openNotif: '' });
       }
     }, [user?.id, params.openNotif])
   );
