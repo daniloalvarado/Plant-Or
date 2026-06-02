@@ -191,7 +191,6 @@ export default function Profile() {
         const base64Image = `data:image/jpeg;base64,${result.assets[0].base64}`;
         await user?.setProfileImage({ file: base64Image });
         await user?.reload();
-        Alert.alert("Éxito", "Foto de perfil actualizada correctamente.");
       } catch (err) {
         console.error("Error al subir foto", err);
         Alert.alert("Error", "No se pudo actualizar la foto de perfil.");
@@ -207,7 +206,6 @@ export default function Profile() {
       setIsSaving(true);
       await user?.setProfileImage({ file: null });
       await user?.reload();
-      setShowSuccess(true); // Optional: Reusing success modal or just keep it silent since it's obvious
     } catch (err) {
       console.error("Error al eliminar foto", err);
       Alert.alert("Error", "No se pudo eliminar la foto de perfil.");
@@ -685,7 +683,7 @@ export default function Profile() {
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
           <Card padding="$6" alignItems="center" gap="$4" backgroundColor="#12221A" borderWidth={1} borderColor="#1FC451" borderRadius="$6" width="100%" maxWidth={340}>
             <MaterialCommunityIcons name="check-circle" size={80} color="#1FC451" />
-            <H2 mt="$2" color="#1FC451" textAlign="center">¡Perfil Actualizado!</H2>
+            <H2 mt="$2" color="#1FC451" style={{ textAlign: 'center' }}>¡Perfil Actualizado!</H2>
             <Paragraph style={{ textAlign: 'center' }} color="rgba(255,255,255,0.7)">
               Tus datos académicos se han guardado. A partir de ahora, se adjuntarán automáticamente a tus nuevos registros.
             </Paragraph>
