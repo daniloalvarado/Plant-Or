@@ -5,13 +5,9 @@ import { EstadoBadge } from '@/components/EstadoBadge'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { sendSemestralReportEmail } from '@/lib/email-service'
-import { useState } from 'react'
-import { toast } from 'sonner'
 
 export default function DashboardPage() {
   const { plantas, loading } = usePlantas()
-  const [isSendingReports, setIsSendingReports] = useState(false)
 
   if (loading) return <LoadingSpinner />
 
@@ -49,42 +45,6 @@ export default function DashboardPage() {
     if (p.habito) habitosMap.set(p.habito, (habitosMap.get(p.habito) || 0) + 1)
   })
 
-  const handleSendSemestralReports = async () => {
-    if (!confirm("¿Estás seguro de que quieres despachar el reporte semestral a todos los estudiantes registrados? Esto podría enviar muchos correos electrónicos.")) return;
-    
-    setIsSendingReports(true);
-    try {
-      // 1. Calculate global stats
-      const globalStats = {
-        validados: stats.validados,
-        observados: stats.observados,
-        en_revision: stats.enRevision,
-        rechazados: stats.rechazados,
-        total: stats.total
-      };
-
-      // 2. Define admin/validator emails. In a real scenario, this could be fetched from Clerk
-      // or defined in an environment variable. Using placeholders for the demo.
-      const adminEmails = [
-        "admin@plant-or.com",
-        "profesor@plant-or.com"
-      ];
-      
-      const ok = await sendSemestralReportEmail(adminEmails, globalStats);
-
-      if (ok) {
-        toast.success(`Reporte semestral global enviado a ${adminEmails.length} administrador(es).`);
-      } else {
-        toast.error("Ocurrió un error al despachar el reporte.");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Ocurrió un error al despachar los reportes.");
-    } finally {
-      setIsSendingReports(false);
-    }
-  };
-
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -93,13 +53,6 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
           <p className="text-muted-foreground mt-1">Resumen general del catálogo PLANT-OR</p>
         </div>
-        <button
-          onClick={handleSendSemestralReports}
-          disabled={isSendingReports}
-          className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] hover:bg-[#15963c] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
-        >
-          {isSendingReports ? <LoadingSpinner text="Enviando..." /> : <><Send className="w-4 h-4" /> Despachar Reporte Semestral</>}
-        </button>
       </div>
 
       {/* Stats Grid */}

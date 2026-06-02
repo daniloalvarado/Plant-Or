@@ -37,6 +37,7 @@ export default function Profile() {
   const theme = Colors[colorScheme];
   const router = useRouter();
   
+  const [stats, setStats] = useState({ total: 0, validados: 0, observados: 0, rechazados: 0 });
   const [validatedCount, setValidatedCount] = useState(0);
 
   const [dni, setDni] = useState((user?.unsafeMetadata?.dni as string) || '');
@@ -231,9 +232,16 @@ export default function Profile() {
   useFocusEffect(
     useCallback(() => {
       if (user?.id) {
-        // Solo contamos los registros en estado "Validado"
-        client.fetch(`count(*[_type == "planta" && autor == $userId && estado_revision == "Validado"])`, { userId: user.id })
-          .then(count => setValidatedCount(count))
+        client.fetch(`{
+          "total": count(*[_type == "planta" && autor == $userId]),
+          "validados": count(*[_type == "planta" && autor == $userId && estado_revision == "Validado"]),
+          "observados": count(*[_type == "planta" && autor == $userId && estado_revision == "Observado"]),
+          "rechazados": count(*[_type == "planta" && autor == $userId && estado_revision == "Rechazado"])
+        }`, { userId: user.id })
+          .then(data => {
+            setStats(data);
+            setValidatedCount(data.validados);
+          })
           .catch(err => console.error(err));
       }
     }, [user?.id])
@@ -426,6 +434,58 @@ export default function Profile() {
           </Card>
 
 
+
+          {/* Reporte Semestral Card */}
+          <Card
+            size="$4"
+            bordered
+            bg="rgba(255,255,255,0.05)"
+            borderColor="rgba(255,255,255,0.1)"
+            padding="$5"
+          >
+            <YStack gap="$4">
+              <XStack style={{ alignItems: 'center' }} gap="$2">
+                <MaterialCommunityIcons name="chart-bar" size={24} color="#1FC451" />
+                <H2 fontSize={18} fontWeight="700" color="#ffffff">
+                  Resumen de Mis Registros
+                </H2>
+              </XStack>
+              <Text fontSize={14} color="rgba(255,255,255,0.7)">
+                Estadísticas generales de todos los registros enviados a la plataforma.
+              </Text>
+              
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 8, marginTop: 4 }}>
+                <View style={{ width: '48%', backgroundColor: 'rgba(255,255,255,0.03)', padding: 12, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' }}>
+                  <Text fontSize={12} color="rgba(255,255,255,0.6)" mb="$1">Enviados Totales</Text>
+                  <Text fontSize={24} fontWeight="bold" color="#ffffff">{stats.total}</Text>
+                </View>
+                <View style={{ width: '48%', backgroundColor: 'rgba(31, 196, 81, 0.1)', padding: 12, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(31, 196, 81, 0.2)' }}>
+                  <Text fontSize={12} color="#1FC451" mb="$1">Validados</Text>
+                  <Text fontSize={24} fontWeight="bold" color="#1FC451">{stats.validados}</Text>
+                </View>
+                <View style={{ width: '48%', backgroundColor: 'rgba(250, 150, 0, 0.1)', padding: 12, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(250, 150, 0, 0.2)' }}>
+                  <Text fontSize={12} color="#fa9600" mb="$1">Observados</Text>
+                  <Text fontSize={24} fontWeight="bold" color="#fa9600">{stats.observados}</Text>
+                </View>
+                <View style={{ width: '48%', backgroundColor: 'rgba(239, 68, 68, 0.1)', padding: 12, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(239, 68, 68, 0.2)' }}>
+                  <Text fontSize={12} color="#ef4444" mb="$1">Rechazados</Text>
+                  <Text fontSize={24} fontWeight="bold" color="#ef4444">{stats.rechazados}</Text>
+                </View>
+              </View>
+
+              <Button
+                mt="$2"
+                bg="rgba(255,255,255,0.1)"
+                color="white"
+                onPress={() => {
+                  router.push("/");
+                }}
+                icon={<MaterialCommunityIcons name="bell-ring" size={20} color="white" />}
+              >
+                Ver mis aportes (en Notificaciones)
+              </Button>
+            </YStack>
+          </Card>
 
           {/* Acerca de Section */}
           <Pressable 
