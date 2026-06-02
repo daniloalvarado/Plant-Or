@@ -200,6 +200,36 @@ export default function Profile() {
     }
   };
 
+  const removeProfilePhoto = async () => {
+    try {
+      setIsSaving(true);
+      await user?.setProfileImage({ file: null });
+      await user?.reload();
+      Alert.alert("Éxito", "Foto de perfil eliminada.");
+    } catch (err) {
+      console.error("Error al eliminar foto", err);
+      Alert.alert("Error", "No se pudo eliminar la foto de perfil.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handlePhotoPress = () => {
+    if (user?.hasImage) {
+      Alert.alert(
+        "Foto de perfil",
+        "¿Qué deseas hacer con tu foto de perfil?",
+        [
+          { text: "Cambiar foto", onPress: pickProfilePhoto },
+          { text: "Eliminar foto", onPress: removeProfilePhoto, style: "destructive" },
+          { text: "Cancelar", style: "cancel" }
+        ]
+      );
+    } else {
+      pickProfilePhoto();
+    }
+  };
+
   const saveProfile = async () => {
     setErrorMsg('');
     if (!user) return;
@@ -302,7 +332,7 @@ export default function Profile() {
             <YStack gap="$4" style={{ alignItems: "center" }}>
               {/* Profile Picture */}
               <Pressable 
-                onPress={pickProfilePhoto}
+                onPress={handlePhotoPress}
                 style={({ pressed }) => [
                   {
                     borderRadius: 60,
@@ -340,6 +370,7 @@ export default function Profile() {
                     fontSize={28}
                     fontWeight="700"
                     color="#ffffff"
+                    lineHeight={30}
                     style={{ textAlign: "center" }}
                   >
                     {displayName}
