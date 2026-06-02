@@ -107,8 +107,6 @@ export default function CertificadosPage() {
                       <td className="p-4 text-right">
                           <Link 
                           to={`/certificados/editar/${cert._id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           className="p-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg transition-colors inline-flex cursor-pointer"
                           title="Editar Certificado"
                         >
