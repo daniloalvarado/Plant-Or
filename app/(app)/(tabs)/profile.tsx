@@ -57,6 +57,7 @@ export default function Profile() {
   );
   
   const [isGeneratingCert, setIsGeneratingCert] = useState(false);
+  const [photoOptionsVisible, setPhotoOptionsVisible] = useState(false);
 
   const generateCertificateHTML = (name: string, date: string, code: string) => `
     <!DOCTYPE html>
@@ -201,11 +202,12 @@ export default function Profile() {
   };
 
   const removeProfilePhoto = async () => {
+    setPhotoOptionsVisible(false);
     try {
       setIsSaving(true);
       await user?.setProfileImage({ file: null });
       await user?.reload();
-      Alert.alert("Éxito", "Foto de perfil eliminada.");
+      setShowSuccess(true); // Optional: Reusing success modal or just keep it silent since it's obvious
     } catch (err) {
       console.error("Error al eliminar foto", err);
       Alert.alert("Error", "No se pudo eliminar la foto de perfil.");
@@ -216,15 +218,7 @@ export default function Profile() {
 
   const handlePhotoPress = () => {
     if (user?.hasImage) {
-      Alert.alert(
-        "Foto de perfil",
-        "¿Qué deseas hacer con tu foto de perfil?",
-        [
-          { text: "Cambiar foto", onPress: pickProfilePhoto },
-          { text: "Eliminar foto", onPress: removeProfilePhoto, style: "destructive" },
-          { text: "Cancelar", style: "cancel" }
-        ]
-      );
+      setPhotoOptionsVisible(true);
     } else {
       pickProfilePhoto();
     }
@@ -628,7 +622,7 @@ export default function Profile() {
                 style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.1)', marginTop: 8 }}
               >
                 <YStack>
-                  <Text color="#ffffff" fontSize={14} fontWeight="bold">¿Eres estudiante o docente UNAP?</Text>
+                  <Text color="#ffffff" fontSize={14} fontWeight="bold">¿Eres estudiante?</Text>
                   <Text color="rgba(255,255,255,0.5)" fontSize={12}>Llena estos campos para tu perfil académico</Text>
                 </YStack>
                 <MaterialCommunityIcons name={showStudentFields ? "chevron-up" : "chevron-down"} size={24} color="rgba(255,255,255,0.5)" />
@@ -639,27 +633,27 @@ export default function Profile() {
                   <XStack gap="$3">
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>DNI (Obligatorio)</Text>
-                      <Input height={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                      <Input height={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" placeholder="Ej. 70000000" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                     </YStack>
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Día de clase (Opcional)</Text>
-                      <Input height={40} value={diaClase} onChangeText={setDiaClase} placeholder="Ej. Martes" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                      <Input height={40} value={diaClase} onChangeText={setDiaClase} placeholder="Ej. Martes" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                     </YStack>
                   </XStack>
 
                   <YStack>
                     <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Facultad (Obligatorio)</Text>
-                    <Input height={40} value={facultad} onChangeText={setFacultad} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                    <Input height={40} value={facultad} onChangeText={setFacultad} placeholder="Ej. FCF" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                   </YStack>
 
                   <XStack gap="$3">
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Escuela (Obligatorio)</Text>
-                      <Input height={40} value={escuela} onChangeText={setEscuela} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                      <Input height={40} value={escuela} onChangeText={setEscuela} placeholder="Ej. Ing. Forestal" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                     </YStack>
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Curso (Opcional)</Text>
-                      <Input height={40} value={curso} onChangeText={setCurso} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                      <Input height={40} value={curso} onChangeText={setCurso} placeholder="Ej. Botánica" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                     </YStack>
                   </XStack>
                 </YStack>
@@ -705,6 +699,26 @@ export default function Profile() {
               Entendido
             </Button>
           </Card>
+        </View>
+      </Modal>
+
+      {/* Modal de Opciones de Foto de Perfil */}
+      <Modal visible={photoOptionsVisible} transparent animationType="fade">
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'flex-end' }}>
+          <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 24, borderTopRightRadius: 24 }}>
+            <H2 color="white" fontSize={18} mb="$4">Foto de Perfil</H2>
+            <YStack gap="$3" pb={insets.bottom > 0 ? insets.bottom : 20}>
+              <Button bg="rgba(255,255,255,0.1)" color="white" onPress={() => { setPhotoOptionsVisible(false); pickProfilePhoto(); }}>
+                Cambiar foto
+              </Button>
+              <Button bg="rgba(255,68,68,0.1)" color="#ff4444" onPress={removeProfilePhoto}>
+                Eliminar foto
+              </Button>
+              <Button bg="transparent" color="rgba(255,255,255,0.5)" onPress={() => setPhotoOptionsVisible(false)}>
+                Cancelar
+              </Button>
+            </YStack>
+          </View>
         </View>
       </Modal>
 

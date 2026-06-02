@@ -265,7 +265,35 @@ export default function RegistroScreen() {
     }
   };
 
-  const nextStep = () => setStep(step + 1);
+  const nextStep = async () => {
+    if (step === 1 && user && rolRegistro === 'estudiante') {
+      try {
+        const hasChanges = 
+          dni !== (user.unsafeMetadata?.dni || '') ||
+          facultad !== (user.unsafeMetadata?.facultad || '') ||
+          escuela !== (user.unsafeMetadata?.escuela || '') ||
+          curso !== (user.unsafeMetadata?.curso || '') ||
+          diaClase !== (user.unsafeMetadata?.dia_clase || '');
+          
+        if (hasChanges) {
+          await user.update({
+            unsafeMetadata: {
+              ...user.unsafeMetadata,
+              dni,
+              facultad,
+              escuela,
+              curso,
+              dia_clase: diaClase
+            }
+          });
+        }
+      } catch (e) {
+        console.error("Auto-save profile error:", e);
+      }
+    }
+    setStep(step + 1);
+  };
+  
   const prevStep = () => setStep(step - 1);
 
   // Validaciones estrictas
@@ -585,16 +613,6 @@ export default function RegistroScreen() {
                         ? "Deberás llenar el formulario botánico completo." 
                         : "Registro rápido: Solo nombre, ubicación y fotografías."}
                     </Paragraph>
-                    {rolRegistro === 'estudiante' && (
-                      <Card mt="$2" padding="$3" bg="rgba(255, 165, 0, 0.1)" borderWidth={1} borderColor="rgba(255, 165, 0, 0.3)">
-                        <XStack gap="$2" style={{ alignItems: "center" }}>
-                          <MaterialCommunityIcons name="lightbulb-on-outline" size={16} color="#FFA500" />
-                          <Paragraph color="#FFA500" size="$2" flex={1}>
-                            <Text fontWeight="bold" color="#FFA500">Sugerencia:</Text> Llena estos datos en tu <Text color="white" fontWeight="bold" textDecorationLine="underline" onPress={() => router.push('/profile')}>Perfil Académico</Text> para que se autocompleten siempre.
-                          </Paragraph>
-                        </XStack>
-                      </Card>
-                    )}
                   </YStack>
 
                   <YStack gap="$2">
