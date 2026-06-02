@@ -9,7 +9,7 @@ import { client, urlFor } from "@/lib/sanity";
 import { Image, Pressable, StyleSheet, Modal, Alert } from "react-native";
 import * as Sharing from "expo-sharing";
 import * as Print from "expo-print";
-import * as FileSystem from "expo-file-system";
+import * as FileSystem from "expo-file-system/legacy";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -69,8 +69,15 @@ export default function Profile() {
     period: string,
     config: any
   ) => {
-    const textoBase = config?.texto_certificado || 'Por haber contribuido significativamente a la catalogación y conservación de nuestra flora urbana al registrar y validar exitosamente {count} especies botánicas.';
-    const textoFinal = textoBase.replace('{count}', `<strong>${count}</strong>`);
+    const textoBase = config?.texto_certificado || 'Por haber participado en el proyecto PLANT-OR en calidad de {tipo}, durante el periodo académico {periodo}. Aportando significativamente a la catalogación botánica con un total de {count} especies validadas.';
+    const textoFinal = textoBase
+      .replace('{count}', `<strong>${count}</strong>`)
+      .replace('{tipo}', `<strong>${type}</strong>`)
+      .replace('{periodo}', `<strong>${period}</strong>`);
+      
+    const titulo = config?.titulo_certificado || 'Certificado de Reconocimiento';
+    const subtitulo = config?.subtitulo_certificado || 'Otorgado a:';
+    
     const firma1Url = config?.responsable_1_firma ? urlFor(config.responsable_1_firma) : '';
     const firma2Url = config?.responsable_2_firma ? urlFor(config.responsable_2_firma) : '';
     
@@ -102,18 +109,14 @@ export default function Profile() {
       <div class="container">
         <div class="bg-icon">🌿</div>
         <div class="logo">🌿 PLANT-OR</div>
-        <div class="title">Certificado de Reconocimiento</div>
-        <div class="subtitle">Otorgado a:</div>
+        <div class="title">${titulo}</div>
+        <div class="subtitle">${subtitulo}</div>
         
         <div class="name">${name}</div>
         
         <div class="paragraph">
-          Por haber participado en el proyecto PLANT-OR en calidad de <strong>${type}</strong>, 
-          durante el periodo académico <strong>${period}</strong>.
-        </div>
-        <p class="paragraph">
           ${textoFinal}
-        </p>
+        </div>
         
         <div class="details">
           <div class="detail-item"><strong>Registros Validados:</strong> ${count}</div>

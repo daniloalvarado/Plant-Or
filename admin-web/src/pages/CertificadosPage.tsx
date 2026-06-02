@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { client } from '../lib/sanity';
+import { client, urlFor } from '../lib/sanity';
 import { Award, Search, Edit2, X, Save, Loader2, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -182,51 +182,94 @@ export default function CertificadosPage() {
                 <div className="absolute inset-5 border border-[#1FC451] opacity-20 pointer-events-none" />
 
                 <div className="text-center space-y-6 relative z-10 h-full flex flex-col justify-center">
-                  <div className="text-[#1FC451] font-bold text-lg tracking-[0.2em] uppercase">Certificado de Reconocimiento</div>
+                  <div className="text-[#1FC451] font-bold text-lg tracking-[0.2em] uppercase">
+                    {config?.titulo_certificado || 'Certificado de Reconocimiento'}
+                  </div>
                   
-                  <div className="text-sm text-gray-500">Otorgado a:</div>
+                  <div className="text-sm text-gray-500">
+                    {config?.subtitulo_certificado || 'Otorgado a:'}
+                  </div>
                   
-                  {/* Editable Name */}
+                  <div className="text-3xl md:text-5xl font-bold text-center text-[#111] font-serif border-b-2 border-[#1FC451] inline-block px-8 pb-2 mx-auto">
+                    {editingCert.usuario_nombre}
+                  </div>
+
+                  <div 
+                    className="text-gray-600 leading-relaxed text-sm md:text-base max-w-2xl mx-auto"
+                    dangerouslySetInnerHTML={{ 
+                      __html: (config?.texto_certificado || 'Por haber participado en el proyecto PLANT-OR en calidad de {tipo}, durante el periodo académico {periodo}. Aportando significativamente a la catalogación botánica con un total de {count} especies validadas.')
+                        .replace('{tipo}', `<strong>${editingCert.tipo_participacion || 'Estudiante'}</strong>`)
+                        .replace('{periodo}', `<strong>${editingCert.periodo || ''}</strong>`)
+                        .replace('{count}', `<strong>${editingCert.registros_validados || 0}</strong>`)
+                    }}
+                  />
+
+                  {/* Firmas */}
+                  <div className="flex justify-center gap-12 mt-12 pt-8">
+                    {config?.responsable_1_firma && (
+                      <div className="text-center">
+                        <img src={urlFor(config.responsable_1_firma)} alt="Firma 1" className="h-16 object-contain mx-auto mb-2" />
+                        <div className="border-t border-gray-400 w-48 pt-2">
+                          <p className="font-bold text-xs">{config.responsable_1_nombre}</p>
+                          <p className="text-xs text-gray-500">{config.responsable_1_cargo}</p>
+                        </div>
+                      </div>
+                    )}
+                    {config?.responsable_2_firma && (
+                      <div className="text-center">
+                        <img src={urlFor(config.responsable_2_firma)} alt="Firma 2" className="h-16 object-contain mx-auto mb-2" />
+                        <div className="border-t border-gray-400 w-48 pt-2">
+                          <p className="font-bold text-xs">{config.responsable_2_nombre}</p>
+                          <p className="text-xs text-gray-500">{config.responsable_2_cargo}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Formulario de Edición */}
+              <div className="mt-8 bg-card border border-border p-6 rounded-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="space-y-1.5 md:col-span-4">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Nombre Completo</label>
                   <input
                     type="text"
                     value={editingCert.usuario_nombre}
                     onChange={e => setEditingCert({...editingCert, usuario_nombre: e.target.value})}
-                    className="text-3xl md:text-5xl font-bold text-center w-full bg-transparent border-b-2 border-dashed border-gray-300 hover:border-[#1FC451] focus:border-[#1FC451] focus:outline-none text-[#111] py-2 transition-colors font-serif"
-                    placeholder="Nombre Completo"
+                    className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
                   />
-
-                  {/* Editable Text Block */}
-                  <div className="text-gray-600 leading-relaxed text-sm md:text-base max-w-2xl mx-auto flex flex-wrap justify-center items-center gap-x-1 gap-y-2">
-                    <span>Por haber participado en el proyecto PLANT-OR en calidad de</span>
-                    <select
-                      value={editingCert.tipo_participacion || 'Estudiante'}
-                      onChange={e => setEditingCert({...editingCert, tipo_participacion: e.target.value})}
-                      className="bg-gray-100 border border-gray-300 rounded px-2 py-1 text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-[#1FC451]"
-                    >
-                      <option value="Estudiante">Estudiante</option>
-                      <option value="Ciudadano">Ciudadano</option>
-                    </select>
-                    <span>, durante el periodo académico</span>
-                    <input
-                      type="text"
-                      value={editingCert.periodo || ''}
-                      onChange={e => setEditingCert({...editingCert, periodo: e.target.value})}
-                      className="bg-gray-100 border border-gray-300 rounded px-2 py-1 text-sm font-semibold w-24 text-center focus:outline-none focus:ring-1 focus:ring-[#1FC451]"
-                      placeholder="2026-I"
-                    />
-                    <span>. Aportando significativamente a la catalogación botánica con un total de</span>
-                    <input
-                      type="number"
-                      value={editingCert.registros_validados || 0}
-                      onChange={e => setEditingCert({...editingCert, registros_validados: parseInt(e.target.value) || 0})}
-                      className="bg-[#1FC451]/10 border border-[#1FC451]/30 rounded px-2 py-1 text-base font-bold text-[#1FC451] w-20 text-center focus:outline-none focus:ring-1 focus:ring-[#1FC451]"
-                    />
-                    <span>especies validadas.</span>
-                  </div>
-
-                  <div className="text-xs text-gray-400 mt-8 italic">
-                    (Nota: Las firmas y el diseño final se renderizarán en el PDF que descargue el usuario)
-                  </div>
+                </div>
+                
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Tipo</label>
+                  <select
+                    value={editingCert.tipo_participacion || 'Estudiante'}
+                    onChange={e => setEditingCert({...editingCert, tipo_participacion: e.target.value})}
+                    className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+                  >
+                    <option value="Estudiante">Estudiante</option>
+                    <option value="Ciudadano">Ciudadano</option>
+                  </select>
+                </div>
+                
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Periodo</label>
+                  <input
+                    type="text"
+                    value={editingCert.periodo || ''}
+                    onChange={e => setEditingCert({...editingCert, periodo: e.target.value})}
+                    className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+                  />
+                </div>
+                
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-muted-foreground uppercase">Plantas Validadas</label>
+                  <input
+                    type="number"
+                    value={editingCert.registros_validados || 0}
+                    onChange={e => setEditingCert({...editingCert, registros_validados: parseInt(e.target.value) || 0})}
+                    className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
+                  />
                 </div>
               </div>
             </div>
@@ -245,7 +288,7 @@ export default function CertificadosPage() {
                 className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold bg-[#1FC451] text-white hover:bg-[#19a343] transition-colors disabled:opacity-50"
               >
                 {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-                Guardar Correcciones
+                Guardar
               </button>
             </div>
           </div>

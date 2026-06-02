@@ -49,11 +49,23 @@ export const configuracion = {
       description: 'El enlace que aparecerá en el certificado para validar su autenticidad (Ej. plant-or.com/validar)'
     },
     {
+      name: 'titulo_certificado',
+      title: 'Título del Certificado',
+      type: 'string',
+      initialValue: 'Certificado de Reconocimiento'
+    },
+    {
+      name: 'subtitulo_certificado',
+      title: 'Subtítulo',
+      type: 'string',
+      initialValue: 'Otorgado a:'
+    },
+    {
       name: 'texto_certificado',
       title: 'Texto Central del Certificado',
       type: 'text',
-      description: 'Plantilla del texto central. Usa la palabra especial {count} para que se reemplace por el número de plantas validadas.',
-      initialValue: 'Por haber contribuido significativamente a la catalogación y conservación de nuestra flora urbana al registrar y validar exitosamente {count} especies botánicas.'
+      description: 'Plantilla del texto central. Usa {tipo}, {periodo} y {count} para inyectar datos automáticamente.',
+      initialValue: 'Por haber participado en el proyecto PLANT-OR en calidad de {tipo}, durante el periodo académico {periodo}. Aportando significativamente a la catalogación botánica con un total de {count} especies validadas.'
     }
   ]
 }

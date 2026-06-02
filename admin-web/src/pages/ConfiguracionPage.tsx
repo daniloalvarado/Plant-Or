@@ -14,6 +14,8 @@ export default function ConfiguracionPage() {
     responsable_2_nombre: '',
     responsable_2_cargo: '',
     url_validacion: '',
+    titulo_certificado: '',
+    subtitulo_certificado: '',
     texto_certificado: '',
   })
   
@@ -39,7 +41,9 @@ export default function ConfiguracionPage() {
           responsable_2_nombre: result.responsable_2_nombre || '',
           responsable_2_cargo: result.responsable_2_cargo || '',
           url_validacion: result.url_validacion || '',
-          texto_certificado: result.texto_certificado || 'Por haber contribuido significativamente a la catalogación y conservación de nuestra flora urbana al registrar y validar exitosamente {count} especies botánicas.',
+          titulo_certificado: result.titulo_certificado || 'Certificado de Reconocimiento',
+          subtitulo_certificado: result.subtitulo_certificado || 'Otorgado a:',
+          texto_certificado: result.texto_certificado || 'Por haber participado en el proyecto PLANT-OR en calidad de {tipo}, durante el periodo académico {periodo}. Aportando significativamente a la catalogación botánica con un total de {count} especies validadas.',
         })
         if (result.responsable_1_firma) setFirma1Url(urlFor(result.responsable_1_firma))
         if (result.responsable_2_firma) setFirma2Url(urlFor(result.responsable_2_firma))
@@ -149,8 +153,32 @@ export default function ConfiguracionPage() {
 
       <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
         <h2 className="font-bold text-lg text-primary mb-4 flex items-center gap-2">
-          Portal de Validación
+          Portal de Validación y Textos
         </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Título del Certificado</label>
+            <input
+              type="text"
+              value={form.titulo_certificado}
+              onChange={(e) => setForm({ ...form, titulo_certificado: e.target.value })}
+              placeholder="Ej. Certificado de Reconocimiento"
+              className="w-full bg-input border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Subtítulo</label>
+            <input
+              type="text"
+              value={form.subtitulo_certificado}
+              onChange={(e) => setForm({ ...form, subtitulo_certificado: e.target.value })}
+              placeholder="Ej. Otorgado a:"
+              className="w-full bg-input border border-border rounded-lg px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+            />
+          </div>
+        </div>
+
         <div className="space-y-2">
           <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">URL del Portal</label>
           <input
@@ -173,7 +201,7 @@ export default function ConfiguracionPage() {
             className="w-full bg-input border border-border rounded-lg px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all max-w-3xl resize-y"
           />
           <p className="text-xs text-muted-foreground mt-1">
-            Usa <strong className="text-primary">{`{count}`}</strong> donde quieras que aparezca el número de registros validados.
+            Usa <strong className="text-primary">{`{tipo}`}</strong>, <strong className="text-primary">{`{periodo}`}</strong> y <strong className="text-primary">{`{count}`}</strong> para inyectar los datos del alumno automáticamente.
           </p>
         </div>
       </div>
