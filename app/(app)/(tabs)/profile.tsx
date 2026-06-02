@@ -220,7 +220,7 @@ export default function Profile() {
       });
       
       // 2.5 Rename the file to Certificado_PlantOR.pdf
-      const renamedUri = `${FileSystem.cacheDirectory}Certificado_PlantOR.pdf`;
+      const renamedUri = `${(FileSystem as any).cacheDirectory}Certificado_PlantOR.pdf`;
       await FileSystem.moveAsync({
         from: uri,
         to: renamedUri
