@@ -157,7 +157,7 @@ export default function CertificadosPage() {
 
       {/* Editor Visual Modal */}
       {editingCert && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
           <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" onClick={() => setEditingCert(null)} />
           <div className="bg-card border border-border shadow-2xl rounded-2xl w-full max-w-4xl relative flex flex-col max-h-[90vh]">
             {/* Header */}
