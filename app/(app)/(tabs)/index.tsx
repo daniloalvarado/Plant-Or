@@ -230,7 +230,7 @@ export default function HomeScreen() {
             <View style={{ width: '100%', padding: 40, alignItems: 'center', justifyContent: 'center' }}>
               <MaterialCommunityIcons name="leaf-off" size={48} color={theme.icon} style={{ opacity: 0.5, marginBottom: 16 }} />
               <Text style={{ color: theme.text, opacity: 0.7, textAlign: 'center', fontSize: 16 }}>
-                No se encontraron especies con esa combinación de caracteres morfológicos.
+                No se encontraron especies con los filtros o parámetros de búsqueda actuales.
               </Text>
             </View>
           )}

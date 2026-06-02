@@ -40,6 +40,8 @@ export default function Profile() {
   const [stats, setStats] = useState({ total: 0, validados: 0, observados: 0, rechazados: 0 });
   const [validatedCount, setValidatedCount] = useState(0);
 
+  const [firstName, setFirstName] = useState(user?.firstName || '');
+  const [lastName, setLastName] = useState(user?.lastName || '');
   const [dni, setDni] = useState((user?.unsafeMetadata?.dni as string) || '');
   const [curso, setCurso] = useState((user?.unsafeMetadata?.curso as string) || '');
   const [facultad, setFacultad] = useState((user?.unsafeMetadata?.facultad as string) || '');
@@ -199,14 +201,16 @@ export default function Profile() {
     setErrorMsg('');
     if (!user) return;
     
-    if (!dni || dni.length !== 8) {
-      setErrorMsg("El DNI debe tener exactamente 8 dígitos numéricos.");
+    if (dni && dni.length !== 8) {
+      setErrorMsg("Si ingresas un DNI, debe tener exactamente 8 dígitos numéricos.");
       return;
     }
 
     setIsSaving(true);
     try {
       await user.update({
+        firstName,
+        lastName,
         unsafeMetadata: {
           ...user.unsafeMetadata,
           dni,
@@ -314,22 +318,25 @@ export default function Profile() {
               {/* Name & Email */}
               <Pressable onPress={() => setIsEditing(true)}>
                 <YStack style={{ alignItems: "center" }} gap="$2">
-                  <H1
-                    fontSize={28}
-                    fontWeight="700"
-                    color="#ffffff"
-                    style={{ textAlign: "center" }}
-                  >
-                    {displayName}
-                  </H1>
+                  <XStack gap="$2" style={{ alignItems: "center" }}>
+                    <H1
+                      fontSize={28}
+                      fontWeight="700"
+                      color="#ffffff"
+                      style={{ textAlign: "center" }}
+                    >
+                      {displayName}
+                    </H1>
+                    <MaterialCommunityIcons name="pencil" size={20} color="rgba(255,255,255,0.5)" />
+                  </XStack>
                   {user?.primaryEmailAddress?.emailAddress && (
                     <Text fontSize={14} color="rgba(255,255,255,0.7)">
                       {user.primaryEmailAddress.emailAddress}
                     </Text>
                   )}
                   <XStack gap="$1" style={{ alignItems: "center", marginTop: 4 }}>
-                    <MaterialCommunityIcons name="pencil-outline" size={14} color="#1FC451" />
-                    <Text fontSize={12} color="#1FC451" fontWeight="bold">Toca para editar perfil académico</Text>
+                    <MaterialCommunityIcons name="cog" size={14} color="#1FC451" />
+                    <Text fontSize={12} color="#1FC451" fontWeight="bold">Toca para editar tus datos y perfil académico</Text>
                   </XStack>
                 </YStack>
               </Pressable>
@@ -553,78 +560,58 @@ export default function Profile() {
           <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 24, borderTopRightRadius: 24 }}>
             <XStack style={{ justifyContent: "space-between", alignItems: "center" }} mb="$4">
               <H2 color="white" fontSize={20}>Editar Datos</H2>
-              <Pressable onPress={() => setIsEditing(false)}>
+              <Pressable onPress={() => { setIsEditing(false); setErrorMsg(''); }}>
                 <MaterialCommunityIcons name="close" size={24} color="white" />
               </Pressable>
             </XStack>
 
-            <YStack gap="$4" pb={insets.bottom > 0 ? insets.bottom : 20}>
-              <YStack gap="$2">
-                <Label color="#ffffff">DNI (8 dígitos)</Label>
-                <Input
-                  value={dni}
-                  onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))}
-                  maxLength={8}
-                  keyboardType="numeric"
-                  bg="rgba(255,255,255,0.05)"
-                  borderWidth={0}
-                  color="white"
-                />
+            <YStack gap="$3" pb={insets.bottom > 0 ? insets.bottom : 20}>
+              <XStack gap="$3">
+                <YStack flex={1}>
+                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Nombres</Text>
+                  <Input h={40} value={firstName} onChangeText={setFirstName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                </YStack>
+                <YStack flex={1}>
+                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Apellidos</Text>
+                  <Input h={40} value={lastName} onChangeText={setLastName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                </YStack>
+              </XStack>
+
+              <XStack gap="$3">
+                <YStack flex={1}>
+                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>DNI (Opcional)</Text>
+                  <Input h={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                </YStack>
+                <YStack flex={1}>
+                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Día de clase</Text>
+                  <Input h={40} value={diaClase} onChangeText={setDiaClase} placeholder="Ej. Martes" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                </YStack>
+              </XStack>
+
+              <YStack>
+                <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Facultad</Text>
+                <Input h={40} value={facultad} onChangeText={setFacultad} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
               </YStack>
 
-              <YStack gap="$2">
-                <Label color="#ffffff">Facultad</Label>
-                <Input
-                  value={facultad}
-                  onChangeText={setFacultad}
-                  bg="rgba(255,255,255,0.05)"
-                  borderWidth={0}
-                  color="white"
-                />
-              </YStack>
-
-              <YStack gap="$2">
-                <Label color="#ffffff">Escuela</Label>
-                <Input
-                  value={escuela}
-                  onChangeText={setEscuela}
-                  bg="rgba(255,255,255,0.05)"
-                  borderWidth={0}
-                  color="white"
-                />
-              </YStack>
-
-              <YStack gap="$2">
-                <Label color="#ffffff">Curso</Label>
-                <Input
-                  value={curso}
-                  onChangeText={setCurso}
-                  bg="rgba(255,255,255,0.05)"
-                  borderWidth={0}
-                  color="white"
-                />
-              </YStack>
-
-              <YStack gap="$2">
-                <Label color="#ffffff">Día de clase</Label>
-                <Input
-                  value={diaClase}
-                  onChangeText={setDiaClase}
-                  placeholder="Ej. Martes"
-                  bg="rgba(255,255,255,0.05)"
-                  borderWidth={0}
-                  color="white"
-                />
-              </YStack>
+              <XStack gap="$3">
+                <YStack flex={1}>
+                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Escuela</Text>
+                  <Input h={40} value={escuela} onChangeText={setEscuela} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                </YStack>
+                <YStack flex={1}>
+                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Curso</Text>
+                  <Input h={40} value={curso} onChangeText={setCurso} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                </YStack>
+              </XStack>
 
               {errorMsg ? (
-                <View style={{ backgroundColor: 'rgba(255,68,68,0.2)', padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#ff4444' }}>
+                <View style={{ backgroundColor: 'rgba(255,68,68,0.2)', padding: 8, borderRadius: 8, borderWidth: 1, borderColor: '#ff4444' }}>
                   <Text style={{ color: '#ff4444', textAlign: 'center', fontSize: 13 }}>{errorMsg}</Text>
                 </View>
               ) : null}
 
               <Button 
-                mt="$4" 
+                mt="$2" 
                 bg="#1FC451" 
                 color="#08130D" 
                 onPress={saveProfile}
