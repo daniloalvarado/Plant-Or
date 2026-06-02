@@ -121,12 +121,34 @@ export default function MapaScreen() {
         showsUserLocation={true}
         clusterColor="#1FC451"
         clusterTextColor="#ffffff"
+        spiderLineColor="#1FC451"
+        renderCluster={(cluster) => {
+          const { id, geometry, onPress, properties } = cluster;
+          const points = properties.point_count;
+          return (
+            <Marker
+              key={`cluster-${id}`}
+              coordinate={{
+                longitude: geometry.coordinates[0],
+                latitude: geometry.coordinates[1],
+              }}
+              tracksViewChanges={false}
+              onPress={onPress}
+            >
+              <View style={[styles.markerPin, { width: 36, height: 36, borderRadius: 18, backgroundColor: '#1FC451', borderColor: '#ffffff' }]}>
+                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 14 }}>{points}</Text>
+              </View>
+            </Marker>
+          );
+        }}
       >
         {filteredPlantas.map((planta) => {
           const color = getMarkerColor(planta.estado_revision);
           return (
             <Marker
               key={planta._id}
+              identifier={planta._id}
+              tracksViewChanges={false}
               coordinate={{ latitude: planta.latitud, longitude: planta.longitud }}
               onPress={(e) => {
                 e.stopPropagation();
