@@ -6,7 +6,7 @@ import { client, urlFor } from "@/lib/sanity";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets, SafeAreaView } from "react-native-safe-area-context";
 import { Text, Card, XStack, YStack, Button, Input } from "tamagui";
 import { useRouter } from "expo-router";
 
@@ -103,7 +103,7 @@ export default function MapaScreen() {
   const validadas = plantas.filter(p => p.estado_revision === 'Validado').length;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background as any }]} edges={['top']}>
       {loading ? (
         <View style={[styles.loadingOverlay, { backgroundColor: theme.background }]}>
           <ActivityIndicator size="large" color="#1FC451" />
@@ -132,7 +132,6 @@ export default function MapaScreen() {
                 longitude: geometry.coordinates[0],
                 latitude: geometry.coordinates[1],
               }}
-              tracksViewChanges={false}
               onPress={onPress}
             >
               <View style={[styles.markerPin, { width: 36, height: 36, borderRadius: 18, backgroundColor: '#1FC451', borderColor: '#ffffff' }]}>
@@ -148,7 +147,6 @@ export default function MapaScreen() {
             <Marker
               key={planta._id}
               identifier={planta._id}
-              tracksViewChanges={false}
               coordinate={{ latitude: planta.latitud, longitude: planta.longitud }}
               onPress={(e) => {
                 e.stopPropagation();
@@ -239,7 +237,7 @@ export default function MapaScreen() {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
