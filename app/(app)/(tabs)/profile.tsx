@@ -87,8 +87,9 @@ export default function Profile() {
     <head>
       <meta charset="UTF-8">
       <style>
-        body { font-family: 'Helvetica', 'Arial', sans-serif; margin: 0; padding: 0; background: white; color: #08130D; }
-        .container { width: 1000px; height: 700px; border: 15px solid #1FC451; padding: 40px; box-sizing: border-box; text-align: center; position: relative; }
+        @page { size: A4 landscape; margin: 0; }
+        body { font-family: 'Helvetica', 'Arial', sans-serif; margin: 0; padding: 0; background: white; color: #08130D; width: 1122px; height: 793px; }
+        .container { width: 100%; height: 100%; border: 15px solid #1FC451; padding: 40px; box-sizing: border-box; text-align: center; position: relative; }
         .logo { font-size: 32px; font-weight: bold; color: #1FC451; margin-bottom: 10px; }
         .title { font-size: 44px; font-weight: bold; margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; }
         .subtitle { font-size: 22px; color: #555; margin-bottom: 25px; }
