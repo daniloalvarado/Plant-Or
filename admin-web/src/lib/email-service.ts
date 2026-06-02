@@ -147,7 +147,7 @@ export const sendSemestralReportEmail = async (
       body: JSON.stringify({
         sender: { name: BREVO_SENDER_NAME, email: BREVO_SENDER_EMAIL },
         to: emails_destino.map(email => ({ email, name: "Administrador" })),
-        subject: \`Reporte Semestral Global - PLANT-OR\`,
+        subject: "Reporte Semestral Global - PLANT-OR",
         htmlContent: htmlContent
       })
     });

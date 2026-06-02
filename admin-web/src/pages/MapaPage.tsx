@@ -66,50 +66,72 @@ export default function MapaPage() {
   return (
     <div className="flex flex-col h-[calc(100vh-120px)] gap-4">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 flex-shrink-0">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Mapa del Catálogo</h1>
-          <p className="text-muted-foreground mt-1">{counts[activeFilter] ?? 0} registro(s) geolocalizado(s)</p>
-        </div>
-        <div className="flex flex-col gap-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Buscar por distrito, calle o nombre..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full sm:w-64 pl-9 pr-4 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#1FC451] transition-colors"
-            />
+      <div className="flex flex-col gap-4 flex-shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Mapa del Catálogo</h1>
+            <p className="text-muted-foreground mt-1">{counts[activeFilter] ?? 0} registro(s) geolocalizado(s)</p>
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
+          
+          {/* Filters - Desktop (Chips) */}
+          <div className="hidden sm:flex items-center gap-2 flex-wrap">
             <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-          <button
-            onClick={() => setActiveFilter('all')}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-              activeFilter === 'all'
-                ? 'bg-white/10 border-white/30 text-white'
-                : 'border-white/10 text-muted-foreground hover:text-white hover:bg-white/10'
-            }`}
-          >
-            Todos ({counts['all'] ?? 0})
-          </button>
-          {ALL_STATES.map(state => (
             <button
-              key={state}
-              onClick={() => setActiveFilter(state)}
-              style={activeFilter === state ? {
-                borderColor: STATUS_COLORS[state] + '80',
-                color: STATUS_COLORS[state],
-                backgroundColor: STATUS_COLORS[state] + '18',
-              } : {}}
+              onClick={() => setActiveFilter('all')}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                activeFilter === state ? '' : 'border-white/10 text-muted-foreground hover:text-white hover:bg-white/5'
+                activeFilter === 'all'
+                  ? 'bg-white/10 border-white/30 text-white'
+                  : 'border-white/10 text-muted-foreground hover:text-white hover:bg-white/10'
               }`}
             >
-              {state} ({counts[state] ?? 0})
+              Todos ({counts['all'] ?? 0})
             </button>
-          ))}
+            {ALL_STATES.map(state => (
+              <button
+                key={state}
+                onClick={() => setActiveFilter(state)}
+                style={activeFilter === state ? {
+                  borderColor: STATUS_COLORS[state] + '80',
+                  color: STATUS_COLORS[state],
+                  backgroundColor: STATUS_COLORS[state] + '18',
+                } : {}}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+                  activeFilter === state ? '' : 'border-white/10 text-muted-foreground hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {state} ({counts[state] ?? 0})
+              </button>
+            ))}
+          </div>
+
+          {/* Filters - Mobile (Dropdown) */}
+          <div className="flex sm:hidden items-center gap-2 w-full">
+            <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+            <select
+              value={activeFilter}
+              onChange={(e) => setActiveFilter(e.target.value)}
+              className="flex-1 bg-black border border-zinc-800 text-white text-sm rounded-lg py-2 pl-3 pr-8 focus:outline-none focus:border-[#1FC451] appearance-none"
+            >
+              <option value="all">Todos ({counts['all'] ?? 0})</option>
+              {ALL_STATES.map(state => (
+                <option key={state} value={state}>
+                  {state} ({counts[state] ?? 0})
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Search Bar - Full Width everywhere */}
+        <div className="relative w-full">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Buscar por distrito, calle o nombre..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#1FC451] transition-colors"
+          />
         </div>
       </div>
     </div>
