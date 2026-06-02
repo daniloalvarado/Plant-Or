@@ -134,7 +134,6 @@ export default function MapaPage() {
           />
         </div>
       </div>
-    </div>
 
       {/* Map */}
       <div className="flex-1 relative rounded-xl overflow-hidden border border-border min-h-0">

@@ -288,6 +288,9 @@ export default function PlantaDetailPage() {
               <MapPin className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
               <p className="text-sm text-foreground">{planta.direccion || 'Sin dirección'}</p>
             </div>
+            {planta.estado_revision === 'Validado' && planta.distrito && (
+              <InfoRow label="Distrito" value={planta.distrito} />
+            )}
             <InfoRow label="Tipo ubicación 1" value={planta.tipo_ubicacion_1} />
             <InfoRow label="Tipo ubicación 2" value={planta.tipo_ubicacion_2} />
             <InfoRow label="N° de casa" value={planta.numero_casa} />
