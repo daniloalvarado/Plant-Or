@@ -633,7 +633,7 @@ export default function Profile() {
                   <XStack gap="$3">
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>DNI (Obligatorio)</Text>
-                      <Input height={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" placeholder="Ej. 70000000" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                      <Input height={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" placeholder="Ej. 89765434" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                     </YStack>
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Día de clase (Opcional)</Text>
@@ -643,7 +643,7 @@ export default function Profile() {
 
                   <YStack>
                     <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Facultad (Obligatorio)</Text>
-                    <Input height={40} value={facultad} onChangeText={setFacultad} placeholder="Ej. FCF" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                    <Input height={40} value={facultad} onChangeText={setFacultad} placeholder="Ej. Ciencias Forestales" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                   </YStack>
 
                   <XStack gap="$3">
@@ -685,7 +685,7 @@ export default function Profile() {
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
           <Card padding="$6" alignItems="center" gap="$4" backgroundColor="#12221A" borderWidth={1} borderColor="#1FC451" borderRadius="$6" width="100%" maxWidth={340}>
             <MaterialCommunityIcons name="check-circle" size={80} color="#1FC451" />
-            <H2 mt="$2" color="#1FC451">¡Perfil Actualizado!</H2>
+            <H2 mt="$2" color="#1FC451" textAlign="center">¡Perfil Actualizado!</H2>
             <Paragraph style={{ textAlign: 'center' }} color="rgba(255,255,255,0.7)">
               Tus datos académicos se han guardado. A partir de ahora, se adjuntarán automáticamente a tus nuevos registros.
             </Paragraph>
@@ -708,13 +708,13 @@ export default function Profile() {
           <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 24, borderTopRightRadius: 24 }}>
             <H2 color="white" fontSize={18} mb="$4">Foto de Perfil</H2>
             <YStack gap="$3" pb={insets.bottom > 0 ? insets.bottom : 20}>
-              <Button bg="rgba(255,255,255,0.1)" color="white" onPress={() => { setPhotoOptionsVisible(false); pickProfilePhoto(); }}>
+              <Button bg="#1FC451" color="#08130D" onPress={() => { setPhotoOptionsVisible(false); pickProfilePhoto(); }}>
                 Cambiar foto
               </Button>
               <Button bg="rgba(255,68,68,0.1)" color="#ff4444" onPress={removeProfilePhoto}>
                 Eliminar foto
               </Button>
-              <Button bg="transparent" color="rgba(255,255,255,0.5)" onPress={() => setPhotoOptionsVisible(false)}>
+              <Button bg="transparent" color="white" borderWidth={1} borderColor="rgba(255,255,255,0.2)" onPress={() => setPhotoOptionsVisible(false)}>
                 Cancelar
               </Button>
             </YStack>

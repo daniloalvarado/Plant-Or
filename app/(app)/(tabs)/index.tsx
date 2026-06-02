@@ -299,17 +299,16 @@ export default function HomeScreen() {
                 onPress={() => {
                   setSelectedFiltros([]);
                   setActiveHabit("Todo");
-                  setModalVisible(false);
                 }}
                 style={[styles.modalButton, { flex: 1, backgroundColor: "rgba(255,255,255,0.05)" }]}
               >
-                <Text style={{ color: theme.text, textAlign: 'center', fontWeight: 'bold' }}>Limpiar</Text>
+                <Text style={{ color: theme.text, textAlign: 'center', fontWeight: 'bold' }}>Limpiar Filtros</Text>
               </Pressable>
               <Pressable
                 onPress={() => setModalVisible(false)}
-                style={[styles.modalButton, { flex: 2, backgroundColor: "#1FC451" }]}
+                style={[styles.modalButton, { flex: 1, backgroundColor: "#1FC451" }]}
               >
-                <Text style={{ color: "#08130D", textAlign: 'center', fontWeight: 'bold' }}>Aplicar Filtros</Text>
+                <Text style={{ color: "#08130D", textAlign: 'center', fontWeight: 'bold' }}>Cerrar</Text>
               </Pressable>
             </View>
           </View>
