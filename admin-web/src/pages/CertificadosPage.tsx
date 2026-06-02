@@ -20,6 +20,8 @@ export default function CertificadosPage() {
   
   // Editor State
   const [editingCert, setEditingCert] = useState<Certificado | null>(null);
+  const [editingConfig, setEditingConfig] = useState<any>(null);
+  const [templateParts, setTemplateParts] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [config, setConfig] = useState<any>(null);
 
@@ -45,25 +47,39 @@ export default function CertificadosPage() {
 
   const handleEdit = (cert: Certificado) => {
     setEditingCert({ ...cert });
+    setEditingConfig({ ...config });
+    const textBase = config?.texto_certificado || 'Por haber participado en el proyecto PLANT-OR en calidad de {tipo}, durante el periodo académico {periodo}. Aportando significativamente a la catalogación botánica con un total de {count} especies validadas.';
+    const parts = textBase.split(/(\{tipo\}|\{periodo\}|\{count\})/g);
+    setTemplateParts(parts);
   };
 
   const handleSave = async () => {
-    if (!editingCert) return;
+    if (!editingCert || !editingConfig) return;
     setSaving(true);
     try {
-      await client.patch(editingCert._id).set({
-        usuario_nombre: editingCert.usuario_nombre,
-        registros_validados: editingCert.registros_validados,
-        tipo_participacion: editingCert.tipo_participacion,
-        periodo: editingCert.periodo,
-      }).commit();
+      const newTextoCertificado = templateParts.join('');
+
+      await Promise.all([
+        client.patch(editingCert._id).set({
+          usuario_nombre: editingCert.usuario_nombre,
+          registros_validados: editingCert.registros_validados,
+          tipo_participacion: editingCert.tipo_participacion,
+          periodo: editingCert.periodo,
+        }).commit(),
+        client.patch(editingConfig._id).set({
+          titulo_certificado: editingConfig.titulo_certificado,
+          subtitulo_certificado: editingConfig.subtitulo_certificado,
+          texto_certificado: newTextoCertificado,
+        }).commit()
+      ]);
       
-      toast.success('Certificado actualizado exitosamente');
+      toast.success('Certificado y plantilla actualizados exitosamente');
       setCertificados(certs => certs.map(c => c._id === editingCert._id ? editingCert : c));
+      setConfig({ ...editingConfig, texto_certificado: newTextoCertificado });
       setEditingCert(null);
     } catch (e) {
       console.error(e);
-      toast.error('Error al actualizar el certificado');
+      toast.error('Error al actualizar');
     } finally {
       setSaving(false);
     }
@@ -182,27 +198,85 @@ export default function CertificadosPage() {
                 <div className="absolute inset-5 border border-[#1FC451] opacity-20 pointer-events-none" />
 
                 <div className="text-center space-y-6 relative z-10 h-full flex flex-col justify-center">
-                  <div className="text-[#1FC451] font-bold text-lg tracking-[0.2em] uppercase">
-                    {config?.titulo_certificado || 'Certificado de Reconocimiento'}
-                  </div>
-                  
-                  <div className="text-sm text-gray-500">
-                    {config?.subtitulo_certificado || 'Otorgado a:'}
-                  </div>
-                  
-                  <div className="text-3xl md:text-5xl font-bold text-center text-[#111] font-serif border-b-2 border-[#1FC451] inline-block px-8 pb-2 mx-auto">
-                    {editingCert.usuario_nombre}
-                  </div>
-
-                  <div 
-                    className="text-gray-600 leading-relaxed text-sm md:text-base max-w-2xl mx-auto"
-                    dangerouslySetInnerHTML={{ 
-                      __html: (config?.texto_certificado || 'Por haber participado en el proyecto PLANT-OR en calidad de {tipo}, durante el periodo académico {periodo}. Aportando significativamente a la catalogación botánica con un total de {count} especies validadas.')
-                        .replace('{tipo}', `<strong>${editingCert.tipo_participacion || 'Estudiante'}</strong>`)
-                        .replace('{periodo}', `<strong>${editingCert.periodo || ''}</strong>`)
-                        .replace('{count}', `<strong>${editingCert.registros_validados || 0}</strong>`)
-                    }}
+                  <input 
+                    value={editingConfig?.titulo_certificado || ''}
+                    onChange={e => setEditingConfig({...editingConfig, titulo_certificado: e.target.value})}
+                    className="text-[#1FC451] font-bold text-lg tracking-[0.2em] uppercase bg-transparent text-center border-b border-transparent hover:border-[#1FC451]/30 focus:border-[#1FC451] focus:outline-none transition-colors"
+                    placeholder="Título del Certificado"
                   />
+                  
+                  <input
+                    value={editingConfig?.subtitulo_certificado || ''}
+                    onChange={e => setEditingConfig({...editingConfig, subtitulo_certificado: e.target.value})}
+                    className="text-sm text-gray-500 bg-transparent text-center border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none transition-colors"
+                    placeholder="Subtítulo"
+                  />
+                  
+                  <input
+                    type="text"
+                    value={editingCert.usuario_nombre}
+                    onChange={e => setEditingCert({...editingCert, usuario_nombre: e.target.value})}
+                    className="text-3xl md:text-5xl font-bold text-center w-full bg-transparent border-b-2 border-dashed border-gray-300 hover:border-[#1FC451] focus:border-[#1FC451] focus:outline-none text-[#111] py-2 transition-colors font-serif"
+                    placeholder="Nombre Completo"
+                  />
+
+                  <div className="text-gray-600 leading-relaxed text-sm md:text-base max-w-2xl mx-auto flex flex-wrap justify-center items-center gap-x-1 gap-y-2">
+                    {templateParts.map((part, index) => {
+                      if (part === '{tipo}') {
+                        return (
+                          <select
+                            key={index}
+                            value={editingCert.tipo_participacion || 'Estudiante'}
+                            onChange={e => setEditingCert({...editingCert, tipo_participacion: e.target.value})}
+                            className="bg-gray-100 border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800 focus:outline-none focus:ring-1 focus:ring-[#1FC451] cursor-pointer"
+                          >
+                            <option value="Estudiante">Estudiante</option>
+                            <option value="Ciudadano">Ciudadano</option>
+                          </select>
+                        );
+                      }
+                      if (part === '{periodo}') {
+                        return (
+                          <input
+                            key={index}
+                            type="text"
+                            value={editingCert.periodo || ''}
+                            onChange={e => setEditingCert({...editingCert, periodo: e.target.value})}
+                            className="bg-gray-100 border border-gray-300 rounded px-2 py-1 text-sm font-bold text-gray-800 w-24 text-center focus:outline-none focus:ring-1 focus:ring-[#1FC451]"
+                            placeholder="Periodo"
+                          />
+                        );
+                      }
+                      if (part === '{count}') {
+                        return (
+                          <input
+                            key={index}
+                            type="number"
+                            value={editingCert.registros_validados || 0}
+                            onChange={e => setEditingCert({...editingCert, registros_validados: parseInt(e.target.value) || 0})}
+                            className="bg-[#1FC451]/10 border border-[#1FC451]/30 rounded px-2 py-1 text-base font-bold text-[#1FC451] w-16 text-center focus:outline-none focus:ring-1 focus:ring-[#1FC451]"
+                          />
+                        );
+                      }
+                      
+                      // Texto estático
+                      return (
+                        <span
+                          key={index}
+                          contentEditable
+                          suppressContentEditableWarning
+                          onBlur={e => {
+                            const newParts = [...templateParts];
+                            newParts[index] = e.currentTarget.textContent || '';
+                            setTemplateParts(newParts);
+                          }}
+                          className="outline-none hover:bg-gray-100 focus:bg-gray-100 border-b border-transparent hover:border-gray-300 focus:border-gray-400 min-w-[20px] transition-colors whitespace-pre-wrap"
+                        >
+                          {part}
+                        </span>
+                      );
+                    })}
+                  </div>
 
                   {/* Firmas */}
                   <div className="flex justify-center gap-12 mt-12 pt-8">
@@ -240,49 +314,6 @@ export default function CertificadosPage() {
                 </div>
               </div>
 
-              {/* Formulario de Edición */}
-              <div className="mt-8 bg-card border border-border p-6 rounded-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="space-y-1.5 md:col-span-4">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase">Nombre Completo</label>
-                  <input
-                    type="text"
-                    value={editingCert.usuario_nombre}
-                    onChange={e => setEditingCert({...editingCert, usuario_nombre: e.target.value})}
-                    className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-                  />
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase">Tipo</label>
-                  <select
-                    value={editingCert.tipo_participacion || 'Estudiante'}
-                    onChange={e => setEditingCert({...editingCert, tipo_participacion: e.target.value})}
-                    className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-                  >
-                    <option value="Estudiante">Estudiante</option>
-                    <option value="Ciudadano">Ciudadano</option>
-                  </select>
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase">Periodo</label>
-                  <input
-                    type="text"
-                    value={editingCert.periodo || ''}
-                    onChange={e => setEditingCert({...editingCert, periodo: e.target.value})}
-                    className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-                  />
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase">Plantas Validadas</label>
-                  <input
-                    type="number"
-                    value={editingCert.registros_validados || 0}
-                    onChange={e => setEditingCert({...editingCert, registros_validados: parseInt(e.target.value) || 0})}
-                    className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-                  />
-                </div>
               </div>
             </div>
 

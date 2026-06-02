@@ -191,18 +191,13 @@ export default function ConfiguracionPage() {
           <p className="text-xs text-muted-foreground mt-1">Este enlace aparecerá en la esquina inferior del certificado generado en PDF.</p>
         </div>
 
-        <div className="space-y-2 mt-8">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Texto Central del Certificado</label>
-          
-          <textarea
-            value={form.texto_certificado}
-            onChange={(e) => setForm({ ...form, texto_certificado: e.target.value })}
-            placeholder="Texto principal del diploma"
-            rows={4}
-            className="w-full bg-input border border-border rounded-lg px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all max-w-3xl resize-y"
-          />
-          <p className="text-xs text-muted-foreground mt-1">
-            Los datos específicos de cada alumno se pueden corregir individualmente en la pestaña "Certificados".
+        <div className="space-y-2 mt-8 p-4 bg-primary/5 rounded-lg border border-primary/20">
+          <label className="text-xs font-semibold text-primary uppercase tracking-wider flex items-center gap-2">
+            Textos del Certificado
+          </label>
+          <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
+            El <strong>título</strong>, el <strong>subtítulo</strong>, y el <strong>párrafo central</strong> se editan directamente desde la pestaña <strong className="text-foreground">"Certificados"</strong>. 
+            Simplemente dale clic a "Editar" en cualquier certificado y podrás modificar todos los textos y datos escribiendo directamente sobre el diseño del diploma.
           </p>
         </div>
       </div>
