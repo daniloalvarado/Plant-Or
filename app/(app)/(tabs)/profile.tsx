@@ -38,7 +38,7 @@ export default function Profile() {
   const theme = Colors[colorScheme];
   const router = useRouter();
   
-  const [stats, setStats] = useState({ total: 0, validados: 0, observados: 0, rechazados: 0 });
+  const [stats, setStats] = useState({ total: 0, validados: 0, observados: 0, rechazados: 0, primerValidado: null, ultimoValidado: null });
   const [validatedCount, setValidatedCount] = useState(0);
 
   const [firstName, setFirstName] = useState(user?.firstName || '');
@@ -156,10 +156,21 @@ export default function Profile() {
       const existingCert = await client.fetch(`*[_type == "certificado" && usuario_id == $userId][0]`, { userId: user.id });
       
       const isStudent = !!(user.unsafeMetadata?.dni || user.unsafeMetadata?.facultad || user.unsafeMetadata?.escuela);
-      const currentYear = new Date().getFullYear();
-      const currentMonth = new Date().getMonth();
-      const periodCalc = `${currentYear}-${currentMonth < 7 ? 'I' : 'II'}`;
       const tipoCalc = isStudent ? 'Estudiante' : 'Ciudadano';
+
+      let periodCalc = `el año ${new Date().getFullYear()}`;
+      if (stats.primerValidado && stats.ultimoValidado) {
+        const first = new Date(stats.primerValidado);
+        const last = new Date(stats.ultimoValidado);
+        const firstStr = first.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+        const lastStr = last.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+        
+        if (firstStr === lastStr) {
+          periodCalc = `el ${firstStr}`;
+        } else {
+          periodCalc = `del ${firstStr} al ${lastStr}`;
+        }
+      }
       
       let certData;
       
@@ -361,7 +372,9 @@ export default function Profile() {
           "total": count(*[_type == "planta" && autor == $userId]),
           "validados": count(*[_type == "planta" && autor == $userId && estado_revision == "Validado"]),
           "observados": count(*[_type == "planta" && autor == $userId && estado_revision == "Observado"]),
-          "rechazados": count(*[_type == "planta" && autor == $userId && estado_revision == "Rechazado"])
+          "rechazados": count(*[_type == "planta" && autor == $userId && estado_revision == "Rechazado"]),
+          "primerValidado": *[_type == "planta" && autor == $userId && estado_revision == "Validado"] | order(_createdAt asc)[0]._createdAt,
+          "ultimoValidado": *[_type == "planta" && autor == $userId && estado_revision == "Validado"] | order(_createdAt desc)[0]._createdAt
         }`, { userId: user.id })
           .then(data => {
             setStats(data);
