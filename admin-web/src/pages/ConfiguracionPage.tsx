@@ -193,6 +193,31 @@ export default function ConfiguracionPage() {
 
         <div className="space-y-2 mt-6">
           <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Texto Central del Certificado</label>
+          
+          <div className="flex flex-wrap gap-2 mb-2">
+            <button
+              onClick={() => setForm({ ...form, texto_certificado: form.texto_certificado + '{tipo}' })}
+              className="text-xs bg-primary/10 text-primary hover:bg-primary hover:text-black font-semibold px-2 py-1 rounded transition-colors"
+              title="Añade {tipo}"
+            >
+              + Tipo de Participante
+            </button>
+            <button
+              onClick={() => setForm({ ...form, texto_certificado: form.texto_certificado + '{periodo}' })}
+              className="text-xs bg-primary/10 text-primary hover:bg-primary hover:text-black font-semibold px-2 py-1 rounded transition-colors"
+              title="Añade {periodo}"
+            >
+              + Periodo Académico
+            </button>
+            <button
+              onClick={() => setForm({ ...form, texto_certificado: form.texto_certificado + '{count}' })}
+              className="text-xs bg-primary/10 text-primary hover:bg-primary hover:text-black font-semibold px-2 py-1 rounded transition-colors"
+              title="Añade {count}"
+            >
+              + Cantidad de Plantas
+            </button>
+          </div>
+
           <textarea
             value={form.texto_certificado}
             onChange={(e) => setForm({ ...form, texto_certificado: e.target.value })}
@@ -201,7 +226,7 @@ export default function ConfiguracionPage() {
             className="w-full bg-input border border-border rounded-lg px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all max-w-3xl resize-y"
           />
           <p className="text-xs text-muted-foreground mt-1">
-            Usa <strong className="text-primary">{`{tipo}`}</strong>, <strong className="text-primary">{`{periodo}`}</strong> y <strong className="text-primary">{`{count}`}</strong> para inyectar los datos del alumno automáticamente.
+            Usa los botones o escribe <strong className="text-primary">{`{tipo}`}</strong>, <strong className="text-primary">{`{periodo}`}</strong> y <strong className="text-primary">{`{count}`}</strong> para inyectar los datos del alumno automáticamente.
           </p>
         </div>
       </div>

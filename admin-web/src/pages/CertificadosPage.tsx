@@ -176,7 +176,7 @@ export default function CertificadosPage() {
 
             {/* Visual Canvas */}
             <div className="p-6 overflow-y-auto bg-muted/20">
-              <div className="bg-white mx-auto shadow-lg relative p-8 md:p-12" style={{ aspectRatio: '1.4/1', maxWidth: '800px', color: '#1a1a1a', border: '1px solid #e5e5e5' }}>
+              <div className="bg-white mx-auto shadow-lg relative p-8 md:p-12 pb-24 md:pb-32" style={{ maxWidth: '900px', minHeight: '500px', color: '#1a1a1a', border: '1px solid #e5e5e5' }}>
                 {/* Decorative border */}
                 <div className="absolute inset-4 border-2 border-[#1FC451] opacity-30 pointer-events-none" />
                 <div className="absolute inset-5 border border-[#1FC451] opacity-20 pointer-events-none" />
@@ -224,6 +224,18 @@ export default function CertificadosPage() {
                         </div>
                       </div>
                     )}
+                  </div>
+                </div>
+
+                {/* Validation Box (Footer) */}
+                <div className="absolute bottom-8 right-12 text-right text-[10px] md:text-xs text-gray-500 z-10 hidden sm:block">
+                  <p>Emitido el: {new Date(editingCert.fecha_emision).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                  <div className="mt-2">
+                    Verifique la autenticidad de este<br/>
+                    documento en: <strong className="text-gray-700">{config?.url_validacion || 'plant-or.com'}</strong>
+                  </div>
+                  <div className="mt-1">
+                    Código: <span className="font-mono font-bold text-gray-800">{editingCert.codigo}</span>
                   </div>
                 </div>
               </div>

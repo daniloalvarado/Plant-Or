@@ -171,6 +171,15 @@ export default function Profile() {
       
       if (existingCert) {
         certData = existingCert;
+        
+        // Auto-update if they have more validated plants now than what was saved
+        if (validatedCount > (certData.registros_validados || 0)) {
+          certData.registros_validados = validatedCount;
+          const writeClient = client.withConfig({
+            token: process.env.EXPO_PUBLIC_SANITY_TOKEN,
+          });
+          writeClient.patch(certData._id).set({ registros_validados: validatedCount }).commit().catch(console.error);
+        }
       } else {
         // Create new certificate
         const randomStr = Math.random().toString(36).substring(2, 8).toUpperCase();
