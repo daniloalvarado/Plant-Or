@@ -14,7 +14,6 @@ const navItems = [
   { href: '/aprobados', icon: CheckCircle, label: 'Aprobados' },
   { href: '/mapa', icon: Map, label: 'Mapa' },
   { href: '/filtros', icon: SlidersHorizontal, label: 'Filtros' },
-  { href: '/configuracion', icon: Settings, label: 'Configuración' },
   { href: '/certificados', icon: Award, label: 'Certificados' },
 ]
 
