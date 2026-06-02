@@ -23,7 +23,7 @@ export default function MapaScreen() {
   const colorScheme = useColorScheme() ?? "dark";
   const theme = Colors[colorScheme];
   const router = useRouter();
-  const mapRef = useRef<MapView>(null);
+  const mapRef = useRef<any>(null);
 
   const [plantas, setPlantas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
