@@ -28,6 +28,9 @@ export default function EditorCertificadoPage() {
           return;
         }
 
+        // Default fallback for old certs
+        if (!certData.periodo) certData.periodo = '2026-I';
+
         setEditingCert(certData);
         setEditingConfig(configData);
         

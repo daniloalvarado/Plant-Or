@@ -118,12 +118,6 @@ export default function Profile() {
           ${textoFinal}
         </div>
         
-        <div class="details">
-          <div class="detail-item"><strong>Registros Validados:</strong> ${count}</div>
-          <div class="detail-item"><strong>Participación:</strong> ${type}</div>
-          <div class="detail-item"><strong>Periodo:</strong> ${period}</div>
-        </div>
-        
         <div class="footer">
           <div class="signatures-container">
             <div class="signature">
