@@ -9,7 +9,7 @@ import { Modal, Pressable, RefreshControl, ScrollView, StyleSheet, TextInput } f
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Avatar, Text, View } from "tamagui";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter, useFocusEffect } from "expo-router";
+import { useRouter, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
 
 export default function HomeScreen() {
@@ -24,6 +24,7 @@ export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeHabit, setActiveHabit] = useState("Todo");
   const router = useRouter();
+  const params = useLocalSearchParams();
 
   // Filter States
   const [modalVisible, setModalVisible] = useState(false);
@@ -75,7 +76,10 @@ export default function HomeScreen() {
   useFocusEffect(
     useCallback(() => {
       fetchData();
-    }, [user?.id])
+      if (params.openNotif === 'true') {
+        setNotifVisible(true);
+      }
+    }, [user?.id, params.openNotif])
   );
 
   const onRefresh = async () => {
@@ -336,6 +340,9 @@ export default function HomeScreen() {
                     if (planta.estado_revision === 'Observado') {
                       setNotifVisible(false);
                       router.push({ pathname: '/registro', params: { editId: planta._id } } as any);
+                    } else if (planta.estado_revision === 'Validado') {
+                      setNotifVisible(false);
+                      router.push(`/plant/${planta._id}` as any);
                     }
                   }}
                   style={({ pressed }) => [
@@ -343,7 +350,7 @@ export default function HomeScreen() {
                       flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', 
                       backgroundColor: 'rgba(255,255,255,0.05)', padding: 16, borderRadius: 12, marginBottom: 12 
                     },
-                    pressed && planta.estado_revision === 'Observado' ? { opacity: 0.7 } : {}
+                    pressed && (planta.estado_revision === 'Observado' || planta.estado_revision === 'Validado') ? { opacity: 0.7 } : {}
                   ]}
                 >
                   <View style={{ flex: 1 }}>
@@ -357,6 +364,13 @@ export default function HomeScreen() {
                            ¡Toca para corregir!
                          </Text>
                          <MaterialCommunityIcons name="pencil" size={14} color="#FFA500" />
+                       </View>
+                    ) : planta.estado_revision === 'Validado' ? (
+                       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 4 }}>
+                         <Text style={{ color: "#1FC451", fontSize: 12, fontWeight: 'bold' }}>
+                           ¡Ver ficha técnica!
+                         </Text>
+                         <MaterialCommunityIcons name="eye" size={14} color="#1FC451" />
                        </View>
                     ) : (
                        <Text style={{ color: theme.icon, fontSize: 12, marginTop: 4 }}>

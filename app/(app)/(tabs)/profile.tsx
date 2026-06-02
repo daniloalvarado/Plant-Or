@@ -477,8 +477,9 @@ export default function Profile() {
                 mt="$2"
                 bg="rgba(255,255,255,0.1)"
                 color="white"
+                pressStyle={{ bg: "rgba(255,255,255,0.2)" }}
                 onPress={() => {
-                  router.push("/");
+                  router.push({ pathname: "/", params: { openNotif: 'true' } } as any);
                 }}
                 icon={<MaterialCommunityIcons name="bell-ring" size={20} color="white" />}
               >
