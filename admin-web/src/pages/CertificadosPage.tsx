@@ -178,8 +178,8 @@ export default function CertificadosPage() {
             <div className="p-6 overflow-y-auto bg-muted/20">
               <div className="bg-white mx-auto shadow-lg relative p-8 md:p-12" style={{ aspectRatio: '1.4/1', maxWidth: '800px', color: '#1a1a1a', border: '1px solid #e5e5e5' }}>
                 {/* Decorative border */}
-                <div className="absolute inset-4 border-2 border-[#1FC451] opacity-30" pointerEvents="none" />
-                <div className="absolute inset-5 border border-[#1FC451] opacity-20" pointerEvents="none" />
+                <div className="absolute inset-4 border-2 border-[#1FC451] opacity-30 pointer-events-none" />
+                <div className="absolute inset-5 border border-[#1FC451] opacity-20 pointer-events-none" />
 
                 <div className="text-center space-y-6 relative z-10 h-full flex flex-col justify-center">
                   <div className="text-[#1FC451] font-bold text-lg tracking-[0.2em] uppercase">Certificado de Reconocimiento</div>
