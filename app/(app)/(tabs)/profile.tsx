@@ -126,7 +126,7 @@ export default function Profile() {
           <div class="validation-box">
             Emitido el: ${date}<br><br>
             Verifique la autenticidad de este<br>
-            documento en nuestro portal web<br>
+            documento en: <strong>plant-or.unapiquitos.edu.pe</strong><br>
             Código: <span class="code">${code}</span>
           </div>
         </div>
@@ -188,7 +188,9 @@ export default function Profile() {
       
       const { uri } = await Print.printToFileAsync({
         html,
-        base64: false
+        base64: false,
+        width: 1000,
+        height: 700
       });
       
       // 3. Share / Save
