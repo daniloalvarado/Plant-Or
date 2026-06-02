@@ -41,6 +41,12 @@ export const configuracion = {
       title: 'Firma del Responsable 2 (Fondo transparente PNG)',
       type: 'image',
       options: { hotspot: true }
+    },
+    {
+      name: 'url_validacion',
+      title: 'URL del Portal de Validación',
+      type: 'string',
+      description: 'El enlace que aparecerá en el certificado para validar su autenticidad (Ej. plant-or.com/validar)'
     }
   ]
 }

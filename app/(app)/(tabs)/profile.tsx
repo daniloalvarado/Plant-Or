@@ -126,7 +126,7 @@ export default function Profile() {
           <div class="validation-box">
             Emitido el: ${date}<br><br>
             Verifique la autenticidad de este<br>
-            documento en: <strong>plant-or.unapiquitos.edu.pe</strong><br>
+            documento en: <strong>${config?.url_validacion || 'plant-or.com'}</strong><br>
             Código: <span class="code">${code}</span>
           </div>
         </div>
