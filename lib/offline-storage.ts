@@ -14,6 +14,7 @@ export interface OfflineRegistro {
     flor: string | null;
     fruto: string | null;
     semilla: string | null;
+    extras?: string[];
   };
   status: 'pending' | 'syncing' | 'error';
   errorMsg?: string;
@@ -135,6 +136,15 @@ export async function syncRegistro(registro: OfflineRegistro) {
     if (photos.semilla) {
       const asset = await uploadImageToSanity(photos.semilla);
       uploadedImages.push(asset);
+    }
+    
+    if (photos.extras && photos.extras.length > 0) {
+      for (const extraUri of photos.extras) {
+        if (extraUri) {
+          const asset = await uploadImageToSanity(extraUri);
+          uploadedImages.push(asset);
+        }
+      }
     }
 
     doc.galeria = uploadedImages;

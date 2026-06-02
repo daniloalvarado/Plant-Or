@@ -87,6 +87,7 @@ export default function RegistroScreen() {
     fruto: null,
     semilla: null,
   });
+  const [fotosExtra, setFotosExtra] = useState<string[]>([]);
 
   // Form State: Bloque 4 (Botánico)
   const [datosBotanicos, setDatosBotanicos] = useState<any>({
@@ -225,6 +226,9 @@ export default function RegistroScreen() {
             fruto: urlFor(doc.galeria[3]).url(),
             semilla: urlFor(doc.galeria[4]).url()
           });
+          if (doc.galeria.length > 5) {
+            setFotosExtra(doc.galeria.slice(5).map((img: any) => urlFor(img).url()));
+          }
         }
       }
     } catch (e) {
@@ -263,6 +267,41 @@ export default function RegistroScreen() {
     if (!result.canceled) {
       setFotos((prev) => ({ ...prev, [tipo]: result.assets[0].uri }));
     }
+  };
+
+  const takeExtraPhoto = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      setErrorMsg("Permiso de cámara denegado.");
+      return;
+    }
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: false,
+      quality: 0.7,
+    });
+    if (!result.canceled) {
+      setFotosExtra(prev => [...prev, result.assets[0].uri]);
+    }
+  };
+
+  const pickExtraFromGallery = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      setErrorMsg("Permiso de galería denegado.");
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: false,
+      quality: 0.7,
+    });
+    if (!result.canceled) {
+      setFotosExtra(prev => [...prev, result.assets[0].uri]);
+    }
+  };
+
+  const removeExtraPhoto = (index: number) => {
+    setFotosExtra(prev => prev.filter((_, i) => i !== index));
   };
 
   const nextStep = async () => {
@@ -496,6 +535,11 @@ export default function RegistroScreen() {
         const localFlor = await persistImage(fotos.flor || '');
         const localFruto = await persistImage(fotos.fruto || '');
         const localSemilla = await persistImage(fotos.semilla || '');
+        const localExtras = [];
+        for (const extraUri of fotosExtra) {
+          const localUri = await persistImage(extraUri);
+          if (localUri) localExtras.push(localUri);
+        }
 
         await saveRegistroOffline({
           id: Math.random().toString(36).substring(7) + Date.now().toString(),
@@ -506,7 +550,8 @@ export default function RegistroScreen() {
             hoja: localHoja,
             flor: localFlor,
             fruto: localFruto,
-            semilla: localSemilla
+            semilla: localSemilla,
+            extras: localExtras
           },
           status: 'pending'
         });
@@ -518,8 +563,14 @@ export default function RegistroScreen() {
         const florRef = await uploadFoto(fotos.flor);
         const frutoRef = await uploadFoto(fotos.fruto);
         const semillaRef = await uploadFoto(fotos.semilla);
+        
+        const extrasRefs = [];
+        for (const extraUri of fotosExtra) {
+          const ref = await uploadFoto(extraUri);
+          if (ref) extrasRefs.push(ref);
+        }
 
-        nuevoRegistro.galeria = [plantaRef, hojaRef, florRef, frutoRef, semillaRef].filter(Boolean);
+        nuevoRegistro.galeria = [plantaRef, hojaRef, florRef, frutoRef, semillaRef, ...extrasRefs].filter(Boolean);
 
         if (editId) {
           await writeClient.patch(editId as string).set(nuevoRegistro).commit();
@@ -551,6 +602,7 @@ export default function RegistroScreen() {
     setDiaClase((user?.unsafeMetadata?.dia_clase as string) || '');
     setLocation(null);
     setFotos({ planta_completa: null, hoja: null, flor: null, fruto: null, semilla: null });
+    setFotosExtra([]);
     setDatosBotanicos({ habito: '', tipoVida: '' });
     router.replace('/');
   };
@@ -917,6 +969,44 @@ export default function RegistroScreen() {
                       </YStack>
                     );
                   })}
+
+                  <Spacer size="$2" />
+
+                  {/* Fotografías Adicionales */}
+                  <YStack gap="$2">
+                    <H4 color="white" fontSize={16}>Fotografías Adicionales (Opcional)</H4>
+                    <Paragraph color="rgba(255,255,255,0.7)" size="$2">
+                      Si lo deseas, puedes agregar fotos extra (tronco, raíces, entorno, etc).
+                    </Paragraph>
+                    
+                    {fotosExtra.map((uri, idx) => (
+                      <YStack key={`extra-${idx}`} style={{ backgroundColor: "rgba(255,255,255,0.02)", padding: 12, borderRadius: 8 }} gap="$2">
+                        <XStack style={{ alignItems: "center" }} gap="$3">
+                          <Image source={{ uri }} style={{ width: 56, height: 56, borderRadius: 8 }} />
+                          <YStack flex={1}>
+                            <Label color="#ffffff">Foto Extra {idx + 1}</Label>
+                            <Paragraph color="#1FC451" size="$1">✓ Agregada</Paragraph>
+                          </YStack>
+                          <Button 
+                            bg="rgba(255,68,68,0.1)" 
+                            color="#ff4444" 
+                            size="$2" 
+                            onPress={() => removeExtraPhoto(idx)}
+                            icon={<MaterialCommunityIcons name="delete" size={16} color="#ff4444" />}
+                          />
+                        </XStack>
+                      </YStack>
+                    ))}
+                    
+                    <XStack gap="$2" mt="$2">
+                       <Button flex={1} size="$3" bg="rgba(255,255,255,0.08)" color="white" icon={<MaterialCommunityIcons name="camera-plus" size={16} color="white" />} onPress={takeExtraPhoto}>
+                         Cámara Extra
+                       </Button>
+                       <Button flex={1} size="$3" bg="rgba(255,255,255,0.08)" color="white" icon={<MaterialCommunityIcons name="image-plus" size={16} color="white" />} onPress={pickExtraFromGallery}>
+                         Galería Extra
+                       </Button>
+                    </XStack>
+                  </YStack>
 
                   <Spacer size="$2" />
                   
