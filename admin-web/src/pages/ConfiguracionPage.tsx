@@ -285,10 +285,10 @@ export default function ConfiguracionPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 px-6 py-3 bg-[#1FC451] text-black font-bold rounded-lg hover:bg-[#19a343] transition-all disabled:opacity-50 cursor-pointer shadow-lg shadow-[#1FC451]/20"
+          className="flex items-center gap-2 px-6 py-3 bg-[#1FC451] text-white font-bold rounded-lg hover:bg-[#19a343] transition-all disabled:opacity-50 cursor-pointer shadow-lg shadow-[#1FC451]/20"
         >
           {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-          Guardar Cambios de Texto
+          Guardar
         </button>
       </div>
     </div>

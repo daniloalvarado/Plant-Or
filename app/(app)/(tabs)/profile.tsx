@@ -492,6 +492,7 @@ export default function Profile() {
                   mt="$2"
                   bg="#1FC451"
                   color="white"
+                  pressStyle={{ bg: '#19a343' }}
                   onPress={handleGenerateCertificate}
                   disabled={isGeneratingCert}
                   opacity={isGeneratingCert ? 0.7 : 1}
