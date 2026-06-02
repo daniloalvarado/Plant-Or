@@ -1,6 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, View, Linking } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Card, H1, H2, Text, XStack, YStack } from "tamagui";
 
@@ -131,13 +131,15 @@ export default function AboutScreen() {
             </YStack>
           </Card>
 
-          <Text
-            color="rgba(255,255,255,0.3)"
-            fontSize={12}
-            style={{ textAlign: "center" }}
-          >
-            Flora Iquitos © {new Date().getFullYear()}
-          </Text>
+          <Pressable onPress={() => Linking.openURL('https://daniloalvarado.com')}>
+            <Text
+              color="rgba(255,255,255,0.3)"
+              fontSize={12}
+              style={{ textAlign: "center", textDecorationLine: "underline" }}
+            >
+              daniloalvarado.com © {new Date().getFullYear()}
+            </Text>
+          </Pressable>
         </YStack>
       </ScrollView>
     </View>

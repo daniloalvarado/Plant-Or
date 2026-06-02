@@ -593,9 +593,12 @@ export default function Profile() {
               <YStack gap="$4">
                 <YStack gap="$2">
                   <XStack style={{ justifyContent: "space-between", alignItems: "center" }}>
-                    <H2 fontSize={18} fontWeight="700" color="#ffffff">
-                      PLANT-OR
-                    </H2>
+                    <XStack style={{ alignItems: "center" }} gap="$2">
+                      <MaterialCommunityIcons name="leaf" size={22} color="#1FC451" />
+                      <H2 fontSize={18} fontWeight="700" color="#ffffff">
+                        PLANT-OR
+                      </H2>
+                    </XStack>
                     <Feather name="chevron-right" size={20} color="rgba(255,255,255,0.4)" />
                   </XStack>
                   <Text fontSize={14} color="rgba(255,255,255,0.7)" lineHeight={22} fontWeight="bold">
@@ -620,9 +623,12 @@ export default function Profile() {
           >
             <YStack gap="$4">
               <YStack gap="$2">
-                <H2 fontSize={18} fontWeight="700" color="#ffffff">
-                  Cuenta
-                </H2>
+                <XStack style={{ alignItems: "center" }} gap="$2">
+                  <MaterialCommunityIcons name="account-cog" size={22} color="#1FC451" />
+                  <H2 fontSize={18} fontWeight="700" color="#ffffff">
+                    Cuenta
+                  </H2>
+                </XStack>
                 <Text fontSize={13} color="rgba(255,255,255,0.7)" lineHeight={18}>
                   Administrar la configuración de tu cuenta
                 </Text>
@@ -745,7 +751,12 @@ export default function Profile() {
       <Modal visible={photoOptionsVisible} transparent animationType="fade">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'flex-end' }}>
           <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 24, borderTopRightRadius: 24 }}>
-            <H2 color="white" fontSize={18} mb="$4">Foto de Perfil</H2>
+            <XStack style={{ justifyContent: "space-between", alignItems: "center" }} mb="$4">
+              <H2 color="white" fontSize={18}>Foto de Perfil</H2>
+              <Pressable onPress={() => setPhotoOptionsVisible(false)}>
+                <Feather name="x" size={24} color="rgba(255,255,255,0.5)" />
+              </Pressable>
+            </XStack>
             <YStack gap="$3" pb={insets.bottom > 0 ? insets.bottom : 20}>
               <Button bg="#1FC451" color="#08130D" onPress={() => { setPhotoOptionsVisible(false); pickProfilePhoto(); }}>
                 Cambiar foto
