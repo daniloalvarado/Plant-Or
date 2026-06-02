@@ -62,6 +62,7 @@ export default function RegistroScreen() {
 
   // Form State: Bloque 2
   const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [distrito, setDistrito] = useState('');
   const [direccion, setDireccion] = useState('');
   const [tipoUbicacion, setTipoUbicacion] = useState(''); // tipo_ubicacion_1
   const [tipoUbicacion2, setTipoUbicacion2] = useState(''); // tipo_ubicacion_2
@@ -182,6 +183,7 @@ export default function RegistroScreen() {
         if (doc.latitud && doc.longitud) {
           setLocation({ latitude: doc.latitud, longitude: doc.longitud });
         }
+        setDistrito(doc.distrito || '');
         setDireccion(doc.direccion || '');
         setTipoUbicacion(doc.tipo_ubicacion_1 || '');
         setTipoUbicacion2(doc.tipo_ubicacion_2 || '');
@@ -270,7 +272,7 @@ export default function RegistroScreen() {
   const isStep1Valid = rolRegistro === 'estudiante' 
     ? (nombre.trim() !== '' && dni.length === 8 && email.trim() !== '' && facultad.trim() !== '' && escuela.trim() !== '')
     : (nombre.trim() !== '' && email.trim() !== ''); // Ciudadano solo necesita nombre y email
-  const isStep2Valid = location !== null && direccion.trim() !== '' && tipoUbicacion.trim() !== '' && sustratoPlanta.trim() !== '';
+  const isStep2Valid = location !== null && distrito.trim() !== '' && direccion.trim() !== '' && tipoUbicacion.trim() !== '' && sustratoPlanta.trim() !== '';
   const isStep3Valid = fotos.planta_completa && fotos.hoja && fotos.flor && fotos.fruto && fotos.semilla;
 
   const handleFinalSubmit = async () => {
@@ -392,6 +394,7 @@ export default function RegistroScreen() {
         // Ubicación
         latitud: location?.latitude,
         longitud: location?.longitude,
+        distrito: distrito,
         direccion: direccion,
         tipo_ubicacion_1: tipoUbicacion,
         tipo_ubicacion_2: tipoUbicacion2,
@@ -752,6 +755,20 @@ export default function RegistroScreen() {
                   </Paragraph>
 
                   <YStack gap="$2">
+                    <Label color="#ffffff">Distrito</Label>
+                    <Input
+                      size="$3"
+                      value={distrito}
+                      onChangeText={setDistrito}
+                      placeholder="Ej. Iquitos, San Juan Bautista, Punchana..."
+                      borderWidth={0}
+                      bg="rgba(255,255,255,0.05)"
+                      color="#ffffff"
+                      placeholderTextColor="rgba(255,255,255,0.3)"
+                    />
+                  </YStack>
+
+                  <YStack gap="$2">
                     <Label color="#ffffff">Dirección / Referencia</Label>
                     <Input
                       size="$3"
@@ -1058,6 +1075,7 @@ export default function RegistroScreen() {
 
                 <Card padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0} gap="$3">
                   <H4 color="white">2. Ubicación</H4>
+                  <Text color="rgba(255,255,255,0.7)">Distrito: <Text color="white" fontWeight="bold">{distrito}</Text></Text>
                   <Text color="rgba(255,255,255,0.7)">Dirección: <Text color="white" fontWeight="bold">{direccion}</Text></Text>
                   <Text color="rgba(255,255,255,0.7)">Tipo: <Text color="white" fontWeight="bold">{tipoUbicacion}</Text></Text>
                   {location && (

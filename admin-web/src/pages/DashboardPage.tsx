@@ -53,41 +53,30 @@ export default function DashboardPage() {
     if (!confirm("¿Estás seguro de que quieres despachar el reporte semestral a todos los estudiantes registrados? Esto podría enviar muchos correos electrónicos.")) return;
     
     setIsSendingReports(true);
-    let successCount = 0;
-    
     try {
-      const studentStatsMap = new Map<string, {
-        nombre: string;
-        stats: { validados: number; observados: number; en_revision: number; rechazados: number; total: number }
-      }>();
+      // 1. Calculate global stats
+      const globalStats = {
+        validados: stats.validados,
+        observados: stats.observados,
+        en_revision: stats.enRevision,
+        rechazados: stats.rechazados,
+        total: stats.total
+      };
 
-      plantas.forEach(p => {
-        const email = p.registrador_email;
-        if (!email) return;
-
-        if (!studentStatsMap.has(email)) {
-          studentStatsMap.set(email, {
-            nombre: p.registrador_nombre || 'Estudiante',
-            stats: { validados: 0, observados: 0, en_revision: 0, rechazados: 0, total: 0 }
-          });
-        }
-        
-        const entry = studentStatsMap.get(email)!;
-        entry.stats.total++;
-        if (p.estado_revision === 'Validado') entry.stats.validados++;
-        else if (p.estado_revision === 'Observado') entry.stats.observados++;
-        else if (p.estado_revision === 'En revisión') entry.stats.en_revision++;
-        else if (p.estado_revision === 'Rechazado') entry.stats.rechazados++;
-      });
-
-      const totalStudents = studentStatsMap.size;
+      // 2. Define admin/validator emails. In a real scenario, this could be fetched from Clerk
+      // or defined in an environment variable. Using placeholders for the demo.
+      const adminEmails = [
+        "admin@plant-or.com",
+        "profesor@plant-or.com"
+      ];
       
-      for (const [email, data] of studentStatsMap.entries()) {
-        const ok = await sendSemestralReportEmail(email, data.nombre, data.stats);
-        if (ok) successCount++;
-      }
+      const ok = await sendSemestralReportEmail(adminEmails, globalStats);
 
-      toast.success(`Reportes semestrales enviados (${successCount} de ${totalStudents} estudiantes)`);
+      if (ok) {
+        toast.success(`Reporte semestral global enviado a ${adminEmails.length} administrador(es).`);
+      } else {
+        toast.error("Ocurrió un error al despachar el reporte.");
+      }
     } catch (err) {
       console.error(err);
       toast.error("Ocurrió un error al despachar los reportes.");

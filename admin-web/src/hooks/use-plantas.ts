@@ -9,7 +9,7 @@ const PLANTAS_QUERY = `*[_type == "planta" && !(_id in path("drafts.**"))] | ord
   estado_revision, motivo_observacion, autor, validador, fecha_revision,
   registrador_nombre, registrador_dni, registrador_email, registrador_curso,
   registrador_facultad, registrador_escuela, registrador_dia_clase,
-  latitud, longitud, direccion, tipo_ubicacion_1, tipo_ubicacion_2,
+  latitud, longitud, distrito, direccion, tipo_ubicacion_1, tipo_ubicacion_2,
   numero_casa, ubicacion_planta, numero_planta,
   galeria, arbol_datos, palmera_datos, arbusto_datos, liana_datos, hierba_datos,
   reproductivo, estado_fenologico, estado_individuo, valor_ornamental, impacto_urbano

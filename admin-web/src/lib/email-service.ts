@@ -104,8 +104,7 @@ export const sendStatusEmail = async (
 };
 
 export const sendSemestralReportEmail = async (
-  email_destino: string,
-  nombre_registrador: string,
+  emails_destino: string[],
   stats: { validados: number; observados: number; en_revision: number; rechazados: number; total: number }
 ) => {
   if (!BREVO_API_KEY || !BREVO_SENDER_EMAIL) {
@@ -116,11 +115,11 @@ export const sendSemestralReportEmail = async (
 <div style="font-family: 'Inter', system-ui, sans-serif, Arial; font-size: 15px; color: #333; max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #eaeaea; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
   <div style="background-color: #0a0a0a; padding: 25px; text-align: center;">
     <h2 style="color: #1FC451; margin: 0; font-size: 22px; font-weight: 700;">PLANT-OR</h2>
-    <p style="color: #a1a1aa; margin: 5px 0 0 0; font-size: 13px;">Reporte Semestral</p>
+    <p style="color: #a1a1aa; margin: 5px 0 0 0; font-size: 13px;">Reporte Semestral Global</p>
   </div>
   <div style="padding: 30px;">
-    <p style="margin-top: 0; font-size: 16px;">Hola <strong>${nombre_registrador}</strong>,</p>
-    <p style="color: #555; margin-bottom: 25px;">Aquí tienes el resumen de tu participación en el proyecto PLANT-OR durante este semestre:</p>
+    <p style="margin-top: 0; font-size: 16px;">Hola <strong>Equipo Administrador / Docente</strong>,</p>
+    <p style="color: #555; margin-bottom: 25px;">El semestre ha concluido. A continuación se presenta el resumen global de los registros en la plataforma PLANT-OR:</p>
     
     <div style="margin: 25px 0; padding: 18px 20px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;">
       <ul style="list-style: none; padding: 0; margin: 0; line-height: 2;">
@@ -128,11 +127,11 @@ export const sendSemestralReportEmail = async (
         <li>🟡 <strong>En revisión:</strong> ${stats.en_revision}</li>
         <li>🟠 <strong>Observados:</strong> ${stats.observados}</li>
         <li>🔴 <strong>Rechazados:</strong> ${stats.rechazados}</li>
-        <li style="border-top: 1px solid #e5e7eb; margin-top: 10px; padding-top: 10px;"><strong>Total Registrados:</strong> ${stats.total}</li>
+        <li style="border-top: 1px solid #e5e7eb; margin-top: 10px; padding-top: 10px;"><strong>Total Registrados en Plataforma:</strong> ${stats.total}</li>
       </ul>
     </div>
 
-    <p style="color: #555;">¡Gracias por tu valioso aporte al monitoreo de flora urbana!</p>
+    <p style="color: #555;">Este es un reporte automatizado generado desde el panel administrativo.</p>
   </div>
 </div>
   `;
@@ -147,8 +146,8 @@ export const sendSemestralReportEmail = async (
       },
       body: JSON.stringify({
         sender: { name: BREVO_SENDER_NAME, email: BREVO_SENDER_EMAIL },
-        to: [{ email: email_destino, name: nombre_registrador }],
-        subject: `Tu Reporte Semestral - PLANT-OR`,
+        to: emails_destino.map(email => ({ email, name: "Administrador" })),
+        subject: \`Reporte Semestral Global - PLANT-OR\`,
         htmlContent: htmlContent
       })
     });

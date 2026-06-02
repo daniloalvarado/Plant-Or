@@ -54,6 +54,7 @@ export const planta = {
     // 2. UBICACIÓN
     { name: 'latitud', title: 'Latitud', type: 'number', fieldset: 'ubicacion' },
     { name: 'longitud', title: 'Longitud', type: 'number', fieldset: 'ubicacion' },
+    { name: 'distrito', title: 'Distrito', type: 'string', fieldset: 'ubicacion' },
     { name: 'direccion', title: 'Dirección referencial', type: 'string', fieldset: 'ubicacion' },
     { name: 'tipo_ubicacion_1', title: 'Tipo de ubicación 1', type: 'string', fieldset: 'ubicacion', options: { list: ['Jirón', 'Avenida', 'Calle', 'Pasaje', 'Parque'] } },
     { name: 'tipo_ubicacion_2', title: 'Tipo de ubicación 2', type: 'string', fieldset: 'ubicacion', options: { list: ['Vereda', 'Berma central'] } },

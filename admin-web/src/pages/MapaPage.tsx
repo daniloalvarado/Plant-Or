@@ -54,7 +54,7 @@ export default function MapaPage() {
 
   const filtered = mapPlantas.filter(p => {
     const matchesState = activeFilter === 'all' || p.estado_revision === activeFilter;
-    const textToSearch = `${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.tipo_ubicacion_2 || ''} ${p.numero_casa || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
+    const textToSearch = `${p.distrito || ''} ${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.tipo_ubicacion_2 || ''} ${p.numero_casa || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
     const matchesSearch = !searchTerm || textToSearch.includes(searchTerm.toLowerCase());
     return matchesState && matchesSearch;
   })

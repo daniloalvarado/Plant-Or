@@ -54,6 +54,7 @@ export default function MapaScreen() {
           galeria,
           familia,
           estado_revision,
+          distrito,
           direccion,
           tipo_ubicacion_1,
           tipo_ubicacion_2,
@@ -71,7 +72,7 @@ export default function MapaScreen() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredPlantas = plantas.filter(p => {
-    const textToSearch = `${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.tipo_ubicacion_2 || ''} ${p.numero_casa || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
+    const textToSearch = `${p.distrito || ''} ${p.direccion || ''} ${p.tipo_ubicacion_1 || ''} ${p.tipo_ubicacion_2 || ''} ${p.numero_casa || ''} ${p.nombres_comunes || ''} ${p.nombre_cientifico || ''}`.toLowerCase();
     return !searchTerm || textToSearch.includes(searchTerm.toLowerCase());
   });
 

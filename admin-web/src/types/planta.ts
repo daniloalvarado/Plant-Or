@@ -22,6 +22,7 @@ export interface Planta {
   registrador_dia_clase?: string
   latitud?: number
   longitud?: number
+  distrito?: string
   direccion?: string
   tipo_ubicacion_1?: string
   tipo_ubicacion_2?: string
