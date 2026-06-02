@@ -51,7 +51,7 @@ export const sendStatusEmail = async (
     <p style="color: #555; margin-bottom: 25px;">Hay una actualización sobre tu registro botánico de la planta <strong>"${nombre_planta || 'la planta'}"</strong>.</p>
     
     <div style="margin: 25px 0; padding: 18px 20px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;">
-      <p style="margin: 0 0 8px 0;"><strong>Código de Registro:</strong> <br/><span style="font-family: monospace; background: #e5e7eb; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-top: 5px;">${codigo_registro || 'N/A'}</span></p>
+      <p style="margin: 0 0 8px 0;"><strong>Código de Registro:</strong> <span style="font-family: monospace; background: #e5e7eb; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-left: 6px; margin-top: 5px;">${codigo_registro || 'N/A'}</span></p>
       <p style="margin: 0;"><strong>Estado:</strong> <span style="color: ${text_color}; font-weight: bold; text-transform: uppercase;">${estado_nuevo}</span></p>
     </div>
 

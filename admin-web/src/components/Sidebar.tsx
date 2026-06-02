@@ -107,7 +107,7 @@ export function Sidebar() {
     <>
       {/* Desktop Sidebar */}
       <aside className={cn(
-        'hidden md:flex flex-col h-screen sticky top-0 transition-all duration-300 z-40 isolation-auto',
+        'hidden md:flex flex-col h-screen sticky top-0 transition-all duration-300 z-[1050] isolation-auto',
         collapsed ? 'w-16' : 'w-60'
       )}>
         <SidebarContent />
