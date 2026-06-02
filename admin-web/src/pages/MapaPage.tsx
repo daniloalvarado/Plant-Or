@@ -10,6 +10,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { EstadoBadge } from '@/components/EstadoBadge'
 import { useState } from 'react'
 import type { Planta } from '@/types/planta'
+import { CustomSelect } from '@/components/CustomSelect'
 
 // Fix Leaflet default icon paths broken by Vite bundler
 delete (L.Icon.Default.prototype as any)._getIconUrl
@@ -107,20 +108,21 @@ export default function MapaPage() {
           </div>
 
           {/* Filters - Mobile (Dropdown) */}
-          <div className="flex sm:hidden items-center gap-2 w-full">
+          <div className="flex sm:hidden items-center gap-2 w-full flex-1">
             <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-            <select
-              value={activeFilter}
-              onChange={(e) => setActiveFilter(e.target.value)}
-              className="flex-1 bg-black border border-zinc-800 text-white text-sm rounded-lg py-2 pl-3 pr-8 focus:outline-none focus:border-[#1FC451] appearance-none"
-            >
-              <option value="all">Todos ({counts['all'] ?? 0})</option>
-              {ALL_STATES.map(state => (
-                <option key={state} value={state}>
-                  {state} ({counts[state] ?? 0})
-                </option>
-              ))}
-            </select>
+            <div className="flex-1 min-w-0">
+              <CustomSelect
+                value={activeFilter}
+                onChange={(val) => setActiveFilter(val)}
+                options={[
+                  { value: 'all', label: `Todos (${counts['all'] ?? 0})` },
+                  ...ALL_STATES.map(state => ({
+                    value: state,
+                    label: `${state} (${counts[state] ?? 0})`
+                  }))
+                ]}
+              />
+            </div>
           </div>
         </div>
 
