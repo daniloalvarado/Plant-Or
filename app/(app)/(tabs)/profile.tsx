@@ -336,17 +336,14 @@ export default function Profile() {
               {/* Name & Email */}
               <Pressable onPress={() => setIsEditing(true)}>
                 <YStack style={{ alignItems: "center" }} gap="$2">
-                  <XStack gap="$2" style={{ alignItems: "center" }}>
-                    <H1
-                      fontSize={28}
-                      fontWeight="700"
-                      color="#ffffff"
-                      style={{ textAlign: "center" }}
-                    >
-                      {displayName}
-                    </H1>
-                    <MaterialCommunityIcons name="pencil" size={20} color="rgba(255,255,255,0.5)" />
-                  </XStack>
+                  <H1
+                    fontSize={28}
+                    fontWeight="700"
+                    color="#ffffff"
+                    style={{ textAlign: "center" }}
+                  >
+                    {displayName}
+                  </H1>
                   {user?.primaryEmailAddress?.emailAddress && (
                     <Text fontSize={14} color="rgba(255,255,255,0.7)">
                       {user.primaryEmailAddress.emailAddress}
