@@ -52,6 +52,9 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [showStudentFields, setShowStudentFields] = useState(
+    !!(user?.unsafeMetadata?.dni || user?.unsafeMetadata?.facultad || user?.unsafeMetadata?.escuela)
+  );
   
   const [isGeneratingCert, setIsGeneratingCert] = useState(false);
 
@@ -201,30 +204,45 @@ export default function Profile() {
     setErrorMsg('');
     if (!user) return;
     
-    if (dni && dni.length !== 8) {
-      setErrorMsg("Si ingresas un DNI, debe tener exactamente 8 dígitos numéricos.");
-      return;
+    const isStudentFieldsFilled = showStudentFields && (dni || facultad || escuela || curso || diaClase);
+    
+    if (isStudentFieldsFilled) {
+      if (!dni || dni.length !== 8 || !facultad || !escuela) {
+        setErrorMsg("Si eres estudiante, debes llenar obligatoriamente el DNI, Facultad y Escuela.");
+        return;
+      }
     }
 
     setIsSaving(true);
     try {
+      const academicData = isStudentFieldsFilled ? {
+        dni, curso, facultad, escuela, dia_clase: diaClase
+      } : {
+        dni: '', curso: '', facultad: '', escuela: '', dia_clase: ''
+      };
+
+      const studentDataChanged = 
+        academicData.dni !== (user.unsafeMetadata.dni || '') ||
+        academicData.facultad !== (user.unsafeMetadata.facultad || '') ||
+        academicData.escuela !== (user.unsafeMetadata.escuela || '') ||
+        academicData.curso !== (user.unsafeMetadata.curso || '') ||
+        academicData.dia_clase !== (user.unsafeMetadata.dia_clase || '');
+
       await user.update({
         firstName,
         lastName,
         unsafeMetadata: {
           ...user.unsafeMetadata,
-          dni,
-          curso,
-          facultad,
-          escuela,
-          dia_clase: diaClase
+          ...academicData
         }
       });
       // Forzar recarga de Clerk para sincronizar de inmediato
       await user.reload();
       
       setIsEditing(false);
-      setShowSuccess(true);
+      if (studentDataChanged) {
+        setShowSuccess(true);
+      }
     } catch (e) {
       console.error(e);
       setErrorMsg("Error al guardar el perfil. Intenta de nuevo.");
@@ -577,32 +595,47 @@ export default function Profile() {
                 </YStack>
               </XStack>
 
-              <XStack gap="$3">
-                <YStack flex={1}>
-                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>DNI (Opcional)</Text>
-                  <Input height={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+              <Pressable 
+                onPress={() => setShowStudentFields(!showStudentFields)}
+                style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.1)', marginTop: 8 }}
+              >
+                <YStack>
+                  <Text color="#ffffff" fontSize={14} fontWeight="bold">¿Eres estudiante o docente UNAP?</Text>
+                  <Text color="rgba(255,255,255,0.5)" fontSize={12}>Llena estos campos para tu perfil académico</Text>
                 </YStack>
-                <YStack flex={1}>
-                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Día de clase</Text>
-                  <Input height={40} value={diaClase} onChangeText={setDiaClase} placeholder="Ej. Martes" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
-                </YStack>
-              </XStack>
+                <MaterialCommunityIcons name={showStudentFields ? "chevron-up" : "chevron-down"} size={24} color="rgba(255,255,255,0.5)" />
+              </Pressable>
 
-              <YStack>
-                <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Facultad</Text>
-                <Input height={40} value={facultad} onChangeText={setFacultad} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
-              </YStack>
+              {showStudentFields && (
+                <YStack gap="$3">
+                  <XStack gap="$3">
+                    <YStack flex={1}>
+                      <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>DNI (Obligatorio)</Text>
+                      <Input height={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                    </YStack>
+                    <YStack flex={1}>
+                      <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Día de clase (Opcional)</Text>
+                      <Input height={40} value={diaClase} onChangeText={setDiaClase} placeholder="Ej. Martes" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                    </YStack>
+                  </XStack>
 
-              <XStack gap="$3">
-                <YStack flex={1}>
-                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Escuela</Text>
-                  <Input height={40} value={escuela} onChangeText={setEscuela} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  <YStack>
+                    <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Facultad (Obligatorio)</Text>
+                    <Input height={40} value={facultad} onChangeText={setFacultad} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  </YStack>
+
+                  <XStack gap="$3">
+                    <YStack flex={1}>
+                      <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Escuela (Obligatorio)</Text>
+                      <Input height={40} value={escuela} onChangeText={setEscuela} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                    </YStack>
+                    <YStack flex={1}>
+                      <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Curso (Opcional)</Text>
+                      <Input height={40} value={curso} onChangeText={setCurso} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                    </YStack>
+                  </XStack>
                 </YStack>
-                <YStack flex={1}>
-                  <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Curso</Text>
-                  <Input height={40} value={curso} onChangeText={setCurso} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
-                </YStack>
-              </XStack>
+              )}
 
               {errorMsg ? (
                 <View style={{ backgroundColor: 'rgba(255,68,68,0.2)', padding: 8, borderRadius: 8, borderWidth: 1, borderColor: '#ff4444' }}>
@@ -628,7 +661,7 @@ export default function Profile() {
       {/* Modal de Éxito */}
       <Modal visible={showSuccess} transparent animationType="fade">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-          <Card padding="$6" alignItems="center" gap="$4" backgroundColor="#12221A" borderWidth={1} borderColor="#1FC451" borderRadius="$6" width="100%">
+          <Card padding="$6" alignItems="center" gap="$4" backgroundColor="#12221A" borderWidth={1} borderColor="#1FC451" borderRadius="$6" width="100%" maxWidth={340}>
             <MaterialCommunityIcons name="check-circle" size={80} color="#1FC451" />
             <H2 mt="$2" color="#1FC451">¡Perfil Actualizado!</H2>
             <Paragraph style={{ textAlign: 'center' }} color="rgba(255,255,255,0.7)">
