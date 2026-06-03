@@ -7,26 +7,26 @@ import { CustomSelect } from '@/components/CustomSelect'
 const CATEGORIAS = ['Hábito', 'Tipo de vida', 'Forma', 'Color', 'Tamaño', 'Textura', 'Estructura']
 
 const FLORA_ICONS = [
-  { value: 'tree', label: 'Árbol' },
-  { value: 'tree-outline', label: 'Árbol (Contorno)' },
-  { value: 'pine-tree', label: 'Pino' },
-  { value: 'pine-tree-box', label: 'Pino (Caja)' },
-  { value: 'leaf', label: 'Hoja' },
-  { value: 'leaf-maple', label: 'Hoja de Arce' },
-  { value: 'flower', label: 'Flor' },
-  { value: 'flower-outline', label: 'Flor (Contorno)' },
-  { value: 'flower-tulip', label: 'Tulipán' },
-  { value: 'sprout', label: 'Brote' },
-  { value: 'sprout-outline', label: 'Brote (Contorno)' },
-  { value: 'seed', label: 'Semilla' },
-  { value: 'seed-outline', label: 'Semilla (Contorno)' },
-  { value: 'grass', label: 'Pasto/Hierba' },
-  { value: 'mushroom', label: 'Hongo' },
-  { value: 'mushroom-outline', label: 'Hongo (Contorno)' },
-  { value: 'water', label: 'Agua' },
-  { value: 'water-outline', label: 'Agua (Contorno)' },
-  { value: 'nature', label: 'Naturaleza' },
-  { value: 'palm-tree', label: 'Palmera' }
+  { value: 'tree', label: '🌳 Árbol' },
+  { value: 'tree-outline', label: '🌳 Árbol (Contorno)' },
+  { value: 'pine-tree', label: '🌲 Pino' },
+  { value: 'pine-tree-box', label: '🌲 Pino (Caja)' },
+  { value: 'leaf', label: '🍃 Hoja' },
+  { value: 'leaf-maple', label: '🍁 Hoja de Arce' },
+  { value: 'flower', label: '🌸 Flor' },
+  { value: 'flower-outline', label: '💮 Flor (Contorno)' },
+  { value: 'flower-tulip', label: '🌷 Tulipán' },
+  { value: 'sprout', label: '🌱 Brote' },
+  { value: 'sprout-outline', label: '🌱 Brote (Contorno)' },
+  { value: 'seed', label: '🌰 Semilla' },
+  { value: 'seed-outline', label: '🌰 Semilla (Contorno)' },
+  { value: 'grass', label: '🌾 Pasto/Hierba' },
+  { value: 'mushroom', label: '🍄 Hongo' },
+  { value: 'mushroom-outline', label: '🍄 Hongo (Contorno)' },
+  { value: 'water', label: '💧 Agua' },
+  { value: 'water-outline', label: '💧 Agua (Contorno)' },
+  { value: 'nature', label: '🏞️ Naturaleza' },
+  { value: 'palm-tree', label: '🌴 Palmera' }
 ]
 
 const ICON_TO_EMOJI: Record<string, string> = {
@@ -668,7 +668,7 @@ export default function FiltrosPage() {
                 className="px-4 py-2 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
                 disabled={deletingId !== null}
               >
-                {deletingId ? <LoadingSpinner text="" /> : 'Eliminar'}
+                {deletingId ? 'Eliminando...' : 'Eliminar'}
               </button>
             </div>
           </div>
