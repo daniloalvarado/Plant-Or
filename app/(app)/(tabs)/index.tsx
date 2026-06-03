@@ -182,7 +182,13 @@ export default function HomeScreen() {
             onChangeText={setSearchQuery}
           />
           <Pressable
-            onPress={() => setModalVisible(true)}
+            onPress={async () => {
+              try {
+                const filtrosData = await client.fetch(`*[_type == "filtro" && activo == true] | order(categoria asc, nombre_filtro asc)`);
+                setFiltrosDinamicos(filtrosData);
+              } catch (e) { console.error(e); }
+              setModalVisible(true);
+            }}
             style={[styles.filterButton, { backgroundColor: selectedFiltros.length > 0 ? "#1FC451" : "rgba(255,255,255,0.1)", justifyContent: 'center', alignItems: 'center', width: 40, height: 40 }]}
           >
             <MaterialCommunityIcons name="filter-variant" size={20} color={selectedFiltros.length > 0 ? "#08130D" : theme.text} />

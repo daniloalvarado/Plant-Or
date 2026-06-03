@@ -6,6 +6,29 @@ import { CustomSelect } from '@/components/CustomSelect'
 
 const CATEGORIAS = ['Hábito', 'Tipo de vida', 'Forma', 'Color', 'Tamaño', 'Textura', 'Estructura']
 
+const FLORA_ICONS = [
+  { value: 'tree', label: 'Árbol' },
+  { value: 'tree-outline', label: 'Árbol (Contorno)' },
+  { value: 'pine-tree', label: 'Pino' },
+  { value: 'pine-tree-box', label: 'Pino (Caja)' },
+  { value: 'leaf', label: 'Hoja' },
+  { value: 'leaf-maple', label: 'Hoja de Arce' },
+  { value: 'flower', label: 'Flor' },
+  { value: 'flower-outline', label: 'Flor (Contorno)' },
+  { value: 'flower-tulip', label: 'Tulipán' },
+  { value: 'sprout', label: 'Brote' },
+  { value: 'sprout-outline', label: 'Brote (Contorno)' },
+  { value: 'seed', label: 'Semilla' },
+  { value: 'seed-outline', label: 'Semilla (Contorno)' },
+  { value: 'grass', label: 'Pasto/Hierba' },
+  { value: 'mushroom', label: 'Hongo' },
+  { value: 'mushroom-outline', label: 'Hongo (Contorno)' },
+  { value: 'water', label: 'Agua' },
+  { value: 'water-outline', label: 'Agua (Contorno)' },
+  { value: 'nature', label: 'Naturaleza' },
+  { value: 'palm-tree', label: 'Palmera' }
+]
+
 interface Filtro {
   _id: string
   nombre_filtro: string
@@ -17,7 +40,7 @@ interface Filtro {
   orden?: number
 }
 
-const EMPTY_FORM = { nombre_filtro: '', categoria: CATEGORIAS[0], dato_tecnico: '', icono: '', tipo_seleccion: 'Selección única', orden: 0 }
+const EMPTY_FORM = { nombre_filtro: '', categoria: CATEGORIAS[0], dato_tecnico: '', icono: '', tipo_seleccion: 'Selección única', orden: 1 }
 
 export default function FiltrosPage() {
   const [filtros, setFiltros] = useState<Filtro[]>([])
@@ -59,6 +82,60 @@ export default function FiltrosPage() {
       setFormError('El nombre visible y el dato técnico son obligatorios.')
       return
     }
+
+    // 1. Validar dato técnico existente
+    let currentStats = frequentData;
+    if (Object.keys(currentStats).length === 0) {
+      // Fetch temporario si no se ha cargado "Ver datos reales"
+      try {
+        const data = await client.fetch(`*[_type == "planta" && !(_id in path("drafts.**")) && estado_revision == "Validado"]`);
+        const stats: Record<string, Record<string, number>> = {};
+        data.forEach((planta: any) => {
+          const processValue = (key: string, val: any) => {
+            if (!val) return;
+            if (!stats[key]) stats[key] = {};
+            if (Array.isArray(val)) {
+              val.forEach(v => { if (v && typeof v === 'string') stats[key][v] = 1; });
+            } else if (typeof val === 'string') {
+              stats[key][val] = 1;
+            }
+          };
+          if (planta.estado_fenologico) processValue('estado_fenologico', planta.estado_fenologico);
+          if (planta.impacto_urbano) processValue('impacto_urbano', planta.impacto_urbano);
+          if (planta.valor_ornamental) processValue('valor_ornamental', planta.valor_ornamental);
+          if (planta.estado_individuo) processValue('estado_individuo', planta.estado_individuo);
+          if (planta.habito) processValue('habito', planta.habito);
+          if (planta.tipo_vida) processValue('tipo_vida', planta.tipo_vida);
+          ['arbol_datos', 'palmera_datos', 'arbusto_datos', 'liana_datos', 'hierba_datos'].forEach(block => {
+            if (planta[block]) Object.entries(planta[block]).forEach(([k, v]) => processValue(k, v));
+          });
+        });
+        currentStats = stats;
+      } catch (e) { console.error(e); }
+    }
+
+    if (Object.keys(currentStats).length > 0) {
+      const allDataValues = Object.values(currentStats).flatMap(v => Object.keys(v));
+      if (!allDataValues.includes(form.dato_tecnico)) {
+        setFormError('Error: El dato técnico ingresado no existe en los registros actuales.');
+        return;
+      }
+    }
+
+    // 2. Validar que no se repita el dato técnico en otro filtro
+    const isDatoRepetido = filtros.some(f => f.dato_tecnico === form.dato_tecnico && f._id !== editingId);
+    if (isDatoRepetido) {
+      setFormError('Error: Este dato técnico ya está asignado a otro filtro creado.');
+      return;
+    }
+
+    // 3. Validar orden único por categoría
+    const isOrdenRepetido = filtros.some(f => f.categoria === form.categoria && f.orden === form.orden && f._id !== editingId);
+    if (isOrdenRepetido) {
+      setFormError(`Error: El orden de aparición ${form.orden} ya está en uso dentro de la categoría "${form.categoria}".`);
+      return;
+    }
+
     setSaving(true)
     try {
       if (editingId) {
@@ -95,7 +172,7 @@ export default function FiltrosPage() {
       dato_tecnico: filtro.dato_tecnico || '',
       icono: filtro.icono || '',
       tipo_seleccion: filtro.tipo_seleccion || 'Selección única',
-      orden: filtro.orden || 0
+      orden: filtro.orden || 1
     })
     setEditingId(filtro._id)
     setShowForm(true)
@@ -336,13 +413,13 @@ export default function FiltrosPage() {
             </div>
             <div className="space-y-1">
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Ícono (MaterialCommunityIcons, opcional)
+                Ícono de Flora (Opcional)
               </label>
-              <input
-                className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-                placeholder="Ej. tree-outline"
+              <CustomSelect
                 value={form.icono}
-                onChange={e => setForm(f => ({ ...f, icono: e.target.value }))}
+                onChange={(val) => setForm(f => ({ ...f, icono: val }))}
+                options={[{ value: '', label: 'Ninguno' }, ...FLORA_ICONS]}
+                placeholder="Seleccionar ícono..."
               />
             </div>
             <div className="space-y-1">
@@ -361,13 +438,14 @@ export default function FiltrosPage() {
             </div>
             <div className="space-y-1">
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Orden de aparición (0 primero)
+                Orden de aparición (1 primero)
               </label>
               <input
                 type="number"
+                min="1"
                 className="w-full bg-input border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                 value={form.orden}
-                onChange={e => setForm(f => ({ ...f, orden: parseInt(e.target.value) || 0 }))}
+                onChange={e => setForm(f => ({ ...f, orden: parseInt(e.target.value) || 1 }))}
               />
             </div>
           </div>
