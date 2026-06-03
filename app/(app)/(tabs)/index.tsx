@@ -300,9 +300,18 @@ export default function HomeScreen() {
                               isActive ? { backgroundColor: "#1FC451", borderColor: "#1FC451" } : { backgroundColor: "rgba(255,255,255,0.05)" }
                             ]}
                           >
-                            <Text style={{ color: isActive ? "#08130D" : theme.text, fontWeight: isActive ? "bold" : "normal" }}>
-                              {filtro.nombre_filtro}
-                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                              {filtro.icono && (
+                                <MaterialCommunityIcons 
+                                  name={filtro.icono as any} 
+                                  size={16} 
+                                  color={isActive ? "#08130D" : theme.icon} 
+                                />
+                              )}
+                              <Text style={{ color: isActive ? "#08130D" : theme.text, fontWeight: isActive ? "bold" : "normal" }}>
+                                {filtro.nombre_filtro}
+                              </Text>
+                            </View>
                           </Pressable>
                         );
                       })}

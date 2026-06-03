@@ -29,6 +29,20 @@ const FLORA_ICONS = [
   { value: 'palm-tree', label: 'Palmera' }
 ]
 
+const ICON_TO_EMOJI: Record<string, string> = {
+  'tree': '🌳', 'tree-outline': '🌳',
+  'pine-tree': '🌲', 'pine-tree-box': '🌲',
+  'leaf': '🍃', 'leaf-maple': '🍁',
+  'flower': '🌸', 'flower-outline': '💮', 'flower-tulip': '🌷',
+  'sprout': '🌱', 'sprout-outline': '🌱',
+  'seed': '🌰', 'seed-outline': '🌰',
+  'grass': '🌾',
+  'mushroom': '🍄', 'mushroom-outline': '🍄',
+  'water': '💧', 'water-outline': '💧',
+  'nature': '🏞️',
+  'palm-tree': '🌴'
+}
+
 interface Filtro {
   _id: string
   nombre_filtro: string
@@ -52,6 +66,7 @@ export default function FiltrosPage() {
   const [showForm, setShowForm] = useState(false)
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<string>('Todas')
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
   
   // Stats
   const [frequentData, setFrequentData] = useState<Record<string, Record<string, number>>>({})
@@ -136,6 +151,13 @@ export default function FiltrosPage() {
       return;
     }
 
+    // 4. Validar nombre visible único por categoría
+    const isNombreRepetido = filtros.some(f => f.categoria === form.categoria && f.nombre_filtro.trim().toLowerCase() === form.nombre_filtro.trim().toLowerCase() && f._id !== editingId);
+    if (isNombreRepetido) {
+      setFormError(`Error: El nombre visible "${form.nombre_filtro}" ya está en uso dentro de la categoría "${form.categoria}". Por favor elige otro.`);
+      return;
+    }
+
     setSaving(true)
     try {
       if (editingId) {
@@ -195,16 +217,26 @@ export default function FiltrosPage() {
     }
   }
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('¿Eliminar este filtro definitivamente?')) return
-    setDeletingId(id)
+  const confirmDelete = (id: string) => {
+    setDeleteConfirmId(id)
+  }
+
+  const handleDelete = async () => {
+    if (!deleteConfirmId) return
+    setDeletingId(deleteConfirmId)
     try {
-      await client.delete(id)
-      setFiltros(prev => prev.filter(f => f._id !== id))
+      await client.delete(deleteConfirmId)
+      setFiltros(prev => prev.filter(f => f._id !== deleteConfirmId))
+      if (editingId === deleteConfirmId) {
+        setShowForm(false)
+        setEditingId(null)
+        setForm(EMPTY_FORM)
+      }
     } catch (e) {
       console.error(e)
     } finally {
       setDeletingId(null)
+      setDeleteConfirmId(null)
     }
   }
 
@@ -301,7 +333,14 @@ export default function FiltrosPage() {
             {showStats ? "Ocultar Datos Reales" : "Ver Datos Reales"}
           </button>
           <button
-            onClick={() => { setForm(EMPTY_FORM); setEditingId(null); setShowForm(v => !v) }}
+            onClick={() => { 
+              setForm(EMPTY_FORM); 
+              setEditingId(null); 
+              setShowForm(true); 
+              setTimeout(() => {
+                document.getElementById('filtro-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+              }, 50)
+            }}
             className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
@@ -538,7 +577,13 @@ export default function FiltrosPage() {
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         Dato técnico: <code className="bg-white/5 px-1 rounded">{filtro.dato_tecnico}</code>
-                        {filtro.icono && <> · Ícono: <code className="bg-white/5 px-1 rounded">{filtro.icono}</code></>}
+                        {filtro.icono && (
+                          <span className="inline-flex items-center gap-1 ml-1">
+                            · Ícono: 
+                            <span className="text-sm ml-0.5">{ICON_TO_EMOJI[filtro.icono] || ''}</span>
+                            <code className="bg-white/5 px-1 rounded">{filtro.icono}</code>
+                          </span>
+                        )}
                       </p>
                     </div>
                     <div className="flex items-center gap-1 flex-shrink-0">
@@ -580,9 +625,9 @@ export default function FiltrosPage() {
                       {/* Delete */}
                       <div className="relative group">
                         <button
-                          onClick={() => handleDelete(filtro._id)}
+                          onClick={() => confirmDelete(filtro._id)}
                           disabled={deletingId === filtro._id}
-                          className="p-2 rounded-lg text-zinc-500 hover:bg-red-500/10 hover:text-red-400 transition-colors disabled:opacity-40 cursor-pointer"
+                          className="p-2 rounded-lg text-zinc-500 hover:bg-red-500/10 hover:text-red-400 transition-colors disabled:opacity-50 cursor-pointer"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -596,6 +641,37 @@ export default function FiltrosPage() {
               </div>
             )
           })}
+        </div>
+      )}
+
+      {/* Modal de eliminación */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+          <div className="bg-card border border-border p-6 rounded-xl w-full max-w-sm shadow-2xl animate-in fade-in zoom-in duration-200">
+            <h3 className="font-bold text-lg mb-2 text-foreground flex items-center gap-2">
+              <Trash2 className="w-5 h-5 text-red-500" />
+              Eliminar Filtro
+            </h3>
+            <p className="text-sm text-muted-foreground mb-6">
+              ¿Estás seguro de que deseas eliminar este filtro definitivamente? Esta acción no se puede deshacer y afectará las búsquedas en la app.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={() => setDeleteConfirmId(null)} 
+                className="px-4 py-2 text-sm font-medium text-foreground bg-secondary hover:bg-secondary/80 rounded-lg transition-colors cursor-pointer"
+                disabled={deletingId !== null}
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={handleDelete} 
+                className="px-4 py-2 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+                disabled={deletingId !== null}
+              >
+                {deletingId ? <LoadingSpinner text="" /> : 'Eliminar'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
