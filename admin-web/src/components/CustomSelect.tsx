@@ -45,7 +45,7 @@ export function CustomSelect({ value, onChange, options, placeholder = 'Seleccio
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-[#0A0A0A] border border-border rounded-lg shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute z-50 w-full mt-1 bg-popover border border-border rounded-lg shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           <ul className="max-h-60 overflow-y-auto py-1 custom-scrollbar">
             {options.map((option) => (
               <li

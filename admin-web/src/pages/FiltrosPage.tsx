@@ -206,7 +206,7 @@ export default function FiltrosPage() {
           <div className="relative group/tooltip">
             <button
               onClick={fetchFiltros}
-              className="p-2 rounded-lg border border-zinc-800 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              className="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
@@ -404,8 +404,8 @@ export default function FiltrosPage() {
             onClick={() => setCategoriaSeleccionada(cat)}
             className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors cursor-pointer ${
               categoriaSeleccionada === cat
-                ? 'bg-[#1FC451] text-[#080808] border-[#1FC451] font-bold'
-                : 'border-border text-muted-foreground hover:text-white hover:bg-white/10 hover:border-white/30'
+                ? 'bg-primary text-primary-foreground border-primary font-bold'
+                : 'border-border text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-border/50'
             }`}
           >
             {cat}
