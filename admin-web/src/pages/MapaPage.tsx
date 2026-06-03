@@ -11,6 +11,7 @@ import { EstadoBadge } from '@/components/EstadoBadge'
 import { useState } from 'react'
 import type { Planta } from '@/types/planta'
 import { CustomSelect } from '@/components/CustomSelect'
+import { useTheme } from '@/components/ThemeProvider'
 
 // Fix Leaflet default icon paths broken by Vite bundler
 delete (L.Icon.Default.prototype as any)._getIconUrl
@@ -46,6 +47,7 @@ const createMarkerIcon = (estado: string) => {
 export default function MapaPage() {
   const { plantas, loading } = usePlantas()
   const navigate = useNavigate()
+  const { theme } = useTheme()
   const [activeFilter, setActiveFilter] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -85,8 +87,8 @@ export default function MapaPage() {
               onClick={() => setActiveFilter('all')}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
                 activeFilter === 'all'
-                  ? 'bg-white/10 border-white/30 text-white'
-                  : 'border-white/10 text-muted-foreground hover:text-white hover:bg-white/10'
+                  ? 'bg-foreground/10 border-foreground/30 text-foreground'
+                  : 'border-border text-muted-foreground hover:text-foreground hover:bg-foreground/10'
               }`}
             >
               Todos ({counts['all'] ?? 0})
@@ -101,7 +103,7 @@ export default function MapaPage() {
                   backgroundColor: STATUS_COLORS[state] + '18',
                 } : {}}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                  activeFilter === state ? '' : 'border-white/10 text-muted-foreground hover:text-white hover:bg-white/5'
+                  activeFilter === state ? '' : 'border-border text-muted-foreground hover:text-foreground hover:bg-foreground/5'
                 }`}
               >
                 {state} ({counts[state] ?? 0})
@@ -136,7 +138,7 @@ export default function MapaPage() {
             placeholder="Buscar por distrito, calle o nombre..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-black border border-zinc-800 rounded-lg text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#1FC451] transition-colors"
+            className="w-full pl-9 pr-4 py-2 bg-input border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#1FC451] transition-colors"
           />
         </div>
       </div>
@@ -151,8 +153,9 @@ export default function MapaPage() {
           className="z-0"
         >
           <TileLayer
+            key={theme} // force re-render when theme changes
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            url={theme === 'dark' ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
             subdomains="abcd"
           />
           <MarkerClusterGroup
@@ -182,14 +185,14 @@ export default function MapaPage() {
         </MapContainer>
 
         {/* Legend */}
-        <div className="absolute bottom-6 left-4 bg-black/80 backdrop-blur-sm rounded-xl border border-white/10 p-3 space-y-1.5 z-[1000]">
+        <div className="absolute bottom-6 left-4 bg-card/80 backdrop-blur-sm rounded-xl border border-border p-3 space-y-1.5 z-[1000]">
           {ALL_STATES.map(state => (
             <div key={state} className="flex items-center gap-2">
               <div
                 className="w-3 h-3 rounded-full flex-shrink-0"
                 style={{ backgroundColor: STATUS_COLORS[state], boxShadow: `0 0 6px ${STATUS_COLORS[state]}80` }}
               />
-              <span className="text-xs text-zinc-300">{state}</span>
+              <span className="text-xs text-foreground">{state}</span>
             </div>
           ))}
         </div>

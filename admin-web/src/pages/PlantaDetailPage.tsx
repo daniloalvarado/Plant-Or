@@ -211,8 +211,8 @@ export default function PlantaDetailPage() {
                         alt={labels[i] || `Foto ${i + 1}`}
                         className="w-full aspect-square object-cover rounded-lg border border-border hover:border-primary transition-colors"
                       />
-                      <div className="absolute inset-0 bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <Eye className="w-5 h-5 text-white" />
+                      <div className="absolute inset-0 bg-background/40 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <Eye className="w-5 h-5 text-foreground" />
                       </div>
                       <p className="text-xs text-muted-foreground mt-1 text-center truncate">{labels[i] || ''}</p>
                     </div>
@@ -313,7 +313,7 @@ export default function PlantaDetailPage() {
       {/* Image Lightbox */}
       {selectedImg && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-background/80 flex items-center justify-center p-4"
           onClick={() => setSelectedImg(null)}
         >
           <img src={selectedImg} alt="Vista ampliada" className="max-w-full max-h-full rounded-xl object-contain" />
@@ -322,21 +322,21 @@ export default function PlantaDetailPage() {
 
       {/* Observar Modal */}
       {observarOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-[#0A0A0A] border border-zinc-800 rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
             <div>
               <h3 className="text-xl font-bold text-[#F97316]">Observar Registro</h3>
-              <p className="text-sm text-zinc-400 mt-1">El estudiante verá este mensaje en su aplicación móvil para poder corregirlo.</p>
+              <p className="text-sm text-muted-foreground mt-1">El estudiante verá este mensaje en su aplicación móvil para poder corregirlo.</p>
             </div>
             <textarea
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe lo que falta o debe corregirse (ej. 'La foto de la hoja está borrosa')..."
               rows={4}
-              className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all"
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all"
             />
             <div className="flex gap-3 justify-end pt-2">
-              <button onClick={() => setObservarOpen(false)} className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors">Cancelar</button>
+              <button onClick={() => setObservarOpen(false)} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Cancelar</button>
               <button
                 onClick={() => handleAction('Observado', motivoTexto)}
                 disabled={!motivoTexto.trim() || actionLoading}
@@ -351,21 +351,21 @@ export default function PlantaDetailPage() {
 
       {/* Rechazar Modal */}
       {rechazarOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-[#0A0A0A] border border-zinc-800 rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
             <div>
               <h3 className="text-xl font-bold text-red-600">¿Rechazar Registro?</h3>
-              <p className="text-sm text-zinc-400 mt-1">El estudiante verá el motivo del rechazo en su aplicación móvil.</p>
+              <p className="text-sm text-muted-foreground mt-1">El estudiante verá el motivo del rechazo en su aplicación móvil.</p>
             </div>
             <textarea
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe por qué se rechaza este registro de forma definitiva..."
               rows={4}
-              className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all"
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all"
             />
             <div className="flex gap-3 justify-end pt-2">
-              <button onClick={() => setRechazarOpen(false)} className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors">Cancelar</button>
+              <button onClick={() => setRechazarOpen(false)} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Cancelar</button>
               <button
                 onClick={() => handleAction('Rechazado', motivoTexto)}
                 disabled={!motivoTexto.trim() || actionLoading}

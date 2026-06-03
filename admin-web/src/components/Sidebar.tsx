@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
-  LayoutDashboard, ClipboardList, CheckCircle, Leaf,
-  Map, ChevronLeft, ChevronRight, LogOut, Menu, SlidersHorizontal, Settings, Award
+  Map, ChevronLeft, ChevronRight, LogOut, Menu, SlidersHorizontal, Settings, Award, Sun, Moon
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useClerk, useUser } from '@clerk/clerk-react'
+import { useTheme } from '@/components/ThemeProvider'
 
 const navItems = [
   { href: '/', icon: LayoutDashboard, label: 'Dashboard' },
@@ -24,6 +24,7 @@ export function Sidebar() {
   const location = useLocation()
   const { signOut } = useClerk()
   const { user } = useUser()
+  const { theme, setTheme } = useTheme()
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-sidebar-background border-r border-sidebar-border">
@@ -66,7 +67,7 @@ export function Sidebar() {
               <item.icon className="w-4.5 h-4.5 flex-shrink-0" />
               {!collapsed && <span>{item.label}</span>}
               {collapsed && (
-                <span className="absolute left-14 px-2 py-1 bg-black text-white text-xs font-bold rounded border border-zinc-800 opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+                <span className="absolute left-14 px-2 py-1 bg-popover text-popover-foreground text-xs font-bold rounded border border-border opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
                   {item.label}
                 </span>
               )}
@@ -91,7 +92,7 @@ export function Sidebar() {
               </div>
             )}
             {collapsed && (
-              <span className="absolute left-14 px-2 py-1 bg-black text-white text-xs font-bold rounded border border-zinc-800 opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+              <span className="absolute left-14 px-2 py-1 bg-popover text-popover-foreground text-xs font-bold rounded border border-border opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
                 Mi Perfil
               </span>
             )}
@@ -107,8 +108,25 @@ export function Sidebar() {
           <LogOut className="w-4 h-4 flex-shrink-0" />
           {!collapsed && <span>Cerrar sesión</span>}
           {collapsed && (
-            <span className="absolute left-14 px-2 py-1 bg-black text-white text-xs font-bold rounded border border-zinc-800 opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+            <span className="absolute left-14 px-2 py-1 bg-popover text-popover-foreground text-xs font-bold rounded border border-border opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
               Cerrar sesión
+            </span>
+          )}
+        </button>
+
+        {/* Theme Toggle */}
+        <button
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          className={cn(
+            "relative group/nav flex items-center rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer",
+            collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-2 px-3 py-2 w-full"
+          )}
+        >
+          {theme === 'dark' ? <Sun className="w-4 h-4 flex-shrink-0" /> : <Moon className="w-4 h-4 flex-shrink-0" />}
+          {!collapsed && <span>{theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}</span>}
+          {collapsed && (
+            <span className="absolute left-14 px-2 py-1 bg-popover text-popover-foreground text-xs font-bold rounded border border-border opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
+              {theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
             </span>
           )}
         </button>
@@ -129,7 +147,7 @@ export function Sidebar() {
       {/* Mobile Toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-[#080808] border border-zinc-700 text-foreground shadow-lg"
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-card border border-border text-foreground shadow-lg"
       >
         <Menu className="w-5 h-5" />
       </button>
@@ -137,25 +155,25 @@ export function Sidebar() {
       {/* Mobile Drawer */}
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-40 flex">
-          <div className="w-72 h-full bg-[#080808] shadow-2xl border-r border-zinc-800 flex-shrink-0">
+          <div className="w-72 h-full bg-sidebar-background shadow-2xl border-r border-sidebar-border flex-shrink-0">
             <SidebarContent />
           </div>
-          <div className="flex-1 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="flex-1 bg-background/80 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
         </div>
       )}
 
       {/* Logout Confirm Modal */}
       {logoutConfirmOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-[#0A0A0A] border border-zinc-800 rounded-2xl p-6 w-full max-w-sm space-y-4 shadow-2xl text-center">
-            <h3 className="text-xl font-bold text-white">¿Cerrar sesión?</h3>
-            <p className="text-sm text-zinc-400">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-sm space-y-4 shadow-2xl text-center">
+            <h3 className="text-xl font-bold text-foreground">¿Cerrar sesión?</h3>
+            <p className="text-sm text-muted-foreground">
               Saldrás del panel administrativo de PLANT-OR.
             </p>
             <div className="flex gap-3 justify-center pt-4">
               <button
                 onClick={() => setLogoutConfirmOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 Cancelar
               </button>

@@ -1,5 +1,7 @@
 import React from 'react'
 import { ClerkProvider, SignedIn, SignedOut, SignIn, useUser, useAuth, UserProfile } from '@clerk/clerk-react'
+import { dark } from '@clerk/themes'
+import { ThemeProvider, useTheme } from '@/components/ThemeProvider'
 import { XCircle } from 'lucide-react'
 import { Toaster } from 'sonner'
 import { esES } from '@clerk/localizations'
@@ -26,9 +28,9 @@ function RoleCheck({ children }: { children: React.ReactNode }) {
   
   if (role !== 'admin' && role !== 'profesor_validador') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#000000] p-4 text-center">
-        <h1 className="text-2xl font-bold text-white mb-2">Acceso Denegado</h1>
-        <p className="text-zinc-400 mb-8 max-w-md">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4 text-center">
+        <h1 className="text-2xl font-bold text-foreground mb-2">Acceso Denegado</h1>
+        <p className="text-muted-foreground mb-8 max-w-md">
           Tu cuenta "{user.primaryEmailAddress?.emailAddress}" no tiene permisos de administrador o profesor validador para acceder a este panel.
         </p>
         <button
@@ -48,7 +50,7 @@ function MainContent() {
   return (
     <>
       <SignedOut>
-        <div className="auth-container min-h-screen flex flex-col items-center justify-center bg-[#000000] p-4">
+        <div className="auth-container min-h-screen flex flex-col items-center justify-center bg-background p-4">
           <SignIn routing="hash" />
         </div>
       </SignedOut>
@@ -68,7 +70,7 @@ function MainContent() {
                   <Route path="/filtros" element={<FiltrosPage />} />
                   <Route path="/certificados" element={<CertificadosPage />} />
                   <Route path="/planta/:id" element={<PlantaDetailPage />} />
-                  <Route path="/perfil" element={<div className="flex justify-center"><UserProfile appearance={{ elements: { card: 'bg-[#0a0a0a] border-zinc-800' } }} /></div>} />
+                  <Route path="/perfil" element={<div className="flex justify-center"><UserProfile appearance={{ elements: { card: 'bg-card border-border' } }} /></div>} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </div>
@@ -80,7 +82,8 @@ function MainContent() {
   );
 }
 
-function App() {
+function ClerkApp() {
+  const { theme } = useTheme()
   return (
     <ClerkProvider 
       publishableKey={clerkPubKey}
@@ -98,29 +101,26 @@ function App() {
         }
       }}
       appearance={{
+        baseTheme: theme === 'dark' ? dark : undefined,
         variables: {
           colorPrimary: '#1FC451',
-          colorBackground: '#0a0a0a',
-          colorText: '#ffffff',
-          colorInputBackground: '#121212',
-          colorInputText: '#ffffff',
           borderRadius: '0.75rem',
         },
         elements: {
-          card: "shadow-2xl border border-zinc-800 w-full max-w-[400px] p-8 bg-[#0a0a0a]",
+          card: "shadow-2xl border border-border w-full max-w-[400px] p-8 bg-card",
           headerTitle: "text-2xl font-bold text-center text-[#1FC451]",
-          headerSubtitle: "text-center text-zinc-400",
-          socialButtonsBlockButton: "border-2 border-white bg-transparent hover:bg-white/10 transition-colors py-2.5",
-          socialButtonsBlockButtonText: "!text-white font-medium",
+          headerSubtitle: "text-center text-muted-foreground",
+          socialButtonsBlockButton: "border-2 border-border bg-transparent hover:bg-muted transition-colors py-2.5",
+          socialButtonsBlockButtonText: "!text-foreground font-medium",
           formButtonPrimary: "bg-[#1FC451] hover:bg-[#19a343] text-black font-bold shadow-none py-2.5 transition-colors",
-          formFieldLabel: "text-zinc-300 font-medium",
-          formFieldInput: "bg-black border-zinc-800 text-white focus:border-[#1FC451] py-2.5",
+          formFieldLabel: "text-muted-foreground font-medium",
+          formFieldInput: "bg-input border-border text-foreground focus:border-[#1FC451] py-2.5",
           footerAction: "hidden",
-          dividerLine: "bg-zinc-800",
-          dividerText: "text-zinc-500",
-          identityPreviewText: "text-white",
+          dividerLine: "bg-border",
+          dividerText: "text-muted-foreground",
+          identityPreviewText: "text-foreground",
           identityPreviewEditButtonIcon: "text-[#1FC451]",
-          formFieldInputShowPasswordButton: "text-zinc-400 hover:text-white"
+          formFieldInputShowPasswordButton: "text-muted-foreground hover:text-foreground"
         }
       }}
     >
@@ -135,4 +135,10 @@ function App() {
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <ThemeProvider defaultTheme="dark" storageKey="plantor-ui-theme">
+      <ClerkApp />
+    </ThemeProvider>
+  )
+}

@@ -210,7 +210,7 @@ export default function FiltrosPage() {
             >
               <RefreshCw className="w-4 h-4" />
             </button>
-            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-white text-xs rounded border border-white/20 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-popover-foreground text-xs rounded border border-border opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
               Recargar
             </span>
           </div>
@@ -258,22 +258,22 @@ export default function FiltrosPage() {
 
       {/* Stats Viewer */}
       {showStats && (
-        <div className="bg-[#0A0A0A] border border-[#1FC451]/30 rounded-xl p-5 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300 shadow-[0_0_15px_rgba(31,196,81,0.1)]">
+        <div className="bg-card border border-primary/30 rounded-xl p-5 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300 shadow-[0_0_15px_rgba(31,196,81,0.1)]">
           <div className="flex items-center justify-between">
             <h2 className="font-bold text-[#1FC451] flex items-center gap-2 text-lg">
               <BarChart2 className="w-5 h-5" />
               Valores Reales Registrados
             </h2>
           </div>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-muted-foreground">
             Copia exactamente estos valores técnicos en el campo "Dato técnico" al crear tus filtros. Muestra el top 5 de respuestas más comunes en toda la base de datos.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
             {Object.entries(frequentData)
               .sort((a, b) => Object.keys(b[1]).length - Object.keys(a[1]).length)
               .map(([key, counts]) => (
-              <div key={key} className="bg-black border border-zinc-800 rounded-lg p-3 hover:border-zinc-700 transition-colors">
-                <h3 className="font-bold text-xs text-zinc-300 uppercase tracking-wider mb-3 pb-2 border-b border-zinc-800">
+              <div key={key} className="bg-background border border-border rounded-lg p-3 hover:border-muted-foreground/30 transition-colors">
+                <h3 className="font-bold text-xs text-muted-foreground uppercase tracking-wider mb-3 pb-2 border-b border-border">
                   {key.replace(/_/g, ' ')}
                 </h3>
                 <div className="space-y-2">
@@ -282,8 +282,8 @@ export default function FiltrosPage() {
                     .slice(0, 5) // top 5
                     .map(([val, count]) => (
                     <div key={val} className="flex justify-between items-center text-xs group">
-                      <span className="text-zinc-400 truncate pr-2 group-hover:text-white transition-colors" title={val}>{val}</span>
-                      <span className="bg-zinc-800 text-[#1FC451] px-2 py-0.5 rounded font-mono font-bold">{count}</span>
+                      <span className="text-muted-foreground truncate pr-2 group-hover:text-foreground transition-colors" title={val}>{val}</span>
+                      <span className="bg-muted text-[#1FC451] px-2 py-0.5 rounded font-mono font-bold">{count}</span>
                     </div>
                   ))}
                 </div>
@@ -470,7 +470,7 @@ export default function FiltrosPage() {
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
                         </button>
-                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded border border-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
+                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-blue-950 text-blue-400 text-xs rounded border border-blue-800 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
                           Editar
                         </span>
                       </div>

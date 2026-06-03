@@ -227,7 +227,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                             >
                               <CheckCircle className="w-4 h-4" />
                             </button>
-                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[#1FC451] text-xs font-bold rounded border border-[#1FC451]/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-[#1FC451] text-xs font-bold rounded border border-[#1FC451]/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
                               Aprobar
                             </span>
                           </div>
@@ -241,7 +241,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                             >
                               <AlertCircle className="w-4 h-4" />
                             </button>
-                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-orange-400 text-xs font-bold rounded border border-orange-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-orange-400 text-xs font-bold rounded border border-orange-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
                               Observar
                             </span>
                           </div>
@@ -256,7 +256,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                             >
                               <XCircle className="w-4 h-4" />
                             </button>
-                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-red-500 text-xs font-bold rounded border border-red-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-red-500 text-xs font-bold rounded border border-red-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
                               Rechazar
                             </span>
                           </div>
@@ -279,23 +279,23 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
 
       {/* Observar Modal */}
       {observarId && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-[#0A0A0A] border border-zinc-800 rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
             <div>
               <h3 className="text-xl font-bold text-[#F97316]">Observar Registro</h3>
-              <p className="text-sm text-zinc-400 mt-1">El estudiante verá este mensaje en su aplicación móvil para poder corregirlo.</p>
+              <p className="text-sm text-muted-foreground mt-1">El estudiante verá este mensaje en su aplicación móvil para poder corregirlo.</p>
             </div>
             <textarea
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe lo que falta o debe corregirse (ej. 'La foto de la hoja está borrosa')..."
               rows={4}
-              className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all"
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all"
             />
             <div className="flex gap-3 justify-end pt-2">
               <button
                 onClick={() => { setObservarId(null); setMotivoTexto('') }}
-                className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 Cancelar
               </button>
@@ -313,23 +313,23 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
 
       {/* Rechazar Modal */}
       {rechazarId && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-[#0A0A0A] border border-zinc-800 rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
             <div>
               <h3 className="text-xl font-bold text-red-600">¿Rechazar Registro?</h3>
-              <p className="text-sm text-zinc-400 mt-1">El estudiante verá el motivo del rechazo en su aplicación móvil.</p>
+              <p className="text-sm text-muted-foreground mt-1">El estudiante verá el motivo del rechazo en su aplicación móvil.</p>
             </div>
             <textarea
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe por qué se rechaza este registro de forma definitiva..."
               rows={4}
-              className="w-full px-4 py-3 bg-black border border-zinc-800 rounded-xl text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all"
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all"
             />
             <div className="flex gap-3 justify-end pt-2">
               <button
                 onClick={() => { setRechazarId(null); setMotivoTexto('') }}
-                className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 Cancelar
               </button>

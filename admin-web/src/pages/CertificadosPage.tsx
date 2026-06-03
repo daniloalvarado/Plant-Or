@@ -533,7 +533,7 @@ export default function CertificadosPage() {
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
-                          <span className="absolute bottom-full right-0 mb-2 px-2 py-1 bg-black text-white text-xs font-bold rounded border border-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
+                          <span className="absolute bottom-full right-0 mb-2 px-2 py-1 bg-popover text-popover-foreground text-xs font-bold rounded border border-border opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
                             Corregir Nombre
                           </span>
                         </div>
