@@ -269,11 +269,11 @@ export default function CertificadosPage() {
                 <input 
                   value={editingConfig?.nombre_proyecto || '🌿 PLANT-OR'}
                   onChange={e => setEditingConfig({...editingConfig, nombre_proyecto: e.target.value})}
-                  className="text-[#1FC451] font-bold text-2xl md:text-3xl mb-2 bg-transparent text-center border-b border-transparent hover:border-[#1FC451]/30 focus:border-[#1FC451] focus:outline-none transition-colors w-full"
+                  className="text-[#1FC451] font-bold text-xl md:text-2xl mb-2 bg-transparent text-center border-b border-transparent hover:border-[#1FC451]/30 focus:border-[#1FC451] focus:outline-none transition-colors w-full"
                   placeholder="Nombre del Proyecto"
                 />
               ) : (
-                <div className="text-[#1FC451] font-bold text-2xl md:text-3xl mb-2">{editingConfig?.nombre_proyecto || '🌿 PLANT-OR'}</div>
+                <div className="text-[#1FC451] font-bold text-xl md:text-2xl mb-2">{editingConfig?.nombre_proyecto || '🌿 PLANT-OR'}</div>
               )}
               
               {/* Título */}
@@ -281,11 +281,11 @@ export default function CertificadosPage() {
                 <input 
                   value={editingConfig?.titulo_certificado || ''}
                   onChange={e => setEditingConfig({...editingConfig, titulo_certificado: e.target.value})}
-                  className="text-black font-bold text-2xl md:text-4xl tracking-[0.1em] md:tracking-[0.2em] uppercase bg-transparent text-center focus:outline-none transition-colors w-full"
+                  className="text-black font-bold text-xl md:text-3xl tracking-widest uppercase bg-transparent text-center focus:outline-none transition-colors w-full"
                   placeholder="Título del Certificado"
                 />
               ) : (
-                <div className="text-black font-bold text-2xl md:text-4xl tracking-[0.1em] md:tracking-[0.2em] uppercase">{editingConfig?.titulo_certificado}</div>
+                <div className="text-black font-bold text-xl md:text-3xl tracking-widest uppercase">{editingConfig?.titulo_certificado}</div>
               )}
               
               {/* Subtítulo */}
@@ -303,7 +303,7 @@ export default function CertificadosPage() {
               {/* Nombre Alumno */}
               {isGlobal ? (
                 <div className="text-center w-full my-4">
-                  <div className="text-3xl md:text-5xl font-bold inline-block text-[#15963c] border-b-2 border-[#1FC451] px-10 pb-2 font-serif opacity-70" title="Nombre de Ejemplo">
+                  <div className="text-2xl md:text-4xl font-bold inline-block text-[#15963c] border-b-2 border-[#1FC451] px-10 pb-2 font-serif opacity-70" title="Nombre de Ejemplo">
                     {editingCert.usuario_nombre}
                   </div>
                 </div>
@@ -313,7 +313,7 @@ export default function CertificadosPage() {
                     type="text"
                     value={editingCert.usuario_nombre}
                     onChange={e => setEditingCert({...editingCert, usuario_nombre: e.target.value})}
-                    className="text-3xl md:text-5xl font-bold text-center inline-block bg-transparent border-b-2 border-[#1FC451] hover:border-[#15963c] focus:border-[#15963c] focus:outline-none text-[#15963c] px-10 pb-2 transition-colors font-serif min-w-[300px]"
+                    className="text-2xl md:text-4xl font-bold text-center inline-block bg-transparent border-b-2 border-[#1FC451] hover:border-[#15963c] focus:border-[#15963c] focus:outline-none text-[#15963c] px-10 pb-2 transition-colors font-serif min-w-[300px]"
                     placeholder="Nombre Completo"
                   />
                 </div>
