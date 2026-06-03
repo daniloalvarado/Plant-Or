@@ -130,7 +130,7 @@ export default function FiltrosPage() {
     }
 
     // 3. Validar orden único por categoría
-    const isOrdenRepetido = filtros.some(f => f.categoria === form.categoria && f.orden === form.orden && f._id !== editingId);
+    const isOrdenRepetido = filtros.some(f => f.categoria === form.categoria && Number(f.orden) === Number(form.orden) && f._id !== editingId);
     if (isOrdenRepetido) {
       setFormError(`Error: El orden de aparición ${form.orden} ya está en uso dentro de la categoría "${form.categoria}".`);
       return;
@@ -176,8 +176,10 @@ export default function FiltrosPage() {
     })
     setEditingId(filtro._id)
     setShowForm(true)
-    // scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    // scroll to form
+    setTimeout(() => {
+      document.getElementById('filtro-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 50)
   }
 
   const toggleActivo = async (filtro: Filtro) => {
@@ -372,7 +374,7 @@ export default function FiltrosPage() {
 
       {/* Create form */}
       {showForm && (
-        <div className="bg-card border border-border rounded-xl p-5 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div id="filtro-form" className="bg-card border border-border rounded-xl p-5 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
           <h2 className="font-semibold text-foreground flex items-center gap-2">
             {editingId ? <SlidersHorizontal className="w-4 h-4 text-primary" /> : <Plus className="w-4 h-4 text-primary" />}
             {editingId ? 'Editar filtro' : 'Crear nuevo filtro'}
