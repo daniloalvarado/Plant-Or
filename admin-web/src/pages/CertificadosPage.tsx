@@ -324,7 +324,7 @@ export default function CertificadosPage() {
               )}
 
               {/* Párrafo */}
-              <div className="text-gray-600 leading-relaxed text-sm md:text-base max-w-2xl mx-auto flex flex-wrap justify-center items-center gap-x-1 gap-y-2">
+              <div className="text-gray-600 leading-relaxed text-sm md:text-base max-w-2xl mx-auto text-center" style={{ display: 'inline-block' }}>
                 {templateParts.map((part, index) => {
                   if (part === '{tipo}') {
                     return <strong key={index} className="text-gray-800">{editingCert.tipo_participacion || 'Estudiante'}</strong>;
@@ -347,7 +347,7 @@ export default function CertificadosPage() {
                           newParts[index] = e.currentTarget.textContent || '';
                           setTemplateParts(newParts);
                         }}
-                        className="outline-none hover:bg-gray-100 focus:bg-gray-100 border-b border-transparent hover:border-gray-300 focus:border-gray-400 min-w-[20px] transition-colors whitespace-pre-wrap"
+                        className="outline-none hover:bg-gray-100 focus:bg-gray-100 border-b border-transparent hover:border-gray-300 focus:border-gray-400 min-w-[20px] transition-colors whitespace-pre-wrap inline"
                       >
                         {part}
                       </span>
@@ -363,18 +363,18 @@ export default function CertificadosPage() {
             <div className="w-full flex justify-between items-end relative z-10 pt-4">
               
               {/* Firmas */}
-              <div className="flex gap-12 md:gap-24">
+              <div className="flex gap-12 md:gap-24 items-end">
                 {/* Firma 1 */}
                 {(isGlobal || editingConfig?.responsable_1_nombre) && (
-                <div className="text-center relative group">
+                <div className="w-48 text-center relative group">
                   <div 
-                    className={`h-20 mb-2 relative flex flex-col items-center justify-center border-2 border-dashed ${isGlobal ? 'border-transparent group-hover:border-[#1FC451] cursor-pointer bg-transparent group-hover:bg-gray-50' : 'border-transparent'} transition-all`}
+                    className={`h-24 mb-2 relative flex flex-col items-center justify-end border-2 border-dashed ${isGlobal ? 'border-transparent group-hover:border-[#1FC451] cursor-pointer bg-transparent group-hover:bg-gray-50' : 'border-transparent'} transition-all`}
                     onClick={() => isGlobal && firma1Ref.current?.click()}
                   >
                     {editingConfig?.responsable_1_firma ? (
-                      <img src={urlFor(editingConfig.responsable_1_firma)} alt="Firma 1" className="h-16 object-contain" />
+                      <img src={urlFor(editingConfig.responsable_1_firma)} alt="Firma 1" className="max-h-20 object-contain" />
                     ) : (
-                      isGlobal && <div className="text-xs text-gray-400 flex flex-col items-center"><Upload className="w-4 h-4 mb-1" /> Sin Firma 1</div>
+                      isGlobal && <div className="text-xs text-gray-400 flex flex-col items-center pb-2"><Upload className="w-4 h-4 mb-1" /> Sin Firma 1</div>
                     )}
                     {isGlobal && (
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-xs font-bold rounded">
@@ -384,17 +384,17 @@ export default function CertificadosPage() {
                     <input type="file" ref={firma1Ref} onChange={(e) => handleFileUpload(e, 'responsable_1_firma')} className="hidden" accept="image/png" />
                   </div>
                   
-                  <div className={`w-48 pt-2 ${isGlobal || editingConfig?.responsable_1_nombre ? 'border-t border-gray-400' : ''}`}>
+                  <div className={`w-full pt-2 min-h-[4rem] ${isGlobal || editingConfig?.responsable_1_nombre ? 'border-t border-gray-400' : ''}`}>
                     {isGlobal ? (
-                      <>
-                        <input value={editingConfig.responsable_1_nombre || ''} onChange={e => setEditingConfig({...editingConfig, responsable_1_nombre: e.target.value})} className="font-bold text-xs text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none" placeholder="Nombre Resposable 1" />
-                        <input value={editingConfig.responsable_1_cargo || ''} onChange={e => setEditingConfig({...editingConfig, responsable_1_cargo: e.target.value})} className="text-xs text-gray-500 text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none mt-1" placeholder="Cargo Responsable 1" />
-                      </>
+                      <div className="flex flex-col gap-1">
+                        <input value={editingConfig.responsable_1_nombre || ''} onChange={e => setEditingConfig({...editingConfig, responsable_1_nombre: e.target.value})} className="font-bold text-[11px] md:text-xs text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none" placeholder="Nombre Resposable 1" />
+                        <input value={editingConfig.responsable_1_cargo || ''} onChange={e => setEditingConfig({...editingConfig, responsable_1_cargo: e.target.value})} className="text-[10px] md:text-[11px] text-gray-500 text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none" placeholder="Cargo Responsable 1" />
+                      </div>
                     ) : (
-                      <>
-                        <p className="font-bold text-xs">{editingConfig?.responsable_1_nombre}</p>
-                        <p className="text-xs text-gray-500">{editingConfig?.responsable_1_cargo}</p>
-                      </>
+                      <div className="flex flex-col gap-1">
+                        <p className="font-bold text-[11px] md:text-xs">{editingConfig?.responsable_1_nombre}</p>
+                        <p className="text-[10px] md:text-[11px] text-gray-500 leading-tight">{editingConfig?.responsable_1_cargo}</p>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -402,15 +402,15 @@ export default function CertificadosPage() {
 
                 {/* Firma 2 */}
                 {(isGlobal || editingConfig?.responsable_2_nombre) && (
-                <div className="text-center relative group">
+                <div className="w-48 text-center relative group">
                   <div 
-                    className={`h-20 mb-2 relative flex flex-col items-center justify-center border-2 border-dashed ${isGlobal ? 'border-transparent group-hover:border-[#1FC451] cursor-pointer bg-transparent group-hover:bg-gray-50' : 'border-transparent'} transition-all`}
+                    className={`h-24 mb-2 relative flex flex-col items-center justify-end border-2 border-dashed ${isGlobal ? 'border-transparent group-hover:border-[#1FC451] cursor-pointer bg-transparent group-hover:bg-gray-50' : 'border-transparent'} transition-all`}
                     onClick={() => isGlobal && firma2Ref.current?.click()}
                   >
                     {editingConfig?.responsable_2_firma ? (
-                      <img src={urlFor(editingConfig.responsable_2_firma)} alt="Firma 2" className="h-16 object-contain" />
+                      <img src={urlFor(editingConfig.responsable_2_firma)} alt="Firma 2" className="max-h-20 object-contain" />
                     ) : (
-                      isGlobal && <div className="text-xs text-gray-400 flex flex-col items-center"><Upload className="w-4 h-4 mb-1" /> Sin Firma 2</div>
+                      isGlobal && <div className="text-xs text-gray-400 flex flex-col items-center pb-2"><Upload className="w-4 h-4 mb-1" /> Sin Firma 2</div>
                     )}
                     {isGlobal && (
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-xs font-bold rounded">
@@ -420,17 +420,17 @@ export default function CertificadosPage() {
                     <input type="file" ref={firma2Ref} onChange={(e) => handleFileUpload(e, 'responsable_2_firma')} className="hidden" accept="image/png" />
                   </div>
                   
-                  <div className={`w-48 pt-2 ${isGlobal || editingConfig?.responsable_2_nombre ? 'border-t border-gray-400' : ''}`}>
+                  <div className={`w-full pt-2 min-h-[4rem] ${isGlobal || editingConfig?.responsable_2_nombre ? 'border-t border-gray-400' : ''}`}>
                     {isGlobal ? (
-                      <>
-                        <input value={editingConfig.responsable_2_nombre || ''} onChange={e => setEditingConfig({...editingConfig, responsable_2_nombre: e.target.value})} className="font-bold text-xs text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none" placeholder="Nombre Resposable 2" />
-                        <input value={editingConfig.responsable_2_cargo || ''} onChange={e => setEditingConfig({...editingConfig, responsable_2_cargo: e.target.value})} className="text-xs text-gray-500 text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none mt-1" placeholder="Cargo Responsable 2" />
-                      </>
+                      <div className="flex flex-col gap-1">
+                        <input value={editingConfig.responsable_2_nombre || ''} onChange={e => setEditingConfig({...editingConfig, responsable_2_nombre: e.target.value})} className="font-bold text-[11px] md:text-xs text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none" placeholder="Nombre Resposable 2" />
+                        <input value={editingConfig.responsable_2_cargo || ''} onChange={e => setEditingConfig({...editingConfig, responsable_2_cargo: e.target.value})} className="text-[10px] md:text-[11px] text-gray-500 text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none" placeholder="Cargo Responsable 2" />
+                      </div>
                     ) : (
-                      <>
-                        <p className="font-bold text-xs">{editingConfig?.responsable_2_nombre}</p>
-                        <p className="text-xs text-gray-500">{editingConfig?.responsable_2_cargo}</p>
-                      </>
+                      <div className="flex flex-col gap-1">
+                        <p className="font-bold text-[11px] md:text-xs">{editingConfig?.responsable_2_nombre}</p>
+                        <p className="text-[10px] md:text-[11px] text-gray-500 leading-tight">{editingConfig?.responsable_2_cargo}</p>
+                      </div>
                     )}
                   </div>
                 </div>
