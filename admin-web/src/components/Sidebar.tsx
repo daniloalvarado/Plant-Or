@@ -82,7 +82,7 @@ export function Sidebar() {
             <img
               src={user.imageUrl}
               alt={user.fullName || ''}
-              className={cn("rounded-full border border-sidebar-border transition-colors", collapsed ? "w-8 h-8" : "w-7 h-7 group-hover:border-[#1FC451]")}
+              className={cn("rounded-full border border-sidebar-border transition-colors", collapsed ? "w-8 h-8" : "w-7 h-7")}
             />
             {!collapsed && (
               <div className="flex-1 min-w-0">

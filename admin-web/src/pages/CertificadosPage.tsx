@@ -82,6 +82,12 @@ export default function CertificadosPage() {
     setViewMode('edit_student');
   };
 
+  const handleCancel = () => {
+    setViewMode('list');
+    setEditingCert(null);
+    fetchData(); // Reset unsaved local changes to editingConfig
+  };
+
   const handleSave = async () => {
     if (!editingCert || !editingConfig) return;
     setSaving(true);
@@ -134,6 +140,7 @@ export default function CertificadosPage() {
       
       setViewMode('list');
       setEditingCert(null);
+      fetchData(); // Reload to be perfectly in sync
     } catch (e) {
       console.error(e);
       toast.error('Error al actualizar');
@@ -206,8 +213,8 @@ export default function CertificadosPage() {
         <div className="flex items-center justify-between p-6 border-b border-border bg-muted/30">
           <div className="flex items-center gap-4">
             <button 
-              onClick={() => { setViewMode('list'); setEditingCert(null); }}
-              className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors"
+              onClick={handleCancel}
+              className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
@@ -222,8 +229,8 @@ export default function CertificadosPage() {
           </div>
           <div className="flex gap-3">
             <button 
-              onClick={() => { setViewMode('list'); setEditingCert(null); }}
-              className="px-6 py-2.5 rounded-lg font-medium text-foreground hover:bg-muted transition-colors"
+              onClick={handleCancel}
+              className="px-6 py-2.5 rounded-lg font-medium text-foreground hover:bg-muted transition-colors cursor-pointer"
             >
               Cancelar
             </button>
@@ -240,13 +247,6 @@ export default function CertificadosPage() {
 
         {/* Visual Canvas */}
         <div className="p-6 overflow-y-auto bg-muted/10 flex-1 relative">
-          
-          {/* Overlay alert for student mode */}
-          {!isGlobal && (
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 px-6 py-3 rounded-full text-sm font-medium z-20 shadow-sm flex items-center gap-2">
-              Modo Restringido: Solo puedes corregir el Nombre del Estudiante.
-            </div>
-          )}
 
           <div className="bg-white mx-auto shadow-lg relative p-8 md:p-12 pb-24 md:pb-32 my-8 transition-all" style={{ maxWidth: '900px', minHeight: '500px', color: '#1a1a1a', border: '1px solid #e5e5e5' }}>
             {/* Decorative border */}
@@ -498,13 +498,17 @@ export default function CertificadosPage() {
                       </div>
                     </td>
                     <td className="p-4 text-right">
-                        <button 
-                        onClick={() => handleEditStudent(cert)}
-                        className="p-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg transition-colors inline-flex cursor-pointer"
-                        title="Corregir Nombre"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                      </button>
+                        <div className="relative group inline-block">
+                          <button 
+                            onClick={() => handleEditStudent(cert)}
+                            className="p-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg transition-colors inline-flex cursor-pointer"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs font-bold rounded border border-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
+                            Corregir Nombre
+                          </span>
+                        </div>
                     </td>
                   </tr>
                 ))
