@@ -237,7 +237,7 @@ export default function CertificadosPage() {
             <button 
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold bg-[#1FC451] text-white hover:bg-[#19a343] transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold bg-[#1FC451] text-white hover:bg-[#19a343] transition-colors disabled:opacity-50 cursor-pointer"
             >
               {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
               Guardar Cambios
@@ -304,7 +304,7 @@ export default function CertificadosPage() {
                     return <strong key={index} className="text-gray-800">{editingCert.periodo}</strong>;
                   }
                   if (part === '{count}') {
-                    return <strong key={index} className="text-[#1FC451] font-bold">{editingCert.registros_validados}</strong>;
+                    return <strong key={index} className="text-gray-800">{editingCert.registros_validados}</strong>;
                   }
                   
                   if (isGlobal) {
@@ -505,7 +505,7 @@ export default function CertificadosPage() {
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
-                          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs font-bold rounded border border-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
+                          <span className="absolute bottom-full right-0 mb-2 px-2 py-1 bg-black text-white text-xs font-bold rounded border border-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
                             Corregir Nombre
                           </span>
                         </div>
