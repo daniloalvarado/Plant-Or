@@ -249,7 +249,7 @@ export default function CertificadosPage() {
         {/* Visual Canvas */}
         <div className="p-6 overflow-y-auto bg-muted/10 flex-1 relative">
 
-          <div className="bg-white mx-auto shadow-2xl relative p-8 md:p-12 pb-24 md:pb-32 my-8 transition-all overflow-hidden flex flex-col justify-center items-center" style={{ 
+          <div className="bg-white mx-auto shadow-2xl relative p-8 md:p-12 my-8 transition-all overflow-hidden flex flex-col justify-between" style={{ 
             maxWidth: '900px', 
             minHeight: '600px', 
             color: '#1a1a1a', 
@@ -263,7 +263,8 @@ export default function CertificadosPage() {
               🌿
             </div>
 
-            <div className="text-center space-y-6 relative z-10 w-full h-full flex flex-col justify-center items-center">
+            {/* Main Text Content */}
+            <div className="text-center space-y-6 relative z-10 w-full flex-1 flex flex-col justify-center items-center pb-8 pt-4">
               
               {isGlobal ? (
                 <input 
@@ -355,9 +356,12 @@ export default function CertificadosPage() {
               </div>
             </div>
 
-            {/* Firmas y Footer (Absolute bottom) */}
-            <div className="absolute bottom-8 left-12 flex gap-12 md:gap-24 z-10">
-              {/* Firma 1 */}
+            {/* Footer Container (Signatures & Validation) */}
+            <div className="w-full flex justify-between items-end relative z-10 pt-4">
+              
+              {/* Firmas */}
+              <div className="flex gap-12 md:gap-24">
+                {/* Firma 1 */}
                 {(isGlobal || editingConfig?.responsable_1_nombre) && (
                 <div className="text-center relative group">
                   <div 
@@ -428,16 +432,16 @@ export default function CertificadosPage() {
                   </div>
                 </div>
                 )}
-            </div>
+              </div>
 
-            {/* Validation Box (Footer) */}
-            <div className="absolute bottom-8 right-12 text-right text-[10px] md:text-xs text-gray-500 z-10 hidden sm:block">
-              <p>Emitido el: {new Date(editingCert.fecha_emision).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-              <div className="mt-2">
-                Verifique la autenticidad de este<br/>
-                documento en: {isGlobal ? (
-                  <input value={editingConfig.url_validacion || ''} onChange={e => setEditingConfig({...editingConfig, url_validacion: e.target.value})} className="text-gray-700 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none text-right font-bold w-32" placeholder="URL" />
-                ) : (
+              {/* Validation Box */}
+              <div className="text-right text-[10px] md:text-xs text-gray-500 hidden sm:block pb-2">
+                <p>Emitido el: {new Date(editingCert.fecha_emision).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                <div className="mt-2">
+                  Verifique la autenticidad de este<br/>
+                  documento en: {isGlobal ? (
+                    <input value={editingConfig.url_validacion || ''} onChange={e => setEditingConfig({...editingConfig, url_validacion: e.target.value})} className="text-gray-700 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none text-right font-bold w-32" placeholder="URL" />
+                  ) : (
                   <strong className="text-gray-700">{editingConfig?.url_validacion || 'plant-or.com'}</strong>
                 )}
               </div>
