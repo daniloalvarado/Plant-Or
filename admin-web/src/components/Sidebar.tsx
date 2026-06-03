@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
-  Map, ChevronLeft, ChevronRight, LogOut, Menu, SlidersHorizontal, Settings, Award, Sun, Moon
+  Map, ChevronLeft, ChevronRight, LogOut, Menu, SlidersHorizontal, Settings, Award, Sun, Moon, LayoutDashboard, Leaf, ClipboardList, CheckCircle
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useClerk, useUser } from '@clerk/clerk-react'
