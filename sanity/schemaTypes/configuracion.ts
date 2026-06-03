@@ -11,6 +11,12 @@ export const configuracion = {
       initialValue: 'Configuración PLANT-OR'
     },
     {
+      name: 'nombre_proyecto',
+      title: 'Nombre del Proyecto (Logotipo)',
+      type: 'string',
+      initialValue: '🌿 PLANT-OR'
+    },
+    {
       name: 'responsable_1_nombre',
       title: 'Nombre del Responsable 1',
       type: 'string',

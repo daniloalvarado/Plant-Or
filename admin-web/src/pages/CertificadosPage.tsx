@@ -119,6 +119,7 @@ export default function CertificadosPage() {
           titulo_certificado: editingConfig.titulo_certificado,
           subtitulo_certificado: editingConfig.subtitulo_certificado,
           texto_certificado: newTextoCertificado,
+          nombre_proyecto: editingConfig.nombre_proyecto,
           responsable_1_nombre: editingConfig.responsable_1_nombre,
           responsable_1_cargo: editingConfig.responsable_1_cargo,
           responsable_2_nombre: editingConfig.responsable_2_nombre,
@@ -257,14 +258,19 @@ export default function CertificadosPage() {
             repeating-linear-gradient(-45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
             repeating-radial-gradient(circle at 50% 50%, rgba(31,196,81,0.02) 0, rgba(31,196,81,0.02) 2px, transparent 2px, transparent 30px)`
           }}>
-            {/* Watermark Icon */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 text-[300px] md:text-[400px] pointer-events-none z-0 select-none">
-              🌿
-            </div>
 
             <div className="text-center space-y-6 relative z-10 w-full h-full flex flex-col justify-center items-center">
               
-              <div className="text-[#1FC451] font-bold text-2xl md:text-3xl mb-2">🌿 PLANT-OR</div>
+              {isGlobal ? (
+                <input 
+                  value={editingConfig?.nombre_proyecto || '🌿 PLANT-OR'}
+                  onChange={e => setEditingConfig({...editingConfig, nombre_proyecto: e.target.value})}
+                  className="text-[#1FC451] font-bold text-2xl md:text-3xl mb-2 bg-transparent text-center border-b border-transparent hover:border-[#1FC451]/30 focus:border-[#1FC451] focus:outline-none transition-colors w-full"
+                  placeholder="Nombre del Proyecto"
+                />
+              ) : (
+                <div className="text-[#1FC451] font-bold text-2xl md:text-3xl mb-2">{editingConfig?.nombre_proyecto || '🌿 PLANT-OR'}</div>
+              )}
               
               {/* Título */}
               {isGlobal ? (

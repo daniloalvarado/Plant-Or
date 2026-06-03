@@ -110,13 +110,12 @@ export default function Profile() {
         .signature-img { position: absolute; bottom: 45px; left: 50%; transform: translateX(-50%); max-height: 80px; max-width: 200px; }
         .validation-box { text-align: right; font-size: 13px; color: #666; }
         .code { font-weight: bold; font-family: monospace; font-size: 15px; color: #000; }
-        .bg-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.05; font-size: 400px; z-index: -1; }
+        .code { font-weight: bold; font-family: monospace; font-size: 15px; color: #000; }
       </style>
     </head>
     <body>
       <div class="container">
-        <div class="bg-icon">🌿</div>
-        <div class="logo">🌿 PLANT-OR</div>
+        <div class="logo">${config?.nombre_proyecto || '🌿 PLANT-OR'}</div>
         <div class="title">${titulo}</div>
         <div class="subtitle">${subtitulo}</div>
         
