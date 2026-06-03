@@ -410,7 +410,7 @@ export default function FiltrosPage() {
           >
             {cat}
             {cat !== 'Todas' && (
-              <span className="ml-1 text-muted-foreground">
+              <span className={`ml-1 ${categoriaSeleccionada === cat ? 'text-white' : 'text-muted-foreground'}`}>
                 ({filtros.filter(f => f.categoria === cat).length})
               </span>
             )}
@@ -451,9 +451,9 @@ export default function FiltrosPage() {
                           {filtro.nombre_filtro}
                         </p>
                         {filtro.activo ? (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/15 text-green-400 border border-green-500/30 flex-shrink-0">Activo</span>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-700 dark:text-green-400 border border-green-500/40 font-medium flex-shrink-0">Activo</span>
                         ) : (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 border border-red-500/30 flex-shrink-0">Inactivo</span>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/20 text-red-700 dark:text-red-400 border border-red-500/40 font-medium flex-shrink-0">Inactivo</span>
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">

@@ -119,7 +119,7 @@ export function Sidebar() {
         <button
           onClick={() => setLogoutConfirmOpen(true)}
           className={cn(
-            "relative group/nav flex items-center rounded-lg text-sm text-muted-foreground hover:bg-red-500/20 hover:text-red-500 dark:hover:text-white cursor-pointer",
+            "relative group/nav flex items-center rounded-lg text-sm text-muted-foreground hover:bg-red-500 hover:text-white transition-colors cursor-pointer",
             collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-2 px-3 py-2 w-full"
           )}
         >

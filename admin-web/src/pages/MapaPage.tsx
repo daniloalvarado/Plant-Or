@@ -69,7 +69,7 @@ export default function MapaPage() {
 
   return (
     <>
-    <div className="flex flex-col h-[calc(100vh-120px)] gap-4">
+    <div className="flex flex-col h-[calc(100vh-104px)] md:h-[calc(100vh-64px)] gap-4">
       {/* Header */}
       <div className="flex flex-col gap-4 flex-shrink-0">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
