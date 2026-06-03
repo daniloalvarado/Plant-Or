@@ -410,7 +410,7 @@ export default function FiltrosPage() {
           >
             {cat}
             {cat !== 'Todas' && (
-              <span className={`ml-1 ${categoriaSeleccionada === cat ? 'text-white' : 'text-muted-foreground'}`}>
+              <span className={`ml-1 ${categoriaSeleccionada === cat ? 'text-primary-foreground/90' : 'text-muted-foreground'}`}>
                 ({filtros.filter(f => f.categoria === cat).length})
               </span>
             )}

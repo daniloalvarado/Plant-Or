@@ -143,10 +143,7 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 
 
 /* Personalización de User Profile */
-/* Ocultar el título grande de la página (ej. "Perfil" o "Seguridad") porque es redundante con el menú */
-.cl-headerTitle, .cl-headerSubtitle, .cl-header {
-  display: none !important;
-}
+/* Ocultar el título grande de la página (ej. "Perfil" o "Seguridad") porque es redundante con el menú (ahora manejado por appearance en el componente) */
 
 /* Ocultar sección completa de correo */
 .cl-profileSection__emailAddresses {

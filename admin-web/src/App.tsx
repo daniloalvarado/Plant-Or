@@ -70,7 +70,7 @@ function MainContent() {
                   <Route path="/filtros" element={<FiltrosPage />} />
                   <Route path="/certificados" element={<CertificadosPage />} />
                   <Route path="/planta/:id" element={<PlantaDetailPage />} />
-                  <Route path="/perfil" element={<div className="flex justify-center"><UserProfile appearance={{ elements: { card: 'bg-card border-border' } }} /></div>} />
+                  <Route path="/perfil" element={<div className="flex justify-center"><UserProfile appearance={{ elements: { card: 'bg-card border-border', headerTitle: 'hidden', headerSubtitle: 'hidden' } }} /></div>} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </div>
