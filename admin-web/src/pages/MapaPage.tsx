@@ -73,7 +73,9 @@ export default function MapaPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h1 className="text-3xl font-bold text-foreground">Mapa del Catálogo</h1>
-            <p className="text-muted-foreground mt-1">{counts[activeFilter] ?? 0} registro(s) geolocalizado(s)</p>
+            <p className="text-muted-foreground mt-1">
+              {counts[activeFilter] ?? 0} {(counts[activeFilter] ?? 0) === 1 ? 'registro geolocalizado' : 'registros geolocalizados'}
+            </p>
           </div>
           
           {/* Filters - Desktop (Chips) */}
