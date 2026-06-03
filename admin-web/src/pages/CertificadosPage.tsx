@@ -271,11 +271,11 @@ export default function CertificadosPage() {
                 <input 
                   value={editingConfig?.titulo_certificado || ''}
                   onChange={e => setEditingConfig({...editingConfig, titulo_certificado: e.target.value})}
-                  className="text-[#1FC451] font-bold text-lg tracking-[0.2em] uppercase bg-transparent text-center border-b border-transparent hover:border-[#1FC451]/30 focus:border-[#1FC451] focus:outline-none transition-colors w-full"
+                  className="text-black font-bold text-3xl md:text-5xl tracking-[0.1em] md:tracking-[0.2em] uppercase bg-transparent text-center border-b border-transparent hover:border-gray-300 focus:border-black focus:outline-none transition-colors w-full"
                   placeholder="Título del Certificado"
                 />
               ) : (
-                <div className="text-[#1FC451] font-bold text-lg tracking-[0.2em] uppercase">{editingConfig?.titulo_certificado}</div>
+                <div className="text-black font-bold text-3xl md:text-5xl tracking-[0.1em] md:tracking-[0.2em] uppercase">{editingConfig?.titulo_certificado}</div>
               )}
               
               {/* Subtítulo */}
@@ -292,17 +292,21 @@ export default function CertificadosPage() {
               
               {/* Nombre Alumno */}
               {isGlobal ? (
-                <div className="text-3xl md:text-5xl font-bold text-center w-full text-gray-400 py-2 font-serif" title="Nombre de Ejemplo">
-                  {editingCert.usuario_nombre}
+                <div className="text-center w-full my-4">
+                  <div className="text-3xl md:text-5xl font-bold inline-block text-[#15963c] border-b-2 border-[#1FC451] px-10 pb-2 font-serif opacity-70" title="Nombre de Ejemplo">
+                    {editingCert.usuario_nombre}
+                  </div>
                 </div>
               ) : (
-                <input
-                  type="text"
-                  value={editingCert.usuario_nombre}
-                  onChange={e => setEditingCert({...editingCert, usuario_nombre: e.target.value})}
-                  className="text-3xl md:text-5xl font-bold text-center w-full bg-transparent border-b-2 border-dashed border-gray-300 hover:border-[#1FC451] focus:border-[#1FC451] focus:outline-none text-[#111] py-2 transition-colors font-serif"
-                  placeholder="Nombre Completo"
-                />
+                <div className="text-center w-full my-4">
+                  <input
+                    type="text"
+                    value={editingCert.usuario_nombre}
+                    onChange={e => setEditingCert({...editingCert, usuario_nombre: e.target.value})}
+                    className="text-3xl md:text-5xl font-bold text-center inline-block bg-transparent border-b-2 border-[#1FC451] hover:border-[#15963c] focus:border-[#15963c] focus:outline-none text-[#15963c] px-10 pb-2 transition-colors font-serif min-w-[300px]"
+                    placeholder="Nombre Completo"
+                  />
+                </div>
               )}
 
               {/* Párrafo */}
