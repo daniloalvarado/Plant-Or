@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { client } from '@/lib/sanity'
 import {
   Map, ChevronLeft, ChevronRight, LogOut, Menu, SlidersHorizontal, Settings, Award, Sun, Moon, LayoutDashboard, Leaf, ClipboardList, CheckCircle
 } from 'lucide-react'
@@ -25,6 +26,24 @@ export function Sidebar() {
   const { signOut } = useClerk()
   const { user } = useUser()
   const { theme, setTheme } = useTheme()
+  const [pendingCount, setPendingCount] = useState<number | null>(null)
+
+  useEffect(() => {
+    // Fetch inicial
+    client.fetch('count(*[_type == "planta" && estado_revision == "En revisión" && !(_id in path("drafts.**"))])')
+      .then(count => setPendingCount(count))
+      .catch(console.error)
+
+    // Escuchar cambios en tiempo real
+    const subscription = client.listen('*[_type == "planta" && !(_id in path("drafts.**"))]')
+      .subscribe(() => {
+        client.fetch('count(*[_type == "planta" && estado_revision == "En revisión" && !(_id in path("drafts.**"))])')
+          .then(count => setPendingCount(count))
+          .catch(console.error)
+      })
+
+    return () => subscription.unsubscribe()
+  }, [])
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-sidebar-background border-r border-sidebar-border">
@@ -64,8 +83,24 @@ export function Sidebar() {
                 collapsed ? 'justify-center w-10 h-10 mx-auto' : 'gap-3 px-3 py-2.5'
               )}
             >
-              <item.icon className="w-4.5 h-4.5 flex-shrink-0" />
-              {!collapsed && <span>{item.label}</span>}
+              <div className="relative flex-shrink-0">
+                <item.icon className="w-4.5 h-4.5" />
+                {collapsed && item.label === 'Pendientes' && pendingCount !== null && pendingCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] font-bold w-3.5 h-3.5 flex items-center justify-center rounded-full">
+                    {pendingCount > 99 ? '99+' : pendingCount}
+                  </span>
+                )}
+              </div>
+              {!collapsed && (
+                <span className="flex-1 flex items-center justify-between">
+                  {item.label}
+                  {item.label === 'Pendientes' && pendingCount !== null && pendingCount > 0 && (
+                    <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">
+                      {pendingCount > 99 ? '99+' : pendingCount}
+                    </span>
+                  )}
+                </span>
+              )}
               {collapsed && (
                 <span className="absolute left-14 px-2 py-1 bg-popover text-popover-foreground text-xs font-bold rounded border border-border opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-[9999] shadow-lg">
                   {item.label}

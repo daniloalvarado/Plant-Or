@@ -20,6 +20,11 @@ export default function CertificadosPage() {
   const [certificados, setCertificados] = useState<Certificado[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   // Mode state
   const [viewMode, setViewMode] = useState<'list' | 'edit_global' | 'edit_student'>('list');
@@ -197,6 +202,10 @@ export default function CertificadosPage() {
     c.usuario_nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     c.codigo?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(filteredCerts.length / itemsPerPage);
+  const paginatedCerts = filteredCerts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -511,7 +520,7 @@ export default function CertificadosPage() {
                   </td>
                 </tr>
               ) : (
-                filteredCerts.map(cert => (
+                paginatedCerts.map(cert => (
                   <tr key={cert._id} className="hover:bg-muted/30 transition-colors">
                     <td className="p-4 text-sm font-medium text-primary">{cert.codigo}</td>
                     <td className="p-4">
@@ -544,6 +553,29 @@ export default function CertificadosPage() {
             </tbody>
           </table>
         </div>
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-secondary/5">
+            <span className="text-sm text-muted-foreground">
+              Página <span className="font-medium text-foreground">{currentPage}</span> de <span className="font-medium text-foreground">{totalPages}</span>
+            </span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 bg-secondary text-foreground text-sm rounded-md hover:bg-accent disabled:opacity-50 transition-colors cursor-pointer"
+              >
+                Anterior
+              </button>
+              <button
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 bg-secondary text-foreground text-sm rounded-md hover:bg-accent disabled:opacity-50 transition-colors cursor-pointer"
+              >
+                Siguiente
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

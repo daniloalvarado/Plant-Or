@@ -176,6 +176,16 @@ export default function FiltrosPage() {
           activo: true
         })
       }
+
+      // 5. Update ALL other filters in this category with the new tipo_seleccion
+      const filtersInCategory = filtros.filter(f => f.categoria === form.categoria && f._id !== editingId)
+      if (filtersInCategory.some(f => f.tipo_seleccion !== form.tipo_seleccion)) {
+        const patchPromises = filtersInCategory.map(f => 
+          client.patch(f._id).set({ tipo_seleccion: form.tipo_seleccion }).commit()
+        )
+        await Promise.all(patchPromises)
+      }
+
       setForm(EMPTY_FORM)
       setEditingId(null)
       setShowForm(false)
@@ -447,7 +457,10 @@ export default function FiltrosPage() {
               </label>
               <CustomSelect
                 value={form.categoria}
-                onChange={(val) => setForm(f => ({ ...f, categoria: val }))}
+                onChange={(val) => {
+                  const existingFilter = filtros.find(f => f.categoria === val);
+                  setForm(f => ({ ...f, categoria: val, tipo_seleccion: existingFilter?.tipo_seleccion || f.tipo_seleccion }))
+                }}
                 options={CATEGORIAS.map(c => ({ value: c, label: c }))}
                 placeholder="Seleccionar categoría..."
               />
@@ -476,6 +489,9 @@ export default function FiltrosPage() {
                 ]}
                 placeholder="Tipo..."
               />
+              <p className="text-[10px] text-orange-400 mt-1 leading-tight">
+                Cambiar esto afectará a todos los filtros en "{form.categoria}".
+              </p>
             </div>
             <div className="space-y-1">
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">

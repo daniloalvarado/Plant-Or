@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { usePlantas, updatePlantaEstado } from '@/hooks/use-plantas'
 import { EstadoBadge } from '@/components/EstadoBadge'
 import { Leaf, Search, Eye, CheckCircle, AlertCircle, XCircle, ChevronDown, ChevronUp, ChevronsUpDown, Filter } from 'lucide-react'
@@ -29,6 +29,11 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
   const [motivoTexto, setMotivoTexto] = useState('')
   const [loadingAction, setLoadingAction] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [search, filterEstado, filterHabito, sortField, sortDir])
 
   const handleSort = (field: keyof Planta) => {
     if (sortField === field) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
@@ -49,6 +54,10 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
       const bv = (b as any)[sortField] ?? ''
       return sortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av)
     })
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginatedData = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const SortIcon = ({ field }: { field: keyof Planta }) => {
     if (sortField !== field) return <ChevronsUpDown className="w-3 h-3 text-muted-foreground ml-1" />
@@ -185,7 +194,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((p) => (
+                {paginatedData.map((p) => (
                   <tr
                     key={p._id}
                     className="border-b border-border hover:bg-secondary/20 transition-colors group"
@@ -273,6 +282,30 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                 <p className="text-sm">No hay registros que coincidan</p>
               </div>
             )}
+            
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-secondary/5">
+                <span className="text-sm text-muted-foreground">
+                  Página <span className="font-medium text-foreground">{currentPage}</span> de <span className="font-medium text-foreground">{totalPages}</span>
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 bg-secondary text-foreground text-sm rounded-md hover:bg-accent disabled:opacity-50 transition-colors cursor-pointer"
+                  >
+                    Anterior
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 bg-secondary text-foreground text-sm rounded-md hover:bg-accent disabled:opacity-50 transition-colors cursor-pointer"
+                  >
+                    Siguiente
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -289,8 +322,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe lo que falta o debe corregirse (ej. 'La foto de la hoja está borrosa')..."
-              rows={4}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all"
+              rows={8}
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all max-h-[50vh] overflow-y-auto custom-scrollbar"
             />
             <div className="flex gap-3 justify-end pt-2">
               <button
@@ -323,8 +356,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe por qué se rechaza este registro de forma definitiva..."
-              rows={4}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all"
+              rows={8}
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all max-h-[50vh] overflow-y-auto custom-scrollbar"
             />
             <div className="flex gap-3 justify-end pt-2">
               <button
