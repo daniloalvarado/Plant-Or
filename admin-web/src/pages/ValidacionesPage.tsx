@@ -62,8 +62,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
   const SortIcon = ({ field }: { field: keyof Planta }) => {
     if (sortField !== field) return <ChevronsUpDown className="w-3 h-3 text-muted-foreground ml-1" />
     return sortDir === 'asc'
-      ? <ChevronUp className="w-3 h-3 text-primary ml-1" />
-      : <ChevronDown className="w-3 h-3 text-primary ml-1" />
+      ? <ChevronUp className="w-3 h-3 text-muted-foreground ml-1" />
+      : <ChevronDown className="w-3 h-3 text-muted-foreground ml-1" />
   }
 
   const handleAprobar = async (id: string) => {
@@ -283,8 +283,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
               </div>
             )}
             
-            {totalPages > 1 && (
-              <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-secondary/5">
+            <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-secondary/5">
                 <span className="text-sm text-muted-foreground">
                   Página <span className="font-medium text-foreground">{currentPage}</span> de <span className="font-medium text-foreground">{totalPages}</span>
                 </span>
@@ -305,7 +304,6 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                   </button>
                 </div>
               </div>
-            )}
           </div>
         )}
       </div>
@@ -322,8 +320,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe lo que falta o debe corregirse (ej. 'La foto de la hoja está borrosa')..."
-              rows={8}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all max-h-[50vh] overflow-y-auto custom-scrollbar"
+              rows={12}
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all max-h-[50vh] min-h-[250px] overflow-y-auto custom-scrollbar"
             />
             <div className="flex gap-3 justify-end pt-2">
               <button
@@ -356,8 +354,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe por qué se rechaza este registro de forma definitiva..."
-              rows={8}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all max-h-[50vh] overflow-y-auto custom-scrollbar"
+              rows={12}
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all max-h-[50vh] min-h-[250px] overflow-y-auto custom-scrollbar"
             />
             <div className="flex gap-3 justify-end pt-2">
               <button

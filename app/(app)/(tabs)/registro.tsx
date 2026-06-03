@@ -1061,6 +1061,19 @@ export default function RegistroScreen() {
 
                   {/* Identificación botánica */}
                   <YStack gap="$2">
+                    <Label color="#ffffff">Nombre local / común</Label>
+                    <Input
+                      value={nombresComunes}
+                      onChangeText={setNombresComunes}
+                      placeholder="Ej. Platanillo, Bijao rojo"
+                      borderWidth={0}
+                      bg="rgba(255,255,255,0.05)"
+                      color="#ffffff"
+                      placeholderTextColor="rgba(255,255,255,0.3)"
+                    />
+                  </YStack>
+
+                  <YStack gap="$2">
                     <Label color="#ffffff">Nombre científico</Label>
                     <Input
                       value={nombreCientifico}
@@ -1071,19 +1084,6 @@ export default function RegistroScreen() {
                       color="#ffffff"
                       placeholderTextColor="rgba(255,255,255,0.3)"
                       autoCapitalize="words"
-                    />
-                  </YStack>
-
-                  <YStack gap="$2">
-                    <Label color="#ffffff">Nombre local / común</Label>
-                    <Input
-                      value={nombresComunes}
-                      onChangeText={setNombresComunes}
-                      placeholder="Ej. Platanillo, Bijao rojo"
-                      borderWidth={0}
-                      bg="rgba(255,255,255,0.05)"
-                      color="#ffffff"
-                      placeholderTextColor="rgba(255,255,255,0.3)"
                     />
                   </YStack>
 
