@@ -263,19 +263,22 @@ export default function CertificadosPage() {
               🌿
             </div>
 
-            {/* Main Text Content */}
-            <div className="text-center space-y-6 relative z-10 w-full flex-1 flex flex-col justify-center items-center pb-8 pt-4">
-              
+            {/* Logo at the top */}
+            <div className="w-full text-center relative z-10 mb-4">
               {isGlobal ? (
                 <input 
                   value={editingConfig?.nombre_proyecto || '🌿 PLANT-OR'}
                   onChange={e => setEditingConfig({...editingConfig, nombre_proyecto: e.target.value})}
-                  className="text-[#1FC451] font-bold text-xl md:text-2xl mb-2 bg-transparent text-center border-b border-transparent hover:border-[#1FC451]/30 focus:border-[#1FC451] focus:outline-none transition-colors w-full"
+                  className="text-[#1FC451] font-bold text-xl md:text-2xl bg-transparent text-center border-b border-transparent hover:border-[#1FC451]/30 focus:border-[#1FC451] focus:outline-none transition-colors w-full"
                   placeholder="Nombre del Proyecto"
                 />
               ) : (
-                <div className="text-[#1FC451] font-bold text-xl md:text-2xl mb-2">{editingConfig?.nombre_proyecto || '🌿 PLANT-OR'}</div>
+                <div className="text-[#1FC451] font-bold text-xl md:text-2xl">{editingConfig?.nombre_proyecto || '🌿 PLANT-OR'}</div>
               )}
+            </div>
+
+            {/* Main Text Content */}
+            <div className="text-center space-y-6 relative z-10 w-full flex-1 flex flex-col justify-center items-center pb-8">
               
               {/* Título */}
               {isGlobal ? (
