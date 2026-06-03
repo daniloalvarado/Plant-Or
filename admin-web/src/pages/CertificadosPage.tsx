@@ -64,7 +64,7 @@ export default function CertificadosPage() {
       registros_validados: 100,
       tipo_participacion: 'Estudiante',
       periodo: 'del 14 de mayo del 2026 al 24 de agosto del 2026',
-      fecha_emision: new Date().toISOString()
+      fecha_emision: '2026-08-24T12:00:00.000Z'
     });
     
     setViewMode('edit_global');
@@ -87,6 +87,27 @@ export default function CertificadosPage() {
     setSaving(true);
     try {
       if (viewMode === 'edit_global') {
+        // Validation for signatures
+        const f1Name = editingConfig.responsable_1_nombre?.trim();
+        const f1Role = editingConfig.responsable_1_cargo?.trim();
+        const f1Img = editingConfig.responsable_1_firma;
+        const hasF1 = f1Name || f1Role || f1Img;
+        if (hasF1 && (!f1Name || !f1Role || !f1Img)) {
+          toast.error('Para la Firma 1, debes completar nombre, cargo y subir la firma (o dejar los tres vacíos).');
+          setSaving(false);
+          return;
+        }
+
+        const f2Name = editingConfig.responsable_2_nombre?.trim();
+        const f2Role = editingConfig.responsable_2_cargo?.trim();
+        const f2Img = editingConfig.responsable_2_firma;
+        const hasF2 = f2Name || f2Role || f2Img;
+        if (hasF2 && (!f2Name || !f2Role || !f2Img)) {
+          toast.error('Para la Firma 2, debes completar nombre, cargo y subir la firma (o dejar los tres vacíos).');
+          setSaving(false);
+          return;
+        }
+
         const newTextoCertificado = templateParts.join('');
         await client.patch(editingConfig._id).set({
           titulo_certificado: editingConfig.titulo_certificado,
@@ -312,6 +333,7 @@ export default function CertificadosPage() {
               <div className="flex justify-center gap-12 mt-12 pt-8">
                 
                 {/* Firma 1 */}
+                {(isGlobal || editingConfig?.responsable_1_nombre) && (
                 <div className="text-center relative group">
                   <div 
                     className={`h-20 mb-2 relative flex flex-col items-center justify-center border-2 border-dashed ${isGlobal ? 'border-transparent group-hover:border-[#1FC451] cursor-pointer bg-transparent group-hover:bg-gray-50' : 'border-transparent'} transition-all`}
@@ -330,7 +352,7 @@ export default function CertificadosPage() {
                     <input type="file" ref={firma1Ref} onChange={(e) => handleFileUpload(e, 'responsable_1_firma')} className="hidden" accept="image/png" />
                   </div>
                   
-                  <div className="border-t border-gray-400 w-48 pt-2">
+                  <div className={`w-48 pt-2 ${isGlobal || editingConfig?.responsable_1_nombre ? 'border-t border-gray-400' : ''}`}>
                     {isGlobal ? (
                       <>
                         <input value={editingConfig.responsable_1_nombre || ''} onChange={e => setEditingConfig({...editingConfig, responsable_1_nombre: e.target.value})} className="font-bold text-xs text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none" placeholder="Nombre Resposable 1" />
@@ -344,8 +366,10 @@ export default function CertificadosPage() {
                     )}
                   </div>
                 </div>
+                )}
 
                 {/* Firma 2 */}
+                {(isGlobal || editingConfig?.responsable_2_nombre) && (
                 <div className="text-center relative group">
                   <div 
                     className={`h-20 mb-2 relative flex flex-col items-center justify-center border-2 border-dashed ${isGlobal ? 'border-transparent group-hover:border-[#1FC451] cursor-pointer bg-transparent group-hover:bg-gray-50' : 'border-transparent'} transition-all`}
@@ -364,7 +388,7 @@ export default function CertificadosPage() {
                     <input type="file" ref={firma2Ref} onChange={(e) => handleFileUpload(e, 'responsable_2_firma')} className="hidden" accept="image/png" />
                   </div>
                   
-                  <div className="border-t border-gray-400 w-48 pt-2">
+                  <div className={`w-48 pt-2 ${isGlobal || editingConfig?.responsable_2_nombre ? 'border-t border-gray-400' : ''}`}>
                     {isGlobal ? (
                       <>
                         <input value={editingConfig.responsable_2_nombre || ''} onChange={e => setEditingConfig({...editingConfig, responsable_2_nombre: e.target.value})} className="font-bold text-xs text-center w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-400 focus:outline-none" placeholder="Nombre Resposable 2" />
@@ -378,6 +402,7 @@ export default function CertificadosPage() {
                     )}
                   </div>
                 </div>
+                )}
 
               </div>
             </div>
@@ -419,7 +444,7 @@ export default function CertificadosPage() {
         <div className="flex flex-col gap-3 items-end w-full sm:w-auto">
           <button 
             onClick={handleEditGlobal}
-            className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl transition-all shadow-md shadow-primary/20 w-full sm:w-auto justify-center"
+            className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl transition-all shadow-md shadow-primary/20 w-full sm:w-auto justify-center cursor-pointer"
           >
             <Settings className="w-5 h-5" />
             Editar Plantilla Global
