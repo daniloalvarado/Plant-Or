@@ -266,11 +266,28 @@ export default function HomeScreen() {
                           <Pressable
                             key={filtro._id}
                             onPress={() => {
-                              setSelectedFiltros(prev => 
-                                isActive 
-                                  ? prev.filter(f => f !== filtro.dato_tecnico)
-                                  : [...prev, filtro.dato_tecnico]
-                              );
+                              setSelectedFiltros(prev => {
+                                if (isActive) {
+                                  return prev.filter(f => f !== filtro.dato_tecnico);
+                                }
+                                
+                                let newSelected = [...prev];
+                                
+                                // Respetar "Selección única"
+                                if (filtro.tipo_seleccion === 'Selección única') {
+                                  // Remover cualquier otro filtro seleccionado de esta misma categoría
+                                  const categoryFilters = groupedFiltros[categoria].map((f: any) => f.dato_tecnico);
+                                  newSelected = newSelected.filter(f => !categoryFilters.includes(f));
+                                }
+                                
+                                // Límite de máximo 3 filtros en total
+                                if (newSelected.length >= 3) {
+                                  // Eliminamos el más antiguo para hacer espacio al nuevo
+                                  newSelected.shift();
+                                }
+                                
+                                return [...newSelected, filtro.dato_tecnico];
+                              });
                             }}
                             style={[
                               styles.filterChip,

@@ -24,6 +24,7 @@ export default function FiltrosPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState(EMPTY_FORM)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [formError, setFormError] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<string>('Todas')
@@ -52,7 +53,7 @@ export default function FiltrosPage() {
 
   useEffect(() => { fetchFiltros() }, [fetchFiltros])
 
-  const handleCreate = async () => {
+  const handleSave = async () => {
     setFormError('')
     if (!form.nombre_filtro.trim() || !form.dato_tecnico.trim()) {
       setFormError('El nombre visible y el dato técnico son obligatorios.')
@@ -60,19 +61,46 @@ export default function FiltrosPage() {
     }
     setSaving(true)
     try {
-      await client.create({
-        _type: 'filtro',
-        ...form,
-        activo: true
-      })
+      if (editingId) {
+        await client.patch(editingId).set({
+          nombre_filtro: form.nombre_filtro,
+          categoria: form.categoria,
+          dato_tecnico: form.dato_tecnico,
+          icono: form.icono,
+          tipo_seleccion: form.tipo_seleccion,
+          orden: form.orden
+        }).commit()
+      } else {
+        await client.create({
+          _type: 'filtro',
+          ...form,
+          activo: true
+        })
+      }
       setForm(EMPTY_FORM)
+      setEditingId(null)
       setShowForm(false)
       await fetchFiltros()
     } catch (e) {
-      setFormError('Error al crear el filtro. Intenta de nuevo.')
+      setFormError('Error al guardar el filtro. Intenta de nuevo.')
     } finally {
       setSaving(false)
     }
+  }
+
+  const startEdit = (filtro: Filtro) => {
+    setForm({
+      nombre_filtro: filtro.nombre_filtro || '',
+      categoria: filtro.categoria || CATEGORIAS[0],
+      dato_tecnico: filtro.dato_tecnico || '',
+      icono: filtro.icono || '',
+      tipo_seleccion: filtro.tipo_seleccion || 'Selección única',
+      orden: filtro.orden || 0
+    })
+    setEditingId(filtro._id)
+    setShowForm(true)
+    // scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const toggleActivo = async (filtro: Filtro) => {
@@ -194,7 +222,7 @@ export default function FiltrosPage() {
             {showStats ? "Ocultar Datos Reales" : "Ver Datos Reales"}
           </button>
           <button
-            onClick={() => setShowForm(v => !v)}
+            onClick={() => { setForm(EMPTY_FORM); setEditingId(null); setShowForm(v => !v) }}
             className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
@@ -269,8 +297,8 @@ export default function FiltrosPage() {
       {showForm && (
         <div className="bg-card border border-border rounded-xl p-5 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
           <h2 className="font-semibold text-foreground flex items-center gap-2">
-            <Plus className="w-4 h-4 text-primary" />
-            Crear nuevo filtro
+            {editingId ? <SlidersHorizontal className="w-4 h-4 text-primary" /> : <Plus className="w-4 h-4 text-primary" />}
+            {editingId ? 'Editar filtro' : 'Crear nuevo filtro'}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1">
@@ -352,17 +380,17 @@ export default function FiltrosPage() {
 
           <div className="flex gap-3 justify-end mt-4">
             <button
-              onClick={() => { setShowForm(false); setForm(EMPTY_FORM); setFormError('') }}
+              onClick={() => { setShowForm(false); setForm(EMPTY_FORM); setEditingId(null); setFormError('') }}
               className="px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-lg transition-colors cursor-pointer"
             >
               Cancelar
             </button>
             <button
-              onClick={handleCreate}
+              onClick={handleSave}
               disabled={saving}
               className="px-6 py-2 text-sm bg-green-600 text-white font-bold rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
             >
-              {saving ? 'Guardando...' : 'Crear filtro'}
+              {saving ? 'Guardando...' : (editingId ? 'Guardar Cambios' : 'Crear filtro')}
             </button>
           </div>
         </div>
@@ -434,6 +462,18 @@ export default function FiltrosPage() {
                       </p>
                     </div>
                     <div className="flex items-center gap-1 flex-shrink-0">
+                      {/* Edit */}
+                      <div className="relative group">
+                        <button
+                          onClick={() => startEdit(filtro)}
+                          className="p-2 rounded-lg text-zinc-500 hover:bg-blue-500/10 hover:text-blue-400 transition-colors cursor-pointer"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                        </button>
+                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded border border-zinc-800 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-lg">
+                          Editar
+                        </span>
+                      </div>
                       {/* Toggle active */}
                       <div className="relative group">
                         <button
