@@ -258,6 +258,10 @@ export default function CertificadosPage() {
             repeating-linear-gradient(-45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
             repeating-radial-gradient(circle at 50% 50%, rgba(31,196,81,0.02) 0, rgba(31,196,81,0.02) 2px, transparent 2px, transparent 30px)`
           }}>
+            {/* Watermark Icon */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 text-[300px] md:text-[400px] pointer-events-none z-0 select-none">
+              🌿
+            </div>
 
             <div className="text-center space-y-6 relative z-10 w-full h-full flex flex-col justify-center items-center">
               
@@ -277,11 +281,11 @@ export default function CertificadosPage() {
                 <input 
                   value={editingConfig?.titulo_certificado || ''}
                   onChange={e => setEditingConfig({...editingConfig, titulo_certificado: e.target.value})}
-                  className="text-black font-bold text-3xl md:text-5xl tracking-[0.1em] md:tracking-[0.2em] uppercase bg-transparent text-center border-b border-transparent hover:border-gray-300 focus:border-black focus:outline-none transition-colors w-full"
+                  className="text-black font-bold text-2xl md:text-4xl tracking-[0.1em] md:tracking-[0.2em] uppercase bg-transparent text-center focus:outline-none transition-colors w-full"
                   placeholder="Título del Certificado"
                 />
               ) : (
-                <div className="text-black font-bold text-3xl md:text-5xl tracking-[0.1em] md:tracking-[0.2em] uppercase">{editingConfig?.titulo_certificado}</div>
+                <div className="text-black font-bold text-2xl md:text-4xl tracking-[0.1em] md:tracking-[0.2em] uppercase">{editingConfig?.titulo_certificado}</div>
               )}
               
               {/* Subtítulo */}
