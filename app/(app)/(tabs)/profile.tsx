@@ -88,7 +88,7 @@ export default function Profile() {
       <meta charset="UTF-8">
       <style>
         @page { size: A4 landscape; margin: 0; }
-        html, body { font-family: 'Helvetica', 'Arial', sans-serif; margin: 0; padding: 0; background: white; color: #08130D; width: 100%; height: 100%; overflow: hidden; }
+        html, body { font-family: 'Helvetica', 'Arial', sans-serif; margin: 0; padding: 0; background: white; color: #08130D; width: 1122px; height: 793px; }
         .container { 
           width: 100%; height: 100%; border: 15px solid #1FC451; padding: 40px; box-sizing: border-box; text-align: center; position: relative; overflow: hidden;
           background-color: #ffffff;
@@ -97,6 +97,7 @@ export default function Profile() {
             repeating-linear-gradient(-45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
             repeating-radial-gradient(circle at 50% 50%, rgba(31,196,81,0.02) 0, rgba(31,196,81,0.02) 2px, transparent 2px, transparent 30px);
         }
+        .content-wrapper { display: flex; flex-direction: column; justify-content: center; align-items: center; height: calc(100% - 130px); width: 100%; }
         .logo { font-size: 32px; font-weight: bold; color: #1FC451; margin-bottom: 10px; }
         .title { font-size: 44px; font-weight: bold; margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; }
         .subtitle { font-size: 22px; color: #555; margin-bottom: 25px; }
@@ -116,14 +117,17 @@ export default function Profile() {
     <body>
       <div class="container">
         <div class="bg-icon">🌿</div>
-        <div class="logo">${config?.nombre_proyecto || '🌿 PLANT-OR'}</div>
-        <div class="title">${titulo}</div>
-        <div class="subtitle">${subtitulo}</div>
         
-        <div class="name">${name}</div>
-        
-        <div class="paragraph">
-          ${textoFinal}
+        <div class="content-wrapper">
+          <div class="logo">${config?.nombre_proyecto || '🌿 PLANT-OR'}</div>
+          <div class="title">${titulo}</div>
+          <div class="subtitle">${subtitulo}</div>
+          
+          <div class="name">${name}</div>
+          
+          <div class="paragraph">
+            ${textoFinal}
+          </div>
         </div>
         
         <div class="footer">

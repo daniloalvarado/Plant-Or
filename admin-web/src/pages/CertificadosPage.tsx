@@ -353,11 +353,11 @@ export default function CertificadosPage() {
                   return <span key={index}>{part}</span>;
                 })}
               </div>
+            </div>
 
-              {/* Firmas */}
-              <div className="flex justify-center gap-12 mt-12 pt-8">
-                
-                {/* Firma 1 */}
+            {/* Firmas y Footer (Absolute bottom) */}
+            <div className="absolute bottom-8 left-12 flex gap-12 md:gap-24 z-10">
+              {/* Firma 1 */}
                 {(isGlobal || editingConfig?.responsable_1_nombre) && (
                 <div className="text-center relative group">
                   <div 
@@ -428,8 +428,6 @@ export default function CertificadosPage() {
                   </div>
                 </div>
                 )}
-
-              </div>
             </div>
 
             {/* Validation Box (Footer) */}
