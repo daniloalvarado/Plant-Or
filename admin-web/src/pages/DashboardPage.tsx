@@ -117,7 +117,7 @@ export default function DashboardPage() {
             <div className="space-y-3">
               {topEstudiantes.map((est, i) => (
                 <div key={i} className="flex items-center gap-3 py-1">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold flex-shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0">
                     {i + 1}
                   </div>
                   <p className="text-sm font-medium text-foreground flex-1 truncate">{est.nombre}</p>

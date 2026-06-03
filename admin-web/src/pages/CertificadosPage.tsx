@@ -3,6 +3,7 @@ import { client, urlFor } from '../lib/sanity';
 import { Award, Search, Edit2, X, Save, Loader2, Calendar, ArrowLeft, Settings, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { useUser } from '@clerk/clerk-react';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 interface Certificado {
   _id: string;
@@ -198,11 +199,7 @@ export default function CertificadosPage() {
   );
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-full min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (viewMode !== 'list' && editingCert && editingConfig) {
