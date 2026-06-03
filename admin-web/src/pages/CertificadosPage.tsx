@@ -248,12 +248,23 @@ export default function CertificadosPage() {
         {/* Visual Canvas */}
         <div className="p-6 overflow-y-auto bg-muted/10 flex-1 relative">
 
-          <div className="bg-white mx-auto shadow-lg relative p-8 md:p-12 pb-24 md:pb-32 my-8 transition-all" style={{ maxWidth: '900px', minHeight: '500px', color: '#1a1a1a', border: '1px solid #e5e5e5' }}>
-            {/* Decorative border */}
-            <div className="absolute inset-4 border-2 border-[#1FC451] opacity-30 pointer-events-none" />
-            <div className="absolute inset-5 border border-[#1FC451] opacity-20 pointer-events-none" />
+          <div className="bg-white mx-auto shadow-2xl relative p-8 md:p-12 pb-24 md:pb-32 my-8 transition-all overflow-hidden flex flex-col justify-center items-center" style={{ 
+            maxWidth: '900px', 
+            minHeight: '600px', 
+            color: '#1a1a1a', 
+            border: '15px solid #1FC451',
+            backgroundImage: `repeating-linear-gradient(45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
+            repeating-linear-gradient(-45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
+            repeating-radial-gradient(circle at 50% 50%, rgba(31,196,81,0.02) 0, rgba(31,196,81,0.02) 2px, transparent 2px, transparent 30px)`
+          }}>
+            {/* Watermark Icon */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 text-[300px] md:text-[400px] pointer-events-none z-0 select-none">
+              🌿
+            </div>
 
-            <div className="text-center space-y-6 relative z-10 h-full flex flex-col justify-center">
+            <div className="text-center space-y-6 relative z-10 w-full h-full flex flex-col justify-center items-center">
+              
+              <div className="text-[#1FC451] font-bold text-2xl md:text-3xl mb-2">🌿 PLANT-OR</div>
               
               {/* Título */}
               {isGlobal ? (
