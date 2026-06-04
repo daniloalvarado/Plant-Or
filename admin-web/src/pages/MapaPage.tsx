@@ -81,11 +81,11 @@ export default function MapaPage() {
           </div>
           
           {/* Filters - Desktop (Chips) */}
-          <div className="hidden sm:flex items-center gap-2 flex-wrap cascade-item delay-2">
-            <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+          <div className="hidden sm:flex items-center gap-2 flex-wrap cascade-container">
+            <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0 cascade-item" />
             <button
               onClick={() => setActiveFilter('all')}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+              className={`cascade-item px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
                 activeFilter === 'all'
                   ? 'bg-foreground/10 border-foreground/30 text-foreground'
                   : 'border-border text-muted-foreground hover:text-foreground hover:bg-foreground/10'
@@ -102,7 +102,7 @@ export default function MapaPage() {
                   color: STATUS_COLORS[state],
                   backgroundColor: STATUS_COLORS[state] + '18',
                 } : {}}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+                className={`cascade-item px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
                   activeFilter === state ? '' : 'border-border text-muted-foreground hover:text-foreground hover:bg-foreground/5'
                 }`}
               >

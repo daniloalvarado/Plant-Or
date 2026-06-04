@@ -323,8 +323,8 @@ export default function FiltrosPage() {
             Traduce datos técnicos a lenguaje simple.
           </p>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0 sm:mt-0 mt-2 cascade-item delay-1">
-          <div className="relative group/tooltip">
+        <div className="flex items-center gap-2 flex-shrink-0 sm:mt-0 mt-2 cascade-container">
+          <div className="relative group/tooltip cascade-item delay-2">
             <button
               onClick={fetchFiltros}
               className="p-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer"
@@ -337,7 +337,7 @@ export default function FiltrosPage() {
           </div>
           <button
             onClick={fetchStats}
-            className="flex items-center gap-2 px-4 py-2 bg-secondary text-foreground text-sm border border-border rounded-lg hover:bg-accent transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-secondary text-foreground text-sm border border-border rounded-lg hover:bg-accent transition-colors cursor-pointer cascade-item delay-3"
           >
             {loadingStats ? <RefreshCw className="w-4 h-4 animate-spin" /> : <BarChart2 className="w-4 h-4" />}
             {showStats ? "Ocultar Datos Reales" : "Ver Datos Reales"}
@@ -351,7 +351,7 @@ export default function FiltrosPage() {
                 document.getElementById('filtro-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
               }, 50)
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] text-white text-sm font-bold rounded-lg transition-colors cursor-pointer cascade-item delay-4"
           >
             <Plus className="w-4 h-4" />
             Nuevo filtro

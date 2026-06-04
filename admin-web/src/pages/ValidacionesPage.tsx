@@ -109,8 +109,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
 
       {/* Search & Filters */}
       <div className="space-y-4 cascade-container">
-        <div className="flex gap-3 cascade-item delay-1">
-          <div className="relative flex-1">
+        <div className="flex gap-3 cascade-container">
+          <div className="relative flex-1 cascade-item delay-2">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
@@ -122,7 +122,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 bg-secondary border border-border rounded-lg text-sm text-foreground hover:bg-accent transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-secondary border border-border rounded-lg text-sm text-foreground hover:bg-accent transition-colors cursor-pointer cascade-item delay-3"
           >
             <Filter className="w-4 h-4" />
             <span className="hidden sm:inline">Filtros</span>
@@ -130,7 +130,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
         </div>
 
         {showFilters && (
-          <div className="flex flex-wrap items-center gap-3 pt-2 cascade-item delay-2">
+          <div className="flex flex-wrap items-center gap-3 pt-2 cascade-item delay-4">
             <CustomSelect
               value={filterEstado}
               onChange={setFilterEstado}

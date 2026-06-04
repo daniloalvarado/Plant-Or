@@ -478,25 +478,25 @@ export default function CertificadosPage() {
             Visualiza y corrige los nombres de los certificados generados por los usuarios.
           </p>
         </div>
-        <div className="flex flex-col gap-3 items-end w-full sm:w-auto cascade-item delay-1">
+        <div className="flex flex-col gap-3 items-end w-full sm:w-auto cascade-container">
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <button 
               onClick={() => window.open('/validar', '_blank')}
-              className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-md shadow-blue-500/20 w-full sm:w-auto justify-center cursor-pointer"
+              className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-md shadow-blue-500/20 w-full sm:w-auto justify-center cursor-pointer cascade-item delay-2"
             >
               <ExternalLink className="w-5 h-5" />
               Validar Certificado
             </button>
             <button 
               onClick={handleEditGlobal}
-              className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl transition-all shadow-md shadow-primary/20 w-full sm:w-auto justify-center cursor-pointer"
+              className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl transition-all shadow-md shadow-primary/20 w-full sm:w-auto justify-center cursor-pointer cascade-item delay-3"
             >
               <Settings className="w-5 h-5" />
               Editar Plantilla
             </button>
           </div>
           
-          <div className="relative w-full sm:w-64">
+          <div className="relative w-full sm:w-64 cascade-item delay-4">
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input 
               type="text" 
