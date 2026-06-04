@@ -76,3 +76,20 @@ function calculateOverlay(z) {
     return 1;
 }
 
+gsap.ticker.add(() => {
+    currentScroll += (targetScroll - currentScroll) * CONFIG.lerp;
+
+    layerData.forEach((layer) => {
+        let z = layer.basez + currentScroll;
+        z = ((z % tunnelDepth) + tunnelDepth) % tunnelDepth;
+        z = z - tunnelDepth + exitPoint;
+
+        const overlay = calculateOverlay(z);
+
+        gsap.set(layer.el, {
+            z: z,
+            " -- overlay": Math.min(1, Math.max(0, overlay)),
+            visibility: overlay >= 1 ? "hidden" : "visible",
+        });
+    });
+}); 

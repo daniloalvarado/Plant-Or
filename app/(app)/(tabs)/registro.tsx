@@ -123,6 +123,7 @@ export default function RegistroScreen() {
         if (user.unsafeMetadata?.facultad) setFacultad(user.unsafeMetadata.facultad as string);
         if (user.unsafeMetadata?.escuela) setEscuela(user.unsafeMetadata.escuela as string);
         if (user.unsafeMetadata?.dia_clase) setDiaClase(user.unsafeMetadata.dia_clase as string);
+        if (user.unsafeMetadata?.role) setRolRegistro(user.unsafeMetadata.role as 'estudiante' | 'ciudadano');
 
         // Consultar el número de plantas actual para autogenerar
         client.fetch(`count(*[_type == "planta" && autor == $userId])`, { userId: user.id })
@@ -305,26 +306,27 @@ export default function RegistroScreen() {
   };
 
   const nextStep = async () => {
-    if (step === 1 && user && rolRegistro === 'estudiante') {
+    if (step === 1 && user) {
       try {
-        const hasChanges = 
-          dni !== (user.unsafeMetadata?.dni || '') ||
-          facultad !== (user.unsafeMetadata?.facultad || '') ||
-          escuela !== (user.unsafeMetadata?.escuela || '') ||
-          curso !== (user.unsafeMetadata?.curso || '') ||
-          diaClase !== (user.unsafeMetadata?.dia_clase || '');
-          
-        if (hasChanges) {
-          await user.update({
-            unsafeMetadata: {
-              ...user.unsafeMetadata,
-              dni,
-              facultad,
-              escuela,
-              curso,
-              dia_clase: diaClase
-            }
-          });
+        let newMetadata: any = { ...user.unsafeMetadata };
+        let shouldUpdate = false;
+
+        // Lock role permanently
+        if (user.unsafeMetadata?.role !== rolRegistro) {
+          newMetadata.role = rolRegistro;
+          shouldUpdate = true;
+        }
+
+        if (rolRegistro === 'estudiante') {
+          if (dni !== (user.unsafeMetadata?.dni || '')) { newMetadata.dni = dni; shouldUpdate = true; }
+          if (facultad !== (user.unsafeMetadata?.facultad || '')) { newMetadata.facultad = facultad; shouldUpdate = true; }
+          if (escuela !== (user.unsafeMetadata?.escuela || '')) { newMetadata.escuela = escuela; shouldUpdate = true; }
+          if (curso !== (user.unsafeMetadata?.curso || '')) { newMetadata.curso = curso; shouldUpdate = true; }
+          if (diaClase !== (user.unsafeMetadata?.dia_clase || '')) { newMetadata.dia_clase = diaClase; shouldUpdate = true; }
+        }
+
+        if (shouldUpdate) {
+          await user.update({ unsafeMetadata: newMetadata });
         }
       } catch (e) {
         console.error("Auto-save profile error:", e);
@@ -620,9 +622,25 @@ export default function RegistroScreen() {
         >
           <YStack gap="$4">
             <H2 color="#ffffff">Registro de Planta</H2>
-            <Paragraph color="rgba(255,255,255,0.7)">
-              Paso {step} de 4
-            </Paragraph>
+
+            {!editId && rolRegistro === 'estudiante' && numeroPlantaAutogenerado >= 20 ? (
+              <Card padding="$4" backgroundColor="rgba(255, 68, 68, 0.1)" borderWidth={1} borderColor="#ff4444" mt="$4">
+                <XStack gap="$2" style={{ alignItems: "center" }} mb="$2">
+                  <MaterialCommunityIcons name="alert-circle" size={24} color="#ff4444" />
+                  <H4 color="#ff4444">Límite alcanzado</H4>
+                </XStack>
+                <Paragraph color="white">
+                  Has alcanzado el límite máximo de 20 registros como Estudiante UNAP. Ya no puedes registrar más plantas en esta categoría.
+                </Paragraph>
+                <Button mt="$4" bg="#333" color="white" onPress={() => router.replace('/')}>
+                  Volver al inicio
+                </Button>
+              </Card>
+            ) : (
+              <>
+                <Paragraph color="rgba(255,255,255,0.7)">
+                  Paso {step} de 4
+                </Paragraph>
 
             {estadoRevision === 'Observado' && motivoObservacion ? (
               <Card padding="$4" backgroundColor="rgba(255, 165, 0, 0.2)" borderWidth={1} borderColor="#FFA500" mb="$2">
@@ -646,6 +664,8 @@ export default function RegistroScreen() {
                         bg={rolRegistro === 'estudiante' ? '#1FC451' : 'rgba(255,255,255,0.05)'}
                         color={rolRegistro === 'estudiante' ? '#08130D' : 'white'}
                         onPress={() => setRolRegistro('estudiante')}
+                        disabled={!!user?.unsafeMetadata?.role && user.unsafeMetadata.role !== 'estudiante'}
+                        opacity={!!user?.unsafeMetadata?.role && user.unsafeMetadata.role !== 'estudiante' ? 0.3 : 1}
                         pressStyle={{ bg: '#15963c' }}
                       >
                         Estudiante UNAP
@@ -655,6 +675,8 @@ export default function RegistroScreen() {
                         bg={rolRegistro === 'ciudadano' ? '#1FC451' : 'rgba(255,255,255,0.05)'}
                         color={rolRegistro === 'ciudadano' ? '#08130D' : 'white'}
                         onPress={() => setRolRegistro('ciudadano')}
+                        disabled={!!user?.unsafeMetadata?.role && user.unsafeMetadata.role !== 'ciudadano'}
+                        opacity={!!user?.unsafeMetadata?.role && user.unsafeMetadata.role !== 'ciudadano' ? 0.3 : 1}
                         pressStyle={{ bg: '#15963c' }}
                       >
                         Ciudadano
@@ -665,6 +687,11 @@ export default function RegistroScreen() {
                         ? "Deberás llenar el formulario botánico completo." 
                         : "Registro rápido: Solo nombre, ubicación y fotografías."}
                     </Paragraph>
+                    {!editId && !user?.unsafeMetadata?.role && (
+                      <Paragraph color="#FFA500" size="$2" mt="$1">
+                        ⚠️ Al continuar, tu rol quedará fijado y no podrás cambiarlo después.
+                      </Paragraph>
+                    )}
                   </YStack>
 
                   <YStack gap="$2">
@@ -1283,6 +1310,8 @@ export default function RegistroScreen() {
                   </YStack>
                 </Card>
               </YStack>
+            )}
+            </>
             )}
 
           </YStack>
