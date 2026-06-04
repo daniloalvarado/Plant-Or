@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   header: {
-    marginBottom: 24,
+    marginBottom: 16,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -477,9 +477,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 8,
     borderRadius: 16,
-    marginBottom: 24,
+    marginBottom: 16,
   },
   searchInput: {
     flex: 1,
