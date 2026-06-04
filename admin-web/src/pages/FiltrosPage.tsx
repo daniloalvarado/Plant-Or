@@ -312,8 +312,8 @@ export default function FiltrosPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-        <div>
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 cascade-container">
+        <div className="cascade-item">
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <SlidersHorizontal className="w-6 h-6 text-primary" />
             Módulo de Filtros Dinámicos
@@ -323,7 +323,7 @@ export default function FiltrosPage() {
             Traduce datos técnicos a lenguaje simple.
           </p>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0 sm:mt-0 mt-2">
+        <div className="flex items-center gap-2 flex-shrink-0 sm:mt-0 mt-2 cascade-item delay-1">
           <div className="relative group/tooltip">
             <button
               onClick={fetchFiltros}

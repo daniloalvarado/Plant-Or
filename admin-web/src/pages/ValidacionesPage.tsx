@@ -96,8 +96,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 cascade-container">
+        <div className="cascade-item">
           <h1 className="text-3xl font-bold text-foreground">
             {filtroEstado === 'Validado' ? 'Registros Aprobados' : 'Bandeja de Validación'}
           </h1>
@@ -108,8 +108,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
       </div>
 
       {/* Search & Filters */}
-      <div className="space-y-4">
-        <div className="flex gap-3">
+      <div className="space-y-4 cascade-container">
+        <div className="flex gap-3 cascade-item delay-1">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
@@ -130,7 +130,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
         </div>
 
         {showFilters && (
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-3 pt-2 cascade-item delay-2">
             <CustomSelect
               value={filterEstado}
               onChange={setFilterEstado}
