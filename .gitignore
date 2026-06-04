@@ -48,3 +48,6 @@ TeamSync/
 
 # Admin web secrets
 admin-web/.env
+
+# Render build output
+output/

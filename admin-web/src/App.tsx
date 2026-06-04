@@ -147,11 +147,11 @@ function ClerkApp() {
         }
       }}
     >
-      <BrowserRouter>
+      <BrowserRouter basename="/admin">
         <Toaster richColors position="top-right" theme="dark" />
         <Routes>
           <Route path="/validar" element={<ValidarCertificadoPage />} />
-          <Route path="*" element={<MainContent />} />
+          <Route path="/*" element={<MainContent />} />
         </Routes>
       </BrowserRouter>
     </ClerkProvider>

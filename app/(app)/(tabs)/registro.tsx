@@ -311,12 +311,6 @@ export default function RegistroScreen() {
         let newMetadata: any = { ...user.unsafeMetadata };
         let shouldUpdate = false;
 
-        // Lock role permanently
-        if (user.unsafeMetadata?.role !== rolRegistro) {
-          newMetadata.role = rolRegistro;
-          shouldUpdate = true;
-        }
-
         if (rolRegistro === 'estudiante') {
           if (dni !== (user.unsafeMetadata?.dni || '')) { newMetadata.dni = dni; shouldUpdate = true; }
           if (facultad !== (user.unsafeMetadata?.facultad || '')) { newMetadata.facultad = facultad; shouldUpdate = true; }
@@ -581,6 +575,15 @@ export default function RegistroScreen() {
         }
       }
       
+      // Guardar el rol de forma permanente si es la primera vez que registra
+      if (user && user.unsafeMetadata?.role !== rolRegistro) {
+        try {
+          await user.update({ unsafeMetadata: { ...user.unsafeMetadata, role: rolRegistro } });
+        } catch (e) {
+          console.error("Error al fijar rol:", e);
+        }
+      }
+
       setShowSuccess(true);
     } catch (error) {
       console.error("Error al enviar a Sanity:", error);
@@ -630,7 +633,7 @@ export default function RegistroScreen() {
                   <H4 color="#ff4444">Límite alcanzado</H4>
                 </XStack>
                 <Paragraph color="white">
-                  Has alcanzado el límite máximo de 20 registros como Estudiante UNAP. Ya no puedes registrar más plantas en esta categoría.
+                  Has alcanzado el límite máximo de 20 registros como Estudiante. Ya no puedes registrar más plantas en esta categoría.
                 </Paragraph>
                 <Button mt="$4" bg="#333" color="white" onPress={() => router.replace('/')}>
                   Volver al inicio
@@ -668,7 +671,7 @@ export default function RegistroScreen() {
                         opacity={!!user?.unsafeMetadata?.role && user.unsafeMetadata.role !== 'estudiante' ? 0.3 : 1}
                         pressStyle={{ bg: '#15963c' }}
                       >
-                        Estudiante UNAP
+                        Estudiante
                       </Button>
                       <Button
                         flex={1}
@@ -689,7 +692,7 @@ export default function RegistroScreen() {
                     </Paragraph>
                     {!editId && !user?.unsafeMetadata?.role && (
                       <Paragraph color="#FFA500" size="$2" mt="$1">
-                        ⚠️ Al continuar, tu rol quedará fijado y no podrás cambiarlo después.
+                        ⚠️ Al enviar tu primera planta, tu rol quedará fijado de forma permanente.
                       </Paragraph>
                     )}
                   </YStack>

@@ -1,17 +1,111 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plant-OR</title>
+    <meta name="description" content="Catálogo Público 3D de Plantas Registradas en Plant-OR. Explora la biodiversidad de tu ciudad." />
+    <title>Plant-OR | Catálogo Botánico 3D</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css" />
 </head>
 
-<body>
+<body class="dark-mode">
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                <path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 19 2c1 2 2 4.5 1 8-2.5 1-4.5.5-6 0a5 5 0 0 0-3 12" />
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+            </svg>
+            <span>Plant-OR</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="active">Catálogo 3D</a>
+            <a href="/admin/" class="admin-link">Panel Admin</a>
+        </nav>
+        <button id="theme-toggle" class="theme-btn" aria-label="Cambiar tema">
+            <svg id="theme-icon-moon" class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="display:none;">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+            <svg id="theme-icon-sun" class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+            </svg>
+        </button>
+    </header>
 
-    <section class="spotlight"></section>
+    <!-- Túnel 3D -->
+    <main>
+        <div id="loading-spinner" class="loading-container">
+            <div class="spinner"></div>
+            <p>Cargando el catálogo botánico...</p>
+        </div>
+        <section class="spotlight"></section>
+    </main>
+
+    <!-- Modal de Detalles de Planta -->
+    <div id="plant-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn" aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                    <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                </svg>
+            </button>
+            
+            <div class="modal-layout">
+                <!-- Columna Izquierda: Galería -->
+                <div class="modal-gallery">
+                    <div class="main-image-container">
+                        <img id="modal-main-image" src="" alt="Planta" />
+                    </div>
+                    <div id="modal-thumbnails" class="thumbnails-container"></div>
+                </div>
+
+                <!-- Columna Derecha: Información -->
+                <div class="modal-info">
+                    <div class="header-info">
+                        <span id="modal-habit" class="badge badge-primary">Hábito</span>
+                        <h2 id="modal-scientific-name">Nombre Científico</h2>
+                        <p id="modal-common-name" class="subtitle">Nombres comunes</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                            Taxonomía y Botánica
+                        </h3>
+                        <div class="info-grid" id="modal-botany-grid"></div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Ubicación y Registro
+                        </h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Distrito</span>
+                                <span id="modal-district" class="value">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Dirección</span>
+                                <span id="modal-address" class="value">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Registrado por</span>
+                                <span id="modal-registrar" class="value">-</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Fecha</span>
+                                <span id="modal-date" class="value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="/script.js"></script>
 </body>
 
