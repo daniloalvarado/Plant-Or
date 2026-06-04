@@ -194,6 +194,19 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
   order: 1 !important;
 }
 
+/* Ocultar la palabra "Perfil" (título de la sección) */
+.cl-profileSection__profile .cl-profileSectionHeader,
+.cl-profileSection__profile .cl-profileSectionTitle,
+.cl-profileSection__profile .cl-profileSectionTitleText {
+  display: none !important;
+}
+
+/* Ocultar el botón de opciones (...) en cuentas conectadas para evitar eliminar la cuenta */
+.cl-profileSection__connectedAccounts .cl-menuButton,
+.cl-profileSection__connectedAccounts button[aria-haspopup="menu"] {
+  display: none !important;
+}
+
 
 /* --- ANIMACIONES EN CASCADA (BARRIDO) --- */
 @keyframes cascade-slide-up {
