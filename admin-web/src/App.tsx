@@ -34,7 +34,7 @@ function ProfileWithLoading() {
           <LoadingSpinner text="Cargando configuración de cuenta..." />
         </div>
       )}
-      <div className={loading ? 'hidden' : 'opacity-100 transition-opacity duration-500'}>
+      <div className={loading ? 'hidden' : 'cascade-item w-full flex justify-center'}>
         <UserProfile appearance={{ elements: { card: 'bg-card border-border', headerTitle: 'hidden', headerSubtitle: 'hidden' } }} />
       </div>
     </div>

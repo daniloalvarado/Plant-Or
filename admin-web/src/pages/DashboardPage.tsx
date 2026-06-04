@@ -49,9 +49,9 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 cascade-container">
-        <div className="cascade-item">
-          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Resumen general del catálogo PLANT-OR</p>
+        <div className="cascade-container">
+          <h1 className="text-3xl font-bold text-foreground cascade-item">Dashboard</h1>
+          <p className="text-muted-foreground mt-1 cascade-item delay-1">Resumen general del catálogo PLANT-OR</p>
         </div>
       </div>
 

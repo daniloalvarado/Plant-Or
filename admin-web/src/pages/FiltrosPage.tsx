@@ -313,12 +313,12 @@ export default function FiltrosPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 cascade-container">
-        <div className="cascade-item">
-          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+        <div className="cascade-container">
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2 cascade-item">
             <SlidersHorizontal className="w-6 h-6 text-primary" />
             Módulo de Filtros Dinámicos
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-muted-foreground mt-1 cascade-item delay-1">
             Crea y gestiona los filtros de búsqueda que verán los usuarios en la app móvil.
             Traduce datos técnicos a lenguaje simple.
           </p>

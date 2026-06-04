@@ -71,17 +71,17 @@ export default function MapaPage() {
     <>
     <div className="flex flex-col h-[calc(100vh-104px)] md:h-[calc(100vh-64px)] gap-4">
       {/* Header */}
-      <div className="flex flex-col gap-4 flex-shrink-0">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Mapa del Catálogo</h1>
-            <p className="text-muted-foreground mt-1">
+      <div className="flex flex-col gap-4 flex-shrink-0 cascade-container">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 cascade-container">
+          <div className="cascade-container">
+            <h1 className="text-3xl font-bold text-foreground cascade-item">Mapa del Catálogo</h1>
+            <p className="text-muted-foreground mt-1 cascade-item delay-1">
               {counts[activeFilter] ?? 0} {(counts[activeFilter] ?? 0) === 1 ? 'registro geolocalizado' : 'registros geolocalizados'}
             </p>
           </div>
           
           {/* Filters - Desktop (Chips) */}
-          <div className="hidden sm:flex items-center gap-2 flex-wrap">
+          <div className="hidden sm:flex items-center gap-2 flex-wrap cascade-item delay-2">
             <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
             <button
               onClick={() => setActiveFilter('all')}
@@ -112,7 +112,7 @@ export default function MapaPage() {
           </div>
 
           {/* Filters - Mobile (Dropdown) */}
-          <div className="flex sm:hidden items-center gap-2 w-full flex-1">
+          <div className="flex sm:hidden items-center gap-2 w-full flex-1 cascade-item delay-2">
             <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
             <div className="flex-1 min-w-0">
               <CustomSelect
@@ -131,7 +131,7 @@ export default function MapaPage() {
         </div>
 
         {/* Search Bar - Full Width everywhere */}
-        <div className="relative w-full">
+        <div className="relative w-full cascade-item delay-3">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
@@ -144,7 +144,7 @@ export default function MapaPage() {
       </div>
 
       {/* Map */}
-      <div className="flex-1 relative rounded-xl overflow-hidden border border-border min-h-0">
+      <div className="flex-1 relative rounded-xl overflow-hidden border border-border min-h-0 cascade-item delay-4">
         <MapContainer
           center={center}
           zoom={13}

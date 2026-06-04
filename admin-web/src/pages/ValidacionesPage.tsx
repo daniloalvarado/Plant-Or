@@ -97,11 +97,11 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 cascade-container">
-        <div className="cascade-item">
-          <h1 className="text-3xl font-bold text-foreground">
+        <div className="cascade-container">
+          <h1 className="text-3xl font-bold text-foreground cascade-item">
             {filtroEstado === 'Validado' ? 'Registros Aprobados' : 'Bandeja de Validación'}
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-muted-foreground mt-1 cascade-item delay-1">
             {filtered.length} registro{filtered.length !== 1 ? 's' : ''} encontrado{filtered.length !== 1 ? 's' : ''}
           </p>
         </div>

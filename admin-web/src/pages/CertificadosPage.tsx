@@ -469,12 +469,12 @@ export default function CertificadosPage() {
   return (
     <div className="space-y-6 relative h-full">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 cascade-container">
-        <div className="cascade-item">
-          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+        <div className="cascade-container">
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2 cascade-item">
             <Award className="w-6 h-6 text-primary" />
             Certificados Emitidos
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-sm text-muted-foreground mt-1 cascade-item delay-1">
             Visualiza y corrige los nombres de los certificados generados por los usuarios.
           </p>
         </div>
