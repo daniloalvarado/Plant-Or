@@ -45,7 +45,9 @@ export function Sidebar() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const SidebarContent = () => (
+
+
+  const sidebarContentJsx = (
     <div className="flex flex-col h-full bg-sidebar-background border-r border-sidebar-border">
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-sidebar-border">
@@ -177,7 +179,7 @@ export function Sidebar() {
         'hidden md:flex flex-col h-screen sticky top-0 transition-all duration-300 z-[1050] isolation-auto',
         collapsed ? 'w-16' : 'w-60'
       )}>
-        <SidebarContent />
+        {sidebarContentJsx}
       </aside>
 
       {/* Mobile Toggle */}
@@ -192,7 +194,7 @@ export function Sidebar() {
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-40 flex">
           <div className="w-72 h-full bg-sidebar-background shadow-2xl border-r border-sidebar-border flex-shrink-0">
-            <SidebarContent />
+            {sidebarContentJsx}
           </div>
           <div className="flex-1 bg-background/80 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
         </div>
