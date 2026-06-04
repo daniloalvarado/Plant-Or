@@ -197,7 +197,7 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 
 /* --- ANIMACIONES EN CASCADA (BARRIDO) --- */
 @keyframes cascade-slide-up {
-  0% { opacity: 0; transform: translateY(20px); }
+  0% { opacity: 0; transform: translateY(30px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
@@ -209,7 +209,7 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 /* Clases base */
 .cascade-item {
   opacity: 0;
-  animation: cascade-slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: cascade-slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .cascade-item-right {
@@ -218,27 +218,27 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 }
 
 /* Generador de retrasos para hijos (.cascade-container > *) */
-.cascade-container > *:nth-child(1) { animation-delay: 0.05s; }
-.cascade-container > *:nth-child(2) { animation-delay: 0.10s; }
-.cascade-container > *:nth-child(3) { animation-delay: 0.15s; }
-.cascade-container > *:nth-child(4) { animation-delay: 0.20s; }
-.cascade-container > *:nth-child(5) { animation-delay: 0.25s; }
-.cascade-container > *:nth-child(6) { animation-delay: 0.30s; }
-.cascade-container > *:nth-child(7) { animation-delay: 0.35s; }
-.cascade-container > *:nth-child(8) { animation-delay: 0.40s; }
-.cascade-container > *:nth-child(9) { animation-delay: 0.45s; }
-.cascade-container > *:nth-child(10) { animation-delay: 0.50s; }
-.cascade-container > *:nth-child(11) { animation-delay: 0.55s; }
-.cascade-container > *:nth-child(12) { animation-delay: 0.60s; }
-.cascade-container > *:nth-child(13) { animation-delay: 0.65s; }
-.cascade-container > *:nth-child(14) { animation-delay: 0.70s; }
-.cascade-container > *:nth-child(15) { animation-delay: 0.75s; }
-.cascade-container > *:nth-child(n+16) { animation-delay: 0.80s; }
+.cascade-container > *:nth-child(1) { animation-delay: 0.08s; }
+.cascade-container > *:nth-child(2) { animation-delay: 0.16s; }
+.cascade-container > *:nth-child(3) { animation-delay: 0.24s; }
+.cascade-container > *:nth-child(4) { animation-delay: 0.32s; }
+.cascade-container > *:nth-child(5) { animation-delay: 0.40s; }
+.cascade-container > *:nth-child(6) { animation-delay: 0.48s; }
+.cascade-container > *:nth-child(7) { animation-delay: 0.56s; }
+.cascade-container > *:nth-child(8) { animation-delay: 0.64s; }
+.cascade-container > *:nth-child(9) { animation-delay: 0.72s; }
+.cascade-container > *:nth-child(10) { animation-delay: 0.80s; }
+.cascade-container > *:nth-child(11) { animation-delay: 0.88s; }
+.cascade-container > *:nth-child(12) { animation-delay: 0.96s; }
+.cascade-container > *:nth-child(13) { animation-delay: 1.04s; }
+.cascade-container > *:nth-child(14) { animation-delay: 1.12s; }
+.cascade-container > *:nth-child(15) { animation-delay: 1.20s; }
+.cascade-container > *:nth-child(n+16) { animation-delay: 1.28s; }
 
 /* Para aplicar a elementos especificos si no estan en un container directo */
-.delay-1 { animation-delay: 0.1s !important; }
-.delay-2 { animation-delay: 0.2s !important; }
-.delay-3 { animation-delay: 0.3s !important; }
-.delay-4 { animation-delay: 0.4s !important; }
-.delay-5 { animation-delay: 0.5s !important; }
+.delay-1 { animation-delay: 0.15s !important; }
+.delay-2 { animation-delay: 0.30s !important; }
+.delay-3 { animation-delay: 0.45s !important; }
+.delay-4 { animation-delay: 0.60s !important; }
+.delay-5 { animation-delay: 0.75s !important; }
 
