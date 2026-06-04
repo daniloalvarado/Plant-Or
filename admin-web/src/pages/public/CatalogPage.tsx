@@ -105,9 +105,9 @@ export default function CatalogPage() {
   }, [publicPlants, searchTerm, selectedHabito, activeFilters])
 
   return (
-    <div className="public-catalog-bg fixed inset-0 w-full h-full font-sans overflow-hidden flex flex-col bg-[#0a0a0a]">
+    <div className="public-catalog-bg fixed inset-0 w-full h-full font-sans overflow-hidden flex flex-col bg-background text-foreground transition-colors duration-300">
       {/* Navbar */}
-      <nav className="h-[70px] border-b border-white/10 flex items-center justify-between px-6 flex-shrink-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md">
+      <nav className="h-[70px] border-b border-border flex items-center justify-between px-6 flex-shrink-0 z-50 bg-background/80 backdrop-blur-md transition-colors duration-300">
         <div className="flex items-center gap-3">
           <Leaf className="w-6 h-6 text-[#1FC451]" />
           <span className="font-bold text-lg text-white">Plant-OR</span>
@@ -151,13 +151,13 @@ export default function CatalogPage() {
           <div className="flex bg-white/5 border border-white/10 rounded-lg p-1">
             <button
               onClick={() => setViewMode('tunnel')}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#1FC451] text-black' : 'text-white/60 hover:text-white'}`}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#1FC451] text-black' : 'text-muted-foreground hover:text-foreground'}`}
             >
               <Box className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('map')}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#1FC451] text-black' : 'text-white/60 hover:text-white'}`}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#1FC451] text-black' : 'text-muted-foreground hover:text-foreground'}`}
             >
               <MapIcon className="w-4 h-4" />
             </button>
@@ -165,7 +165,7 @@ export default function CatalogPage() {
 
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="p-2 ml-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-white/70 transition-colors cursor-pointer"
+            className="p-2 ml-2 bg-secondary hover:bg-secondary/80 border border-border rounded-full text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
           >
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
@@ -239,14 +239,14 @@ export default function CatalogPage() {
 
       {/* Filters Modal */}
       {filtersModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-          <div className="bg-[#111] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
-            <div className="p-5 border-b border-white/10 flex justify-between items-center">
-              <h2 className="text-xl font-bold flex items-center gap-2">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-md p-4">
+          <div className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
+            <div className="p-5 border-b border-border flex justify-between items-center">
+              <h2 className="text-xl font-bold flex items-center gap-2 text-foreground">
                 <Filter className="w-5 h-5 text-[#1FC451]" />
                 Filtros Dinámicos
               </h2>
-              <button onClick={() => setFiltersModalOpen(false)} className="p-2 hover:bg-white/10 rounded-lg transition-colors cursor-pointer">
+              <button onClick={() => setFiltersModalOpen(false)} className="p-2 hover:bg-secondary rounded-lg transition-colors cursor-pointer text-muted-foreground hover:text-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -260,7 +260,7 @@ export default function CatalogPage() {
                 }, {})
               ).map(([categoria, filtros]: [string, any]) => (
                 <div key={categoria} className="space-y-3">
-                  <h3 className="text-sm font-bold text-white/50 uppercase tracking-wider">{categoria}</h3>
+                  <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{categoria}</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                     {filtros.map((filtro: any) => {
                       const isSelected = activeFilters[categoria]?.includes(filtro.dato_tecnico)
@@ -283,10 +283,10 @@ export default function CatalogPage() {
                           className={`flex items-center gap-2 p-3 rounded-xl border text-left transition-colors cursor-pointer ${
                             isSelected 
                               ? 'bg-[#1FC451]/10 border-[#1FC451]/50 text-[#1FC451]' 
-                              : 'bg-white/5 border-white/5 text-white/70 hover:bg-white/10'
+                              : 'bg-secondary/50 border-border text-foreground hover:bg-secondary'
                           }`}
                         >
-                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${isSelected ? 'border-[#1FC451] bg-[#1FC451]' : 'border-white/30'}`}>
+                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${isSelected ? 'border-[#1FC451] bg-[#1FC451]' : 'border-muted-foreground/30'}`}>
                             {isSelected && <CheckCircle2 className="w-3 h-3 text-black" />}
                           </div>
                           <span className="text-sm font-medium leading-tight truncate">{filtro.nombre_filtro}</span>
@@ -298,16 +298,16 @@ export default function CatalogPage() {
               ))}
             </div>
 
-            <div className="p-5 border-t border-white/10 flex justify-between items-center bg-black/50">
+            <div className="p-5 border-t border-border flex justify-between items-center bg-secondary/30">
               <button 
                 onClick={() => setActiveFilters({})}
-                className="text-sm text-white/50 hover:text-white transition-colors cursor-pointer"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 Limpiar todo
               </button>
               <button 
                 onClick={() => setFiltersModalOpen(false)}
-                className="px-6 py-2.5 bg-[#1FC451] hover:bg-[#19a343] text-black font-bold rounded-lg transition-colors cursor-pointer"
+                className="px-6 py-2.5 bg-[#1FC451] hover:bg-[#19a343] text-black font-bold rounded-lg transition-colors cursor-pointer shadow-none"
               >
                 Aplicar filtros
               </button>
@@ -352,7 +352,7 @@ function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: 
         id: `layer-${i}-${plant._id}`,
         plant,
         x: Math.cos(angle) * radiusX - 125,
-        y: Math.sin(angle) * radiusY - 175,
+y: Math.sin(angle) * radiusY - 175,
         baseZ: -i * Z_GAP
       })
     }
@@ -362,6 +362,7 @@ function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: 
   useGSAP(() => {
     let currentZ = zOffset;
     let targetZ = zOffset;
+    const exitPoint = 1500;
     
     // Animation loop
     const ticker = gsap.ticker.add(() => {
@@ -374,22 +375,26 @@ function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: 
         for (let i = 0; i < children.length; i++) {
           const el = children[i] as HTMLElement;
           const baseZ = parseFloat(el.dataset.z || '0');
-          let elZ = baseZ + currentZ;
           
-          // Loop infinito (usamos while para scroll rápido)
-          while (elZ > Z_GAP) elZ -= tunnelDepth;
-          while (elZ < -tunnelDepth + Z_GAP) elZ += tunnelDepth;
+          let z = baseZ + currentZ;
+          z = ((z % tunnelDepth) + tunnelDepth) % tunnelDepth;
+          z = z - tunnelDepth + exitPoint;
           
           // Ocultar si está muy lejos
-          if (elZ < -visibleDepth || elZ > Z_GAP) {
+          if (z < -visibleDepth || z > exitPoint) {
             el.style.display = 'none';
           } else {
             el.style.display = 'block';
-            el.style.transform = `translateZ(${elZ}px)`;
+            el.style.transform = `translateZ(${z}px)`;
             
             // Fading
-            const depthRatio = Math.abs(elZ) / visibleDepth;
-            const opacity = 1 - Math.pow(depthRatio, 3);
+            let opacity = 1;
+            if (z > 0) opacity = z / exitPoint;
+            else if (z > -visibleDepth) {
+              const progress = Math.abs(z) / visibleDepth;
+              opacity = progress * progress;
+            }
+            opacity = 1 - opacity; // Invertir porque cerca es opaco
             el.style.opacity = Math.max(0, opacity).toString();
           }
         }
@@ -453,10 +458,10 @@ function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: 
       </div>
       
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none opacity-50">
-        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center p-1">
-          <div className="w-1 h-2 bg-white rounded-full animate-bounce" />
+        <div className="w-6 h-10 border-2 border-foreground rounded-full flex justify-center p-1">
+          <div className="w-1 h-2 bg-foreground rounded-full animate-bounce" />
         </div>
-        <span className="text-xs font-medium uppercase tracking-widest mt-2">Scroll para explorar</span>
+        <span className="text-xs font-medium uppercase tracking-widest mt-2 whitespace-nowrap text-foreground">Scroll para explorar</span>
       </div>
     </div>
   )
