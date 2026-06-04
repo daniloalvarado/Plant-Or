@@ -11,10 +11,10 @@
 }
 
 body.dark-mode {
-    --bg-color: #08130D;
+    --bg-color: #0a0a0a;
     --text-color: #ffffff;
-    --surface-color: #12221A;
-    --border-color: #2a3f33;
+    --surface-color: #111111;
+    --border-color: #222222;
     --primary: #1FC451;
     --primary-light: rgba(31, 196, 81, 0.1);
     --muted: rgba(255, 255, 255, 0.6);
@@ -75,8 +75,42 @@ body {
     color: var(--primary);
 }
 
-.nav-links a:hover {
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-container {
+    position: relative;
+    width: 300px;
+    max-width: 40vw;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+}
+
+#search-input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
     color: var(--text-color);
+    font-size: 0.9rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+#search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
 }
 
 .theme-btn {

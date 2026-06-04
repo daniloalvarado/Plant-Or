@@ -75,76 +75,112 @@ async function init() {
 
 // ── Build 3D Tunnel ──
 function buildTunnel(data) {
-    const totalImages = data.length;
-    const contentLayerCount = Math.ceil(totalImages / 4);
-    const totalLayerCount = Math.max(contentLayerCount, 6);
+    // Limpiar túnel existente
+    spotlightEl.innerHTML = '';
+    layerData = [];
 
-    tunnelDepth = totalLayerCount * CONFIG.layerGap;
-    visibleDepth = 3 * CONFIG.layerGap;
+    const totalImages = data.length;
+    if (totalImages === 0) return;
+
+    // Queremos que el túnel se sienta profundo, pero sin repetir de forma obvia en bloques.
+    // Usaremos un mínimo de 30 elementos en el túnel repitiendo la data si es necesario,
+    // pero con una distribución en espiral.
+    const minItems = 30;
+    const totalItems = Math.max(totalImages, minItems);
+
+    const Z_GAP = 800; // Distancia en Z entre cada elemento individual
+    tunnelDepth = totalItems * Z_GAP;
+    visibleDepth = 4 * Z_GAP;
 
     const tunnelEl = document.createElement("div");
     tunnelEl.classList.add("tunnel");
     spotlightEl.appendChild(tunnelEl);
 
-    for (let i = 0; i < totalLayerCount; i++) {
+    for (let i = 0; i < totalItems; i++) {
+        // Cada elemento es su propia "capa" en Z
         const layerEl = document.createElement("div");
         layerEl.classList.add("layer");
 
-        const imageStartIndex = (i % contentLayerCount) * 4;
+        const index = i % totalImages;
+        const plant = data[index];
 
-        for (let j = 0; j < 4; j++) {
-            const index = imageStartIndex + j;
-            if (index >= totalImages) break;
+        // Distribución en espiral (cada elemento avanza en el ángulo)
+        // Usamos proporción áurea para distribuir los elementos alrededor del túnel
+        const goldenRatio = 1.61803398875;
+        const angle = i * Math.PI * 2 * goldenRatio;
+        
+        // El radio puede variar ligeramente o ser constante. Usaremos un elipse.
+        const radiusX = 350 + (i % 3) * 50; 
+        const radiusY = 250 + (i % 2) * 50;
+        
+        const itemX = Math.cos(angle) * radiusX - 125;
+        const itemY = Math.sin(angle) * radiusY - 175;
 
-            const plant = data[index];
+        const itemEl = document.createElement("div");
+        itemEl.classList.add("item");
+        itemEl.style.left = `${itemX}px`;
+        itemEl.style.top = `${itemY}px`;
+        itemEl.dataset.index = index;
 
-            const angle = (j / 4) * Math.PI * 2 - Math.PI / 2;
-            const radiusX = 400;
-            const radiusY = 280;
-            const itemX = Math.cos(angle) * radiusX - 125;
-            const itemY = Math.sin(angle) * radiusY - 175;
-
-            const itemEl = document.createElement("div");
-            itemEl.classList.add("item");
-            itemEl.style.left = `${itemX}px`;
-            itemEl.style.top = `${itemY}px`;
-            itemEl.dataset.index = index;
-
-            const imageEl = document.createElement("img");
-            const imgSrc = urlForSanityImage(plant.galeria?.[0]);
-            if (imgSrc) {
-                imageEl.src = imgSrc;
-            } else {
-                imageEl.style.background = 'linear-gradient(135deg, #1a3a2a, #08130D)';
-            }
-            imageEl.alt = plant.nombre_cientifico || 'Planta';
-            imageEl.loading = 'lazy';
-            itemEl.appendChild(imageEl);
-
-            const overlayEl = document.createElement("div");
-            overlayEl.classList.add("item-overlay");
-            itemEl.appendChild(overlayEl);
-
-            const previewEl = document.createElement("div");
-            previewEl.classList.add("item-info-preview");
-            const displayName = plant.nombre_cientifico && plant.nombre_cientifico !== 'Por identificar'
-                ? plant.nombre_cientifico
-                : plant.nombres_comunes || 'Planta';
-            previewEl.innerHTML = `
-                <h4>${displayName}</h4>
-                <p>${plant.habito || 'Sin clasificar'}</p>
-            `;
-            itemEl.appendChild(previewEl);
-
-            itemEl.addEventListener('click', () => openModal(plant));
-
-            layerEl.appendChild(itemEl);
+        const imageEl = document.createElement("img");
+        const imgSrc = urlForSanityImage(plant.galeria?.[0]);
+        if (imgSrc) {
+            imageEl.src = imgSrc;
+        } else {
+            imageEl.style.background = 'linear-gradient(135deg, #1a3a2a, #08130D)';
         }
+        imageEl.alt = plant.nombre_cientifico || 'Planta';
+        imageEl.loading = 'lazy';
+        itemEl.appendChild(imageEl);
 
+        const overlayEl = document.createElement("div");
+        overlayEl.classList.add("item-overlay");
+        itemEl.appendChild(overlayEl);
+
+        const previewEl = document.createElement("div");
+        previewEl.classList.add("item-info-preview");
+        const displayName = plant.nombre_cientifico && plant.nombre_cientifico !== 'Por identificar'
+            ? plant.nombre_cientifico
+            : plant.nombres_comunes || 'Planta';
+        previewEl.innerHTML = `
+            <h4>${displayName}</h4>
+            <p>${plant.habito || 'Sin clasificar'}</p>
+        `;
+        itemEl.appendChild(previewEl);
+
+        itemEl.addEventListener('click', () => openModal(plant));
+
+        layerEl.appendChild(itemEl);
         tunnelEl.appendChild(layerEl);
-        layerData.push({ el: layerEl, baseZ: -i * CONFIG.layerGap });
+        
+        layerData.push({ el: layerEl, baseZ: -i * Z_GAP });
     }
 }
+
+// ── Search Logic ──
+const searchInput = document.getElementById("search-input");
+searchInput.addEventListener("input", (e) => {
+    const term = e.target.value.toLowerCase();
+    
+    if (term.trim() === '') {
+        buildTunnel(plantsData);
+        return;
+    }
+    
+    const filtered = plantsData.filter(plant => {
+        const sciName = (plant.nombre_cientifico || '').toLowerCase();
+        const comName = (plant.nombres_comunes || '').toLowerCase();
+        const dist = (plant.distrito || '').toLowerCase();
+        const dir = (plant.direccion || '').toLowerCase();
+        
+        return sciName.includes(term) || 
+               comName.includes(term) || 
+               dist.includes(term) || 
+               dir.includes(term);
+    });
+    
+    buildTunnel(filtered);
+});
 
 // ── Scroll ──
 window.addEventListener("wheel", (e) => {

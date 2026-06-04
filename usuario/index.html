@@ -20,11 +20,15 @@
             </svg>
             <span>Plant-OR</span>
         </div>
-        <nav class="nav-links">
-            <a href="/" class="active">Catálogo 3D</a>
-            <a href="/admin/" class="admin-link">Panel Admin</a>
-        </nav>
-        <button id="theme-toggle" class="theme-btn" aria-label="Cambiar tema">
+        <div class="search-container">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="search-input" placeholder="Buscar por nombre, distrito o calle..." autocomplete="off">
+        </div>
+        <div class="nav-controls">
+            <button id="theme-toggle" class="theme-btn" aria-label="Cambiar tema">
             <svg id="theme-icon-moon" class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="display:none;">
                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
             </svg>
