@@ -1,32 +1,11 @@
 services:
   - type: web
-    name: plant-or-admin
-    runtime: static
-    buildCommand: |
-      cd usuario && npm install && npm run build && cd ..
-      cd admin-web && npm install && npm run build && cd ..
-      mkdir -p output
-      cp -r usuario/dist/* output/
-      mkdir -p output/admin
-      cp -r admin-web/dist/* output/admin/
-    staticPublishPath: output
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: no-cache
+    name: plantor-admin
+    env: static
+    buildCommand: "cd admin-web && npm install && npm run build"
+    staticPublishPath: "./admin-web/dist"
+    pullRequestPreviewsEnabled: false
     routes:
-      - type: rewrite
-        source: /admin/*
-        destination: /admin/index.html
       - type: rewrite
         source: /*
         destination: /index.html
-    envVars:
-      - key: VITE_CLERK_PUBLISHABLE_KEY
-        sync: false
-      - key: VITE_SANITY_PROJECT_ID
-        sync: false
-      - key: VITE_SANITY_DATASET
-        sync: false
-      - key: VITE_SANITY_TOKEN
-        sync: false

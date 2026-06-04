@@ -172,7 +172,7 @@ export default function MapaPage() {
                     <EstadoBadge estado={p.estado_revision} />
                     <p className="text-xs text-gray-600">Por: {p.registrador_nombre || '—'}</p>
                     <button
-                      onClick={() => navigate(`/planta/${p._id}`)}
+                      onClick={() => navigate(`/admin/planta/${p._id}`)}
                       className="block w-full text-center text-xs font-bold text-green-700 hover:text-green-800 pt-1 border-t border-gray-200"
                     >
                       Ver Detalles →

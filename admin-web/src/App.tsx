@@ -14,6 +14,7 @@ import MapaPage from '@/pages/MapaPage'
 import FiltrosPage from '@/pages/FiltrosPage'
 import ValidarCertificadoPage from '@/pages/ValidarCertificadoPage'
 import CertificadosPage from '@/pages/CertificadosPage'
+import CatalogPage from '@/pages/public/CatalogPage'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import '@/index.css'
 
@@ -147,11 +148,15 @@ function ClerkApp() {
         }
       }}
     >
-      <BrowserRouter basename="/admin">
+      <BrowserRouter>
         <Toaster richColors position="top-right" theme="dark" />
         <Routes>
+          {/* Rutas Públicas */}
+          <Route path="/" element={<CatalogPage />} />
           <Route path="/validar" element={<ValidarCertificadoPage />} />
-          <Route path="/*" element={<MainContent />} />
+          
+          {/* Rutas Protegidas de Admin */}
+          <Route path="/admin/*" element={<MainContent />} />
         </Routes>
       </BrowserRouter>
     </ClerkProvider>

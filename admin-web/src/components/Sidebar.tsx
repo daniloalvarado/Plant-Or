@@ -9,13 +9,13 @@ import { useClerk, useUser } from '@clerk/clerk-react'
 import { useTheme } from '@/components/ThemeProvider'
 
 const navItems = [
-  { href: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/catalogo', icon: Leaf, label: 'Catálogo' },
-  { href: '/validaciones', icon: ClipboardList, label: 'Pendientes' },
-  { href: '/aprobados', icon: CheckCircle, label: 'Aprobados' },
-  { href: '/mapa', icon: Map, label: 'Mapa' },
-  { href: '/filtros', icon: SlidersHorizontal, label: 'Filtros' },
-  { href: '/certificados', icon: Award, label: 'Certificados' },
+  { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/admin/catalogo', icon: Leaf, label: 'Catálogo' },
+  { href: '/admin/validaciones', icon: ClipboardList, label: 'Pendientes' },
+  { href: '/admin/aprobados', icon: CheckCircle, label: 'Aprobados' },
+  { href: '/admin/mapa', icon: Map, label: 'Mapa' },
+  { href: '/admin/filtros', icon: SlidersHorizontal, label: 'Filtros' },
+  { href: '/admin/certificados', icon: Award, label: 'Certificados' },
 ]
 
 export function Sidebar() {

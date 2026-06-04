@@ -1,0 +1,507 @@
+import React, { useState, useEffect, useRef, useMemo } from 'react'
+import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2 } from 'lucide-react'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import MarkerClusterGroup from 'react-leaflet-cluster'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { Observer } from 'gsap/Observer'
+import { usePlantas } from '@/hooks/use-plantas'
+import { client, urlFor } from '@/lib/sanity'
+import type { Planta } from '@/types/planta'
+import { CustomSelect } from '@/components/CustomSelect'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
+import './CatalogPage.css'
+
+gsap.registerPlugin(useGSAP, Observer)
+
+// Leaflet setup
+delete (L.Icon.Default.prototype as any)._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+})
+
+const markerIcon = L.divIcon({
+  className: '',
+  html: `<div style="width:20px;height:20px;border-radius:50%;background-color:#1FC451;border:3px solid rgba(255,255,255,0.9);box-shadow:0 0 10px rgba(31,196,81,0.5),0 2px 6px rgba(0,0,0,.5);"></div>`,
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+})
+
+export default function CatalogPage() {
+  const { plantas, loading } = usePlantas()
+  const [viewMode, setViewMode] = useState<'tunnel' | 'map'>('tunnel')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedHabito, setSelectedHabito] = useState('Todos')
+  const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({})
+  const [filtersModalOpen, setFiltersModalOpen] = useState(false)
+  const [sanityFiltros, setSanityFiltros] = useState<any[]>([])
+  const [selectedPlant, setSelectedPlant] = useState<Planta | null>(null)
+
+  // Solo plantas validadas
+  const publicPlants = useMemo(() => plantas.filter(p => p.estado_revision === 'Validado'), [plantas])
+
+  // Fetch Filtros from Sanity
+  useEffect(() => {
+    client.fetch(`*[_type == "filtro" && activo == true] | order(orden asc)`).then(setSanityFiltros)
+  }, [])
+
+  // Habit options from actual data
+  const habitoOptions = useMemo(() => {
+    const habitos = new Set<string>()
+    publicPlants.forEach(p => p.habito && habitos.add(p.habito))
+    return ['Todos', ...Array.from(habitos)].map(h => ({ value: h, label: h }))
+  }, [publicPlants])
+
+  // Filter logic
+  const filteredPlants = useMemo(() => {
+    return publicPlants.filter(p => {
+      // 1. Search text
+      const textToSearch = `${p.nombre_cientifico} ${p.nombres_comunes} ${p.distrito} ${p.direccion}`.toLowerCase()
+      if (searchTerm && !textToSearch.includes(searchTerm.toLowerCase())) return false
+
+      // 2. Habito dropdown
+      if (selectedHabito !== 'Todos' && p.habito !== selectedHabito) return false
+
+      // 3. Advanced filters
+      for (const [categoria, values] of Object.entries(activeFilters)) {
+        if (values.length === 0) continue
+        
+        let match = false;
+        // Check if any block has the value
+        const blocks = ['arbol_datos', 'palmera_datos', 'arbusto_datos', 'liana_datos', 'hierba_datos']
+        blocks.forEach(block => {
+          if (p[block as keyof Planta]) {
+            const blockData = p[block as keyof Planta] as any
+            Object.values(blockData).forEach(val => {
+              if (Array.isArray(val)) {
+                if (val.some(v => values.includes(v))) match = true
+              } else if (typeof val === 'string') {
+                if (values.includes(val)) match = true
+              }
+            })
+          }
+        })
+        
+        // Also check top level properties
+        if (values.includes(p.habito || '')) match = true
+        if (values.includes(p.tipo_vida || '')) match = true
+        if (values.includes(p.estado_fenologico || '')) match = true
+        
+        // If it didn't match ANY of the selected values for this category, fail
+        if (!match) return false
+      }
+
+      return true
+    })
+  }, [publicPlants, searchTerm, selectedHabito, activeFilters])
+
+  return (
+    <div className="public-catalog-bg min-h-screen font-sans overflow-hidden flex flex-col bg-[#0a0a0a]">
+      {/* Navbar */}
+      <nav className="h-[70px] border-b border-white/10 flex items-center justify-between px-6 flex-shrink-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <Leaf className="w-6 h-6 text-[#1FC451]" />
+          <span className="font-bold text-lg text-white">Plant-OR</span>
+        </div>
+
+        <div className="flex-1 max-w-xl mx-8 relative hidden md:block">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <input
+            type="text"
+            placeholder="Buscar por nombre, distrito o calle..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            className="w-full bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#1FC451] transition-colors"
+          />
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="w-40 hidden sm:block">
+            <CustomSelect
+              value={selectedHabito}
+              onChange={setSelectedHabito}
+              options={habitoOptions}
+              placeholder="Hábito..."
+            />
+          </div>
+          
+          <button 
+            onClick={() => setFiltersModalOpen(true)}
+            className="flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+          >
+            <Filter className="w-4 h-4" />
+            <span className="hidden sm:inline">Filtros</span>
+            {Object.values(activeFilters).flat().length > 0 && (
+              <span className="bg-[#1FC451] text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                {Object.values(activeFilters).flat().length}
+              </span>
+            )}
+          </button>
+
+          <div className="flex bg-white/5 border border-white/10 rounded-lg p-1">
+            <button
+              onClick={() => setViewMode('tunnel')}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#1FC451] text-black' : 'text-white/60 hover:text-white'}`}
+            >
+              <Box className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode('map')}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#1FC451] text-black' : 'text-white/60 hover:text-white'}`}
+            >
+              <MapIcon className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="flex-1 relative">
+        {loading ? (
+          <div className="flex items-center justify-center h-full">
+            <LoadingSpinner text="Cargando catálogo botánico..." />
+          </div>
+        ) : viewMode === 'tunnel' ? (
+          <TunnelView plants={filteredPlants} onPlantClick={setSelectedPlant} />
+        ) : (
+          <div className="h-[calc(100vh-70px)] w-full">
+            <MapContainer
+              center={[-3.74912, -73.25383]}
+              zoom={13}
+              scrollWheelZoom
+              style={{ height: '100%', width: '100%' }}
+              className="z-0"
+            >
+              <TileLayer
+                attribution='&copy; CARTO'
+                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                subdomains="abcd"
+              />
+              <MarkerClusterGroup chunkedLoading maxClusterRadius={50}>
+                {filteredPlants.filter(p => p.latitud && p.longitud).map(p => (
+                  <Marker key={p._id} position={[p.latitud!, p.longitud!]} icon={markerIcon}>
+                    <Popup className="plant-popup dark-popup">
+                      <div className="text-sm space-y-2 min-w-[180px] p-1">
+                        <p className="font-bold italic text-white leading-tight">{p.nombre_cientifico || 'Por identificar'}</p>
+                        {p.nombres_comunes && <p className="text-gray-300 text-xs">{p.nombres_comunes}</p>}
+                        <button
+                          onClick={() => setSelectedPlant(p)}
+                          className="block w-full text-center text-xs font-bold text-[#1FC451] hover:text-[#19a343] pt-2 mt-2 border-t border-white/10"
+                        >
+                          Ver Detalles →
+                        </button>
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+              </MarkerClusterGroup>
+            </MapContainer>
+          </div>
+        )}
+      </div>
+
+      {/* Filters Modal */}
+      {filtersModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+          <div className="bg-[#111] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
+            <div className="p-5 border-b border-white/10 flex justify-between items-center">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Filter className="w-5 h-5 text-[#1FC451]" />
+                Filtros Dinámicos
+              </h2>
+              <button onClick={() => setFiltersModalOpen(false)} className="p-2 hover:bg-white/10 rounded-lg transition-colors cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-5 space-y-6 custom-scrollbar">
+              {Object.entries(
+                sanityFiltros.reduce((acc: any, curr) => {
+                  if (!acc[curr.categoria]) acc[curr.categoria] = []
+                  acc[curr.categoria].push(curr)
+                  return acc
+                }, {})
+              ).map(([categoria, filtros]: [string, any]) => (
+                <div key={categoria} className="space-y-3">
+                  <h3 className="text-sm font-bold text-white/50 uppercase tracking-wider">{categoria}</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {filtros.map((filtro: any) => {
+                      const isSelected = activeFilters[categoria]?.includes(filtro.dato_tecnico)
+                      return (
+                        <button
+                          key={filtro._id}
+                          onClick={() => {
+                            setActiveFilters(prev => {
+                              const curr = prev[categoria] || []
+                              const isMultiple = filtro.tipo_seleccion === 'Selección múltiple'
+                              let next;
+                              if (curr.includes(filtro.dato_tecnico)) {
+                                next = curr.filter(v => v !== filtro.dato_tecnico)
+                              } else {
+                                next = isMultiple ? [...curr, filtro.dato_tecnico] : [filtro.dato_tecnico]
+                              }
+                              return { ...prev, [categoria]: next }
+                            })
+                          }}
+                          className={`flex items-center gap-2 p-3 rounded-xl border text-left transition-colors cursor-pointer ${
+                            isSelected 
+                              ? 'bg-[#1FC451]/10 border-[#1FC451]/50 text-[#1FC451]' 
+                              : 'bg-white/5 border-white/5 text-white/70 hover:bg-white/10'
+                          }`}
+                        >
+                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${isSelected ? 'border-[#1FC451] bg-[#1FC451]' : 'border-white/30'}`}>
+                            {isSelected && <CheckCircle2 className="w-3 h-3 text-black" />}
+                          </div>
+                          <span className="text-sm font-medium leading-tight truncate">{filtro.nombre_filtro}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-5 border-t border-white/10 flex justify-between items-center bg-black/50">
+              <button 
+                onClick={() => setActiveFilters({})}
+                className="text-sm text-white/50 hover:text-white transition-colors cursor-pointer"
+              >
+                Limpiar todo
+              </button>
+              <button 
+                onClick={() => setFiltersModalOpen(false)}
+                className="px-6 py-2.5 bg-[#1FC451] hover:bg-[#19a343] text-black font-bold rounded-lg transition-colors cursor-pointer"
+              >
+                Aplicar filtros
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Plant Detail Modal */}
+      {selectedPlant && (
+        <PlantDetailModal plant={selectedPlant} onClose={() => setSelectedPlant(null)} />
+      )}
+    </div>
+  )
+}
+
+function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: (p: Planta) => void }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const [zOffset, setZOffset] = useState(0)
+
+  const minItems = 30
+  const totalItems = Math.max(plants.length, minItems)
+  const Z_GAP = 800
+  const tunnelDepth = totalItems * Z_GAP
+  const visibleDepth = 4 * Z_GAP
+
+  // Generamos la data de las capas solo cuando cambian las plantas
+  const layers = useMemo(() => {
+    if (plants.length === 0) return []
+    const newLayers = []
+    for (let i = 0; i < totalItems; i++) {
+      const index = i % plants.length
+      const plant = plants[index]
+      
+      const goldenRatio = 1.61803398875
+      const angle = i * Math.PI * 2 * goldenRatio
+      const radiusX = 350 + (i % 3) * 50 
+      const radiusY = 250 + (i % 2) * 50
+      
+      newLayers.push({
+        id: `layer-${i}-${plant._id}`,
+        plant,
+        x: Math.cos(angle) * radiusX - 125,
+        y: Math.sin(angle) * radiusY - 175,
+        baseZ: -i * Z_GAP
+      })
+    }
+    return newLayers
+  }, [plants, totalItems, Z_GAP])
+
+  useGSAP(() => {
+    let currentZ = zOffset;
+    let targetZ = zOffset;
+    
+    // Animation loop
+    const ticker = gsap.ticker.add(() => {
+      // Interpolación suave (lerp)
+      currentZ += (targetZ - currentZ) * 0.1;
+      
+      if (wrapperRef.current) {
+        // En lugar de mover todo el wrapper, movemos los hijos (mucho mejor rendimiento en GSAP 3D)
+        const children = wrapperRef.current.children;
+        for (let i = 0; i < children.length; i++) {
+          const el = children[i] as HTMLElement;
+          const baseZ = parseFloat(el.dataset.z || '0');
+          let elZ = baseZ + currentZ;
+          
+          // Loop infinito
+          if (elZ > Z_GAP) elZ -= tunnelDepth;
+          if (elZ < -tunnelDepth + Z_GAP) elZ += tunnelDepth;
+          
+          // Ocultar si está muy lejos
+          if (elZ < -visibleDepth || elZ > Z_GAP) {
+            el.style.display = 'none';
+          } else {
+            el.style.display = 'block';
+            el.style.transform = `translateZ(${elZ}px)`;
+            
+            // Fading
+            const depthRatio = Math.abs(elZ) / visibleDepth;
+            const opacity = 1 - Math.pow(depthRatio, 3);
+            el.style.opacity = Math.max(0, opacity).toString();
+          }
+        }
+      }
+    });
+
+    // Handle scroll
+    Observer.create({
+      target: containerRef.current,
+      type: "wheel,touch,pointer",
+      onWheel: (e) => {
+        const delta = e.deltaY;
+        targetZ += delta * 2;
+      },
+      onDrag: (e) => {
+        targetZ += e.deltaY * 3;
+      }
+    });
+
+    return () => gsap.ticker.remove(ticker);
+  }, [tunnelDepth, visibleDepth, Z_GAP, layers]); // dependencias
+
+  if (plants.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-70px)] text-white/50">
+        <Leaf className="w-16 h-16 mb-4 opacity-20" />
+        <p className="text-xl font-medium">No se encontraron plantas</p>
+        <p className="text-sm">Prueba ajustando los filtros de búsqueda</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="tunnel-scene" ref={containerRef}>
+      <div className="tunnel-wrapper" ref={wrapperRef}>
+        {layers.map((layer) => (
+          <div 
+            key={layer.id}
+            className="tunnel-layer"
+            data-z={layer.baseZ}
+            style={{ display: 'none' }}
+          >
+            <div 
+              className="tunnel-item" 
+              style={{ left: layer.x, top: layer.y }}
+              onClick={() => onPlantClick(layer.plant)}
+            >
+              <img 
+                src={layer.plant.galeria?.[0] ? urlFor(layer.plant.galeria[0]) : ''} 
+                alt={layer.plant.nombre_cientifico} 
+                style={{ background: !layer.plant.galeria?.[0] ? 'linear-gradient(135deg, #1a3a2a, #08130D)' : 'none' }}
+              />
+              <div className="item-overlay" />
+              <div className="item-info-preview">
+                <h4>{layer.plant.nombre_cientifico || layer.plant.nombres_comunes || 'Sin identificar'}</h4>
+                <p>{layer.plant.habito || 'Sin clasificar'}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none opacity-50">
+        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center p-1">
+          <div className="w-1 h-2 bg-white rounded-full animate-bounce" />
+        </div>
+        <span className="text-xs font-medium uppercase tracking-widest mt-2">Scroll para explorar</span>
+      </div>
+    </div>
+  )
+}
+
+function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[200] flex justify-end bg-black/60 backdrop-blur-sm" onClick={onClose}>
+      <div 
+        className="w-full max-w-lg h-full bg-[#111] border-l border-white/10 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="relative h-64 flex-shrink-0 bg-black">
+          {plant.galeria?.[0] ? (
+            <img src={urlFor(plant.galeria[0])} className="w-full h-full object-cover" />
+          ) : (
+             <div className="w-full h-full bg-gradient-to-br from-[#1a3a2a] to-[#08130D]" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent" />
+          <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer">
+            <X className="w-5 h-5" />
+          </button>
+          
+          <div className="absolute bottom-4 left-6 right-6">
+            <span className="px-2.5 py-1 bg-[#1FC451] text-black text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block">
+              {plant.habito || 'Planta'}
+            </span>
+            <h2 className="text-3xl font-bold text-white leading-tight italic">
+              {plant.nombre_cientifico || 'Especie por identificar'}
+            </h2>
+            {plant.nombres_comunes && (
+              <p className="text-white/70 font-medium">{plant.nombres_comunes}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+              <span className="text-xs text-white/40 uppercase font-bold tracking-wider">Familia</span>
+              <p className="text-white font-medium mt-1">{plant.familia || 'No especificada'}</p>
+            </div>
+            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+              <span className="text-xs text-white/40 uppercase font-bold tracking-wider">Tipo de vida</span>
+              <p className="text-white font-medium mt-1">{plant.tipo_vida || 'No especificado'}</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold text-[#1FC451] uppercase tracking-wider border-b border-white/10 pb-2">
+              Ubicación Registrada
+            </h3>
+            <p className="text-white/80 text-sm leading-relaxed">
+              <span className="font-semibold text-white">Distrito:</span> {plant.distrito || '—'}<br/>
+              <span className="font-semibold text-white">Dirección:</span> {plant.direccion || '—'} {plant.numero_casa}<br/>
+              <span className="font-semibold text-white">Referencia:</span> {plant.ubicacion_planta || '—'}
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold text-[#1FC451] uppercase tracking-wider border-b border-white/10 pb-2">
+              Evaluación Botánica
+            </h3>
+            <p className="text-white/80 text-sm leading-relaxed">
+              <span className="font-semibold text-white">Fenología:</span> {plant.estado_fenologico || '—'}<br/>
+              <span className="font-semibold text-white">Estado del Individuo:</span> {plant.estado_individuo || '—'}<br/>
+              <span className="font-semibold text-white">Valor Ornamental:</span> {plant.valor_ornamental || '—'}<br/>
+              <span className="font-semibold text-white">Impacto Urbano:</span> {plant.impacto_urbano || '—'}
+            </p>
+          </div>
+
+          <div className="pt-4 border-t border-white/10">
+            <p className="text-xs text-white/40 text-center">
+              Registrado por: {plant.registrador_nombre || 'Anónimo'} • {new Date(plant._createdAt).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -215,7 +215,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                       <div className="flex items-center justify-end gap-3">
                         <div className="relative group/tooltip">
                           <button
-                            onClick={() => navigate(`/planta/${p._id}`)}
+                            onClick={() => navigate(`/admin/planta/${p._id}`)}
                             className="p-1.5 rounded-lg hover:bg-[#1FC451]/10 text-muted-foreground hover:text-[#1FC451] transition-colors cursor-pointer"
                           >
                             <Eye className="w-4 h-4" />
