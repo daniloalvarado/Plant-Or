@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
-import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2 } from 'lucide-react'
+import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2, Sun, Moon, ChevronRight, ChevronLeft } from 'lucide-react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
@@ -12,6 +12,7 @@ import { client, urlFor } from '@/lib/sanity'
 import type { Planta } from '@/types/planta'
 import { CustomSelect } from '@/components/CustomSelect'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { useTheme } from '@/components/ThemeProvider'
 import './CatalogPage.css'
 
 gsap.registerPlugin(useGSAP, Observer)
@@ -40,6 +41,7 @@ export default function CatalogPage() {
   const [filtersModalOpen, setFiltersModalOpen] = useState(false)
   const [sanityFiltros, setSanityFiltros] = useState<any[]>([])
   const [selectedPlant, setSelectedPlant] = useState<Planta | null>(null)
+  const { theme, setTheme } = useTheme()
 
   // Solo plantas validadas
   const publicPlants = useMemo(() => plantas.filter(p => p.estado_revision === 'Validado'), [plantas])
@@ -160,6 +162,13 @@ export default function CatalogPage() {
               <MapIcon className="w-4 h-4" />
             </button>
           </div>
+
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="p-2 ml-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-white/70 transition-colors cursor-pointer"
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
         </div>
       </nav>
 
@@ -454,24 +463,44 @@ function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: 
 }
 
 function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => void }) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' })
+  }
+  const scrollRight = () => {
+    if (scrollContainerRef.current) scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' })
+  }
+
   return (
-    <div className="fixed inset-0 z-[200] flex justify-end bg-black/60 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-[200] flex justify-end bg-black/80 backdrop-blur-sm" onClick={onClose}>
       <div 
-        className="w-full max-w-lg h-full bg-[#111] border-l border-white/10 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300"
+        className="w-full max-w-2xl h-full bg-[#111] shadow-2xl flex flex-col animate-in slide-in-from-right duration-300"
         onClick={e => e.stopPropagation()}
       >
-        <div className="relative h-64 flex-shrink-0 bg-black">
+        <div className="relative h-[45vh] md:h-[55vh] flex-shrink-0 bg-black group">
           {plant.galeria && plant.galeria.length > 0 ? (
-            <div className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar">
-              {plant.galeria.map((foto, index) => (
-                <img key={index} src={urlFor(foto)} className="w-full h-full object-cover flex-shrink-0 snap-center" alt="Foto de planta" />
-              ))}
+            <>
+              <div ref={scrollContainerRef} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar">
+                {plant.galeria.map((foto, index) => (
+                  <img key={index} src={urlFor(foto)} className="w-full h-full object-cover flex-shrink-0 snap-center" alt="Foto de planta" />
+                ))}
+              </div>
+              
               {plant.galeria.length > 1 && (
-                <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md px-2 py-1 rounded-md text-xs font-bold text-white z-10">
-                  {plant.galeria.length} FOTOS (Desliza →)
-                </div>
+                <>
+                  <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-white z-10 border border-white/10 shadow-lg">
+                    {plant.galeria.length} FOTOS
+                  </div>
+                  <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20">
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button onClick={scrollRight} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20">
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </>
               )}
-            </div>
+            </>
           ) : (
              <div className="w-full h-full bg-gradient-to-br from-[#1a3a2a] to-[#08130D]" />
           )}
