@@ -89,7 +89,10 @@ export default function CatalogPage() {
         // Also check top level properties
         if (values.includes(p.habito || '')) match = true
         if (values.includes(p.tipo_vida || '')) match = true
-        if (values.includes(p.estado_fenologico || '')) match = true
+        if (p.estado_fenologico?.some(ef => values.includes(ef))) match = true
+        if (p.estado_individuo?.some(ei => values.includes(ei))) match = true
+        if (p.valor_ornamental?.some(vo => values.includes(vo))) match = true
+        if (p.impacto_urbano?.some(iu => values.includes(iu))) match = true
         
         // If it didn't match ANY of the selected values for this category, fail
         if (!match) return false
@@ -100,7 +103,7 @@ export default function CatalogPage() {
   }, [publicPlants, searchTerm, selectedHabito, activeFilters])
 
   return (
-    <div className="public-catalog-bg min-h-screen font-sans overflow-hidden flex flex-col bg-[#0a0a0a]">
+    <div className="public-catalog-bg fixed inset-0 w-full h-full font-sans overflow-hidden flex flex-col bg-[#0a0a0a]">
       {/* Navbar */}
       <nav className="h-[70px] border-b border-white/10 flex items-center justify-between px-6 flex-shrink-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md">
         <div className="flex items-center gap-3">
@@ -120,12 +123,13 @@ export default function CatalogPage() {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="w-40 hidden sm:block">
+          <div className="w-32 md:w-40 hidden sm:block">
             <CustomSelect
               value={selectedHabito}
               onChange={setSelectedHabito}
               options={habitoOptions}
               placeholder="Hábito..."
+              className="min-w-0 w-full"
             />
           </div>
           
@@ -184,21 +188,41 @@ export default function CatalogPage() {
               <MarkerClusterGroup chunkedLoading maxClusterRadius={50}>
                 {filteredPlants.filter(p => p.latitud && p.longitud).map(p => (
                   <Marker key={p._id} position={[p.latitud!, p.longitud!]} icon={markerIcon}>
-                    <Popup className="plant-popup dark-popup">
-                      <div className="text-sm space-y-2 min-w-[180px] p-1">
-                        <p className="font-bold italic text-white leading-tight">{p.nombre_cientifico || 'Por identificar'}</p>
-                        {p.nombres_comunes && <p className="text-gray-300 text-xs">{p.nombres_comunes}</p>}
-                        <button
-                          onClick={() => setSelectedPlant(p)}
-                          className="block w-full text-center text-xs font-bold text-[#1FC451] hover:text-[#19a343] pt-2 mt-2 border-t border-white/10"
-                        >
-                          Ver Detalles →
-                        </button>
+                    <Popup className="plant-popup dark-popup !p-0 overflow-hidden rounded-xl border border-white/10 bg-[#111]">
+                      <div className="flex flex-col w-[200px]">
+                        {p.galeria?.[0] ? (
+                          <img src={urlFor(p.galeria[0])} alt={p.nombre_cientifico} className="w-full h-32 object-cover" />
+                        ) : (
+                          <div className="w-full h-32 bg-gradient-to-br from-[#1a3a2a] to-[#08130D] flex items-center justify-center">
+                            <Leaf className="w-8 h-8 text-white/20" />
+                          </div>
+                        )}
+                        <div className="p-3 text-sm space-y-1">
+                          <p className="font-bold italic text-white leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</p>
+                          {p.nombres_comunes && <p className="text-gray-400 text-xs truncate">{p.nombres_comunes}</p>}
+                          <button
+                            onClick={() => setSelectedPlant(p)}
+                            className="block w-full text-center text-xs font-bold text-black bg-[#1FC451] hover:bg-[#19a343] py-2 mt-3 rounded-lg transition-colors"
+                          >
+                            Ver Detalles
+                          </button>
+                        </div>
                       </div>
                     </Popup>
                   </Marker>
                 ))}
               </MarkerClusterGroup>
+              
+              {/* Legend */}
+              <div className="leaflet-bottom leaflet-right z-[1000] pointer-events-none mb-6 mr-2">
+                <div className="bg-[#111]/90 backdrop-blur-md border border-white/10 p-3 rounded-xl shadow-2xl pointer-events-auto">
+                  <h4 className="text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Leyenda</h4>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded-full bg-[#1FC451] border-2 border-white shadow-[0_0_8px_rgba(31,196,81,0.5)]"></div>
+                    <span className="text-sm font-medium text-white">Planta Identificada</span>
+                  </div>
+                </div>
+              </div>
             </MapContainer>
           </div>
         )}
@@ -343,9 +367,9 @@ function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: 
           const baseZ = parseFloat(el.dataset.z || '0');
           let elZ = baseZ + currentZ;
           
-          // Loop infinito
-          if (elZ > Z_GAP) elZ -= tunnelDepth;
-          if (elZ < -tunnelDepth + Z_GAP) elZ += tunnelDepth;
+          // Loop infinito (usamos while para scroll rápido)
+          while (elZ > Z_GAP) elZ -= tunnelDepth;
+          while (elZ < -tunnelDepth + Z_GAP) elZ += tunnelDepth;
           
           // Ocultar si está muy lejos
           if (elZ < -visibleDepth || elZ > Z_GAP) {
@@ -437,8 +461,17 @@ function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => vo
         onClick={e => e.stopPropagation()}
       >
         <div className="relative h-64 flex-shrink-0 bg-black">
-          {plant.galeria?.[0] ? (
-            <img src={urlFor(plant.galeria[0])} className="w-full h-full object-cover" />
+          {plant.galeria && plant.galeria.length > 0 ? (
+            <div className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar">
+              {plant.galeria.map((foto, index) => (
+                <img key={index} src={urlFor(foto)} className="w-full h-full object-cover flex-shrink-0 snap-center" alt="Foto de planta" />
+              ))}
+              {plant.galeria.length > 1 && (
+                <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md px-2 py-1 rounded-md text-xs font-bold text-white z-10">
+                  {plant.galeria.length} FOTOS (Desliza →)
+                </div>
+              )}
+            </div>
           ) : (
              <div className="w-full h-full bg-gradient-to-br from-[#1a3a2a] to-[#08130D]" />
           )}

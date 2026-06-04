@@ -117,6 +117,7 @@
 /* Custom Scrollbar for Modal */
 .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
     background: rgba(255,255,255,0.05);
@@ -128,4 +129,19 @@
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgba(255,255,255,0.3);
+}
+
+/* Leaflet Popup Resets */
+.dark-popup .leaflet-popup-content-wrapper {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+.dark-popup .leaflet-popup-content {
+    margin: 0;
+    width: auto !important;
+}
+.dark-popup .leaflet-popup-tip {
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.1);
 }
