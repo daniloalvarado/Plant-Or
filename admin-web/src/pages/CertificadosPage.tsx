@@ -521,7 +521,7 @@ export default function CertificadosPage() {
                 <th className="p-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border cascade-container">
               {filteredCerts.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="p-8 text-center text-muted-foreground">
@@ -530,7 +530,7 @@ export default function CertificadosPage() {
                 </tr>
               ) : (
                 paginatedCerts.map(cert => (
-                  <tr key={cert._id} className="hover:bg-muted/30 transition-colors">
+                  <tr key={cert._id} className="hover:bg-muted/30 transition-colors cascade-item">
                     <td className="p-4 text-sm font-medium text-primary">{cert.codigo}</td>
                     <td className="p-4">
                       <div className="text-sm font-medium text-foreground">{cert.usuario_nombre}</div>

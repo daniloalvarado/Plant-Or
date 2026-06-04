@@ -191,11 +191,11 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                   <th className="px-4 py-3 text-right font-medium text-muted-foreground">Acciones</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="cascade-container">
                 {paginatedData.map((p) => (
                   <tr
                     key={p._id}
-                    className="border-b border-border hover:bg-secondary/20 transition-colors group"
+                    className="border-b border-border hover:bg-secondary/20 transition-colors group cascade-item"
                   >
                     <td className="px-4 py-3">
                       <p className="font-medium text-foreground italic">{p.nombre_cientifico || '—'}</p>

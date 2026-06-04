@@ -360,14 +360,14 @@ export default function FiltrosPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 cascade-container">
         {[
           { label: 'Total filtros', value: filtros.length, color: 'text-foreground' },
           { label: 'Activos', value: activosCount, color: 'text-primary' },
           { label: 'Inactivos', value: filtros.length - activosCount, color: 'text-muted-foreground' },
           { label: 'Categorías', value: new Set(filtros.map(f => f.categoria)).size, color: 'text-foreground' },
         ].map(s => (
-          <div key={s.label} className="bg-card border border-border rounded-xl p-4">
+          <div key={s.label} className="bg-card border border-border rounded-xl p-4 cascade-item">
             <p className="text-xs text-muted-foreground">{s.label}</p>
             <p className={`text-2xl font-bold mt-1 ${s.color}`}>{s.value}</p>
           </div>
@@ -375,7 +375,7 @@ export default function FiltrosPage() {
       </div>
 
       {/* Explanation card */}
-      <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 text-sm text-muted-foreground">
+      <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 text-sm text-muted-foreground cascade-item delay-5">
         <p className="font-semibold text-primary mb-1">¿Cómo funciona este módulo?</p>
         <p>
           Los estudiantes registran datos técnicos (ej. <code className="bg-white/10 px-1 rounded">Ramificación verticilada</code>).
@@ -532,12 +532,12 @@ export default function FiltrosPage() {
       )}
 
       {/* Filter by category */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 cascade-container">
         {categorias.map(cat => (
           <button
             key={cat}
             onClick={() => setCategoriaSeleccionada(cat)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors cursor-pointer ${
+            className={`cascade-item px-3 py-1.5 text-xs font-medium rounded-full border transition-colors cursor-pointer ${
               categoriaSeleccionada === cat
                 ? 'bg-primary text-primary-foreground border-primary font-bold'
                 : 'border-border text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-border/50'
@@ -563,7 +563,7 @@ export default function FiltrosPage() {
           <p className="text-sm mt-1">Crea tu primer filtro con el botón de arriba.</p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2 cascade-container">
           {/* Group by categoria */}
           {(categoriaSeleccionada === 'Todas' ? CATEGORIAS.filter(c => filtros.some(f => f.categoria === c)) : [categoriaSeleccionada]).map(cat => {
             const items = filtrosFiltrados.filter(f => f.categoria === cat)
@@ -574,7 +574,7 @@ export default function FiltrosPage() {
                 {items.map(filtro => (
                   <div
                     key={filtro._id}
-                    className={`flex items-center gap-3 p-4 rounded-xl border transition-all ${
+                    className={`cascade-item flex items-center gap-3 p-4 rounded-xl border transition-all ${
                       filtro.activo
                         ? 'bg-card border-border'
                         : 'bg-card/50 border-border/50 opacity-60'

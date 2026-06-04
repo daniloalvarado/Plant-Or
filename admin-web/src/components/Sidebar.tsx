@@ -67,7 +67,7 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-2 space-y-1 mt-2">
+      <nav className="flex-1 p-2 space-y-1 mt-2 cascade-container">
         {navItems.map((item) => {
           const active = location.pathname === item.href
           return (
@@ -76,7 +76,7 @@ export function Sidebar() {
               to={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'relative group/nav flex items-center rounded-lg text-sm font-medium',
+                'relative group/nav flex items-center rounded-lg text-sm font-medium cascade-item-right',
                 active
                   ? 'bg-primary/10 text-primary border border-primary/20'
                   : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
@@ -112,9 +112,9 @@ export function Sidebar() {
       </nav>
 
       {/* User + Collapse */}
-      <div className="border-t border-sidebar-border p-3 space-y-2">
+      <div className="border-t border-sidebar-border p-3 space-y-2 cascade-container">
         {user && (
-          <Link to="/perfil" onClick={() => setMobileOpen(false)} className={cn("relative group/nav flex items-center rounded-lg cursor-pointer", collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-2 px-2 py-1.5 hover:bg-sidebar-accent group")}>
+          <Link to="/perfil" onClick={() => setMobileOpen(false)} className={cn("relative group/nav flex items-center rounded-lg cursor-pointer cascade-item-right", collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-2 px-2 py-1.5 hover:bg-sidebar-accent group")}>
             <img
               src={user.imageUrl}
               alt={user.fullName || ''}
@@ -137,7 +137,7 @@ export function Sidebar() {
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           className={cn(
-            "relative group/nav flex items-center rounded-lg text-sm text-muted-foreground hover:bg-sidebar-accent hover:text-foreground cursor-pointer",
+            "relative group/nav flex items-center rounded-lg text-sm text-muted-foreground hover:bg-sidebar-accent hover:text-foreground cursor-pointer cascade-item-right",
             collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-2 px-3 py-2 w-full"
           )}
         >
@@ -154,7 +154,7 @@ export function Sidebar() {
         <button
           onClick={() => setLogoutConfirmOpen(true)}
           className={cn(
-            "relative group/nav flex items-center rounded-lg text-sm font-medium text-muted-foreground border border-transparent hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-500 hover:border-red-500/20 transition-all cursor-pointer",
+            "relative group/nav flex items-center rounded-lg text-sm font-medium text-muted-foreground border border-transparent hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-500 hover:border-red-500/20 transition-all cursor-pointer cascade-item-right",
             collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-3 px-3 py-2.5 w-full"
           )}
         >
