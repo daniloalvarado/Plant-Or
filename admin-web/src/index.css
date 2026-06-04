@@ -235,9 +235,10 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 .cascade-container > *:nth-child(15) { animation-delay: 0.75s; }
 .cascade-container > *:nth-child(n+16) { animation-delay: 0.80s; }
 
-/* Para aplicar a elementos específicos si no están en un container directo */
+/* Para aplicar a elementos especificos si no estan en un container directo */
 .delay-1 { animation-delay: 0.1s !important; }
 .delay-2 { animation-delay: 0.2s !important; }
 .delay-3 { animation-delay: 0.3s !important; }
 .delay-4 { animation-delay: 0.4s !important; }
 .delay-5 { animation-delay: 0.5s !important; }
+
