@@ -14,9 +14,32 @@ import MapaPage from '@/pages/MapaPage'
 import FiltrosPage from '@/pages/FiltrosPage'
 import ValidarCertificadoPage from '@/pages/ValidarCertificadoPage'
 import CertificadosPage from '@/pages/CertificadosPage'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 import '@/index.css'
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+function ProfileWithLoading() {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center justify-center w-full">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-50">
+          <LoadingSpinner text="Cargando configuración de cuenta..." />
+        </div>
+      )}
+      <div className={loading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}>
+        <UserProfile appearance={{ elements: { card: 'bg-card border-border', headerTitle: 'hidden', headerSubtitle: 'hidden' } }} />
+      </div>
+    </div>
+  );
+}
 
 function RoleCheck({ children }: { children: React.ReactNode }) {
   const { user } = useUser();
@@ -70,7 +93,7 @@ function MainContent() {
                   <Route path="/filtros" element={<FiltrosPage />} />
                   <Route path="/certificados" element={<CertificadosPage />} />
                   <Route path="/planta/:id" element={<PlantaDetailPage />} />
-                  <Route path="/perfil" element={<div className="flex justify-center"><UserProfile appearance={{ elements: { card: 'bg-card border-border', headerTitle: 'hidden', headerSubtitle: 'hidden' } }} /></div>} />
+                  <Route path="/perfil" element={<ProfileWithLoading />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </div>
