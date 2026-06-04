@@ -563,14 +563,14 @@ export default function FiltrosPage() {
           <p className="text-sm mt-1">Crea tu primer filtro con el botón de arriba.</p>
         </div>
       ) : (
-        <div className="space-y-2 cascade-container">
+        <div className="space-y-2">
           {/* Group by categoria */}
           {(categoriaSeleccionada === 'Todas' ? CATEGORIAS.filter(c => filtros.some(f => f.categoria === c)) : [categoriaSeleccionada]).map(cat => {
             const items = filtrosFiltrados.filter(f => f.categoria === cat)
             if (items.length === 0) return null
             return (
-              <div key={cat} className="space-y-1">
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest pt-3 pb-1 px-1">{cat}</p>
+              <div key={cat} className="space-y-1 cascade-container">
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest pt-3 pb-1 px-1 cascade-item">{cat}</p>
                 {items.map(filtro => (
                   <div
                     key={filtro._id}

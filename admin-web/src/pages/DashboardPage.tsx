@@ -114,9 +114,9 @@ export default function DashboardPage() {
               <Users className="w-4 h-4 text-primary" />
               <h2 className="font-semibold text-foreground">Top Estudiantes</h2>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3 cascade-container">
               {topEstudiantes.map((est, i) => (
-                <div key={i} className="flex items-center gap-3 py-1">
+                <div key={i} className="flex items-center gap-3 py-1 cascade-item">
                   <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0">
                     {i + 1}
                   </div>
@@ -136,9 +136,9 @@ export default function DashboardPage() {
               <Leaf className="w-4 h-4 text-primary" />
               <h2 className="font-semibold text-foreground">Por Hábito</h2>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 cascade-container">
               {Array.from(habitosMap.entries()).map(([habito, count]) => (
-                <div key={habito} className="flex items-center justify-between">
+                <div key={habito} className="flex items-center justify-between cascade-item">
                   <span className="text-sm text-foreground">{habito}</span>
                   <div className="flex items-center gap-2">
                     <div className="w-20 h-1.5 rounded-full bg-border">
