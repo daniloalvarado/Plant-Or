@@ -12,6 +12,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useUser } from '@clerk/clerk-react'
 import { toast } from 'sonner'
+import { ValidacionModal } from '@/components/ValidacionModal'
 
 export default function PlantaDetailPage() {
   const { user } = useUser()
@@ -22,7 +23,6 @@ export default function PlantaDetailPage() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
   const [observarOpen, setObservarOpen] = useState(false)
   const [rechazarOpen, setRechazarOpen] = useState(false)
-  const [motivoTexto, setMotivoTexto] = useState('')
   const [actionLoading, setActionLoading] = useState(false)
 
   useEffect(() => {
@@ -43,7 +43,6 @@ export default function PlantaDetailPage() {
     setActionLoading(false)
     setObservarOpen(false)
     setRechazarOpen(false)
-    setMotivoTexto('')
     
     if (emailSent === false) {
       toast.error('Error al enviar correo', {
@@ -320,63 +319,21 @@ export default function PlantaDetailPage() {
         </div>
       )}
 
-      {/* Observar Modal */}
-      {observarOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
-            <div>
-              <h3 className="text-xl font-bold text-[#F97316]">Observar Registro</h3>
-              <p className="text-sm text-muted-foreground mt-1">El estudiante verá este mensaje en su aplicación móvil para poder corregirlo.</p>
-            </div>
-            <textarea
-              value={motivoTexto}
-              onChange={e => setMotivoTexto(e.target.value)}
-              placeholder="Describe lo que falta o debe corregirse (ej. 'La foto de la hoja está borrosa')..."
-              rows={12}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all max-h-[50vh] min-h-[250px] overflow-y-auto custom-scrollbar"
-            />
-            <div className="flex gap-3 justify-end pt-2">
-              <button onClick={() => setObservarOpen(false)} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Cancelar</button>
-              <button
-                onClick={() => handleAction('Observado', motivoTexto)}
-                disabled={!motivoTexto.trim() || actionLoading}
-                className="px-5 py-2 text-sm bg-[#c2410c] text-white font-bold rounded-lg hover:bg-[#9a3412] shadow-[0_0_15px_rgba(194,65,12,0.3)] transition-all disabled:opacity-50"
-              >
-                {actionLoading ? 'Enviando...' : 'Enviar Observación'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Rechazar Modal */}
-      {rechazarOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
-            <div>
-              <h3 className="text-xl font-bold text-red-600">¿Rechazar Registro?</h3>
-              <p className="text-sm text-muted-foreground mt-1">El estudiante verá el motivo del rechazo en su aplicación móvil.</p>
-            </div>
-            <textarea
-              value={motivoTexto}
-              onChange={e => setMotivoTexto(e.target.value)}
-              placeholder="Describe por qué se rechaza este registro de forma definitiva..."
-              rows={12}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all max-h-[50vh] min-h-[250px] overflow-y-auto custom-scrollbar"
-            />
-            <div className="flex gap-3 justify-end pt-2">
-              <button onClick={() => setRechazarOpen(false)} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Cancelar</button>
-              <button
-                onClick={() => handleAction('Rechazado', motivoTexto)}
-                disabled={!motivoTexto.trim() || actionLoading}
-                className="px-5 py-2 text-sm bg-[#991b1b] text-white font-bold rounded-lg hover:bg-[#7f1d1d] shadow-[0_0_15px_rgba(153,27,27,0.3)] transition-all disabled:opacity-50"
-              >
-                {actionLoading ? 'Rechazando...' : 'Rechazar Registro'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Modales Unificados */}
+      <ValidacionModal
+        isOpen={observarOpen}
+        tipo="observar"
+        loading={actionLoading}
+        onClose={() => setObservarOpen(false)}
+        onSubmit={(motivo) => handleAction('Observado', motivo)}
+      />
+      <ValidacionModal
+        isOpen={rechazarOpen}
+        tipo="rechazar"
+        loading={actionLoading}
+        onClose={() => setRechazarOpen(false)}
+        onSubmit={(motivo) => handleAction('Rechazado', motivo)}
+      />
     </div>
   )
 }

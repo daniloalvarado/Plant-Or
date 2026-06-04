@@ -9,6 +9,7 @@ import { CustomSelect } from '@/components/CustomSelect'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useUser } from '@clerk/clerk-react'
 import type { Planta } from '@/types/planta'
+import { ValidacionModal } from '@/components/ValidacionModal'
 
 interface ValidacionesPageProps {
   filtroEstado?: string
@@ -26,7 +27,6 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
   const [observarId, setObservarId] = useState<string | null>(null)
   const [rechazarId, setRechazarId] = useState<string | null>(null)
-  const [motivoTexto, setMotivoTexto] = useState('')
   const [loadingAction, setLoadingAction] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -73,23 +73,21 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
     setLoadingAction(null)
   }
 
-  const handleRechazar = async () => {
-    if (!rechazarId || !motivoTexto.trim()) return
+  const handleRechazar = async (motivo: string) => {
+    if (!rechazarId || !motivo.trim()) return
     setLoadingAction(rechazarId + '-rechazar')
-    await updatePlantaEstado(rechazarId, 'Rechazado', motivoTexto.trim(), docenteName)
+    await updatePlantaEstado(rechazarId, 'Rechazado', motivo.trim(), docenteName)
     await refetch()
     setRechazarId(null)
-    setMotivoTexto('')
     setLoadingAction(null)
   }
 
-  const handleObservar = async () => {
-    if (!observarId || !motivoTexto.trim()) return
+  const handleObservar = async (motivo: string) => {
+    if (!observarId || !motivo.trim()) return
     setLoadingAction(observarId + '-observar')
-    await updatePlantaEstado(observarId, 'Observado', motivoTexto.trim(), docenteName)
+    await updatePlantaEstado(observarId, 'Observado', motivo.trim(), docenteName)
     await refetch()
     setObservarId(null)
-    setMotivoTexto('')
     setLoadingAction(null)
   }
 
@@ -310,73 +308,25 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
         )}
       </div>
 
-      {/* Observar Modal */}
-      {observarId && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
-            <div>
-              <h3 className="text-xl font-bold text-[#F97316]">Observar Registro</h3>
-              <p className="text-sm text-muted-foreground mt-1">El estudiante verá este mensaje en su aplicación móvil para poder corregirlo.</p>
-            </div>
-            <textarea
-              value={motivoTexto}
-              onChange={e => setMotivoTexto(e.target.value)}
-              placeholder="Describe lo que falta o debe corregirse (ej. 'La foto de la hoja está borrosa')..."
-              rows={12}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all max-h-[50vh] min-h-[250px] overflow-y-auto custom-scrollbar"
-            />
-            <div className="flex gap-3 justify-end pt-2">
-              <button
-                onClick={() => { setObservarId(null); setMotivoTexto('') }}
-                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={handleObservar}
-                disabled={!motivoTexto.trim() || !!loadingAction}
-                className="px-5 py-2 text-sm bg-[#c2410c] text-white font-bold rounded-lg hover:bg-[#9a3412] shadow-[0_0_15px_rgba(194,65,12,0.3)] transition-all disabled:opacity-50 cursor-pointer"
-              >
-                {loadingAction ? 'Enviando...' : 'Enviar Observación'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Rechazar Modal */}
-      {rechazarId && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
-            <div>
-              <h3 className="text-xl font-bold text-red-600">¿Rechazar Registro?</h3>
-              <p className="text-sm text-muted-foreground mt-1">El estudiante verá el motivo del rechazo en su aplicación móvil.</p>
-            </div>
-            <textarea
-              value={motivoTexto}
-              onChange={e => setMotivoTexto(e.target.value)}
-              placeholder="Describe por qué se rechaza este registro de forma definitiva..."
-              rows={12}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all max-h-[50vh] min-h-[250px] overflow-y-auto custom-scrollbar"
-            />
-            <div className="flex gap-3 justify-end pt-2">
-              <button
-                onClick={() => { setRechazarId(null); setMotivoTexto('') }}
-                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={handleRechazar}
-                disabled={!motivoTexto.trim() || !!loadingAction}
-                className="px-5 py-2 text-sm bg-[#991b1b] text-white font-bold rounded-lg hover:bg-[#7f1d1d] shadow-[0_0_15px_rgba(153,27,27,0.3)] transition-all disabled:opacity-50 cursor-pointer"
-              >
-                {loadingAction ? 'Rechazando...' : 'Rechazar Registro'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Modales Unificados */}
+      <ValidacionModal
+        isOpen={!!observarId}
+        tipo="observar"
+        loading={!!loadingAction}
+        onClose={() => setObservarId(null)}
+        onSubmit={(motivo) => {
+          if (observarId) handleObservar(motivo);
+        }}
+      />
+      <ValidacionModal
+        isOpen={!!rechazarId}
+        tipo="rechazar"
+        loading={!!loadingAction}
+        onClose={() => setRechazarId(null)}
+        onSubmit={(motivo) => {
+          if (rechazarId) handleRechazar(motivo);
+        }}
+      />
     </div>
   )
 }
