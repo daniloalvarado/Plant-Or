@@ -28,13 +28,13 @@ function ProfileWithLoading() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full">
+    <div className="flex flex-col items-center w-full pt-10">
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-50">
+        <div className="flex items-start justify-center w-full h-[40vh] pt-10 z-50">
           <LoadingSpinner text="Cargando configuración de cuenta..." />
         </div>
       )}
-      <div className={loading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}>
+      <div className={loading ? 'hidden' : 'opacity-100 transition-opacity duration-500'}>
         <UserProfile appearance={{ elements: { card: 'bg-card border-border', headerTitle: 'hidden', headerSubtitle: 'hidden' } }} />
       </div>
     </div>
