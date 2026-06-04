@@ -76,12 +76,12 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Activity */}
-        <div className="lg:col-span-2 bg-card border border-border rounded-xl p-5 cascade-item delay-4">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="lg:col-span-2 bg-card border border-border rounded-xl p-5 cascade-fade delay-4">
+          <div className="flex items-center gap-2 mb-4 cascade-item delay-5">
             <TrendingUp className="w-4 h-4 text-primary" />
             <h2 className="font-semibold text-foreground">Actividad Reciente</h2>
           </div>
-          <div className="space-y-3 cascade-container">
+          <div className="space-y-3 cascade-container delay-5">
             {recientes.map((p) => (
               <div key={p._id} className="flex items-center justify-between py-2 border-b border-border last:border-0 cascade-item">
                 <div className="flex-1 min-w-0">
@@ -109,12 +109,12 @@ export default function DashboardPage() {
         {/* Sidebar Stats */}
         <div className="space-y-5">
           {/* Top Students */}
-          <div className="bg-card border border-border rounded-xl p-5 cascade-item delay-5">
-            <div className="flex items-center gap-2 mb-4">
+          <div className="bg-card border border-border rounded-xl p-5 cascade-fade delay-5">
+            <div className="flex items-center gap-2 mb-4 cascade-item delay-6">
               <Users className="w-4 h-4 text-primary" />
               <h2 className="font-semibold text-foreground">Top Estudiantes</h2>
             </div>
-            <div className="space-y-3 cascade-container">
+            <div className="space-y-3 cascade-container delay-6">
               {topEstudiantes.map((est, i) => (
                 <div key={i} className="flex items-center gap-3 py-1 cascade-item">
                   <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0">
@@ -131,12 +131,12 @@ export default function DashboardPage() {
           </div>
 
           {/* Habits Distribution */}
-          <div className="bg-card border border-border rounded-xl p-5 cascade-item delay-5">
-            <div className="flex items-center gap-2 mb-4">
+          <div className="bg-card border border-border rounded-xl p-5 cascade-fade delay-6">
+            <div className="flex items-center gap-2 mb-4 cascade-item delay-7">
               <Leaf className="w-4 h-4 text-primary" />
               <h2 className="font-semibold text-foreground">Por Hábito</h2>
             </div>
-            <div className="space-y-2 cascade-container">
+            <div className="space-y-2 cascade-container delay-7">
               {Array.from(habitosMap.entries()).map(([habito, count]) => (
                 <div key={habito} className="flex items-center justify-between cascade-item">
                   <span className="text-sm text-foreground">{habito}</span>

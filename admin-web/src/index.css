@@ -212,6 +212,16 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
   animation: cascade-slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes just-fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.cascade-fade {
+  opacity: 0;
+  animation: just-fade-in 0.4s ease forwards;
+}
+
 .cascade-item-right {
   opacity: 0;
   animation: cascade-slide-right 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -244,4 +254,6 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 .delay-3 { animation-delay: 0.45s !important; --base-delay: 0.45s; }
 .delay-4 { animation-delay: 0.60s !important; --base-delay: 0.60s; }
 .delay-5 { animation-delay: 0.75s !important; --base-delay: 0.75s; }
+.delay-6 { animation-delay: 0.90s !important; --base-delay: 0.90s; }
+.delay-7 { animation-delay: 1.05s !important; --base-delay: 1.05s; }
 
