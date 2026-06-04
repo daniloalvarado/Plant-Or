@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { client, urlFor } from '../lib/sanity';
-import { Award, Search, Edit2, X, Save, Loader2, Calendar, ArrowLeft, Settings, Upload } from 'lucide-react';
+import { Award, Search, Edit2, X, Save, Loader2, Calendar, ArrowLeft, Settings, Upload, ExternalLink } from 'lucide-react';
 import { toast } from 'sonner';
 import { useUser } from '@clerk/clerk-react';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -479,13 +479,22 @@ export default function CertificadosPage() {
           </p>
         </div>
         <div className="flex flex-col gap-3 items-end w-full sm:w-auto">
-          <button 
-            onClick={handleEditGlobal}
-            className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl transition-all shadow-md shadow-primary/20 w-full sm:w-auto justify-center cursor-pointer"
-          >
-            <Settings className="w-5 h-5" />
-            Editar Plantilla Global
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <button 
+              onClick={() => window.open('/validar', '_blank')}
+              className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-md shadow-blue-500/20 w-full sm:w-auto justify-center cursor-pointer"
+            >
+              <ExternalLink className="w-5 h-5" />
+              Validar Certificado
+            </button>
+            <button 
+              onClick={handleEditGlobal}
+              className="flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl transition-all shadow-md shadow-primary/20 w-full sm:w-auto justify-center cursor-pointer"
+            >
+              <Settings className="w-5 h-5" />
+              Editar Plantilla
+            </button>
+          </div>
           
           <div className="relative w-full sm:w-64">
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />

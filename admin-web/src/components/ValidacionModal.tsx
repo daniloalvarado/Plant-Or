@@ -23,9 +23,9 @@ export function ValidacionModal({ isOpen, onClose, onSubmit, tipo, loading }: Va
 
   const title = isObservar ? 'Observar Registro' : '¿Rechazar Registro?';
   const titleColor = isObservar ? 'text-[#F97316]' : 'text-red-600';
-  const subtitle = isObservar 
-    ? 'El estudiante verá este mensaje en su aplicación móvil para poder corregirlo.'
-    : 'El estudiante verá el motivo del rechazo en su aplicación móvil.';
+  const subtitle = isObservar
+    ? 'El estudiante verá este mensaje en su aplicación móvil y en su correo para poder corregirlo.'
+    : 'El estudiante verá el motivo del rechazo en su aplicación móvil y en su correo.';
   const placeholder = isObservar
     ? "Describe lo que falta o debe corregirse (ej. 'La foto de la hoja está borrosa')..."
     : "Describe por qué se rechaza este registro de forma definitiva...";

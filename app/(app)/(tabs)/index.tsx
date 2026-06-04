@@ -126,14 +126,8 @@ export default function HomeScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background, paddingTop: insets.top }]}>
-      <ScrollView
-        style={[styles.content, { paddingTop: 20 }]}
-        contentContainerStyle={{ paddingBottom: insets.bottom + 100 }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#1FC451" colors={['#1FC451']} />
-        }
-      >
+      {/* Fixed Header + Search */}
+      <View style={{ paddingHorizontal: 20, paddingTop: 20, backgroundColor: theme.background }}>
         {/* Header */}
         <View style={styles.header}>
           <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
@@ -194,9 +188,18 @@ export default function HomeScreen() {
             <MaterialCommunityIcons name="filter-variant" size={20} color={selectedFiltros.length > 0 ? "#08130D" : theme.text} />
           </Pressable>
         </View>
+      </View>
 
-        {/* Categories */}
-        <Text style={[styles.sectionTitle, { color: theme.text }]}>Descubre por Hábito</Text>
+      {/* Scrollable: Chips + Plants */}
+      <ScrollView
+        style={{ flex: 1, paddingHorizontal: 20 }}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 100 }}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#1FC451" colors={['#1FC451']} />
+        }
+      >
+        {/* Categories Chips */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>
           {habitsList.map((habit) => (
             <Pressable

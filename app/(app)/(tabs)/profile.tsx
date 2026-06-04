@@ -41,6 +41,9 @@ export default function Profile() {
   const [stats, setStats] = useState({ total: 0, validados: 0, observados: 0, rechazados: 0, primerValidado: null, ultimoValidado: null });
   const [validatedCount, setValidatedCount] = useState(0);
 
+  const isStudent = !!(user?.unsafeMetadata?.dni || user?.unsafeMetadata?.facultad || user?.unsafeMetadata?.escuela);
+  const certThreshold = isStudent ? 20 : 100;
+
   const [firstName, setFirstName] = useState(user?.firstName || '');
   const [lastName, setLastName] = useState(user?.lastName || '');
   const [dni, setDni] = useState((user?.unsafeMetadata?.dni as string) || '');
@@ -544,17 +547,17 @@ export default function Profile() {
               <XStack style={{ alignItems: 'center' }} gap="$2" mb="$1">
                 <MaterialCommunityIcons name="certificate" size={24} color="#1FC451" />
                 <H2 fontSize={18} fontWeight="700" color="#ffffff">
-                  {validatedCount >= 1 ? '¡Certificado Desbloqueado!' : 'Progreso para Certificado'}
+                  {validatedCount >= certThreshold ? '¡Certificado Desbloqueado!' : 'Progreso para Certificado'}
                 </H2>
               </XStack>
               
               <Text fontSize={14} color="rgba(255,255,255,0.7)">
-                {validatedCount >= 1 
+                {validatedCount >= certThreshold 
                   ? 'Has alcanzado los requisitos. Ya puedes generar tu certificado oficial del proyecto.'
-                  : 'Al alcanzar los requisitos obtendrás un Certificado Digital oficial del proyecto. (Aplica para estudiantes y ciudadanos).'}
+                  : `Al alcanzar ${certThreshold} registros validados obtendrás un Certificado Digital oficial del proyecto. (Aplica para estudiantes y ciudadanos).`}
               </Text>
               
-              {validatedCount >= 1 ? (
+              {validatedCount >= certThreshold ? (
                 <Button
                   mt="$2"
                   bg="#1FC451"
@@ -570,7 +573,7 @@ export default function Profile() {
               ) : (
                 <>
                   <View style={{ width: '100%', height: 12, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 6, overflow: 'hidden', marginTop: 10 }}>
-                    <View style={{ width: `${Math.min((validatedCount / 1) * 100, 100)}%`, height: '100%', backgroundColor: '#1FC451', borderRadius: 6 }} />
+                    <View style={{ width: `${Math.min((validatedCount / certThreshold) * 100, 100)}%`, height: '100%', backgroundColor: '#1FC451', borderRadius: 6 }} />
                   </View>
                   
                   <XStack style={{ justifyContent: 'space-between' }} mt="$1">
@@ -578,7 +581,7 @@ export default function Profile() {
                       {validatedCount} validadas
                     </Text>
                     <Text fontSize={12} color="rgba(255,255,255,0.5)">
-                      Meta: 1
+                      Meta: {certThreshold}
                     </Text>
                   </XStack>
                 </>
