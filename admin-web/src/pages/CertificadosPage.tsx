@@ -553,7 +553,8 @@ export default function CertificadosPage() {
             </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-secondary/5">
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-secondary/5">
             <span className="text-sm text-muted-foreground">
               Página <span className="font-medium text-foreground">{currentPage}</span> de <span className="font-medium text-foreground">{totalPages}</span>
             </span>
@@ -574,6 +575,7 @@ export default function CertificadosPage() {
               </button>
             </div>
           </div>
+        )}
       </div>
     </div>
   );

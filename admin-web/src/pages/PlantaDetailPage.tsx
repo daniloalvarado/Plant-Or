@@ -332,8 +332,8 @@ export default function PlantaDetailPage() {
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe lo que falta o debe corregirse (ej. 'La foto de la hoja está borrosa')..."
-              rows={8}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all max-h-[50vh] overflow-y-auto custom-scrollbar"
+              rows={12}
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] resize-none transition-all max-h-[50vh] min-h-[250px] overflow-y-auto custom-scrollbar"
             />
             <div className="flex gap-3 justify-end pt-2">
               <button onClick={() => setObservarOpen(false)} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Cancelar</button>
@@ -361,8 +361,8 @@ export default function PlantaDetailPage() {
               value={motivoTexto}
               onChange={e => setMotivoTexto(e.target.value)}
               placeholder="Describe por qué se rechaza este registro de forma definitiva..."
-              rows={8}
-              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all max-h-[50vh] overflow-y-auto custom-scrollbar"
+              rows={12}
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none transition-all max-h-[50vh] min-h-[250px] overflow-y-auto custom-scrollbar"
             />
             <div className="flex gap-3 justify-end pt-2">
               <button onClick={() => setRechazarOpen(false)} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Cancelar</button>
