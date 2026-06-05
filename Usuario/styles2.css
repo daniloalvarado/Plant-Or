@@ -121,7 +121,19 @@ touch-action: none;
 
 .site-info{
     top:1.5%;
-    left:1.5em;
-    transform: translateY(0);
+    left: 50%;
+    transform: translate(-50%);
 }
+
+.minimap{
+top: auto;
+right: auto;
+bottom: 5em;
+left: 50%;
+width: auto;
+height: 80px;
+touch-action: none;
+}
+
+
 }

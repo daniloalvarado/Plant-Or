@@ -10,6 +10,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useUser } from '@clerk/clerk-react'
 import type { Planta } from '@/types/planta'
 import { ValidacionModal } from '@/components/ValidacionModal'
+import { cn } from '@/lib/utils'
 
 interface ValidacionesPageProps {
   filtroEstado?: string
@@ -129,35 +130,38 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
           </button>
         </div>
 
-        {showFilters && (
-          <div className="flex flex-wrap items-center gap-3 pt-2 cascade-item">
-            <CustomSelect
-              value={filterEstado}
-              onChange={setFilterEstado}
-              options={[
-                { value: '', label: 'Todos los estados' },
-                { value: 'En revisión', label: 'En revisión' },
-                { value: 'Validado', label: 'Validado' },
-                { value: 'Observado', label: 'Observado' },
-                { value: 'Rechazado', label: 'Rechazado' }
-              ]}
-            />
-            <CustomSelect
-              value={filterHabito}
-              onChange={setFilterHabito}
-              options={[
-                { value: '', label: 'Todos los hábitos' },
-                ...habitosUnicos.map(h => ({ value: h, label: h }))
-              ]}
-            />
-            <button
-              onClick={() => { setFilterEstado(''); setFilterHabito(''); setSearch('') }}
-              className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-            >
-              Limpiar
-            </button>
-          </div>
-        )}
+        <div 
+          className={cn(
+            "flex flex-wrap items-center gap-3 transition-all duration-300 overflow-hidden",
+            showFilters ? "max-h-[200px] pt-2 opacity-100 visible" : "max-h-0 opacity-0 invisible m-0 p-0"
+          )}
+        >
+          <CustomSelect
+            value={filterEstado}
+            onChange={setFilterEstado}
+            options={[
+              { value: '', label: 'Todos los estados' },
+              { value: 'En revisión', label: 'En revisión' },
+              { value: 'Validado', label: 'Validado' },
+              { value: 'Observado', label: 'Observado' },
+              { value: 'Rechazado', label: 'Rechazado' }
+            ]}
+          />
+          <CustomSelect
+            value={filterHabito}
+            onChange={setFilterHabito}
+            options={[
+              { value: '', label: 'Todos los hábitos' },
+              ...habitosUnicos.map(h => ({ value: h, label: h }))
+            ]}
+          />
+          <button
+            onClick={() => { setFilterEstado(''); setFilterHabito(''); setSearch('') }}
+            className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          >
+            Limpiar
+          </button>
+        </div>
       </div>
 
       {/* Table */}
