@@ -10,14 +10,24 @@ interface ValidacionModalProps {
 
 export function ValidacionModal({ isOpen, onClose, onSubmit, tipo, loading }: ValidacionModalProps) {
   const [motivoTexto, setMotivoTexto] = useState('');
+  const [isRendered, setIsRendered] = useState(isOpen);
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
+      setIsRendered(true);
+      setIsAnimatingOut(false);
       setMotivoTexto('');
+    } else if (isRendered) {
+      setIsAnimatingOut(true);
+      const timer = setTimeout(() => {
+        setIsRendered(false);
+      }, 300); // Duración de la animación de cierre (0.3s)
+      return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isOpen, isRendered]);
 
-  if (!isOpen) return null;
+  if (!isRendered) return null;
 
   const isObservar = tipo === 'observar';
 
@@ -35,8 +45,8 @@ export function ValidacionModal({ isOpen, onClose, onSubmit, tipo, loading }: Va
   const buttonText = isObservar ? 'Enviar Observación' : 'Rechazar Definitivamente';
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-      <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl animate-expand-y">
+    <div className={`fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 ${isAnimatingOut ? 'animate-out fade-out duration-300' : 'animate-in fade-in duration-300'}`}>
+      <div className={`bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}>
         <div>
           <h3 className={`text-xl font-bold ${titleColor}`}>{title}</h3>
           <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>

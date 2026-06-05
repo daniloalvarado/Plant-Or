@@ -44,11 +44,27 @@ function updateDimensions() {
 dimensions = updateDimensions();
 maxTranslate = dimensions.containerSize - dimensions.indicatorSize;
 
-function getItemInIndicator(){
-itemImages.forEach((img) =(img.style.opacity = 1));
+function getItemInIndicator() {
+    itemImages.forEach((img) = (img.style.opacity = 1));
 
-const indicatorStart = -currentTranslate;
-const indicatorEnd = indicatorStart + dimensions.indicatorSize;
+    const indicatorStart = -currentTranslate;
+    const indicatorEnd = indicatorStart + dimensions.indicatorSize;
 
-let maxOverlap = 0;
+    let maxOverlap = 0;
+    let selectedIndex = 0;
+
+    itemElements.forEach((item, index) => {
+
+        const itemStart = index * dimensions.itemSize;
+        const itemEnd = itemStart + dimensions.itemSize;
+
+        const overlapStart = Math.max(indicatorStart, itemStart);
+        const overlapEnd = Math.min(indicatorEnd, itemEnd);
+        const overlap = Math.max(0, overlapEnd - overlapStart);
+
+        if (overlap > maxOverlap) {
+            maxOverlap = overlap;
+            selectedIndex = index;
+        }
+    });
 }
