@@ -180,7 +180,7 @@ export default function CatalogPage() {
       {/* Mobile Lateral Menu */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-[200] flex bg-black/80 backdrop-blur-sm md:hidden" onClick={() => setMobileMenuOpen(false)}>
-          <div className="w-72 h-full bg-card shadow-2xl flex flex-col p-6 animate-in slide-in-from-right absolute right-0" onClick={e => e.stopPropagation()}>
+          <div className="w-72 h-full bg-card shadow-2xl flex flex-col p-6 animate-in zoom-in origin-top-right fade-in duration-300 absolute right-0" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-8">
               <span className="font-bold text-lg text-foreground">Menú</span>
               <button onClick={() => setMobileMenuOpen(false)} className="p-2 bg-secondary rounded-full text-muted-foreground">
@@ -642,14 +642,14 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
           key={`info-${activePlant._id}`}
           className="absolute left-[5%] md:left-[8rem] top-1/2 -translate-y-1/2 w-[40vw] md:w-[30vw] max-w-[200px] md:max-w-[320px] z-20 flex flex-col items-start animate-in slide-in-from-bottom-8 fade-in duration-500 pointer-events-none md:pointer-events-auto break-words"
         >
-          <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-wider mb-3 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-100 fill-mode-both">
+          <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-wider mb-3 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-100 fill-mode-both transition-colors duration-300">
             {activePlant.habito || 'Planta'}
           </span>
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground leading-tight italic drop-shadow-md mb-2 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-150 fill-mode-both break-words whitespace-normal w-full">
+          <h2 className="text-xl md:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-2 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-150 fill-mode-both break-words whitespace-normal w-full transition-colors duration-300">
             {activePlant.nombre_cientifico || 'Especie por identificar'}
           </h2>
           {activePlant.nombres_comunes && (
-            <p className="text-muted-foreground font-medium text-sm md:text-base mb-5 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-200 fill-mode-both break-words whitespace-normal w-full">
+            <p className="text-muted-foreground font-medium text-xs md:text-sm mb-5 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-200 fill-mode-both break-words whitespace-normal w-full transition-colors duration-300">
               {activePlant.nombres_comunes}
             </p>
           )}
@@ -728,7 +728,7 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
       onClick={onClose}
     >
       <div 
-        className={`w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-border origin-center transition-all duration-300 ${isAnimatingOut ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}`}
+        className={`w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-border origin-center transition-all duration-300 ${isAnimatingOut ? 'scale-y-0 opacity-0' : 'scale-y-100 opacity-100'}`}
         onClick={e => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer border border-white/20 z-50">
