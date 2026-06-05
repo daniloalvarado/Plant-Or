@@ -701,7 +701,7 @@ export default function RegistroScreen() {
                         ? "Deberás llenar el formulario botánico completo." 
                         : "Registro rápido: Solo nombre, ubicación y fotografías."}
                     </Paragraph>
-                    {!editId && !user?.unsafeMetadata?.role && (
+                    {!editId && !derivedRole && (
                       <Paragraph color="#FFA500" size="$2" mt="$1">
                         ⚠️ Al enviar tu primera planta, tu rol quedará fijado de forma permanente.
                       </Paragraph>

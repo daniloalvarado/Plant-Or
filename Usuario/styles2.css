@@ -113,7 +113,15 @@ cursor: pointer;
 body {
 overflow: hidden;
 touch-action: none;
+}
 
-container
+.container {
+touch-action: none;
+}
 
-touch-action: none
+.site-info{
+    top:1.5%;
+    left:1.5em;
+    transform: translateY(0);
+}
+}

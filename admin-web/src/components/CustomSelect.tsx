@@ -44,33 +44,38 @@ export function CustomSelect({ value, onChange, options, placeholder = 'Seleccio
         <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform duration-200", isOpen && "rotate-180")} />
       </button>
 
-      {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-popover border border-border rounded-lg shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-          <ul className="max-h-60 overflow-y-auto py-1 custom-scrollbar">
-            {options.map((option) => (
-              <li
-                key={option.value}
-                onClick={() => {
-                  onChange(option.value)
-                  setIsOpen(false)
-                }}
-                className={cn(
-                  "flex items-center justify-between px-3 py-2 text-sm cursor-pointer transition-colors",
-                  value === option.value
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "text-foreground hover:bg-secondary"
-                )}
-              >
-                <span className="truncate">{option.label}</span>
-                {value === option.value && <Check className="w-4 h-4 flex-shrink-0" />}
-              </li>
-            ))}
-            {options.length === 0 && (
-              <li className="px-3 py-2 text-sm text-muted-foreground text-center">Sin opciones</li>
-            )}
-          </ul>
-        </div>
-      )}
+      <div 
+        className={cn(
+          "absolute z-50 w-full mt-1 bg-card border border-border rounded-lg shadow-2xl overflow-hidden transition-all duration-200",
+          isOpen 
+            ? "opacity-100 translate-y-0 visible pointer-events-auto" 
+            : "opacity-0 -translate-y-2 invisible pointer-events-none"
+        )}
+      >
+        <ul className="max-h-60 overflow-y-auto py-1 custom-scrollbar">
+          {options.map((option) => (
+            <li
+              key={option.value}
+              onClick={() => {
+                onChange(option.value)
+                setIsOpen(false)
+              }}
+              className={cn(
+                "flex items-center justify-between px-3 py-2 text-sm cursor-pointer transition-colors",
+                value === option.value
+                  ? "bg-primary/10 text-primary font-medium"
+                  : "text-foreground hover:bg-secondary"
+              )}
+            >
+              <span className="truncate">{option.label}</span>
+              {value === option.value && <Check className="w-4 h-4 flex-shrink-0" />}
+            </li>
+          ))}
+          {options.length === 0 && (
+            <li className="px-3 py-2 text-sm text-muted-foreground text-center">Sin opciones</li>
+          )}
+        </ul>
+      </div>
     </div>
   )
 }
