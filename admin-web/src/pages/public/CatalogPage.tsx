@@ -9,6 +9,7 @@ import { client, urlFor, urlForImage } from '@/lib/sanity'
 import type { Planta } from '@/types/planta'
 import { CustomSelect } from '@/components/CustomSelect'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { TooltipLogo } from '@/components/TooltipLogo'
 import { useTheme } from '@/components/ThemeProvider'
 import './CatalogPage.css'
 
@@ -104,9 +105,8 @@ export default function CatalogPage() {
     <div className="public-catalog-bg fixed inset-0 w-full h-full font-sans overflow-hidden flex flex-col bg-background text-foreground transition-colors duration-300">
       {/* Navbar */}
       <nav className="h-[70px] border-b border-border flex items-center justify-between px-6 flex-shrink-0 z-50 bg-background/80 backdrop-blur-md transition-colors duration-300">
-        <div className="flex items-center gap-3">
-          <Leaf className="w-6 h-6 text-[#1FC451]" />
-          <span className="font-bold text-lg text-foreground">Plant-OR</span>
+        <div className="flex items-center gap-2">
+          <TooltipLogo />
         </div>
 
         <div className="flex-1 max-w-xl mx-8 relative hidden lg:block">
@@ -338,7 +338,7 @@ export default function CatalogPage() {
                 <Filter className="w-5 h-5 text-[#1FC451]" />
                 Filtros Dinámicos
               </h2>
-              <button onClick={() => setFiltersModalOpen(false)} className="p-2 hover:bg-secondary rounded-lg transition-colors cursor-pointer text-muted-foreground hover:text-foreground">
+              <button onClick={() => { setFiltersModalOpen(false); setMobileMenuOpen(true); }} className="p-2 hover:bg-secondary rounded-lg transition-colors cursor-pointer text-muted-foreground hover:text-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -613,16 +613,16 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
       {activePlant && (
         <div 
           key={`info-${activePlant._id}`}
-          className="absolute left-[8%] md:left-[12%] top-1/2 -translate-y-1/2 w-64 md:w-80 z-20 flex flex-col items-start animate-in slide-in-from-bottom-8 fade-in duration-500 pointer-events-none md:pointer-events-auto"
+          className="absolute left-[5%] md:left-[8rem] top-1/2 -translate-y-1/2 w-64 md:w-80 z-20 flex flex-col items-start animate-in slide-in-from-bottom-8 fade-in duration-500 pointer-events-none md:pointer-events-auto"
         >
-          <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-xs font-bold rounded-full uppercase tracking-wider mb-4 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-100 fill-mode-both">
+          <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-xs font-bold rounded-full uppercase tracking-wider mb-4 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-100 fill-mode-both transition-colors duration-150">
             {activePlant.habito || 'Planta'}
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight italic drop-shadow-md mb-2 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-200 fill-mode-both">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight italic drop-shadow-md mb-2 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-150 fill-mode-both transition-colors duration-150">
             {activePlant.nombre_cientifico || 'Especie por identificar'}
           </h2>
           {activePlant.nombres_comunes && (
-            <p className="text-muted-foreground font-medium text-lg mb-6 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-300 fill-mode-both">
+            <p className="text-muted-foreground font-medium text-lg mb-6 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-200 fill-mode-both transition-colors duration-150">
               {activePlant.nombres_comunes}
             </p>
           )}
@@ -664,6 +664,10 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [isRendered, setIsRendered] = useState(isOpen)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
+  const lastPlant = useRef(plant)
+
+  if (plant) lastPlant.current = plant
+  const currentPlant = plant || lastPlant.current
 
   useEffect(() => {
     if (isOpen) {
@@ -678,7 +682,7 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
     }
   }, [isOpen, isRendered])
 
-  if (!isRendered || !plant) return null;
+  if (!isRendered || !currentPlant) return null;
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' })
@@ -693,7 +697,7 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
       onClick={onClose}
     >
       <div 
-        className={`w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-border origin-center ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}
+        className={`w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-border origin-center transition-all duration-300 ${isAnimatingOut ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}`}
         onClick={e => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer border border-white/20 z-50">
@@ -702,18 +706,18 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
 
         {/* Left Side: Images */}
         <div className="w-full md:w-1/2 h-[40vh] md:h-full bg-black relative group flex-shrink-0">
-          {plant.galeria && plant.galeria.length > 0 ? (
+          {currentPlant.galeria && currentPlant.galeria.length > 0 ? (
             <>
               <div ref={scrollContainerRef} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar bg-black">
-                {plant.galeria.map((foto, index) => (
+                {currentPlant.galeria.map((foto, index) => (
                   <img key={index} src={urlForImage(foto).width(800).auto('format').url()} className="w-full h-full object-contain flex-shrink-0 snap-center" alt="Foto de planta" />
                 ))}
               </div>
               
-              {plant.galeria.length > 1 && (
+              {currentPlant.galeria.length > 1 && (
                 <>
                   <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-white z-10 border border-white/10 shadow-lg">
-                    {plant.galeria.length} FOTOS
+                    {currentPlant.galeria.length} FOTOS
                   </div>
                   <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
                     <ChevronLeft className="w-6 h-6" />
@@ -734,16 +738,16 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
              </div>
           )}
           
-          {/* Main Title overlay on image for Mobile, but keeping it inside info panel for Desktop */}
+          {/* Main Title overlay on image for Mobile */}
           <div className="absolute bottom-4 left-6 right-6 z-10 md:hidden">
             <span className="px-2.5 py-1 bg-[#1FC451] text-black text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block shadow-lg">
-              {plant.habito || 'Planta'}
+              {currentPlant.habito || 'Planta'}
             </span>
             <h2 className="text-2xl font-bold text-white leading-tight italic drop-shadow-md">
-              {plant.nombre_cientifico || 'Especie por identificar'}
+              {currentPlant.nombre_cientifico || 'Especie por identificar'}
             </h2>
-            {plant.nombres_comunes && (
-              <p className="text-white/80 font-medium drop-shadow-md">{plant.nombres_comunes}</p>
+            {currentPlant.nombres_comunes && (
+              <p className="text-white/80 font-medium drop-shadow-md">{currentPlant.nombres_comunes}</p>
             )}
           </div>
         </div>
@@ -753,23 +757,23 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
           
           <div className="hidden md:block border-b border-border pb-4">
             <span className="px-2.5 py-1 bg-[#1FC451] text-black text-xs font-bold rounded-md uppercase tracking-wider mb-3 inline-block shadow-sm">
-              {plant.habito || 'Planta'}
+              {currentPlant.habito || 'Planta'}
             </span>
             <h2 className="text-3xl font-bold text-foreground leading-tight italic">
-              {plant.nombre_cientifico || 'Especie por identificar'}
+              {currentPlant.nombre_cientifico || 'Especie por identificar'}
             </h2>
-            {plant.nombres_comunes && (
-              <p className="text-muted-foreground font-medium mt-1 text-lg">{plant.nombres_comunes}</p>
+            {currentPlant.nombres_comunes && (
+              <p className="text-muted-foreground font-medium mt-1 text-lg">{currentPlant.nombres_comunes}</p>
             )}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-secondary/50 rounded-xl p-4 border border-border">
               <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Familia</span>
-              <p className="text-foreground font-medium mt-1">{plant.familia || 'No especificada'}</p>
+              <p className="text-foreground font-medium mt-1">{currentPlant.familia || 'No especificada'}</p>
             </div>
             <div className="bg-secondary/50 rounded-xl p-4 border border-border">
               <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Tipo de vida</span>
-              <p className="text-foreground font-medium mt-1">{plant.tipo_vida || 'No especificado'}</p>
+              <p className="text-foreground font-medium mt-1">{currentPlant.tipo_vida || 'No especificado'}</p>
             </div>
           </div>
 
@@ -778,9 +782,9 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
               Ubicación Registrada
             </h3>
             <p className="text-foreground/80 text-sm leading-relaxed">
-              <span className="font-semibold text-foreground">Distrito:</span> {plant.distrito || '—'}<br/>
-              <span className="font-semibold text-foreground">Dirección:</span> {plant.direccion || '—'} {plant.numero_casa}<br/>
-              <span className="font-semibold text-foreground">Referencia:</span> {plant.ubicacion_planta || '—'}
+              <span className="font-semibold text-foreground">Distrito:</span> {currentPlant.distrito || '—'}<br/>
+              <span className="font-semibold text-foreground">Dirección:</span> {currentPlant.direccion || '—'} {currentPlant.numero_casa}<br/>
+              <span className="font-semibold text-foreground">Referencia:</span> {currentPlant.ubicacion_planta || '—'}
             </p>
           </div>
 
@@ -789,39 +793,39 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
               Evaluación Botánica
             </h3>
             <div className="grid grid-cols-2 gap-y-4 gap-x-4">
-              {plant.estado_fenologico && plant.estado_fenologico.length > 0 && (
+              {currentPlant.estado_fenologico && currentPlant.estado_fenologico.length > 0 && (
                 <div className="flex flex-col">
                   <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Fenología</span>
-                  <span className="text-foreground text-sm font-medium">{plant.estado_fenologico.join(', ')}</span>
+                  <span className="text-foreground text-sm font-medium">{currentPlant.estado_fenologico.join(', ')}</span>
                 </div>
               )}
-              {plant.estado_individuo && plant.estado_individuo.length > 0 && (
+              {currentPlant.estado_individuo && currentPlant.estado_individuo.length > 0 && (
                 <div className="flex flex-col">
                   <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Estado Individuo</span>
-                  <span className="text-foreground text-sm font-medium">{plant.estado_individuo.join(', ')}</span>
+                  <span className="text-foreground text-sm font-medium">{currentPlant.estado_individuo.join(', ')}</span>
                 </div>
               )}
-              {plant.valor_ornamental && plant.valor_ornamental.length > 0 && (
+              {currentPlant.valor_ornamental && currentPlant.valor_ornamental.length > 0 && (
                 <div className="flex flex-col">
                   <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Valor Ornamental</span>
-                  <span className="text-foreground text-sm font-medium">{plant.valor_ornamental.join(', ')}</span>
+                  <span className="text-foreground text-sm font-medium">{currentPlant.valor_ornamental.join(', ')}</span>
                 </div>
               )}
-              {plant.impacto_urbano && plant.impacto_urbano.length > 0 && (
+              {currentPlant.impacto_urbano && currentPlant.impacto_urbano.length > 0 && (
                 <div className="flex flex-col">
                   <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Impacto Urbano</span>
-                  <span className="text-foreground text-sm font-medium">{plant.impacto_urbano.join(', ')}</span>
+                  <span className="text-foreground text-sm font-medium">{currentPlant.impacto_urbano.join(', ')}</span>
                 </div>
               )}
               
               {/* Habit specific data */}
               {Object.entries({
-                'Árbol': plant.arbol_datos,
-                'Palmera': plant.palmera_datos,
-                'Arbusto': plant.arbusto_datos,
-                'Liana': plant.liana_datos,
-                'Hierba': plant.hierba_datos,
-              }[plant.habito || ''] || {}).map(([key, value]) => {
+                'Árbol': currentPlant.arbol_datos,
+                'Palmera': currentPlant.palmera_datos,
+                'Arbusto': currentPlant.arbusto_datos,
+                'Liana': currentPlant.liana_datos,
+                'Hierba': currentPlant.hierba_datos,
+              }[currentPlant.habito || ''] || {}).map(([key, value]) => {
                 if (!value || value === '' || value === 'Por identificar' || key === '_type') return null;
                 const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
                 return (
@@ -836,7 +840,7 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
 
           <div className="pt-4 border-t border-border">
             <p className="text-xs text-muted-foreground text-center">
-              Registrado por: {plant.registrador_nombre || 'Anónimo'} • {new Date(plant._createdAt).toLocaleDateString()}
+              Registrado por: {currentPlant.registrador_nombre || 'Anónimo'} • {new Date(currentPlant._createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
