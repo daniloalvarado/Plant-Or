@@ -495,21 +495,20 @@ y: Math.sin(angle) * radiusY - 175,
           z = z - tunnelDepth + exitPoint;
           
           const isVisible = z >= -visibleDepth && z <= exitPoint;
-          let opacity = 1;
+          let overlay = 1;
 
           if (isVisible) {
-            if (z > 0) opacity = z / exitPoint;
+            if (z > 0) overlay = z / exitPoint;
             else if (z > -visibleDepth) {
               const progress = Math.abs(z) / visibleDepth;
-              opacity = progress * progress;
+              overlay = progress * progress;
             }
-            opacity = 1 - opacity; // Invertir porque cerca es opaco
           }
 
           gsap.set(el, {
             z: z,
-            opacity: isVisible ? Math.max(0, opacity) : 0,
-            visibility: isVisible ? 'visible' : 'hidden'
+            "--overlay": Math.min(1, Math.max(0, overlay)),
+            visibility: overlay >= 1 ? 'hidden' : 'visible'
           });
         }
       }

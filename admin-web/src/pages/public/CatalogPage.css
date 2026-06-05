@@ -73,13 +73,13 @@
 .item-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
-    opacity: 0.8;
+    background: #0a0a0a;
+    opacity: var(--overlay, 0.8);
     transition: opacity 0.3s;
 }
 
 .tunnel-item:hover .item-overlay {
-    opacity: 0.6;
+    opacity: calc(var(--overlay, 0.8) * 0.5);
 }
 
 .item-info-preview {
