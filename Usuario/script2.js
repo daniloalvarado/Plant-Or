@@ -5,7 +5,7 @@ const itemElements = document.querySelectorAll(".item");
 const previewImage = document.querySelector(".img-preview img");
 const itemImages = document.querySelectorAll(".item img");
 
-let isHorizontal = window.innerWidth ≤ 900;
+let isHorizontal = window.innerWidth <= 900;
 let dimensions = {
     itemSize: 0,
     containerSize: 0,
@@ -24,7 +24,7 @@ function lerp(start, end, factor) {
 }
 
 function updateDimensions() {
-    isHorizontal = window.innerWidth ≤ 900;
+    isHorizontal = window.innerWidth <= 900;
     if (isHorizontal) {
         dimensions = {
             itemSize: itemElements[0].getBoundingClientRect().width,
@@ -45,7 +45,7 @@ dimensions = updateDimensions();
 maxTranslate = dimensions.containerSize - dimensions.indicatorSize;
 
 function getItemInIndicator() {
-    itemImages.forEach((img) = (img.style.opacity = 1));
+    itemImages.forEach((img) => (img.style.opacity = 1));
 
     const indicatorStart = -currentTranslate;
     const indicatorEnd = indicatorStart + dimensions.indicatorSize;
@@ -72,7 +72,7 @@ function getItemInIndicator() {
 }
 
 function updatePreviewImage(index) {
-    if (currentImageIndex / index) {
+    if (currentImageIndex !== index) {
         currentImageIndex = index;
         const targetItem = itemElements[index].querySelector("img");
         const targetSrc = targetItem.getAttribute("src");
@@ -80,18 +80,40 @@ function updatePreviewImage(index) {
     }
 }
 
-function animate(){
-const lerpFactor = isClickMove ? 0.05 : 0.075;
-currentTranslate = lerp(currentTranslate, targetTranslate, lerpFactor);
+function animate() {
+    const lerpFactor = isClickMove ? 0.05 : 0.075;
+    currentTranslate = lerp(currentTranslate, targetTranslate, lerpFactor);
 
-if (Math.abs(currentTranslate - targetTranslate) > 0.01) {
-const transform = isHorizontal
-? 'translateX(${currentTranslate}px)'
-: translateY(${currentTranslate}px)';
-items.style.transform = transform;
+    if (Math.abs(currentTranslate - targetTranslate) > 0.01) {
+        const transform = isHorizontal
+            ? `translateX(${currentTranslate}px)`
+            : `translateY(${currentTranslate}px)`;
+        items.style.transform = transform;
 
-const activeIndex = getItemInIndicator();
-updatePreviewImage(activeIndex);
-} else {
-isClickMove = false;
+        const activeIndex = getItemInIndicator();
+        updatePreviewImage(activeIndex);
+    } else {
+        isClickMove = false;
+    }
+
+    requestAnimationFrame(animate);
 }
+
+container.addEventListener(
+    "wheel",
+
+    (e) => {
+        e.preventDefault();
+        isClickMove = false
+
+        let delta;
+        delta = e.deltaY;
+
+        const scrollVelocity = Math.min(Math.max(delta * 0.5, -20), 20);
+
+        targetTranslate = Math.min(
+            Math.max(targetTranslate - scrollVelocity, -maxTranslate),
+        );
+    },    
+    { passive: false }
+);

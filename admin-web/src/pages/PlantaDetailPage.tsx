@@ -26,6 +26,23 @@ export default function PlantaDetailPage() {
   const [rechazarOpen, setRechazarOpen] = useState(false)
   const [actionLoading, setActionLoading] = useState(false)
 
+  // Estados para animaciones del Lightbox
+  const [lightboxRendered, setLightboxRendered] = useState<string | null>(null)
+  const [isLightboxClosing, setIsLightboxClosing] = useState(false)
+
+  useEffect(() => {
+    if (selectedImg) {
+      setLightboxRendered(selectedImg)
+      setIsLightboxClosing(false)
+    } else if (lightboxRendered) {
+      setIsLightboxClosing(true)
+      const timer = setTimeout(() => {
+        setLightboxRendered(null)
+      }, 300)
+      return () => clearTimeout(timer)
+    }
+  }, [selectedImg, lightboxRendered])
+
   useEffect(() => {
     if (!id) return
     setLoading(true)
@@ -317,12 +334,17 @@ export default function PlantaDetailPage() {
       </div>
 
       {/* Image Lightbox */}
-      {selectedImg && (
+      {lightboxRendered && (
         <div
-          className="fixed inset-0 z-50 bg-background/80 flex items-center justify-center p-4"
+          className={`fixed inset-0 z-[110] bg-background/90 backdrop-blur-sm flex items-center justify-center p-4 ${isLightboxClosing ? 'animate-out fade-out duration-300' : 'animate-in fade-in duration-300'}`}
           onClick={() => setSelectedImg(null)}
         >
-          <img src={selectedImg} alt="Vista ampliada" className="max-w-full max-h-full rounded-xl object-contain" />
+          <img 
+            src={lightboxRendered} 
+            alt="Vista ampliada" 
+            className={`max-w-[95%] max-h-[95vh] rounded-2xl object-contain shadow-2xl ${isLightboxClosing ? 'animate-collapse-y' : 'animate-expand-y'}`} 
+            onClick={(e) => e.stopPropagation()}
+          />
         </div>
       )}
 
