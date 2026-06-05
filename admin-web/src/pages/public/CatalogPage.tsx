@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
-import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2, Sun, Moon, ChevronRight, ChevronLeft } from 'lucide-react'
+import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2, Sun, Moon, ChevronRight, ChevronLeft, Menu } from 'lucide-react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
@@ -38,6 +38,7 @@ export default function CatalogPage() {
   const [selectedHabito, setSelectedHabito] = useState('Todos')
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({})
   const [filtersModalOpen, setFiltersModalOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [sanityFiltros, setSanityFiltros] = useState<any[]>([])
   const [selectedPlant, setSelectedPlant] = useState<Planta | null>(null)
   const { theme, setTheme } = useTheme()
@@ -112,7 +113,7 @@ export default function CatalogPage() {
           <span className="font-bold text-lg text-foreground">Plant-OR</span>
         </div>
 
-        <div className="flex-1 max-w-xl mx-8 relative hidden md:block">
+        <div className="flex-1 max-w-xl mx-8 relative hidden lg:block">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
@@ -123,8 +124,9 @@ export default function CatalogPage() {
           />
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="w-32 md:w-40 hidden sm:block">
+        {/* Desktop Controls */}
+        <div className="hidden md:flex items-center gap-4">
+          <div className="w-40">
             <CustomSelect
               value={selectedHabito}
               onChange={setSelectedHabito}
@@ -139,7 +141,7 @@ export default function CatalogPage() {
             className="flex items-center gap-2 px-3 py-2 bg-secondary hover:bg-secondary/80 border border-border rounded-lg text-sm font-medium transition-colors cursor-pointer text-foreground"
           >
             <Filter className="w-4 h-4" />
-            <span className="hidden sm:inline">Filtros</span>
+            <span>Filtros</span>
             {Object.values(activeFilters).flat().length > 0 && (
               <span className="bg-[#1FC451] text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                 {Object.values(activeFilters).flat().length}
@@ -169,7 +171,102 @@ export default function CatalogPage() {
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
         </div>
+
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="md:hidden p-2 text-foreground"
+          onClick={() => setMobileMenuOpen(true)}
+        >
+          <Menu className="w-6 h-6" />
+        </button>
       </nav>
+
+      {/* Mobile Lateral Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[200] flex bg-black/80 backdrop-blur-sm md:hidden" onClick={() => setMobileMenuOpen(false)}>
+          <div className="w-72 h-full bg-card shadow-2xl flex flex-col p-6 animate-in slide-in-from-right absolute right-0" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-8">
+              <span className="font-bold text-lg text-foreground">Menú</span>
+              <button onClick={() => setMobileMenuOpen(false)} className="p-2 bg-secondary rounded-full text-muted-foreground">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {/* Search */}
+              <div className="relative block lg:hidden">
+                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Buscar planta..."
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-4 text-sm text-foreground focus:outline-none focus:border-[#1FC451]"
+                />
+              </div>
+
+              {/* Habito */}
+              <div>
+                <label className="text-xs font-bold text-muted-foreground uppercase mb-2 block">Hábito de Crecimiento</label>
+                <CustomSelect
+                  value={selectedHabito}
+                  onChange={setSelectedHabito}
+                  options={habitoOptions}
+                  placeholder="Todos"
+                  className="w-full"
+                />
+              </div>
+
+              {/* Filters */}
+              <button 
+                onClick={() => { setMobileMenuOpen(false); setFiltersModalOpen(true); }}
+                className="w-full flex items-center justify-between px-4 py-3 bg-secondary hover:bg-secondary/80 border border-border rounded-lg text-sm font-medium transition-colors cursor-pointer text-foreground"
+              >
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4" />
+                  <span>Filtros Dinámicos</span>
+                </div>
+                {Object.values(activeFilters).flat().length > 0 && (
+                  <span className="bg-[#1FC451] text-black text-xs font-bold px-2 py-0.5 rounded-full">
+                    {Object.values(activeFilters).flat().length}
+                  </span>
+                )}
+              </button>
+
+              {/* View Mode */}
+              <div>
+                <label className="text-xs font-bold text-muted-foreground uppercase mb-2 block">Vista</label>
+                <div className="flex bg-secondary border border-border rounded-lg p-1">
+                  <button
+                    onClick={() => { setViewMode('tunnel'); setMobileMenuOpen(false); }}
+                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#1FC451] text-black' : 'text-muted-foreground hover:text-foreground'}`}
+                  >
+                    <Box className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => { setViewMode('map'); setMobileMenuOpen(false); }}
+                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#1FC451] text-black' : 'text-muted-foreground hover:text-foreground'}`}
+                  >
+                    <MapIcon className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Theme Toggle */}
+              <div>
+                <label className="text-xs font-bold text-muted-foreground uppercase mb-2 block">Apariencia</label>
+                <button
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  className="w-full flex items-center justify-center gap-2 p-3 bg-secondary hover:bg-secondary/80 border border-border rounded-lg text-foreground transition-colors cursor-pointer"
+                >
+                  {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                  <span>{theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 relative">
@@ -445,7 +542,7 @@ y: Math.sin(angle) * radiusY - 175,
             key={layer.id}
             className="tunnel-layer"
             data-z={layer.baseZ}
-            style={{ display: 'none' }}
+            style={{ visibility: 'hidden' }}
           >
             <div 
               className="tunnel-item" 
