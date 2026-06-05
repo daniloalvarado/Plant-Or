@@ -123,7 +123,7 @@ export default function PlantaDetailPage() {
         <div>
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2 cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             Volver
@@ -146,7 +146,7 @@ export default function PlantaDetailPage() {
         <button
           onClick={() => handleAction('Validado')}
           disabled={actionLoading || planta.estado_revision === 'Validado'}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm bg-[#1FC451]/10 text-[#1FC451] border border-[#1FC451]/20 hover:bg-[#1FC451]/20 transition-colors disabled:opacity-40"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm bg-[#1FC451]/10 text-[#1FC451] border border-[#1FC451]/20 hover:bg-[#1FC451]/20 transition-colors disabled:opacity-40 cursor-pointer"
         >
           {actionLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
           Aprobar
@@ -154,7 +154,7 @@ export default function PlantaDetailPage() {
         <button
           onClick={() => setObservarOpen(true)}
           disabled={actionLoading}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-colors disabled:opacity-40"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-colors disabled:opacity-40 cursor-pointer"
         >
           <AlertCircle className="w-4 h-4" />
           Observar
@@ -162,7 +162,7 @@ export default function PlantaDetailPage() {
         <button
           onClick={() => setRechazarOpen(true)}
           disabled={actionLoading || planta.estado_revision === 'Rechazado'}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm bg-red-500/10 text-red-500 border border-red-500/20 hover:bg-red-500/20 transition-colors disabled:opacity-40"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm bg-red-500/10 text-red-500 border border-red-500/20 hover:bg-red-500/20 transition-colors disabled:opacity-40 cursor-pointer"
         >
           <XCircle className="w-4 h-4" />
           Rechazar

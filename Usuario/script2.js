@@ -114,6 +114,28 @@ container.addEventListener(
         targetTranslate = Math.min(
             Math.max(targetTranslate - scrollVelocity, -maxTranslate),
         );
-    },    
+    },
     { passive: false }
 );
+
+let touchStartY = 0;
+container.addEventListener("touchstart", (e) => {
+    if (isHorizontal) {
+        touchStartY = e.touches[0].clientY;
+    }
+});
+
+container.addEventListener("touchmove", (e) = {
+    if(isHorizontal) {
+
+        const touchY = e.touches[0].clientY;
+        const deltaY = touchStartY - touchY;
+
+        const delta = deltaY;
+        const scrollVelocity = Math.min(Math.max(delta * 0.5, -20), 20);
+
+        targetTranslate = Math.min(Math.max(targetTranslate - scrollVelocity,
+            -maxTranslate),
+            0)
+    }
+});
