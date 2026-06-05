@@ -498,42 +498,7 @@ export default function Profile() {
             </YStack>
           </Card>
 
-          {/* Progreso del Curso Card - Solo visible para estudiantes */}
-          {(user?.unsafeMetadata?.dni || user?.unsafeMetadata?.facultad) && (
-          <Card
-            size="$4"
-            bordered
-            bg="rgba(255,255,255,0.05)"
-            borderColor="rgba(255,255,255,0.1)"
-            padding="$5"
-          >
-            <YStack gap="$3">
-              <XStack style={{ alignItems: 'center' }} gap="$2" mb="$1">
-                <MaterialCommunityIcons name="leaf" size={24} color="#1FC451" />
-                <H2 fontSize={18} fontWeight="700" color="#ffffff">
-                  Progreso del Curso
-                </H2>
-              </XStack>
-              
-              <Text fontSize={14} color="rgba(255,255,255,0.7)">
-                Necesitas registrar 20 especies distintas para cumplir con la meta del curso.
-              </Text>
-              
-              <View style={{ width: '100%', height: 12, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 6, overflow: 'hidden', marginTop: 10 }}>
-                <View style={{ width: `${Math.min((validatedCount / 20) * 100, 100)}%`, height: '100%', backgroundColor: '#1FC451', borderRadius: 6 }} />
-              </View>
-              
-              <XStack style={{ justifyContent: 'space-between' }} mt="$1">
-                <Text fontSize={12} color="#1FC451" fontWeight="bold">
-                  {validatedCount} validadas
-                </Text>
-                <Text fontSize={12} color="rgba(255,255,255,0.5)">
-                  Meta: 20
-                </Text>
-              </XStack>
-            </YStack>
-          </Card>
-          )}
+
 
           {/* Certificación Progress Card */}
           <Card

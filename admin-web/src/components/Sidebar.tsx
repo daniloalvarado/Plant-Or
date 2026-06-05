@@ -116,7 +116,7 @@ export function Sidebar() {
       {/* User + Collapse */}
       <div className="border-t border-sidebar-border p-3 space-y-2 cascade-container">
         {user && (
-          <Link to="/perfil" onClick={() => setMobileOpen(false)} className={cn("relative group/nav flex items-center rounded-lg cursor-pointer cascade-item-right", collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-2 px-2 py-1.5 hover:bg-sidebar-accent group")}>
+          <Link to="/admin/perfil" onClick={() => setMobileOpen(false)} className={cn("relative group/nav flex items-center rounded-lg cursor-pointer cascade-item-right", collapsed ? "justify-center w-10 h-10 mx-auto" : "gap-2 px-2 py-1.5 hover:bg-sidebar-accent group")}>
             <img
               src={user.imageUrl}
               alt={user.fullName || ''}
