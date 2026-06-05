@@ -36,6 +36,8 @@ export default function CatalogPage() {
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({})
   const [filtersModalOpen, setFiltersModalOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isMobileMenuRendered, setIsMobileMenuRendered] = useState(false)
+  const [isMobileMenuAnimatingOut, setIsMobileMenuAnimatingOut] = useState(false)
   const [sanityFiltros, setSanityFiltros] = useState<any[]>([])
   const [selectedPlant, setSelectedPlant] = useState<Planta | null>(null)
   const { theme, setTheme } = useTheme()
@@ -100,6 +102,19 @@ export default function CatalogPage() {
       return true
     })
   }, [publicPlants, searchTerm, selectedHabito, activeFilters])
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      setIsMobileMenuRendered(true)
+      setIsMobileMenuAnimatingOut(false)
+    } else if (isMobileMenuRendered) {
+      setIsMobileMenuAnimatingOut(true)
+      const timer = setTimeout(() => {
+        setIsMobileMenuRendered(false)
+      }, 300)
+      return () => clearTimeout(timer)
+    }
+  }, [mobileMenuOpen, isMobileMenuRendered])
 
   return (
     <div className="public-catalog-bg fixed inset-0 w-full h-full font-sans overflow-hidden flex flex-col bg-background text-foreground transition-colors duration-300">
@@ -178,9 +193,9 @@ export default function CatalogPage() {
       </nav>
 
       {/* Mobile Lateral Menu */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[200] flex bg-black/80 backdrop-blur-sm md:hidden" onClick={() => setMobileMenuOpen(false)}>
-          <div className="w-72 h-full bg-card shadow-2xl flex flex-col p-6 animate-in zoom-in origin-top-right fade-in duration-300 absolute right-0" onClick={e => e.stopPropagation()}>
+      {isMobileMenuRendered && (
+        <div className={`fixed inset-0 z-[200] flex bg-black/80 backdrop-blur-sm md:hidden transition-opacity duration-300 ${isMobileMenuAnimatingOut ? 'opacity-0' : 'opacity-100'}`} onClick={() => setMobileMenuOpen(false)}>
+          <div className={`w-72 h-full bg-card shadow-2xl flex flex-col p-6 absolute right-0 origin-top-right ${isMobileMenuAnimatingOut ? 'animate-shrink-tr' : 'animate-grow-tr'}`} onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-8">
               <span className="font-bold text-lg text-foreground">Menú</span>
               <button onClick={() => setMobileMenuOpen(false)} className="p-2 bg-secondary rounded-full text-muted-foreground">
@@ -655,10 +670,10 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
           )}
           <button 
             onClick={() => onPlantClick(activePlant)}
-            className="flex items-center gap-2 px-6 py-3 bg-[#1FC451] hover:bg-[#19a343] text-black font-bold rounded-full transition-all hover:scale-105 shadow-lg shadow-[#1FC451]/20 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-500 fill-mode-both pointer-events-auto"
+            className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] hover:bg-[#19a343] text-black text-xs font-bold rounded-full transition-transform hover:scale-105 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-500 fill-mode-both pointer-events-auto shadow-sm"
           >
             Ver más información
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       )}
@@ -728,7 +743,7 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
       onClick={onClose}
     >
       <div 
-        className={`w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-border origin-center transition-all duration-300 ${isAnimatingOut ? 'scale-y-0 opacity-0' : 'scale-y-100 opacity-100'}`}
+        className={`w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-border origin-center ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}
         onClick={e => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer border border-white/20 z-50">

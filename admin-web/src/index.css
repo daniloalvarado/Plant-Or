@@ -291,3 +291,24 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
   transform-origin: center;
 }
 
+/* ANIMACIÓN PARA EL SIDEBAR MÓVIL (Expansión desde Top Right) */
+@keyframes grow-tr {
+  0% { opacity: 0; transform: scale(0); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shrink-tr {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+.animate-grow-tr {
+  animation: grow-tr 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top right;
+}
+
+.animate-shrink-tr {
+  animation: shrink-tr 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top right;
+}
+
