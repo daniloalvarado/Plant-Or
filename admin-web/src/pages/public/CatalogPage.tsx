@@ -655,22 +655,24 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
       {activePlant && (
         <div 
           key={`info-${activePlant._id}`}
-          className="absolute left-[5%] md:left-[8rem] top-1/2 -translate-y-1/2 w-[40vw] md:w-[30vw] max-w-[200px] md:max-w-[320px] z-20 flex flex-col items-start animate-in slide-in-from-bottom-8 fade-in duration-500 pointer-events-none md:pointer-events-auto break-words"
+          className="absolute inset-x-0 md:left-[8rem] md:right-auto top-[6%] md:top-1/2 bottom-[130px] md:bottom-auto md:-translate-y-1/2 md:w-[30vw] md:max-w-[320px] z-20 flex flex-col justify-between md:justify-center items-center md:items-start animate-in fade-in duration-500 pointer-events-none md:pointer-events-auto break-words px-6 md:px-0"
         >
-          <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-wider mb-3 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-100 fill-mode-both transition-colors duration-300">
-            {activePlant.habito || 'Planta'}
-          </span>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-2 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-150 fill-mode-both break-words whitespace-normal w-full transition-colors duration-300">
-            {activePlant.nombre_cientifico || 'Especie por identificar'}
-          </h2>
-          {activePlant.nombres_comunes && (
-            <p className="text-muted-foreground font-medium text-xs md:text-sm mb-5 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-200 fill-mode-both break-words whitespace-normal w-full transition-colors duration-300">
-              {activePlant.nombres_comunes}
-            </p>
-          )}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-wider mb-2 md:mb-3 inline-block transition-colors duration-300">
+              {activePlant.habito || 'Planta'}
+            </span>
+            <h2 className="text-xl md:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-1 md:mb-2 break-words whitespace-normal w-full transition-colors duration-300">
+              {activePlant.nombre_cientifico || 'Especie por identificar'}
+            </h2>
+            {activePlant.nombres_comunes && (
+              <p className="text-muted-foreground font-medium text-xs md:text-sm mb-0 md:mb-5 break-words whitespace-normal w-full transition-colors duration-300">
+                {activePlant.nombres_comunes}
+              </p>
+            )}
+          </div>
           <button 
             onClick={() => onPlantClick(activePlant)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] hover:bg-[#19a343] text-black text-xs font-bold rounded-full transition-transform hover:scale-105 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-500 fill-mode-both pointer-events-auto shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] hover:bg-[#19a343] text-black text-xs font-bold rounded-full transition-transform hover:scale-105 pointer-events-auto shadow-sm"
           >
             Ver más información
             <ChevronRight className="w-4 h-4" />
