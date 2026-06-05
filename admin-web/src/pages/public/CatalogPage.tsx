@@ -6,7 +6,6 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { Observer } from 'gsap/Observer'
 import { usePlantas } from '@/hooks/use-plantas'
 import { client, urlFor } from '@/lib/sanity'
 import type { Planta } from '@/types/planta'
@@ -15,7 +14,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useTheme } from '@/components/ThemeProvider'
 import './CatalogPage.css'
 
-gsap.registerPlugin(useGSAP, Observer)
+gsap.registerPlugin(useGSAP)
 
 // Leaflet setup
 delete (L.Icon.Default.prototype as any)._getIconUrl
@@ -110,17 +109,17 @@ export default function CatalogPage() {
       <nav className="h-[70px] border-b border-border flex items-center justify-between px-6 flex-shrink-0 z-50 bg-background/80 backdrop-blur-md transition-colors duration-300">
         <div className="flex items-center gap-3">
           <Leaf className="w-6 h-6 text-[#1FC451]" />
-          <span className="font-bold text-lg text-white">Plant-OR</span>
+          <span className="font-bold text-lg text-foreground">Plant-OR</span>
         </div>
 
         <div className="flex-1 max-w-xl mx-8 relative hidden md:block">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Buscar por nombre, distrito o calle..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#1FC451] transition-colors"
+            className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#1FC451] transition-colors"
           />
         </div>
 
@@ -137,7 +136,7 @@ export default function CatalogPage() {
           
           <button 
             onClick={() => setFiltersModalOpen(true)}
-            className="flex items-center gap-2 px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-3 py-2 bg-secondary hover:bg-secondary/80 border border-border rounded-lg text-sm font-medium transition-colors cursor-pointer text-foreground"
           >
             <Filter className="w-4 h-4" />
             <span className="hidden sm:inline">Filtros</span>
@@ -148,7 +147,7 @@ export default function CatalogPage() {
             )}
           </button>
 
-          <div className="flex bg-white/5 border border-white/10 rounded-lg p-1">
+          <div className="flex bg-secondary border border-border rounded-lg p-1">
             <button
               onClick={() => setViewMode('tunnel')}
               className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#1FC451] text-black' : 'text-muted-foreground hover:text-foreground'}`}
@@ -197,18 +196,18 @@ export default function CatalogPage() {
               <MarkerClusterGroup chunkedLoading maxClusterRadius={50}>
                 {filteredPlants.filter(p => p.latitud && p.longitud).map(p => (
                   <Marker key={p._id} position={[p.latitud!, p.longitud!]} icon={markerIcon}>
-                    <Popup className="plant-popup dark-popup !p-0 overflow-hidden rounded-xl border border-white/10 bg-[#111]">
+                    <Popup className="plant-popup dark-popup !p-0 overflow-hidden rounded-xl border border-border bg-card text-card-foreground">
                       <div className="flex flex-col w-[200px]">
                         {p.galeria?.[0] ? (
                           <img src={urlFor(p.galeria[0])} alt={p.nombre_cientifico} className="w-full h-32 object-cover" />
                         ) : (
-                          <div className="w-full h-32 bg-gradient-to-br from-[#1a3a2a] to-[#08130D] flex items-center justify-center">
-                            <Leaf className="w-8 h-8 text-white/20" />
+                          <div className="w-full h-32 bg-secondary flex items-center justify-center">
+                            <Leaf className="w-8 h-8 text-muted-foreground" />
                           </div>
                         )}
                         <div className="p-3 text-sm space-y-1">
-                          <p className="font-bold italic text-white leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</p>
-                          {p.nombres_comunes && <p className="text-gray-400 text-xs truncate">{p.nombres_comunes}</p>}
+                          <p className="font-bold italic text-foreground leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</p>
+                          {p.nombres_comunes && <p className="text-muted-foreground text-xs truncate">{p.nombres_comunes}</p>}
                           <button
                             onClick={() => setSelectedPlant(p)}
                             className="block w-full text-center text-xs font-bold text-black bg-[#1FC451] hover:bg-[#19a343] py-2 mt-3 rounded-lg transition-colors"
@@ -224,11 +223,11 @@ export default function CatalogPage() {
               
               {/* Legend */}
               <div className="leaflet-bottom leaflet-right z-[1000] pointer-events-none mb-6 mr-2">
-                <div className="bg-[#111]/90 backdrop-blur-md border border-white/10 p-3 rounded-xl shadow-2xl pointer-events-auto">
-                  <h4 className="text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Leyenda</h4>
+                <div className="bg-card/90 backdrop-blur-md border border-border p-3 rounded-xl shadow-2xl pointer-events-auto">
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Leyenda</h4>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded-full bg-[#1FC451] border-2 border-white shadow-[0_0_8px_rgba(31,196,81,0.5)]"></div>
-                    <span className="text-sm font-medium text-white">Planta Identificada</span>
+                    <span className="text-sm font-medium text-foreground">Planta Identificada</span>
                   </div>
                 </div>
               </div>
@@ -359,15 +358,33 @@ y: Math.sin(angle) * radiusY - 175,
     return newLayers
   }, [plants, totalItems, Z_GAP])
 
+  const targetZRef = useRef(0);
+  const currentZRef = useRef(0);
+  const touchStartRef = useRef(0);
+
+  const handleWheel = (e: React.WheelEvent) => {
+    targetZRef.current += e.deltaY * 1.5;
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const deltaY = touchStartRef.current - e.touches[0].clientY;
+    targetZRef.current += deltaY * 3;
+    touchStartRef.current = e.touches[0].clientY;
+  };
+
   useGSAP(() => {
-    let currentZ = zOffset;
-    let targetZ = zOffset;
+    targetZRef.current = zOffset;
+    currentZRef.current = zOffset;
     const exitPoint = 1500;
     
     // Animation loop
     const ticker = gsap.ticker.add(() => {
       // Interpolación suave (lerp)
-      currentZ += (targetZ - currentZ) * 0.1;
+      currentZRef.current += (targetZRef.current - currentZRef.current) * 0.1;
       
       if (wrapperRef.current) {
         // En lugar de mover todo el wrapper, movemos los hijos (mucho mejor rendimiento en GSAP 3D)
@@ -376,41 +393,28 @@ y: Math.sin(angle) * radiusY - 175,
           const el = children[i] as HTMLElement;
           const baseZ = parseFloat(el.dataset.z || '0');
           
-          let z = baseZ + currentZ;
+          let z = baseZ + currentZRef.current;
           z = ((z % tunnelDepth) + tunnelDepth) % tunnelDepth;
           z = z - tunnelDepth + exitPoint;
           
-          // Ocultar si está muy lejos
-          if (z < -visibleDepth || z > exitPoint) {
-            el.style.display = 'none';
-          } else {
-            el.style.display = 'block';
-            el.style.transform = `translateZ(${z}px)`;
-            
-            // Fading
-            let opacity = 1;
+          const isVisible = z >= -visibleDepth && z <= exitPoint;
+          let opacity = 1;
+
+          if (isVisible) {
             if (z > 0) opacity = z / exitPoint;
             else if (z > -visibleDepth) {
               const progress = Math.abs(z) / visibleDepth;
               opacity = progress * progress;
             }
             opacity = 1 - opacity; // Invertir porque cerca es opaco
-            el.style.opacity = Math.max(0, opacity).toString();
           }
-        }
-      }
-    });
 
-    // Handle scroll
-    Observer.create({
-      target: containerRef.current,
-      type: "wheel,touch,pointer",
-      onWheel: (e) => {
-        const delta = e.deltaY;
-        targetZ += delta * 2;
-      },
-      onDrag: (e) => {
-        targetZ += e.deltaY * 3;
+          gsap.set(el, {
+            z: z,
+            opacity: isVisible ? Math.max(0, opacity) : 0,
+            visibility: isVisible ? 'visible' : 'hidden'
+          });
+        }
       }
     });
 
@@ -419,16 +423,22 @@ y: Math.sin(angle) * radiusY - 175,
 
   if (plants.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-[calc(100vh-70px)] text-white/50">
+      <div className="flex flex-col items-center justify-center h-[calc(100vh-70px)] text-muted-foreground">
         <Leaf className="w-16 h-16 mb-4 opacity-20" />
-        <p className="text-xl font-medium">No se encontraron plantas</p>
+        <p className="text-xl font-medium text-foreground">No se encontraron plantas</p>
         <p className="text-sm">Prueba ajustando los filtros de búsqueda</p>
       </div>
     )
   }
 
   return (
-    <div className="tunnel-scene" ref={containerRef}>
+    <div 
+      className="tunnel-scene" 
+      ref={containerRef}
+      onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+    >
       <div className="tunnel-wrapper" ref={wrapperRef}>
         {layers.map((layer) => (
           <div 
@@ -507,63 +517,69 @@ function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => vo
               )}
             </>
           ) : (
-             <div className="w-full h-full bg-gradient-to-br from-[#1a3a2a] to-[#08130D]" />
+             <div className="w-full h-full bg-secondary flex items-center justify-center p-8">
+               <div className="text-center">
+                 <Leaf className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                 <h2 className="text-2xl font-bold text-foreground italic mb-2">{plant.nombre_cientifico || 'Especie por identificar'}</h2>
+                 <p className="text-muted-foreground">{plant.nombres_comunes}</p>
+               </div>
+             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent" />
-          <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer">
+          <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent pointer-events-none" />
+          <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer border border-white/20 z-20">
             <X className="w-5 h-5" />
           </button>
           
-          <div className="absolute bottom-4 left-6 right-6">
-            <span className="px-2.5 py-1 bg-[#1FC451] text-black text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block">
+          <div className="absolute bottom-4 left-6 right-6 z-10">
+            <span className="px-2.5 py-1 bg-[#1FC451] text-black text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block shadow-lg">
               {plant.habito || 'Planta'}
             </span>
-            <h2 className="text-3xl font-bold text-white leading-tight italic">
+            <h2 className="text-3xl font-bold text-foreground leading-tight italic drop-shadow-md">
               {plant.nombre_cientifico || 'Especie por identificar'}
             </h2>
             {plant.nombres_comunes && (
-              <p className="text-white/70 font-medium">{plant.nombres_comunes}</p>
+              <p className="text-muted-foreground font-medium drop-shadow-md">{plant.nombres_comunes}</p>
             )}
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-              <span className="text-xs text-white/40 uppercase font-bold tracking-wider">Familia</span>
-              <p className="text-white font-medium mt-1">{plant.familia || 'No especificada'}</p>
+            <div className="bg-secondary/50 rounded-xl p-4 border border-border">
+              <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Familia</span>
+              <p className="text-foreground font-medium mt-1">{plant.familia || 'No especificada'}</p>
             </div>
-            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-              <span className="text-xs text-white/40 uppercase font-bold tracking-wider">Tipo de vida</span>
-              <p className="text-white font-medium mt-1">{plant.tipo_vida || 'No especificado'}</p>
+            <div className="bg-secondary/50 rounded-xl p-4 border border-border">
+              <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Tipo de vida</span>
+              <p className="text-foreground font-medium mt-1">{plant.tipo_vida || 'No especificado'}</p>
             </div>
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-[#1FC451] uppercase tracking-wider border-b border-white/10 pb-2">
+            <h3 className="text-sm font-bold text-[#1FC451] uppercase tracking-wider border-b border-border pb-2">
               Ubicación Registrada
             </h3>
-            <p className="text-white/80 text-sm leading-relaxed">
-              <span className="font-semibold text-white">Distrito:</span> {plant.distrito || '—'}<br/>
-              <span className="font-semibold text-white">Dirección:</span> {plant.direccion || '—'} {plant.numero_casa}<br/>
-              <span className="font-semibold text-white">Referencia:</span> {plant.ubicacion_planta || '—'}
+            <p className="text-foreground/80 text-sm leading-relaxed">
+              <span className="font-semibold text-foreground">Distrito:</span> {plant.distrito || '—'}<br/>
+              <span className="font-semibold text-foreground">Dirección:</span> {plant.direccion || '—'} {plant.numero_casa}<br/>
+              <span className="font-semibold text-foreground">Referencia:</span> {plant.ubicacion_planta || '—'}
             </p>
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-[#1FC451] uppercase tracking-wider border-b border-white/10 pb-2">
+            <h3 className="text-sm font-bold text-[#1FC451] uppercase tracking-wider border-b border-border pb-2">
               Evaluación Botánica
             </h3>
-            <p className="text-white/80 text-sm leading-relaxed">
-              <span className="font-semibold text-white">Fenología:</span> {plant.estado_fenologico || '—'}<br/>
-              <span className="font-semibold text-white">Estado del Individuo:</span> {plant.estado_individuo || '—'}<br/>
-              <span className="font-semibold text-white">Valor Ornamental:</span> {plant.valor_ornamental || '—'}<br/>
-              <span className="font-semibold text-white">Impacto Urbano:</span> {plant.impacto_urbano || '—'}
+            <p className="text-foreground/80 text-sm leading-relaxed">
+              <span className="font-semibold text-foreground">Fenología:</span> {plant.estado_fenologico?.join(', ') || '—'}<br/>
+              <span className="font-semibold text-foreground">Estado del Individuo:</span> {plant.estado_individuo?.join(', ') || '—'}<br/>
+              <span className="font-semibold text-foreground">Valor Ornamental:</span> {plant.valor_ornamental?.join(', ') || '—'}<br/>
+              <span className="font-semibold text-foreground">Impacto Urbano:</span> {plant.impacto_urbano?.join(', ') || '—'}
             </p>
           </div>
 
-          <div className="pt-4 border-t border-white/10">
-            <p className="text-xs text-white/40 text-center">
+          <div className="pt-4 border-t border-border">
+            <p className="text-xs text-muted-foreground text-center">
               Registrado por: {plant.registrador_nombre || 'Anónimo'} • {new Date(plant._createdAt).toLocaleDateString()}
             </p>
           </div>
