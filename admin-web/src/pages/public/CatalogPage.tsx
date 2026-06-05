@@ -476,7 +476,7 @@ y: Math.sin(angle) * radiusY - 175,
   useGSAP(() => {
     targetZRef.current = zOffset;
     currentZRef.current = zOffset;
-    const exitPoint = 1500;
+    const exitPoint = 750; // Fade out completely before hitting the camera (perspective is 800px)
     
     // Animation loop
     const ticker = gsap.ticker.add(() => {
@@ -594,9 +594,9 @@ function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => vo
         <div className="relative h-[45vh] md:h-[55vh] flex-shrink-0 bg-black group">
           {plant.galeria && plant.galeria.length > 0 ? (
             <>
-              <div ref={scrollContainerRef} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar">
+              <div ref={scrollContainerRef} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar bg-black">
                 {plant.galeria.map((foto, index) => (
-                  <img key={index} src={urlForImage(foto).width(800).auto('format').url()} className="w-full h-full object-cover flex-shrink-0 snap-center" alt="Foto de planta" />
+                  <img key={index} src={urlForImage(foto).width(800).auto('format').url()} className="w-full h-full object-contain flex-shrink-0 snap-center" alt="Foto de planta" />
                 ))}
               </div>
               
@@ -668,12 +668,50 @@ function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => vo
             <h3 className="text-sm font-bold text-[#1FC451] uppercase tracking-wider border-b border-border pb-2">
               Evaluación Botánica
             </h3>
-            <p className="text-foreground/80 text-sm leading-relaxed">
-              <span className="font-semibold text-foreground">Fenología:</span> {plant.estado_fenologico?.join(', ') || '—'}<br/>
-              <span className="font-semibold text-foreground">Estado del Individuo:</span> {plant.estado_individuo?.join(', ') || '—'}<br/>
-              <span className="font-semibold text-foreground">Valor Ornamental:</span> {plant.valor_ornamental?.join(', ') || '—'}<br/>
-              <span className="font-semibold text-foreground">Impacto Urbano:</span> {plant.impacto_urbano?.join(', ') || '—'}
-            </p>
+            <div className="grid grid-cols-2 gap-y-4 gap-x-4">
+              {plant.estado_fenologico && plant.estado_fenologico.length > 0 && (
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Fenología</span>
+                  <span className="text-foreground text-sm font-medium">{plant.estado_fenologico.join(', ')}</span>
+                </div>
+              )}
+              {plant.estado_individuo && plant.estado_individuo.length > 0 && (
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Estado Individuo</span>
+                  <span className="text-foreground text-sm font-medium">{plant.estado_individuo.join(', ')}</span>
+                </div>
+              )}
+              {plant.valor_ornamental && plant.valor_ornamental.length > 0 && (
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Valor Ornamental</span>
+                  <span className="text-foreground text-sm font-medium">{plant.valor_ornamental.join(', ')}</span>
+                </div>
+              )}
+              {plant.impacto_urbano && plant.impacto_urbano.length > 0 && (
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Impacto Urbano</span>
+                  <span className="text-foreground text-sm font-medium">{plant.impacto_urbano.join(', ')}</span>
+                </div>
+              )}
+              
+              {/* Habit specific data */}
+              {Object.entries({
+                'Árbol': plant.arbol_datos,
+                'Palmera': plant.palmera_datos,
+                'Arbusto': plant.arbusto_datos,
+                'Liana': plant.liana_datos,
+                'Hierba': plant.hierba_datos,
+              }[plant.habito || ''] || {}).map(([key, value]) => {
+                if (!value || value === '' || value === 'Por identificar' || key === '_type') return null;
+                const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                return (
+                  <div key={key} className="flex flex-col">
+                    <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{formattedKey}</span>
+                    <span className="text-foreground text-sm font-medium">{String(value)}</span>
+                  </div>
+                )
+              })}
+            </div>
           </div>
 
           <div className="pt-4 border-t border-border">
