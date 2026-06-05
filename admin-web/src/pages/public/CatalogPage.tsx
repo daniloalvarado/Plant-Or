@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { usePlantas } from '@/hooks/use-plantas'
-import { client, urlFor } from '@/lib/sanity'
+import { client, urlFor, urlForImage } from '@/lib/sanity'
 import type { Planta } from '@/types/planta'
 import { CustomSelect } from '@/components/CustomSelect'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
@@ -549,8 +549,10 @@ y: Math.sin(angle) * radiusY - 175,
               onClick={() => onPlantClick(layer.plant)}
             >
               <img 
-                src={layer.plant.galeria?.[0] ? urlFor(layer.plant.galeria[0]) : ''} 
-                alt={layer.plant.nombre_cientifico} 
+                src={layer.plant.galeria?.[0] ? urlForImage(layer.plant.galeria[0]).width(600).auto('format').url() : ''} 
+                alt={layer.plant.nombre_cientifico || 'Planta'} 
+                loading="lazy"
+                className="w-full h-full object-cover"
                 style={{ background: !layer.plant.galeria?.[0] ? 'linear-gradient(135deg, #1a3a2a, #08130D)' : 'none' }}
               />
               <div className="item-overlay" />
@@ -594,7 +596,7 @@ function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => vo
             <>
               <div ref={scrollContainerRef} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar">
                 {plant.galeria.map((foto, index) => (
-                  <img key={index} src={urlFor(foto)} className="w-full h-full object-cover flex-shrink-0 snap-center" alt="Foto de planta" />
+                  <img key={index} src={urlForImage(foto).width(800).auto('format').url()} className="w-full h-full object-cover flex-shrink-0 snap-center" alt="Foto de planta" />
                 ))}
               </div>
               
