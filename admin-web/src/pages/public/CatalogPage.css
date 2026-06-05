@@ -85,14 +85,17 @@
     top: auto;
     right: auto;
     bottom: 2em;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
+    left: 0;
+    transform: none;
+    width: 100vw;
     height: 80px;
     touch-action: none;
+    overflow: hidden;
   }
 
   .mm-indicator {
+    left: 50%;
+    transform: translateX(-50%);
     width: 60px;
     height: 100%;
   }
@@ -102,6 +105,7 @@
     width: max-content;
     height: 100%;
     touch-action: none;
+    padding: 0 calc(50vw - 30px);
   }
 
   .mm-item {
