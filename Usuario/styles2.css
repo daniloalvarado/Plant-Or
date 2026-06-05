@@ -135,5 +135,23 @@ height: 80px;
 touch-action: none;
 }
 
+.indicator {
+top: 0;
+left: 0;
+width: 60px;
+height: 100%;
+}
 
+.items{
+flex-direction: row;
+width: max-content;
+height: 100%;
+touch-action: none;
+}
+
+.item{
+width: 60px;
+height: 100%;
+touch-action: none;
+}
 }
