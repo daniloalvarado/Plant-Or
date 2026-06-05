@@ -1,5 +1,6 @@
 .public-catalog-bg {
     min-height: 100vh;
+    overscroll-behavior: none;
 }
 
 /* ── 3D Tunnel Styles ── */
@@ -11,6 +12,8 @@
     background: transparent;
     position: relative;
     cursor: grab;
+    touch-action: none;
+    overscroll-behavior: none;
 }
 
 .tunnel-scene:active {
