@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { client, urlFor } from '@/lib/sanity'
+import { client, urlFor, urlForImage } from '@/lib/sanity'
 import type { Planta } from '@/types/planta'
 import { EstadoBadge } from '@/components/EstadoBadge'
 import { updatePlantaEstado } from '@/hooks/use-plantas'
@@ -198,8 +198,8 @@ export default function PlantaDetailPage() {
             <Section title="Fotografías">
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                 {images.map((img, i) => {
-                  const imgUrlFull = urlFor(img).url()
-                  const imgUrlThumb = urlFor(img).width(400).height(400).fit('crop').format('webp').url()
+                  const imgUrlFull = urlFor(img)
+                  const imgUrlThumb = urlForImage(img).width(400).height(400).fit('crop').format('webp').url()
                   const labels = ['Planta completa', 'Hoja', 'Flor', 'Fruto', 'Semilla']
                   return (
                     <div

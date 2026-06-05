@@ -94,3 +94,4 @@ const activeIndex = getItemInIndicator();
 updatePreviewImage(activeIndex);
 } else {
 isClickMove = false;
+}
