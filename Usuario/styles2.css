@@ -152,6 +152,12 @@ touch-action: none;
 .item{
 width: 60px;
 height: 100%;
-touch-action: none;
+padding: 5px;    
+}
+
+.img-preview{
+top: 45%;
+width: 75%;
+height: 50%;
 }
 }

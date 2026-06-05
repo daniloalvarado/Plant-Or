@@ -35,8 +35,8 @@ export function ValidacionModal({ isOpen, onClose, onSubmit, tipo, loading }: Va
   const buttonText = isObservar ? 'Enviar Observación' : 'Rechazar Definitivamente';
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+      <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl animate-expand-y">
         <div>
           <h3 className={`text-xl font-bold ${titleColor}`}>{title}</h3>
           <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
@@ -45,8 +45,8 @@ export function ValidacionModal({ isOpen, onClose, onSubmit, tipo, loading }: Va
           value={motivoTexto}
           onChange={e => setMotivoTexto(e.target.value)}
           placeholder={placeholder}
-          rows={12}
-          className={`w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 resize-none transition-all max-h-[50vh] min-h-[250px] overflow-y-auto custom-scrollbar ${focusBorder}`}
+          rows={14}
+          className={`w-full px-4 py-3 bg-input border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 resize-none transition-all max-h-[60vh] min-h-[300px] overflow-y-auto custom-scrollbar ${focusBorder}`}
         />
         <div className="flex gap-3 justify-end pt-2">
           <button

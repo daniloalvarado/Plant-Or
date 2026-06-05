@@ -270,3 +270,14 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 .delay-6 { animation-delay: 0.90s !important; --base-delay: 0.90s; }
 .delay-7 { animation-delay: 1.05s !important; --base-delay: 1.05s; }
 
+/* ANIMACIÓN PARA EL MODAL (Expansión Vertical) */
+@keyframes expand-y {
+  0% { opacity: 0; transform: scaleY(0); }
+  100% { opacity: 1; transform: scaleY(1); }
+}
+
+.animate-expand-y {
+  animation: expand-y 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: center;
+}
+
