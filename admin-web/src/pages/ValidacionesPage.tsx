@@ -72,6 +72,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
     await updatePlantaEstado(id, 'Validado', '', docenteName)
     await refetch()
     setLoadingAction(null)
+    window.dispatchEvent(new Event('plant-validated'))
   }
 
   const handleRechazar = async (motivo: string) => {
@@ -81,6 +82,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
     await refetch()
     setRechazarId(null)
     setLoadingAction(null)
+    window.dispatchEvent(new Event('plant-validated'))
   }
 
   const handleObservar = async (motivo: string) => {
@@ -90,6 +92,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
     await refetch()
     setObservarId(null)
     setLoadingAction(null)
+    window.dispatchEvent(new Event('plant-validated'))
   }
 
   const habitosUnicos = [...new Set(plantas.map(p => p.habito).filter(Boolean))]

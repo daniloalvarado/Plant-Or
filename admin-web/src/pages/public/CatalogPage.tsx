@@ -423,6 +423,33 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
   const previewRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!containerRef.current) return;
+      const isHorizontal = window.innerWidth <= 900;
+      const scrollAmount = isHorizontal ? window.innerWidth * 0.2 : window.innerHeight * 0.2;
+      
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        containerRef.current.scrollBy({
+          top: isHorizontal ? 0 : scrollAmount,
+          left: isHorizontal ? scrollAmount : 0,
+          behavior: 'smooth'
+        });
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        containerRef.current.scrollBy({
+          top: isHorizontal ? 0 : -scrollAmount,
+          left: isHorizontal ? -scrollAmount : 0,
+          behavior: 'smooth'
+        });
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
     if (!containerRef.current || !itemsRef.current || !indicatorRef.current || !previewRef.current) return;
     if (plants.length === 0) return;
 
@@ -613,16 +640,16 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
       {activePlant && (
         <div 
           key={`info-${activePlant._id}`}
-          className="absolute left-[5%] md:left-[8rem] top-1/2 -translate-y-1/2 w-64 md:w-80 z-20 flex flex-col items-start animate-in slide-in-from-bottom-8 fade-in duration-500 pointer-events-none md:pointer-events-auto"
+          className="absolute left-[5%] md:left-[8rem] top-1/2 -translate-y-1/2 w-64 md:w-[25vw] max-w-sm z-20 flex flex-col items-start animate-in slide-in-from-bottom-8 fade-in duration-500 pointer-events-none md:pointer-events-auto break-words"
         >
           <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-xs font-bold rounded-full uppercase tracking-wider mb-4 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-100 fill-mode-both transition-colors duration-150">
             {activePlant.habito || 'Planta'}
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight italic drop-shadow-md mb-2 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-150 fill-mode-both transition-colors duration-150">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground leading-tight italic drop-shadow-md mb-2 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-150 fill-mode-both transition-colors duration-150 break-words whitespace-normal w-full">
             {activePlant.nombre_cientifico || 'Especie por identificar'}
           </h2>
           {activePlant.nombres_comunes && (
-            <p className="text-muted-foreground font-medium text-lg mb-6 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-200 fill-mode-both transition-colors duration-150">
+            <p className="text-muted-foreground font-medium text-base md:text-lg mb-6 animate-in slide-in-from-bottom-4 fade-in duration-500 delay-200 fill-mode-both transition-colors duration-150 break-words whitespace-normal w-full">
               {activePlant.nombres_comunes}
             </p>
           )}

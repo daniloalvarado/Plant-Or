@@ -73,6 +73,7 @@ export default function PlantaDetailPage() {
         duration: 4000,
       });
     }
+    window.dispatchEvent(new Event('plant-validated'));
   }
 
   if (loading) {

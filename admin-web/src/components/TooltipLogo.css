@@ -46,22 +46,22 @@
 .t-tooltip {
   position: absolute;
   display: inline-block;
-  top: 0;
+  top: 100%;
   left: 50%;
-  transform: translateX(-5%);
+  transform: translateX(-30%);
   padding: 0.3em 0.6em;
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s;
   background: var(--background);
-  border-radius: var(--tooltip-radius);
+  border-radius: 0 10px 10px 10px;
   color: black;
   box-shadow: 3px 3px 0px var(--outline-border-color);
   white-space: nowrap;
 }
 
 .t-tooltip::after {
-  content: "¡Catálogo Botánico! 🌿";
+  content: "Aquí descubrirás la flora amazónica...";
   display: inline-block;
   position: absolute;
   width: 100%;
@@ -80,13 +80,11 @@
 .t-tooltip::before {
   position: absolute;
   content: "";
-  bottom: 0;
+  top: -10px;
   border-style: solid;
-  border-width: 10px;
+  border-width: 0 10px 10px 0;
   left: 0;
-  transform: translateX(-50%);
-  border-color: transparent var(--background) var(--background) transparent;
-  box-shadow: 0px 3px 0px var(--outline-border-color);
+  border-color: transparent var(--background) transparent transparent;
 }
 
 .tooltip-container:hover .t-tooltip::after {
@@ -94,7 +92,7 @@
 }
 
 .tooltip-container:hover .t-tooltip {
-  top: calc(-100% - var(--support-size) * 0.5);
+  top: calc(100% + var(--support-size) * 0.2);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -145,6 +143,6 @@
 }
 
 .tooltip-container:hover #Calque_1 {
-  top: calc(var(--support-size) * -1.2);
+  top: calc(100% + var(--support-size) * 0.2);
   opacity: 1;
 }

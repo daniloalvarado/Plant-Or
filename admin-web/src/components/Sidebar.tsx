@@ -42,7 +42,18 @@ export function Sidebar() {
           .catch(console.error)
       })
 
-    return () => subscription.unsubscribe()
+    const handleValidation = () => {
+      client.fetch('count(*[_type == "planta" && estado_revision == "En revisión" && !(_id in path("drafts.**"))])')
+        .then(count => setPendingCount(count))
+        .catch(console.error)
+    }
+
+    window.addEventListener('plant-validated', handleValidation)
+
+    return () => {
+      subscription.unsubscribe()
+      window.removeEventListener('plant-validated', handleValidation)
+    }
   }, [])
 
 
