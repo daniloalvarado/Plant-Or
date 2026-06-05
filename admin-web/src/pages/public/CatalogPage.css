@@ -15,10 +15,10 @@
 .mm-img-preview {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 55%;
   transform: translate(-50%, -50%);
-  width: 50%;
-  height: 75%;
+  width: 35%;
+  height: 60%;
   overflow: hidden;
   cursor: pointer;
 }
@@ -111,9 +111,10 @@
   }
 
   .mm-img-preview {
-    top: 45%;
+    top: 40%;
+    left: 50%;
     width: 85%;
-    height: 50%;
+    height: 45%;
   }
 }
 

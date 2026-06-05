@@ -409,19 +409,18 @@ export default function CatalogPage() {
       )}
 
       {/* Plant Detail Modal */}
-      {selectedPlant && (
-        <PlantDetailModal plant={selectedPlant} onClose={() => setSelectedPlant(null)} />
-      )}
+      <PlantDetailModal isOpen={!!selectedPlant} plant={selectedPlant} onClose={() => setSelectedPlant(null)} />
     </div>
   )
 }
 
 function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: (p: Planta) => void }) {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const activeIndexRef = useRef(0)
   const containerRef = useRef<HTMLDivElement>(null)
   const itemsRef = useRef<HTMLDivElement>(null)
   const indicatorRef = useRef<HTMLDivElement>(null)
   const previewRef = useRef<HTMLImageElement>(null)
-  const infoRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!containerRef.current || !itemsRef.current || !indicatorRef.current || !previewRef.current) return;
@@ -432,7 +431,6 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
     let maxTranslate = 0;
     let currentTranslate = 0;
     let targetTranslate = 0;
-    let currentImageIndex = -1;
     let animationFrameId: number;
     let touchStartY = 0;
 
@@ -488,21 +486,15 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
     }
 
     function updatePreviewImage(index: number) {
-        if (currentImageIndex !== index) {
-            currentImageIndex = index;
+        if (activeIndexRef.current !== index) {
+            activeIndexRef.current = index;
+            setActiveIndex(index);
             const targetItem = itemElements[index]?.querySelector("img");
             if(targetItem) {
                 const targetSrc = targetItem.getAttribute("data-full-src");
                 if (targetSrc) {
                     previewImage.setAttribute("src", targetSrc);
                 }
-            }
-            if (infoRef.current && plants[index]) {
-                const plant = plants[index];
-                infoRef.current.innerHTML = `
-                  <h2 class="text-2xl font-bold italic mb-1 text-white">${plant.nombre_cientifico || 'Sin identificar'}</h2>
-                  <p class="text-[#1FC451] font-medium text-sm tracking-wide uppercase">${plant.habito || 'Planta'}</p>
-                `;
             }
         }
     }
@@ -603,6 +595,8 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
     };
   }, [plants]);
 
+  const activePlant = plants[activeIndex]
+
   if (plants.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[calc(100vh-70px)] text-muted-foreground">
@@ -615,14 +609,35 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
 
   return (
     <div className="mm-container" ref={containerRef}>
-      <div className="mm-img-preview">
-        {/* TODO: Habilitar cuando se requiera onClick={() => onPlantClick(plants[currentImageIndex])} */}
-        <img ref={previewRef} src="" alt="Vista previa" />
+      {/* Left Info Panel */}
+      {activePlant && (
         <div 
-          ref={infoRef}
-          className="absolute bottom-6 left-6 right-6 bg-black/70 backdrop-blur-md p-4 rounded-xl border border-white/10 z-10 shadow-2xl pointer-events-none"
+          key={`info-${activePlant._id}`}
+          className="absolute left-[8%] md:left-[12%] top-1/2 -translate-y-1/2 w-64 md:w-80 z-20 flex flex-col items-start animate-in slide-in-from-bottom-8 fade-in duration-500 pointer-events-none md:pointer-events-auto"
         >
+          <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-xs font-bold rounded-full uppercase tracking-wider mb-4 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-100 fill-mode-both">
+            {activePlant.habito || 'Planta'}
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground leading-tight italic drop-shadow-md mb-2 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-200 fill-mode-both">
+            {activePlant.nombre_cientifico || 'Especie por identificar'}
+          </h2>
+          {activePlant.nombres_comunes && (
+            <p className="text-muted-foreground font-medium text-lg mb-6 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-300 fill-mode-both">
+              {activePlant.nombres_comunes}
+            </p>
+          )}
+          <button 
+            onClick={() => onPlantClick(activePlant)}
+            className="flex items-center gap-2 px-6 py-3 bg-[#1FC451] hover:bg-[#19a343] text-black font-bold rounded-full transition-all hover:scale-105 shadow-lg shadow-[#1FC451]/20 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-500 fill-mode-both pointer-events-auto"
+          >
+            Ver más información
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
+      )}
+
+      <div className="mm-img-preview" onClick={() => activePlant && onPlantClick(activePlant)}>
+        <img ref={previewRef} src="" alt="Vista previa" />
       </div>
       
       <div className="mm-minimap">
@@ -645,8 +660,25 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
   )
 }
 
-function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => void }) {
+function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, isOpen: boolean, onClose: () => void }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [isRendered, setIsRendered] = useState(isOpen)
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsRendered(true)
+      setIsAnimatingOut(false)
+    } else if (isRendered) {
+      setIsAnimatingOut(true)
+      const timer = setTimeout(() => {
+        setIsRendered(false)
+      }, 300)
+      return () => clearTimeout(timer)
+    }
+  }, [isOpen, isRendered])
+
+  if (!isRendered || !plant) return null;
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' })
@@ -656,9 +688,12 @@ function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => vo
   }
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8" onClick={onClose}>
+    <div 
+      className={`fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8 transition-opacity duration-300 ${isAnimatingOut ? 'opacity-0' : 'opacity-100'}`} 
+      onClick={onClose}
+    >
       <div 
-        className="w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden animate-in zoom-in-95 duration-300 relative border border-border"
+        className={`w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-border origin-center ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}
         onClick={e => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer border border-white/20 z-50">
