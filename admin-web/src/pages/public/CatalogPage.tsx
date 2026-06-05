@@ -533,7 +533,7 @@ function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: 
     });
 
     return () => gsap.ticker.remove(ticker);
-  }, [tunnelDepth, visibleDepth, Z_GAP, layers]); // dependencias
+  }, [tunnelDepth, visibleDepth, layers]); // dependencias
 
   if (plants.length === 0) {
     return (
