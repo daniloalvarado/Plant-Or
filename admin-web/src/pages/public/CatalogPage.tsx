@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
-import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2, Sun, Moon, ChevronRight, ChevronLeft, Menu } from 'lucide-react'
+import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2, Sun, Moon, ChevronRight, ChevronLeft, Menu, Pointer } from 'lucide-react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
@@ -655,7 +655,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
       {activePlant && (
         <div 
           key={`info-${activePlant._id}`}
-          className="absolute inset-x-0 md:left-[8rem] md:right-auto top-[6%] md:top-1/2 bottom-[130px] md:bottom-auto md:-translate-y-1/2 md:w-[30vw] md:max-w-[320px] z-20 flex flex-col justify-between md:justify-center items-center md:items-start animate-in fade-in duration-500 pointer-events-none md:pointer-events-auto break-words px-6 md:px-0"
+          className="absolute inset-x-0 md:left-[8rem] md:right-auto top-[6%] md:top-1/2 bottom-[25vh] md:bottom-auto md:-translate-y-1/2 md:w-[30vw] md:max-w-[320px] z-20 flex flex-col justify-between md:justify-center items-center md:items-start animate-in fade-in duration-500 pointer-events-none md:pointer-events-auto break-words px-6 md:px-0"
         >
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-wider mb-2 md:mb-3 inline-block transition-colors duration-300">
@@ -672,10 +672,10 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
           </div>
           <button 
             onClick={() => onPlantClick(activePlant)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] hover:bg-[#19a343] text-black text-xs font-bold rounded-full transition-transform hover:scale-105 pointer-events-auto shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] hover:bg-[#19a343] text-black text-xs font-bold rounded-full transition-transform hover:scale-105 pointer-events-auto cursor-pointer shadow-sm"
           >
             Ver más información
-            <ChevronRight className="w-4 h-4" />
+            <Pointer className="w-4 h-4" />
           </button>
         </div>
       )}
