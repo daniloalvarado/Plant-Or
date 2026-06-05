@@ -287,7 +287,7 @@ export default function CatalogPage() {
             >
               <TileLayer
                 attribution='&copy; CARTO'
-                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                url={theme === 'dark' ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
                 subdomains="abcd"
               />
               <MarkerClusterGroup chunkedLoading maxClusterRadius={50}>
@@ -296,7 +296,7 @@ export default function CatalogPage() {
                     <Popup className="plant-popup dark-popup !p-0 overflow-hidden rounded-xl border border-border bg-card text-card-foreground">
                       <div className="flex flex-col w-[200px]">
                         {p.galeria?.[0] ? (
-                          <img src={urlFor(p.galeria[0])} alt={p.nombre_cientifico} className="w-full h-32 object-cover" />
+                          <img src={urlForImage(p.galeria[0]).width(400).auto('format').url()} alt={p.nombre_cientifico} className="w-full h-32 object-cover" />
                         ) : (
                           <div className="w-full h-32 bg-secondary flex items-center justify-center">
                             <Leaf className="w-8 h-8 text-muted-foreground" />
@@ -423,37 +423,55 @@ export default function CatalogPage() {
 function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: (p: Planta) => void }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const [zOffset, setZOffset] = useState(0)
+  const [zOffset, setZOffset] = useState(750)
 
-  const minItems = 30
-  const totalItems = Math.max(plants.length, minItems)
-  const Z_GAP = 800
-  const tunnelDepth = totalItems * Z_GAP
-  const visibleDepth = 4 * Z_GAP
+  const CONFIG = {
+    layerGap: 2500,
+  }
+
+  const contentLayerCount = Math.ceil(plants.length / 4)
+  const totalLayerCount = Math.max(contentLayerCount, 6)
+  const tunnelDepth = totalLayerCount * CONFIG.layerGap
+  const visibleDepth = 3 * CONFIG.layerGap
 
   // Generamos la data de las capas solo cuando cambian las plantas
   const layers = useMemo(() => {
     if (plants.length === 0) return []
     const newLayers = []
-    for (let i = 0; i < totalItems; i++) {
-      const index = i % plants.length
-      const plant = plants[index]
+    
+    for (let i = 0; i < totalLayerCount; i++) {
+      const items = []
+      const imageStartIndex = (i % Math.max(1, contentLayerCount)) * 4
       
-      const goldenRatio = 1.61803398875
-      const angle = i * Math.PI * 2 * goldenRatio
-      const radiusX = 350 + (i % 3) * 50 
-      const radiusY = 250 + (i % 2) * 50
+      for (let j = 0; j < 4; j++) {
+        const index = imageStartIndex + j
+        if (index >= plants.length) break;
+        
+        const plant = plants[index]
+        const angle = (j / 4) * Math.PI * 2 - Math.PI / 2
+        const radiusX = 400
+        const radiusY = 280
+        const itemX = Math.cos(angle) * radiusX - 90
+        const itemY = Math.sin(angle) * radiusY - 110
+        
+        items.push({
+          id: `item-${i}-${j}-${plant._id}`,
+          plant,
+          x: itemX,
+          y: itemY
+        })
+      }
       
-      newLayers.push({
-        id: `layer-${i}-${plant._id}`,
-        plant,
-        x: Math.cos(angle) * radiusX - 125,
-y: Math.sin(angle) * radiusY - 175,
-        baseZ: -i * Z_GAP
-      })
+      if (items.length > 0) {
+        newLayers.push({
+          id: `layer-${i}`,
+          items,
+          baseZ: -i * CONFIG.layerGap
+        })
+      }
     }
     return newLayers
-  }, [plants, totalItems, Z_GAP])
+  }, [plants, totalLayerCount, contentLayerCount])
 
   const targetZRef = useRef(0);
   const currentZRef = useRef(0);
@@ -543,24 +561,27 @@ y: Math.sin(angle) * radiusY - 175,
             data-z={layer.baseZ}
             style={{ visibility: 'hidden' }}
           >
-            <div 
-              className="tunnel-item" 
-              style={{ left: layer.x, top: layer.y }}
-              onClick={() => onPlantClick(layer.plant)}
-            >
-              <img 
-                src={layer.plant.galeria?.[0] ? urlForImage(layer.plant.galeria[0]).width(600).auto('format').url() : ''} 
-                alt={layer.plant.nombre_cientifico || 'Planta'} 
-                loading="lazy"
-                className="w-full h-full object-cover"
-                style={{ background: !layer.plant.galeria?.[0] ? 'linear-gradient(135deg, #1a3a2a, #08130D)' : 'none' }}
-              />
-              <div className="item-overlay" />
-              <div className="item-info-preview">
-                <h4>{layer.plant.nombre_cientifico || layer.plant.nombres_comunes || 'Sin identificar'}</h4>
-                <p>{layer.plant.habito || 'Sin clasificar'}</p>
+            {layer.items.map((item) => (
+              <div 
+                key={item.id}
+                className="tunnel-item" 
+                style={{ left: item.x, top: item.y }}
+                onClick={() => onPlantClick(item.plant)}
+              >
+                <img 
+                  src={item.plant.galeria?.[0] ? urlForImage(item.plant.galeria[0]).width(600).auto('format').url() : ''} 
+                  alt={item.plant.nombre_cientifico || 'Planta'} 
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                  style={{ background: !item.plant.galeria?.[0] ? 'linear-gradient(135deg, #1a3a2a, #08130D)' : 'none' }}
+                />
+                <div className="item-overlay" />
+                <div className="item-info-preview">
+                  <h4>{item.plant.nombre_cientifico || item.plant.nombres_comunes || 'Sin identificar'}</h4>
+                  <p>{item.plant.habito || 'Sin clasificar'}</p>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         ))}
       </div>
@@ -586,12 +607,17 @@ function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => vo
   }
 
   return (
-    <div className="fixed inset-0 z-[200] flex justify-end bg-black/80 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8" onClick={onClose}>
       <div 
-        className="w-full max-w-2xl h-full bg-[#111] shadow-2xl flex flex-col animate-in slide-in-from-right duration-300"
+        className="w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden animate-in zoom-in-95 duration-300 relative border border-border"
         onClick={e => e.stopPropagation()}
       >
-        <div className="relative h-[45vh] md:h-[55vh] flex-shrink-0 bg-black group">
+        <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer border border-white/20 z-50">
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Left Side: Images */}
+        <div className="w-full md:w-1/2 h-[40vh] md:h-full bg-black relative group flex-shrink-0">
           {plant.galeria && plant.galeria.length > 0 ? (
             <>
               <div ref={scrollContainerRef} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar bg-black">
@@ -605,43 +631,53 @@ function PlantDetailModal({ plant, onClose }: { plant: Planta, onClose: () => vo
                   <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-white z-10 border border-white/10 shadow-lg">
                     {plant.galeria.length} FOTOS
                   </div>
-                  <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20">
+                  <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
                     <ChevronLeft className="w-6 h-6" />
                   </button>
-                  <button onClick={scrollRight} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20">
+                  <button onClick={scrollRight} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
                     <ChevronRight className="w-6 h-6" />
                   </button>
                 </>
               )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
             </>
           ) : (
              <div className="w-full h-full bg-secondary flex items-center justify-center p-8">
                <div className="text-center">
                  <Leaf className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                 <h2 className="text-2xl font-bold text-foreground italic mb-2">{plant.nombre_cientifico || 'Especie por identificar'}</h2>
-                 <p className="text-muted-foreground">{plant.nombres_comunes}</p>
+                 <h2 className="text-xl font-bold text-foreground italic mb-2">Sin foto</h2>
                </div>
              </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent pointer-events-none" />
-          <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer border border-white/20 z-20">
-            <X className="w-5 h-5" />
-          </button>
           
-          <div className="absolute bottom-4 left-6 right-6 z-10">
+          {/* Main Title overlay on image for Mobile, but keeping it inside info panel for Desktop */}
+          <div className="absolute bottom-4 left-6 right-6 z-10 md:hidden">
             <span className="px-2.5 py-1 bg-[#1FC451] text-black text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block shadow-lg">
               {plant.habito || 'Planta'}
             </span>
-            <h2 className="text-3xl font-bold text-foreground leading-tight italic drop-shadow-md">
+            <h2 className="text-2xl font-bold text-white leading-tight italic drop-shadow-md">
               {plant.nombre_cientifico || 'Especie por identificar'}
             </h2>
             {plant.nombres_comunes && (
-              <p className="text-muted-foreground font-medium drop-shadow-md">{plant.nombres_comunes}</p>
+              <p className="text-white/80 font-medium drop-shadow-md">{plant.nombres_comunes}</p>
             )}
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+        {/* Right Side: Info */}
+        <div className="w-full md:w-1/2 flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar relative bg-card">
+          
+          <div className="hidden md:block border-b border-border pb-4">
+            <span className="px-2.5 py-1 bg-[#1FC451] text-black text-xs font-bold rounded-md uppercase tracking-wider mb-3 inline-block shadow-sm">
+              {plant.habito || 'Planta'}
+            </span>
+            <h2 className="text-3xl font-bold text-foreground leading-tight italic">
+              {plant.nombre_cientifico || 'Especie por identificar'}
+            </h2>
+            {plant.nombres_comunes && (
+              <p className="text-muted-foreground font-medium mt-1 text-lg">{plant.nombres_comunes}</p>
+            )}
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-secondary/50 rounded-xl p-4 border border-border">
               <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Familia</span>

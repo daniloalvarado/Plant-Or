@@ -42,8 +42,8 @@
 
 .tunnel-item {
     position: absolute;
-    width: 250px;
-    height: 350px;
+    width: 180px;
+    height: 220px;
     background: #111;
     border-radius: 16px;
     overflow: hidden;

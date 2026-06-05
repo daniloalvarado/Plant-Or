@@ -54,9 +54,9 @@ for (let i = 0; i < totalLayerCount; i++) {
 
         layerEl.appendChild(itemEl);
     }
+
     tunnelEl.appendChild(layerEl);
     layerData.push({ el: layerEl, baseZ: -i * CONFIG.layerGap });
-
 }
 
 let targetScroll = initialScroll;
@@ -64,8 +64,8 @@ let currentScroll = initialScroll;
 
 window.addEventListener("wheel", (e) => {
     targetScroll += e.deltaY * CONFIG.scrollSpeed;
-
 });
+
 function calculateOverlay(z) {
     if (z > exitPoint) return 1;
     if (z > 0) return z / exitPoint;
@@ -76,19 +76,20 @@ function calculateOverlay(z) {
     return 1;
 }
 
-gsap.ticker.add(()={
-currentScroll += (targetScroll - currentScroll) * CONFIG.lerp;
+gsap.ticker.add(() => {
+    currentScroll += (targetScroll - currentScroll) * CONFIG.lerp;
 
-layerData. forEach((layer)={
-let z = layer.basez + currentScroll;
-z = ((z % tunnelDepth) + tunnelDepth) % tunnelDepth;
-z = z - tunnelDepth + exitPoint;
+    layerData.forEach((layer) => {
+        let z = layer.basez + currentScroll;
+        z = ((z % tunnelDepth) + tunnelDepth) % tunnelDepth;
+        z = z - tunnelDepth + exitPoint;
 
-const overlay = calculateOverlay(z);
+        const overlay = calculateOverlay(z);
 
-gsap.set(layer.el, {
-z: z,
-" -- overlay": Math.min(1, Math.max(0, overlay)),
-visibility: overlay >= 1 ? "hidden" : "visible",
-
-}):
+        gsap.set(layer.el, {
+            z: z,
+            " --overlay": Math.min(1, Math.max(0, overlay)),
+            visibility: overlay >= 1 ? "hidden" : "visible",
+        });
+    });
+});
