@@ -198,20 +198,26 @@ export default function PlantaDetailPage() {
             <Section title="Fotografías">
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                 {images.map((img, i) => {
-                  const imgUrl = urlFor(img)
+                  const imgUrlFull = urlFor(img).url()
+                  const imgUrlThumb = urlFor(img).width(400).height(400).fit('crop').format('webp').url()
                   const labels = ['Planta completa', 'Hoja', 'Flor', 'Fruto', 'Semilla']
                   return (
                     <div
                       key={i}
                       className="relative group cursor-pointer"
-                      onClick={() => setSelectedImg(imgUrl)}
+                      onClick={() => setSelectedImg(imgUrlFull)}
                     >
-                      <img
-                        src={imgUrl}
-                        alt={labels[i] || `Foto ${i + 1}`}
-                        className="w-full aspect-square object-cover rounded-lg border border-border hover:border-primary transition-colors"
-                      />
-                      <div className="absolute inset-0 bg-background/40 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="w-full aspect-square rounded-lg border border-border group-hover:border-primary transition-colors bg-secondary/50 overflow-hidden">
+                        <img
+                          src={imgUrlThumb}
+                          alt={labels[i] || `Foto ${i + 1}`}
+                          decoding="async"
+                          className="w-full h-full object-cover opacity-0 transition-opacity duration-700 ease-out"
+                          onLoad={(e) => e.currentTarget.classList.remove('opacity-0')}
+                          style={{ willChange: 'opacity' }}
+                        />
+                      </div>
+                      <div className="absolute inset-0 bg-background/40 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                         <Eye className="w-5 h-5 text-foreground" />
                       </div>
                       <p className="text-xs text-muted-foreground mt-1 text-center truncate">{labels[i] || ''}</p>

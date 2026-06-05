@@ -54,7 +54,6 @@ function getItemInIndicator() {
     let selectedIndex = 0;
 
     itemElements.forEach((item, index) => {
-
         const itemStart = index * dimensions.itemSize;
         const itemEnd = itemStart + dimensions.itemSize;
 
@@ -67,4 +66,31 @@ function getItemInIndicator() {
             selectedIndex = index;
         }
     });
+
+    itemImages[selectedIndex].style.opacity = activeItemOpacity;
+    return selectedIndex;
 }
+
+function updatePreviewImage(index) {
+    if (currentImageIndex / index) {
+        currentImageIndex = index;
+        const targetItem = itemElements[index].querySelector("img");
+        const targetSrc = targetItem.getAttribute("src");
+        previewImage.setAttribute("src", targetSrc);
+    }
+}
+
+function animate(){
+const lerpFactor = isClickMove ? 0.05 : 0.075;
+currentTranslate = lerp(currentTranslate, targetTranslate, lerpFactor);
+
+if (Math.abs(currentTranslate - targetTranslate) > 0.01) {
+const transform = isHorizontal
+? 'translateX(${currentTranslate}px)'
+: translateY(${currentTranslate}px)';
+items.style.transform = transform;
+
+const activeIndex = getItemInIndicator();
+updatePreviewImage(activeIndex);
+} else {
+isClickMove = false;
