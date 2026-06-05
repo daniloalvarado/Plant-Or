@@ -130,7 +130,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
         </div>
 
         {showFilters && (
-          <div className="flex flex-wrap items-center gap-3 pt-2 cascade-item delay-4">
+          <div className="flex flex-wrap items-center gap-3 pt-2 cascade-item">
             <CustomSelect
               value={filterEstado}
               onChange={setFilterEstado}

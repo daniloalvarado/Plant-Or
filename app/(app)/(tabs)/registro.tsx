@@ -612,6 +612,9 @@ export default function RegistroScreen() {
     router.replace('/');
   };
 
+  const isStudentByMetadata = !!(user?.unsafeMetadata?.dni || user?.unsafeMetadata?.facultad || user?.unsafeMetadata?.escuela);
+  const derivedRole = user?.unsafeMetadata?.role || (isStudentByMetadata ? 'estudiante' : (numeroPlantaAutogenerado > 0 ? 'ciudadano' : null));
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#08130D' }} edges={['top']}>
       <KeyboardAvoidingView
@@ -661,11 +664,11 @@ export default function RegistroScreen() {
                 <YStack gap="$4">
                   <YStack gap="$2" mb="$4">
                     <Label color="#ffffff">¿Cómo estás registrando esta planta?</Label>
-                    {user?.unsafeMetadata?.role ? (
+                    {derivedRole ? (
                       <Card backgroundColor="rgba(31, 196, 81, 0.1)" borderColor="rgba(31, 196, 81, 0.3)" borderWidth={1} padding="$3">
                         <XStack gap="$2" style={{ alignItems: "center" }}>
                           <MaterialCommunityIcons name="check-circle" size={20} color="#1FC451" />
-                          <Text color="#ffffff" fontWeight="bold">Rol fijado: {user.unsafeMetadata.role === 'estudiante' ? 'Estudiante' : 'Ciudadano'}</Text>
+                          <Text color="#ffffff" fontWeight="bold">Rol fijado: {derivedRole === 'estudiante' ? 'Estudiante' : 'Ciudadano'}</Text>
                         </XStack>
                         <Paragraph color="rgba(255,255,255,0.7)" size="$2" mt="$1">
                           Tu perfil ya está vinculado a este rol.
