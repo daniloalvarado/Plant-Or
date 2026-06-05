@@ -1,148 +1,41 @@
 .tooltip-container {
-  --background: #1FC451; /* Changed to theme green */
-  --support-size: 50px;
-  --tooltip-radius: 10px 10px 10px 0;
-  --outline-border-color: #1a9c40;
   position: relative;
-  background: transparent;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 1.125rem; /* text-lg */
-  font-weight: bold;
-  padding: 0;
-  color: hsl(var(--foreground));
-  border: none;
-  display: inline-flex;
-  align-items: center;
-}
-
-.tooltip-container::before {
-  content: "";
-  display: inline-block;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: -1;
-  transition: all 0.5s linear;
-  outline: 3px solid transparent;
-  background: transparent; /* No background originally until hover */
-}
-
-.tooltip-container:hover {
-  color: var(--background);
-}
-
-.tooltip-container:hover:before {
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
-  outline-offset: 5px;
-  outline-color: var(--outline-border-color);
-  background: transparent;
 }
 
 .t-tooltip {
+  background-color: #1FC451;
   position: absolute;
-  display: inline-block;
   top: 100%;
   left: 50%;
-  transform: translateX(-30%);
-  padding: 0.3em 0.6em;
+  transform: translateX(-50%);
+  padding: 0.6em 1.2em;
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s;
-  background: var(--background);
-  border-radius: 0 10px 10px 10px;
+  border-radius: 12px;
   color: black;
-  box-shadow: 3px 3px 0px var(--outline-border-color);
+  font-weight: 700;
+  font-size: 0.85rem;
   white-space: nowrap;
-}
-
-.t-tooltip::after {
-  content: "Aquí descubrirás la flora amazónica...";
-  display: inline-block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--background);
-  text-align: center;
-  border-radius: var(--tooltip-radius);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  z-index: 100;
 }
 
 .t-tooltip::before {
+  background-color: #1FC451;
   position: absolute;
   content: "";
-  top: -10px;
-  border-style: solid;
-  border-width: 0 10px 10px 0;
-  left: 0;
-  border-color: transparent var(--background) transparent transparent;
-}
-
-.tooltip-container:hover .t-tooltip::after {
-  animation: tooltip-hidden 0.5s 1.5s linear forwards;
+  height: 0.7em;
+  width: 0.7em;
+  top: -0.35em;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .tooltip-container:hover .t-tooltip {
-  top: calc(100% + var(--support-size) * 0.2);
+  top: calc(100% + 15px);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  animation: tooltip-shake 0.5s 1s linear;
-  transition: all 0.3s 0.5s;
-}
-
-@keyframes tooltip-hidden {
-  50% {
-    transform: translate(-50%, -50%) scale(0.5);
-    background-color: #1a9c40;
-  }
-  100% {
-    transform: translate(0, -50%) scale(0.5);
-    opacity: 0;
-  }
-}
-
-@keyframes tooltip-shake {
-  0%, 40%, 80% { transform: translateX(-10%); }
-  20%, 60%, 100% { transform: translateX(0); }
-}
-
-.t-st2 { fill: #f9c8a7; }
-.t-st3 { fill: #ff9e97; }
-.t-st6 { fill: #d72e48; }
-.t-st7 { fill: #ffffff; }
-.t-st8 { fill: #ff8d7f; }
-.t-st10 { fill: #3d3d3b; }
-.t-st11 { fill: #1FC451; }
-.t-st12 { opacity: 0.2; }
-.t-st14 { fill: #b7b7b7; }
-.t-st15 { fill: #ead9cf; }
-
-#Calque_1 {
-  display: inline-block;
-  height: var(--support-size);
-  position: absolute;
-  opacity: 0;
-  transition: all 0.5s;
-  z-index: -1;
-  left: 0;
-  top: 0;
-}
-
-#left_x5F_arm_2_ {
-  transform: translateX(2px);
-}
-
-.tooltip-container:hover #Calque_1 {
-  top: calc(100% + var(--support-size) * 0.2);
-  opacity: 1;
 }

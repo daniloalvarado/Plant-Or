@@ -548,7 +548,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
     }
 
     dimensions = updateDimensions();
-    maxTranslate = Math.max(0, dimensions.containerSize - dimensions.indicatorSize);
+    maxTranslate = Math.max(0, (plants.length - 1) * dimensions.itemSize);
     targetTranslate = 0;
     currentTranslate = 0;
 
@@ -585,7 +585,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
     const handleResize = () => {
         isHorizontal = window.innerWidth <= 900;
         dimensions = updateDimensions();
-        maxTranslate = Math.max(0, dimensions.containerSize - dimensions.indicatorSize);
+        maxTranslate = Math.max(0, (plants.length - 1) * dimensions.itemSize);
 
         targetTranslate = Math.min(Math.max(targetTranslate, -maxTranslate), 0);
         currentTranslate = targetTranslate;
