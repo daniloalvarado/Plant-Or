@@ -9,7 +9,7 @@ export function TooltipLogo() {
         <Leaf className="w-5 h-5 text-black" />
       </div>
       <span className="font-bold text-lg text-foreground">Plant-OR</span>
-      <span className="t-tooltip">Aquí descubrirás la flora amazónica...</span>
+      <span className="t-tooltip">Catálogo interactivo con la flora amazónica registrada y validada por nuestros estudiantes.</span>
     </div>
   );
 }
