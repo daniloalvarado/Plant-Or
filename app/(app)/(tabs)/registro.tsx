@@ -661,30 +661,38 @@ export default function RegistroScreen() {
                 <YStack gap="$4">
                   <YStack gap="$2" mb="$4">
                     <Label color="#ffffff">¿Cómo estás registrando esta planta?</Label>
-                    <XStack gap="$3">
-                      <Button
-                        flex={1}
-                        bg={rolRegistro === 'estudiante' ? '#1FC451' : 'rgba(255,255,255,0.05)'}
-                        color={rolRegistro === 'estudiante' ? '#08130D' : 'white'}
-                        onPress={() => setRolRegistro('estudiante')}
-                        disabled={!!user?.unsafeMetadata?.role && user.unsafeMetadata.role !== 'estudiante'}
-                        opacity={!!user?.unsafeMetadata?.role && user.unsafeMetadata.role !== 'estudiante' ? 0.3 : 1}
-                        pressStyle={{ bg: '#15963c' }}
-                      >
-                        Estudiante
-                      </Button>
-                      <Button
-                        flex={1}
-                        bg={rolRegistro === 'ciudadano' ? '#1FC451' : 'rgba(255,255,255,0.05)'}
-                        color={rolRegistro === 'ciudadano' ? '#08130D' : 'white'}
-                        onPress={() => setRolRegistro('ciudadano')}
-                        disabled={!!user?.unsafeMetadata?.role && user.unsafeMetadata.role !== 'ciudadano'}
-                        opacity={!!user?.unsafeMetadata?.role && user.unsafeMetadata.role !== 'ciudadano' ? 0.3 : 1}
-                        pressStyle={{ bg: '#15963c' }}
-                      >
-                        Ciudadano
-                      </Button>
-                    </XStack>
+                    {user?.unsafeMetadata?.role ? (
+                      <Card backgroundColor="rgba(31, 196, 81, 0.1)" borderColor="rgba(31, 196, 81, 0.3)" borderWidth={1} padding="$3">
+                        <XStack gap="$2" style={{ alignItems: "center" }}>
+                          <MaterialCommunityIcons name="check-circle" size={20} color="#1FC451" />
+                          <Text color="#ffffff" fontWeight="bold">Rol fijado: {user.unsafeMetadata.role === 'estudiante' ? 'Estudiante' : 'Ciudadano'}</Text>
+                        </XStack>
+                        <Paragraph color="rgba(255,255,255,0.7)" size="$2" mt="$1">
+                          Tu perfil ya está vinculado a este rol.
+                        </Paragraph>
+                      </Card>
+                    ) : (
+                      <XStack gap="$3">
+                        <Button
+                          flex={1}
+                          bg={rolRegistro === 'estudiante' ? '#1FC451' : 'rgba(255,255,255,0.05)'}
+                          color={rolRegistro === 'estudiante' ? '#08130D' : 'white'}
+                          onPress={() => setRolRegistro('estudiante')}
+                          pressStyle={{ bg: '#15963c' }}
+                        >
+                          Estudiante
+                        </Button>
+                        <Button
+                          flex={1}
+                          bg={rolRegistro === 'ciudadano' ? '#1FC451' : 'rgba(255,255,255,0.05)'}
+                          color={rolRegistro === 'ciudadano' ? '#08130D' : 'white'}
+                          onPress={() => setRolRegistro('ciudadano')}
+                          pressStyle={{ bg: '#15963c' }}
+                        >
+                          Ciudadano
+                        </Button>
+                      </XStack>
+                    )}
                     <Paragraph color="rgba(255,255,255,0.6)" size="$2" mt="$2">
                       {rolRegistro === 'estudiante' 
                         ? "Deberás llenar el formulario botánico completo." 
