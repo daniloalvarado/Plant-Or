@@ -501,6 +501,7 @@ export default function Profile() {
 
 
           {/* Certificación Progress Card */}
+          {stats.total > 0 && (
           <Card
             size="$4"
             bordered
@@ -553,6 +554,7 @@ export default function Profile() {
               )}
             </YStack>
           </Card>
+          )}
 
 
 
