@@ -775,7 +775,7 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
                   </button>
                 </>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none lg:hidden" />
             </>
           ) : (
              <div className="w-full h-full bg-secondary flex items-center justify-center p-8">
@@ -787,7 +787,7 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
           )}
           
           {/* Main Title overlay on image for Mobile */}
-          <div className="absolute bottom-4 left-6 right-6 z-10 md:hidden">
+          <div className="absolute bottom-4 left-6 right-6 z-10 lg:hidden">
             <span className="px-2.5 py-1 bg-[#1FC451] text-black text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block shadow-lg">
               {currentPlant.habito || 'Planta'}
             </span>
