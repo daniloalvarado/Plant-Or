@@ -17,7 +17,7 @@ let currentTranslate = 0;
 let targetTranslate = 0;
 let isClickMove = false;
 let currentImageIndex = 0;
-const activeItemOpacity = 0.3;
+const activeItemOpacity = 1;
 
 function lerp(start, end, factor) {
     return start + (end - start) * factor;
@@ -113,6 +113,7 @@ container.addEventListener(
 
         targetTranslate = Math.min(
             Math.max(targetTranslate - scrollVelocity, -maxTranslate),
+            0
         );
     },
     { passive: false }
@@ -125,17 +126,51 @@ container.addEventListener("touchstart", (e) => {
     }
 });
 
-container.addEventListener("touchmove", (e) = {
-    if(isHorizontal) {
-
+container.addEventListener("touchmove", (e) => {
+    if (isHorizontal) {
         const touchY = e.touches[0].clientY;
         const deltaY = touchStartY - touchY;
 
         const delta = deltaY;
         const scrollVelocity = Math.min(Math.max(delta * 0.5, -20), 20);
 
-        targetTranslate = Math.min(Math.max(targetTranslate - scrollVelocity,
-            -maxTranslate),
-            0)
+        targetTranslate = Math.min(
+            Math.max(targetTranslate - scrollVelocity, -maxTranslate),
+            0
+        );
+
+        e.preventDefault();
     }
+},
+    { passive: false }
+);
+
+
+
+itemElements.forEach((item, index) => {
+    item.addEventListener("click", () => {
+        isClickMove = true;
+        targetTranslate =
+            -index * dimensions.itemSize +
+            (dimensions.indicatorSize - dimensions.itemSize) / 2;
+
+        targetTranslate = Math.max(Math.min(targetTranslate, 0), -maxTranslate);
+    });
 });
+
+window.addEventListener("resize", () => {
+    dimensions = updateDimensions();
+    maxTranslate = dimensions.containerSize - dimensions.indicatorSize;
+
+    targetTranslate = Math.min(Math.max(targetTranslate, -maxTranslate), 0);
+    currentTranslate = targetTranslate;
+
+    const transform = isHorizontal
+    ? `translateX(${currentTranslate}px)`
+    : `translateY(${currentTranslate}px)`;
+    items.style.transform = transform;
+});
+
+itemImages[0].style.opacity = activeItemOpacity;
+updatePreviewImage(0);
+animate();

@@ -53,12 +53,12 @@ export default function Layout() {
     >
       {/* Navegación de tabs (App principal) */}
       <JsStack.Screen name="(tabs)" options={{ headerShown: false, animationEnabled: false }} />
-      <JsStack.Screen name="plant/[id]" options={{ headerShown: false }} />
+      <JsStack.Screen name="plant/[id]" options={{ headerShown: false, gestureEnabled: false }} />
 
       {/* Vistas de Autenticación */}
       <JsStack.Screen name="sign-in" options={{ headerShown: false, animationEnabled: false }} />
       <JsStack.Screen name="sign-up" options={{ headerShown: false }} />
-      <JsStack.Screen name="about" options={{ headerShown: false }} />
+      <JsStack.Screen name="about" options={{ headerShown: false, gestureEnabled: false }} />
       <JsStack.Screen
         name="alert-modal"
         options={{

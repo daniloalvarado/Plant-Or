@@ -4,8 +4,6 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { usePlantas } from '@/hooks/use-plantas'
 import { client, urlFor, urlForImage } from '@/lib/sanity'
 import type { Planta } from '@/types/planta'
@@ -13,8 +11,6 @@ import { CustomSelect } from '@/components/CustomSelect'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useTheme } from '@/components/ThemeProvider'
 import './CatalogPage.css'
-
-gsap.registerPlugin(useGSAP)
 
 // Leaflet setup
 delete (L.Icon.Default.prototype as any)._getIconUrl
@@ -275,7 +271,7 @@ export default function CatalogPage() {
             <LoadingSpinner text="Cargando catálogo botánico..." />
           </div>
         ) : viewMode === 'tunnel' ? (
-          <TunnelView plants={filteredPlants} onPlantClick={setSelectedPlant} />
+          <MinimapView plants={filteredPlants} onPlantClick={setSelectedPlant} />
         ) : (
           <div className="h-[calc(100vh-70px)] w-full">
             <MapContainer
@@ -420,120 +416,192 @@ export default function CatalogPage() {
   )
 }
 
-function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: (p: Planta) => void }) {
+function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: (p: Planta) => void }) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const wrapperRef = useRef<HTMLDivElement>(null)
-  const [zOffset, setZOffset] = useState(750)
+  const itemsRef = useRef<HTMLDivElement>(null)
+  const indicatorRef = useRef<HTMLDivElement>(null)
+  const previewRef = useRef<HTMLImageElement>(null)
+  const infoRef = useRef<HTMLDivElement>(null)
 
-  const CONFIG = {
-    layerGap: 2500,
-  }
+  useEffect(() => {
+    if (!containerRef.current || !itemsRef.current || !indicatorRef.current || !previewRef.current) return;
+    if (plants.length === 0) return;
 
-  const contentLayerCount = Math.ceil(plants.length / 4)
-  const totalLayerCount = Math.max(contentLayerCount, 6)
-  const tunnelDepth = totalLayerCount * CONFIG.layerGap
-  const visibleDepth = 3 * CONFIG.layerGap
+    let isHorizontal = window.innerWidth <= 900;
+    let dimensions = { itemSize: 0, containerSize: 0, indicatorSize: 0 };
+    let maxTranslate = 0;
+    let currentTranslate = 0;
+    let targetTranslate = 0;
+    let currentImageIndex = -1;
+    let animationFrameId: number;
+    let touchStartY = 0;
 
-  // Generamos la data de las capas solo cuando cambian las plantas
-  const layers = useMemo(() => {
-    if (plants.length === 0) return []
-    const newLayers = []
-    
-    for (let i = 0; i < totalLayerCount; i++) {
-      const items = []
-      const imageStartIndex = (i % Math.max(1, contentLayerCount)) * 4
-      
-      for (let j = 0; j < 4; j++) {
-        const index = imageStartIndex + j
-        if (index >= plants.length) break;
-        
-        const plant = plants[index]
-        const angle = (j / 4) * Math.PI * 2 - Math.PI / 2
-        const radiusX = 400
-        const radiusY = 280
-        const itemX = Math.cos(angle) * radiusX - 90
-        const itemY = Math.sin(angle) * radiusY - 110
-        
-        items.push({
-          id: `item-${i}-${j}-${plant._id}`,
-          plant,
-          x: itemX,
-          y: itemY
-        })
-      }
-      
-      if (items.length > 0) {
-        newLayers.push({
-          id: `layer-${i}`,
-          items,
-          baseZ: -i * CONFIG.layerGap
-        })
-      }
+    const items = itemsRef.current;
+    const indicator = indicatorRef.current;
+    const container = containerRef.current;
+    const previewImage = previewRef.current;
+    const itemElements = Array.from(items.querySelectorAll('.mm-item')) as HTMLElement[];
+
+    function lerp(start: number, end: number, factor: number) {
+        return start + (end - start) * factor;
     }
-    return newLayers
-  }, [plants, totalLayerCount, contentLayerCount])
 
-  const targetZRef = useRef(0);
-  const currentZRef = useRef(0);
-  const touchStartRef = useRef(0);
+    function updateDimensions() {
+        if (!itemElements[0] || !items || !indicator) return dimensions;
+        return {
+            itemSize: isHorizontal
+                ? itemElements[0].getBoundingClientRect().width
+                : itemElements[0].getBoundingClientRect().height,
+            containerSize: isHorizontal
+                ? items.scrollWidth
+                : items.getBoundingClientRect().height,
+            indicatorSize: isHorizontal
+                ? indicator.getBoundingClientRect().width
+                : indicator.getBoundingClientRect().height,
+        };
+    }
 
-  const handleWheel = (e: React.WheelEvent) => {
-    targetZRef.current += e.deltaY * 1.5;
-  };
+    function getItemInIndicator() {
+        const indicatorRect = indicator.getBoundingClientRect();
+        const indicatorCenter = isHorizontal
+            ? indicatorRect.left + indicatorRect.width / 2
+            : indicatorRect.top + indicatorRect.height / 2;
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartRef.current = e.touches[0].clientY;
-  };
+        let closestIndex = 0;
+        let minDistance = Infinity;
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    const deltaY = touchStartRef.current - e.touches[0].clientY;
-    targetZRef.current += deltaY * 3;
-    touchStartRef.current = e.touches[0].clientY;
-  };
+        itemElements.forEach((item, index) => {
+            const itemRect = item.getBoundingClientRect();
+            const itemCenter = isHorizontal
+                ? itemRect.left + itemRect.width / 2
+                : itemRect.top + itemRect.height / 2;
 
-  useGSAP(() => {
-    targetZRef.current = zOffset;
-    currentZRef.current = zOffset;
-    const exitPoint = 750; // Fade out completely before hitting the camera (perspective is 800px)
-    
-    // Animation loop
-    const ticker = gsap.ticker.add(() => {
-      // Interpolación suave (lerp)
-      currentZRef.current += (targetZRef.current - currentZRef.current) * 0.1;
-      
-      if (wrapperRef.current) {
-        // En lugar de mover todo el wrapper, movemos los hijos (mucho mejor rendimiento en GSAP 3D)
-        const children = wrapperRef.current.children;
-        for (let i = 0; i < children.length; i++) {
-          const el = children[i] as HTMLElement;
-          const baseZ = parseFloat(el.dataset.z || '0');
-          
-          let z = baseZ + currentZRef.current;
-          z = ((z % tunnelDepth) + tunnelDepth) % tunnelDepth;
-          z = z - tunnelDepth + exitPoint;
-          
-          const isVisible = z >= -visibleDepth && z <= exitPoint;
-          let overlay = 1;
+            const distance = Math.abs(indicatorCenter - itemCenter);
 
-          if (isVisible) {
-            if (z > 0) overlay = z / exitPoint;
-            else if (z > -visibleDepth) {
-              const progress = Math.abs(z) / visibleDepth;
-              overlay = progress * progress;
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = index;
             }
-          }
+        });
 
-          gsap.set(el, {
-            z: z,
-            "--overlay": Math.min(1, Math.max(0, overlay)),
-            visibility: overlay >= 1 ? 'hidden' : 'visible'
-          });
+        return closestIndex;
+    }
+
+    function updatePreviewImage(index: number) {
+        if (currentImageIndex !== index) {
+            currentImageIndex = index;
+            const targetItem = itemElements[index]?.querySelector("img");
+            if(targetItem) {
+                const targetSrc = targetItem.getAttribute("data-full-src");
+                if (targetSrc) {
+                    previewImage.setAttribute("src", targetSrc);
+                }
+            }
+            if (infoRef.current && plants[index]) {
+                const plant = plants[index];
+                infoRef.current.innerHTML = `
+                  <h2 class="text-2xl font-bold italic mb-1 text-white">${plant.nombre_cientifico || 'Sin identificar'}</h2>
+                  <p class="text-[#1FC451] font-medium text-sm tracking-wide uppercase">${plant.habito || 'Planta'}</p>
+                `;
+            }
         }
-      }
+    }
+
+    function animate() {
+        currentTranslate = lerp(currentTranslate, targetTranslate, 0.1);
+
+        const transform = isHorizontal
+            ? `translateX(${currentTranslate}px)`
+            : `translateY(${currentTranslate}px)`;
+        items.style.transform = transform;
+
+        const activeIndex = getItemInIndicator();
+        updatePreviewImage(activeIndex);
+        
+        itemElements.forEach((item, index) => {
+            const img = item.querySelector("img");
+            if (img) {
+                img.style.opacity = index === activeIndex ? "1" : "0.3";
+            }
+        });
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+
+    dimensions = updateDimensions();
+    maxTranslate = Math.max(0, dimensions.containerSize - dimensions.indicatorSize);
+    targetTranslate = 0;
+    currentTranslate = 0;
+
+    const handleWheel = (e: WheelEvent) => {
+        e.preventDefault();
+        const delta = e.deltaY;
+        const scrollVelocity = Math.min(Math.max(delta * 0.5, -20), 20);
+        targetTranslate = Math.min(
+            Math.max(targetTranslate - scrollVelocity, -maxTranslate),
+            0
+        );
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+        if (isHorizontal) {
+            touchStartY = e.touches[0].clientX;
+        } else {
+            touchStartY = e.touches[0].clientY;
+        }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+        e.preventDefault();
+        const touchY = isHorizontal ? e.touches[0].clientX : e.touches[0].clientY;
+        const deltaY = touchStartY - touchY;
+        const scrollVelocity = Math.min(Math.max(deltaY * 0.5, -20), 20);
+
+        targetTranslate = Math.min(
+            Math.max(targetTranslate - scrollVelocity, -maxTranslate),
+            0
+        );
+    };
+
+    const handleResize = () => {
+        isHorizontal = window.innerWidth <= 900;
+        dimensions = updateDimensions();
+        maxTranslate = Math.max(0, dimensions.containerSize - dimensions.indicatorSize);
+
+        targetTranslate = Math.min(Math.max(targetTranslate, -maxTranslate), 0);
+        currentTranslate = targetTranslate;
+
+        const transform = isHorizontal
+            ? `translateX(${currentTranslate}px)`
+            : `translateY(${currentTranslate}px)`;
+        items.style.transform = transform;
+    };
+
+    const handleItemClick = (index: number) => {
+        targetTranslate = -index * dimensions.itemSize + (dimensions.indicatorSize - dimensions.itemSize) / 2;
+        targetTranslate = Math.max(Math.min(targetTranslate, 0), -maxTranslate);
+    };
+
+    itemElements.forEach((item, index) => {
+        item.addEventListener("click", () => handleItemClick(index));
     });
 
-    return () => gsap.ticker.remove(ticker);
-  }, [tunnelDepth, visibleDepth, layers]); // dependencias
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    container.addEventListener("touchstart", handleTouchStart, { passive: false });
+    container.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("resize", handleResize);
+
+    updatePreviewImage(0);
+    animate();
+
+    return () => {
+        cancelAnimationFrame(animationFrameId);
+        container.removeEventListener("wheel", handleWheel);
+        container.removeEventListener("touchstart", handleTouchStart);
+        container.removeEventListener("touchmove", handleTouchMove);
+        window.removeEventListener("resize", handleResize);
+    };
+  }, [plants]);
 
   if (plants.length === 0) {
     return (
@@ -546,51 +614,32 @@ function TunnelView({ plants, onPlantClick }: { plants: Planta[], onPlantClick: 
   }
 
   return (
-    <div 
-      className="tunnel-scene" 
-      ref={containerRef}
-      onWheel={handleWheel}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-    >
-      <div className="tunnel-wrapper" ref={wrapperRef}>
-        {layers.map((layer) => (
-          <div 
-            key={layer.id}
-            className="tunnel-layer"
-            data-z={layer.baseZ}
-            style={{ visibility: 'hidden' }}
-          >
-            {layer.items.map((item) => (
-              <div 
-                key={item.id}
-                className="tunnel-item" 
-                style={{ left: item.x, top: item.y }}
-                onClick={() => onPlantClick(item.plant)}
-              >
-                <img 
-                  src={item.plant.galeria?.[0] ? urlForImage(item.plant.galeria[0]).width(600).auto('format').url() : ''} 
-                  alt={item.plant.nombre_cientifico || 'Planta'} 
-                  loading="lazy"
-                  className="w-full h-full object-cover"
-                  style={{ background: !item.plant.galeria?.[0] ? 'linear-gradient(135deg, #1a3a2a, #08130D)' : 'none' }}
-                />
-                <div className="item-overlay" />
-                <div className="item-info-preview">
-                  <h4>{item.plant.nombre_cientifico || item.plant.nombres_comunes || 'Sin identificar'}</h4>
-                  <p>{item.plant.habito || 'Sin clasificar'}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        ))}
+    <div className="mm-container" ref={containerRef}>
+      <div className="mm-img-preview">
+        {/* TODO: Habilitar cuando se requiera onClick={() => onPlantClick(plants[currentImageIndex])} */}
+        <img ref={previewRef} src="" alt="Vista previa" />
+        <div 
+          ref={infoRef}
+          className="absolute bottom-6 left-6 right-6 bg-black/70 backdrop-blur-md p-4 rounded-xl border border-white/10 z-10 shadow-2xl pointer-events-none"
+        >
+        </div>
       </div>
       
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none opacity-50">
-        <div className="w-6 h-10 border-2 border-foreground rounded-full flex justify-center p-1">
-          <div className="w-1 h-2 bg-foreground rounded-full animate-bounce" />
+      <div className="mm-minimap">
+        <div className="mm-indicator" ref={indicatorRef}></div>
+        <div className="mm-items" ref={itemsRef}>
+          {plants.map(p => (
+            <div key={p._id} className="mm-item">
+              <img 
+                src={p.galeria?.[0] ? urlForImage(p.galeria[0]).width(100).height(100).fit('crop').format('webp').url() : ''} 
+                data-full-src={p.galeria?.[0] ? urlForImage(p.galeria[0]).width(800).auto('format').url() : ''}
+                alt={p.nombre_cientifico || 'Planta'} 
+                loading="lazy"
+                style={{ background: !p.galeria?.[0] ? 'linear-gradient(135deg, #1a3a2a, #08130D)' : 'none' }}
+              />
+            </div>
+          ))}
         </div>
-        <span className="text-xs font-medium uppercase tracking-widest mt-2 whitespace-nowrap text-foreground">Scroll para explorar</span>
       </div>
     </div>
   )
