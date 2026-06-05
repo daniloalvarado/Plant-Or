@@ -13,6 +13,7 @@ import { es } from 'date-fns/locale'
 import { useUser } from '@clerk/clerk-react'
 import { toast } from 'sonner'
 import { ValidacionModal } from '@/components/ValidacionModal'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 
 export default function PlantaDetailPage() {
   const { user } = useUser()
@@ -59,8 +60,8 @@ export default function PlantaDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <LoadingSpinner text="Cargando detalles de la planta..." />
       </div>
     )
   }
@@ -99,9 +100,9 @@ export default function PlantaDetailPage() {
     : planta.habito === 'Hierba' ? planta.hierba_datos : null
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <div className="space-y-6 max-w-5xl mx-auto cascade-container">
       {/* Back + Header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4 cascade-item">
         <div>
           <button
             onClick={() => navigate(-1)}
@@ -124,7 +125,7 @@ export default function PlantaDetailPage() {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 cascade-item">
         <button
           onClick={() => handleAction('Validado')}
           disabled={actionLoading || planta.estado_revision === 'Validado'}
@@ -153,7 +154,7 @@ export default function PlantaDetailPage() {
 
       {/* Observation or Rejection notice */}
       {(planta.estado_revision === 'Observado' || planta.estado_revision === 'Rechazado') && planta.motivo_observacion && (
-        <div className={`border rounded-xl p-4 ${planta.estado_revision === 'Observado' ? 'bg-orange-500/10 border-orange-500/20' : 'bg-red-500/10 border-red-500/20'}`}>
+        <div className={`cascade-item border rounded-xl p-4 ${planta.estado_revision === 'Observado' ? 'bg-orange-500/10 border-orange-500/20' : 'bg-red-500/10 border-red-500/20'}`}>
           <div className="flex items-start gap-2">
             {planta.estado_revision === 'Observado' ? (
               <AlertCircle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
@@ -172,7 +173,7 @@ export default function PlantaDetailPage() {
 
       {/* Validation Log */}
       {planta.validador && (
-        <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-start gap-3">
+        <div className="cascade-item bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-start gap-3">
           <div className="bg-primary/10 p-2 rounded-lg">
             <User className="w-4 h-4 text-primary" />
           </div>
@@ -189,7 +190,7 @@ export default function PlantaDetailPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 cascade-item">
         {/* Left Column */}
         <div className="lg:col-span-2 space-y-5">
           {/* Photos */}
