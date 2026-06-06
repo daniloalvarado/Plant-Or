@@ -314,9 +314,9 @@ export default function CatalogPage() {
                             <Leaf className="w-8 h-8 text-muted-foreground" />
                           </div>
                         )}
-                        <div className="px-3 pb-3 pt-1.5 flex flex-col justify-center">
-                          <p className="font-bold italic text-foreground text-sm leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</p>
-                          {p.nombres_comunes && <p className="text-muted-foreground text-xs truncate mt-0.5">{p.nombres_comunes}</p>}
+                        <div className="px-3 pb-3 pt-1.5 flex flex-col justify-center gap-1">
+                          <div className="font-bold italic text-foreground text-sm leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</div>
+                          {p.nombres_comunes && <div className="text-muted-foreground text-xs truncate">{p.nombres_comunes}</div>}
                           <div className="mt-2 pointer-events-auto">
                             <AnimatedButton text="Ficha Técnica" onClick={() => setSelectedPlant(p)} />
                           </div>
