@@ -5,7 +5,7 @@ import { ThemeProvider, useTheme } from '@/components/ThemeProvider'
 import { XCircle } from 'lucide-react'
 import { Toaster } from 'sonner'
 import { esES } from '@clerk/localizations'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { Sidebar } from '@/components/Sidebar'
 import DashboardPage from '@/pages/DashboardPage'
 import ValidacionesPage from '@/pages/ValidacionesPage'
@@ -71,6 +71,11 @@ function RoleCheck({ children }: { children: React.ReactNode }) {
 }
 
 function MainContent() {
+  React.useEffect(() => {
+    document.title = 'Plant-OR Admin';
+    return () => { document.title = 'Plant-OR'; };
+  }, []);
+
   return (
     <>
       <SignedOut>

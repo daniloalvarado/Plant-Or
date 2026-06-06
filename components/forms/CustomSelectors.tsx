@@ -19,13 +19,13 @@ export const RadioSelect = React.memo(function RadioSelect({ options, value, onC
           onPress={() => onChange(opt)}
           style={({ pressed }) => ({
             backgroundColor: pressed 
-              ? (isSelected ? '#15963c' : 'rgba(255,255,255,0.1)') 
-              : (isSelected ? '#1FC451' : 'rgba(255,255,255,0.05)'),
-            borderColor: isSelected ? '#1FC451' : 'transparent',
+              ? (isSelected ? '#15963c' : 'rgba(255,255,255,0.08)') 
+              : (isSelected ? 'rgba(31,196,81,0.2)' : 'rgba(255,255,255,0.04)'),
+            borderColor: isSelected ? '#1FC451' : 'rgba(255,255,255,0.15)',
             borderWidth: 1,
-            borderRadius: 8,
+            borderRadius: 100,
             paddingVertical: 8,
-            paddingHorizontal: 12,
+            paddingHorizontal: 16,
             marginRight: horizontal ? 8 : 0,
             marginBottom: horizontal ? 0 : 8,
             justifyContent: 'center',
@@ -33,8 +33,9 @@ export const RadioSelect = React.memo(function RadioSelect({ options, value, onC
           })}
         >
           <Text style={{ 
-            color: isSelected ? '#08130D' : 'rgba(255,255,255,0.7)',
+            color: isSelected ? '#1FC451' : 'rgba(255,255,255,0.7)',
             fontSize: 13,
+            fontWeight: isSelected ? '600' : '400',
             textAlign: 'center',
             flexShrink: 1,
           }}>
@@ -88,20 +89,21 @@ export const MultiSelect = React.memo(function MultiSelect({ options, value, onC
             onPress={() => toggleOption(opt)}
             style={({ pressed }) => ({
               backgroundColor: pressed 
-                ? (isSelected ? '#15963c' : 'rgba(255,255,255,0.1)') 
-                : (isSelected ? '#1FC451' : 'rgba(255,255,255,0.05)'),
-              borderColor: isSelected ? '#1FC451' : 'transparent',
+                ? (isSelected ? '#15963c' : 'rgba(255,255,255,0.08)') 
+                : (isSelected ? 'rgba(31,196,81,0.2)' : 'rgba(255,255,255,0.04)'),
+              borderColor: isSelected ? '#1FC451' : 'rgba(255,255,255,0.15)',
               borderWidth: 1,
-              borderRadius: 8,
+              borderRadius: 100,
               paddingVertical: 8,
-              paddingHorizontal: 12,
+              paddingHorizontal: 16,
               justifyContent: 'center',
               alignItems: 'center',
             })}
           >
             <Text style={{ 
-              color: isSelected ? '#08130D' : 'rgba(255,255,255,0.7)',
+              color: isSelected ? '#1FC451' : 'rgba(255,255,255,0.7)',
               fontSize: 13,
+              fontWeight: isSelected ? '600' : '400',
               textAlign: 'center',
               flexShrink: 1,
             }}>
