@@ -24,7 +24,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Altura total (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura total (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 15"
@@ -34,7 +34,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">CAP (cm)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>CAP (cm)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 50"
@@ -47,7 +47,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Ø Copa Paralelo (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Paralelo (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 5"
@@ -57,7 +57,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Ø Copa Perpend. (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Perpend. (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 6"
@@ -69,7 +69,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Altura inicio copa (m)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura inicio copa (m)</Label>
           <Input 
             keyboardType="numeric" 
             placeholder="Ej. 2"
@@ -80,7 +80,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Raíces visibles</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Raíces visibles</Label>
           <RadioSelect 
             options={['Sin raíces visibles', 'Raíces tablares', 'Raíces zancudas', 'Raíces superficiales', 'Raíces adventicias', 'Otro']}
             value={getField('dasometria', 'raices_visibles')}
@@ -94,7 +94,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         <H4 color="#1FC451">II. Tronco y corteza</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Número de troncos desde la base</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de troncos desde la base</Label>
           <Input 
             keyboardType="numeric" 
             placeholder="Ej. 1"
@@ -105,7 +105,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Forma del tronco</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma del tronco</Label>
           <RadioSelect 
             options={['Recto', 'Inclinado (izq/der/calle/casa)', 'Torcido', 'Otro']}
             value={getField('tronco', 'forma')}
@@ -114,7 +114,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Corteza externa</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Corteza externa</Label>
           <RadioSelect 
             options={['Lisa', 'Rugosa', 'Áspera', 'Agrietada', 'Estriada', 'Escamosa', 'Con placas', 'Laminar', 'Otro']}
             value={getField('tronco', 'corteza_externa')}
@@ -123,7 +123,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Color de corteza (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color de corteza (Múltiple)</Label>
           <MultiSelect 
             options={['Gris', 'Marrón', 'Verde', 'Rojiza', 'Negruzca', 'Otro']}
             value={getField('tronco', 'color_corteza') || []}
@@ -133,7 +133,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Lenticelas</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Lenticelas</Label>
             <RadioSelect 
               options={['Con lenticelas', 'Sin lenticelas']}
               value={getField('tronco', 'lenticelas')}
@@ -141,7 +141,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Espinas</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Espinas</Label>
             <RadioSelect 
               options={['Con espinas', 'Sin espinas']}
               value={getField('tronco', 'espinas_tronco')}
@@ -151,7 +151,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Olor de corteza</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Olor de corteza</Label>
           <RadioSelect 
             options={['Sin olor', 'Aromático', 'Cítrico', 'Resinoso', 'Desagradable', 'Otro']}
             value={getField('tronco', 'olor_corteza')}
@@ -164,7 +164,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">III. Exudado</H4>
         <YStack gap="$2">
-          <Label color="#ffffff">Presencia</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia</Label>
           <RadioSelect 
             options={['Sí', 'No']}
             horizontal
@@ -176,7 +176,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         {getField('exudado', 'presencia') === 'Sí' && (
           <>
             <YStack gap="$2">
-              <Label color="#ffffff">Tipo</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo</Label>
               <RadioSelect 
                 options={['Savia', 'Látex', 'Resina', 'Goma']}
                 value={getField('exudado', 'tipo')}
@@ -184,7 +184,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
               />
             </YStack>
             <YStack gap="$2">
-              <Label color="#ffffff">Color al corte</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color al corte</Label>
               <RadioSelect 
                 options={['Incoloro', 'Blanco', 'Amarillo', 'Rojizo', 'Marrón', 'Otro']}
                 value={getField('exudado', 'color')}
@@ -199,7 +199,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">IV. Ramificación y copa</H4>
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de ramificación</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de ramificación</Label>
           <RadioSelect 
             options={['Hacia arriba', 'Hélice', 'Colgantes', 'Irregulares', 'Otro']}
             value={getField('copa', 'tipo_ramificacion')}
@@ -208,7 +208,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Forma de copa</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma de copa</Label>
           <RadioSelect 
             options={['Redondeada', 'Alargada', 'Extendida', 'Tipo paraguas', 'Irregular', 'Otro']}
             value={getField('copa', 'forma_copa')}
@@ -217,7 +217,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Densidad de copa</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Densidad de copa</Label>
           <RadioSelect 
             options={['Densa', 'Media', 'Rala']}
             value={getField('copa', 'densidad_copa')}
@@ -231,7 +231,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         <H4 color="#1FC451">V. Hojas</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de hoja</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>
           <RadioSelect 
             options={['Simple', 'Compuesta']}
             horizontal
@@ -241,7 +241,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Disposición (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Disposición (Múltiple)</Label>
           <MultiSelect 
             options={['Alternas-dísticas', 'Alternas-espiraladas', 'Opuestas-dísticas', 'Opuestas-decusadas', 'Agrupadas al final', 'No agrupadas']}
             value={getField('hojas', 'disposicion_hoja') || []}
@@ -251,7 +251,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Forma</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>
             <RadioSelect 
               options={['Ovalada', 'Alargada', 'Redonda', 'Acorazonada', 'Palmada', 'Otro']}
               value={getField('hojas', 'forma_hoja')}
@@ -259,7 +259,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Borde</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Borde</Label>
             <RadioSelect 
               options={['Entero', 'Dentado', 'Ondulado', 'Otro']}
               value={getField('hojas', 'borde_hoja')}
@@ -270,7 +270,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Textura</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Textura</Label>
             <RadioSelect 
               options={['Papirácea', 'Cartácea', 'Coriácea']}
               value={getField('hojas', 'textura_hoja')}
@@ -278,7 +278,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Color del envés</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color del envés</Label>
             <RadioSelect 
               options={['Verde claro', 'Verde oscuro', 'Grisáceo', 'Marrón', 'Blanquecino', 'Otro']}
               value={getField('hojas', 'color_enves')}
@@ -288,7 +288,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Presencia de pelos (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia de pelos (Múltiple)</Label>
           <MultiSelect 
             options={['Sin pelos (haz)', 'Con pelos (haz)', 'Sin pelos (envés)', 'Con pelos (envés)']}
             value={getField('hojas', 'pelos_hoja') || []}
@@ -297,7 +297,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de peciolo</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de peciolo</Label>
           <RadioSelect 
             options={['Circular', 'Plano', 'Sésil']}
             value={getField('hojas', 'tipo_peciolo')}
@@ -308,7 +308,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         {getField('hojas', 'tipo_peciolo') !== 'Sésil' && (
           <XStack gap="$3">
             <YStack flex={1} gap="$2">
-              <Label color="#ffffff">Longitud peciolo (cm)</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Longitud peciolo (cm)</Label>
               <Input 
                 keyboardType="numeric" 
                 placeholder="Ej. 2"
@@ -318,7 +318,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
               />
             </YStack>
             <YStack flex={1} gap="$2">
-              <Label color="#ffffff">Ø peciolo (mm)</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø peciolo (mm)</Label>
               <Input 
                 keyboardType="numeric" 
                 placeholder="Ej. 5"
@@ -331,7 +331,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         )}
 
         <YStack gap="$2">
-          <Label color="#ffffff">Peciolo con pulvino</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Peciolo con pulvino</Label>
           <RadioSelect 
             options={['Sí', 'No']}
             horizontal

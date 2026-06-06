@@ -23,7 +23,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         <H4 color="#1FC451">I. Datos dasométricos</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Altura total aproximada (m)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura total aproximada (m)</Label>
           <Input 
             keyboardType="numeric" 
             placeholder="Ej. 2"
@@ -35,7 +35,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Ø Copa Paralelo (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Paralelo (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 1.5"
@@ -45,7 +45,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Ø Copa Perpend. (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Perpend. (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 1.5"
@@ -57,7 +57,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Altura inicio ramificación (m)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura inicio ramificación (m)</Label>
           <Input 
             keyboardType="numeric" 
             placeholder="Ej. 0.5"
@@ -68,7 +68,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Número de tallos</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de tallos</Label>
           <RadioSelect 
             options={['Un tallo principal', 'Varios tallos desde la base', 'Otro']}
             value={getField('dasometria', 'numero_tallos')}
@@ -77,7 +77,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Forma general del arbusto</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma general del arbusto</Label>
           <RadioSelect 
             options={['Redondeado', 'Compacto', 'Extendido', 'Irregular', 'Colgante', 'Otro']}
             value={getField('dasometria', 'forma_general')}
@@ -86,7 +86,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Densidad del follaje</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Densidad del follaje</Label>
           <RadioSelect 
             options={['Denso', 'Medio', 'Ralo']}
             value={getField('dasometria', 'densidad_follaje')}
@@ -100,7 +100,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         <H4 color="#1FC451">II. Tallo y ramificación</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de ramificación</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de ramificación</Label>
           <RadioSelect 
             options={['Erecta', 'Abierta', 'Colgante', 'Irregular', 'Otro']}
             value={getField('tallo', 'tipo_ramificacion')}
@@ -109,7 +109,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de tallo</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de tallo</Label>
           <RadioSelect 
             options={['Leñoso', 'Semileñoso', 'Flexible', 'Otro']}
             value={getField('tallo', 'tipo_tallo')}
@@ -118,7 +118,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Presencia de espinas</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia de espinas</Label>
           <RadioSelect 
             options={['Con espinas', 'Sin espinas']}
             value={getField('tallo', 'presencia_espinas')}
@@ -132,7 +132,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         <H4 color="#1FC451">III. Hojas</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de hoja</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>
           <RadioSelect 
             options={['Simple', 'Compuesta', 'Otro']}
             value={getField('hojas', 'tipo_hoja')}
@@ -142,7 +142,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
 
         {getField('hojas', 'tipo_hoja') === 'Compuesta' && (
           <YStack gap="$2">
-            <Label color="#ffffff">Si es compuesta</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Si es compuesta</Label>
             <RadioSelect 
               options={['Bifoliada', 'Trifoliada', 'Palmada', 'Pinnada', 'Bipinnada']}
               value={getField('hojas', 'hoja_compuesta_tipo')}
@@ -153,7 +153,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Forma</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>
             <RadioSelect 
               options={['Ovalada', 'Alargada', 'Redonda', 'Lanceolada', 'Acorazonada', 'Otro']}
               value={getField('hojas', 'forma_hoja')}
@@ -161,7 +161,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Disposición</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Disposición</Label>
             <RadioSelect 
               options={['Alternas', 'Opuestas', 'Otro']}
               value={getField('hojas', 'disposicion_hoja')}
@@ -172,7 +172,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Borde</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Borde</Label>
             <RadioSelect 
               options={['Entero', 'Dentado', 'Ondulado', 'Otro']}
               value={getField('hojas', 'borde_hoja')}
@@ -180,7 +180,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Color</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color</Label>
             <RadioSelect 
               options={['Verde claro', 'Verde oscuro', 'Variegado', 'Rojizo', 'Otro']}
               value={getField('hojas', 'color_hoja')}

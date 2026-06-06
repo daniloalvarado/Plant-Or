@@ -663,7 +663,7 @@ export default function RegistroScreen() {
                 <H4 color="#1FC451" mb="$2">Bloque 1: Datos Personales</H4>
                 <YStack gap="$4">
                   <YStack gap="$2" mb="$4">
-                    <Label color="#ffffff">¿Cómo estás registrando esta planta?</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>¿Cómo estás registrando esta planta?</Label>
                     {derivedRole ? (
                       <Card backgroundColor="rgba(31, 196, 81, 0.1)" borderColor="rgba(31, 196, 81, 0.3)" borderWidth={1} padding="$3">
                         <XStack gap="$2" style={{ alignItems: "center" }}>
@@ -709,7 +709,7 @@ export default function RegistroScreen() {
                   </YStack>
 
                   <YStack gap="$2">
-                    <Label color="#ffffff">Nombre completo *</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre completo *</Label>
                     {/* Email is always required */}
                     <Input
                       value={nombre}
@@ -723,7 +723,7 @@ export default function RegistroScreen() {
                   </YStack>
 
                   <YStack gap="$2">
-                    <Label color="#ffffff">Email *</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Email *</Label>
                     <Input
                       value={email}
                       onChangeText={setEmail}
@@ -740,7 +740,7 @@ export default function RegistroScreen() {
                   {rolRegistro === 'estudiante' && (
                     <>
                       <YStack gap="$2">
-                        <Label color="#ffffff">DNI *</Label>
+                        <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>DNI *</Label>
                         <Input
                           value={dni}
                           onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} // Solo permite números
@@ -755,7 +755,7 @@ export default function RegistroScreen() {
                       </YStack>
 
                       <YStack gap="$2">
-                        <Label color="#ffffff">Facultad *</Label>
+                        <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Facultad *</Label>
                         <Input
                           value={facultad}
                           onChangeText={setFacultad}
@@ -768,7 +768,7 @@ export default function RegistroScreen() {
                       </YStack>
 
                       <YStack gap="$2">
-                        <Label color="#ffffff">Escuela *</Label>
+                        <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Escuela *</Label>
                         <Input
                           value={escuela}
                           onChangeText={setEscuela}
@@ -781,7 +781,7 @@ export default function RegistroScreen() {
                       </YStack>
 
                       <YStack gap="$2">
-                        <Label color="#ffffff">Curso</Label>
+                        <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Curso</Label>
                         <Input
                           value={curso}
                           onChangeText={setCurso}
@@ -794,7 +794,7 @@ export default function RegistroScreen() {
                       </YStack>
 
                       <YStack gap="$2">
-                        <Label color="#ffffff">Día de clase</Label>
+                        <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Día de clase</Label>
                         <Input
                           value={diaClase}
                           onChangeText={setDiaClase}
@@ -866,7 +866,7 @@ export default function RegistroScreen() {
                   </Paragraph>
 
                   <YStack gap="$2">
-                    <Label color="#ffffff">Distrito</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Distrito</Label>
                     <Input
                       size="$3"
                       value={distrito}
@@ -880,7 +880,7 @@ export default function RegistroScreen() {
                   </YStack>
 
                   <YStack gap="$2">
-                    <Label color="#ffffff">Dirección / Referencia</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Dirección / Referencia</Label>
                     <Input
                       size="$3"
                       value={direccion}
@@ -895,7 +895,7 @@ export default function RegistroScreen() {
 
                   <XStack gap="$3">
                     <YStack flex={1} gap="$2">
-                      <Label color="#ffffff">Tipo de ubicación 1</Label>
+                      <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de ubicación 1</Label>
                       <RadioSelect 
                         options={['Jirón', 'Avenida', 'Calle', 'Pasaje', 'Parque']}
                         value={tipoUbicacion}
@@ -903,7 +903,7 @@ export default function RegistroScreen() {
                       />
                     </YStack>
                     <YStack flex={1} gap="$2">
-                      <Label color="#ffffff">Tipo de ubicación 2</Label>
+                      <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de ubicación 2</Label>
                       <RadioSelect 
                         options={['Vereda', 'Berma central']}
                         value={tipoUbicacion2}
@@ -914,7 +914,7 @@ export default function RegistroScreen() {
 
                   <XStack gap="$3">
                     <YStack flex={1} gap="$2">
-                      <Label color="#ffffff">N° de Casa</Label>
+                      <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>N° de Casa</Label>
                       <Input
                         size="$3"
                         value={numeroCasa}
@@ -927,7 +927,7 @@ export default function RegistroScreen() {
                       />
                     </YStack>
                     <YStack flex={1} gap="$2">
-                      <Label color="#ffffff">Sustrato / Ubicación</Label>
+                      <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Sustrato / Ubicación</Label>
                       <RadioSelect 
                         options={['Tierra', 'Macetero']}
                         value={sustratoPlanta}
@@ -978,7 +978,7 @@ export default function RegistroScreen() {
                             </View>
                           )}
                           <YStack flex={1}>
-                            <Label color="#ffffff">{item.label}</Label>
+                            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>{item.label}</Label>
                             {uri
                               ? <Paragraph color="#1FC451" size="$1">✓ Capturada</Paragraph>
                               : <Paragraph color="rgba(255,255,255,0.4)" size="$1">Sin foto</Paragraph>
@@ -1027,7 +1027,7 @@ export default function RegistroScreen() {
                         <XStack style={{ alignItems: "center" }} gap="$3">
                           <Image source={{ uri }} style={{ width: 56, height: 56, borderRadius: 8 }} />
                           <YStack flex={1}>
-                            <Label color="#ffffff">Foto Extra {idx + 1}</Label>
+                            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Foto Extra {idx + 1}</Label>
                             <Paragraph color="#1FC451" size="$1">✓ Agregada</Paragraph>
                           </YStack>
                           <Button 
@@ -1104,7 +1104,7 @@ export default function RegistroScreen() {
 
                   {/* Identificación botánica */}
                   <YStack gap="$2">
-                    <Label color="#ffffff">Nombre local / común</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre local / común</Label>
                     <Input
                       value={nombresComunes}
                       onChangeText={setNombresComunes}
@@ -1117,7 +1117,7 @@ export default function RegistroScreen() {
                   </YStack>
 
                   <YStack gap="$2">
-                    <Label color="#ffffff">Nombre científico</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre científico</Label>
                     <Input
                       value={nombreCientifico}
                       onChangeText={setNombreCientifico}
@@ -1131,7 +1131,7 @@ export default function RegistroScreen() {
                   </YStack>
 
                   <YStack gap="$2">
-                    <Label color="#ffffff">Familia botánica</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Familia botánica</Label>
                     <Input
                       value={familia}
                       onChangeText={setFamilia}
@@ -1145,7 +1145,7 @@ export default function RegistroScreen() {
                   </YStack>
 
                   <YStack gap="$2">
-                    <Label color="#ffffff">1. Hábito de la planta *</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>1. Hábito de la planta *</Label>
                     <RadioSelect 
                       options={['Árbol', 'Palmera', 'Arbusto', 'Liana', 'Hierba']}
                       value={datosBotanicos.habito}
@@ -1154,7 +1154,7 @@ export default function RegistroScreen() {
                   </YStack>
 
                   <YStack gap="$2">
-                    <Label color="#ffffff">2. Tipo de vida *</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>2. Tipo de vida *</Label>
                     <RadioSelect 
                       options={['Terrestre', 'Epífita', 'Parásita']}
                       value={datosBotanicos.tipoVida}

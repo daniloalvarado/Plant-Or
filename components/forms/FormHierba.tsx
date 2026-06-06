@@ -24,7 +24,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
         
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Altura total (cm)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura total (cm)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 40"
@@ -34,7 +34,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Cobertura Ø (cm)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Cobertura Ø (cm)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 60"
@@ -46,7 +46,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Número de tallos</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de tallos</Label>
           <RadioSelect 
             options={['Uno', 'Varios', 'Muchos', 'Sin tallo visible', 'Otro']}
             value={getField('dasometria', 'numero_tallos')}
@@ -60,7 +60,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
         <H4 color="#1FC451">II. Crecimiento y tallo</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo crecimiento</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo crecimiento</Label>
           <RadioSelect 
             options={['Erecta', 'Rastrera', 'Colgante', 'En roseta', 'Formando mata', 'Otro']}
             value={getField('crecimiento', 'tipo_crecimiento')}
@@ -69,7 +69,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo tallo</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo tallo</Label>
           <RadioSelect 
             options={['Herbáceo', 'Carnoso', 'Hueco', 'Rastrero', 'Trepador', 'Sin tallo', 'Otro']}
             value={getField('crecimiento', 'tipo_tallo')}
@@ -78,7 +78,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
         </YStack>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Exudado al corte</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Exudado al corte</Label>
           <RadioSelect 
             options={['Sí', 'No']}
             value={getField('crecimiento', 'exudado_corte')}
@@ -92,7 +92,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
         <H4 color="#1FC451">III. Hojas</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de hoja</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>
           <RadioSelect 
             options={['Simple', 'Compuesta', 'Otro']}
             value={getField('hojas', 'tipo_hoja')}
@@ -102,7 +102,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
 
         {getField('hojas', 'tipo_hoja') === 'Compuesta' && (
           <YStack gap="$2">
-            <Label color="#ffffff">Si es compuesta</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Si es compuesta</Label>
             <RadioSelect 
               options={['Bifoliada', 'Trifoliada', 'Palmada', 'Pinnada', 'Bipinnada']}
               value={getField('hojas', 'hoja_compuesta_tipo')}
@@ -113,7 +113,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Forma</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>
             <RadioSelect 
               options={['Ovalada', 'Alargada', 'Redonda', 'Lanceolada', 'Acorazonada', 'Otro']}
               value={getField('hojas', 'forma_hoja')}
@@ -121,7 +121,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Disposición</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Disposición</Label>
             <RadioSelect 
               options={['Alternas', 'Opuestas', 'En roseta', 'Otro']}
               value={getField('hojas', 'disposicion_hoja')}
@@ -132,7 +132,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Borde</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Borde</Label>
             <RadioSelect 
               options={['Entero', 'Dentado', 'Ondulado', 'Otro']}
               value={getField('hojas', 'borde_hoja')}
@@ -140,7 +140,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Color</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color</Label>
             <RadioSelect 
               options={['Verde claro', 'Verde oscuro', 'Variegado', 'Rojizo', 'Otro']}
               value={getField('hojas', 'color_hoja')}
@@ -150,7 +150,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
         </XStack>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Olor al estrujar</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Olor al estrujar</Label>
           <RadioSelect 
             options={['Sin olor', 'Aromático', 'Cítrico', 'Desagradable', 'Otro']}
             value={getField('hojas', 'olor_hoja')}

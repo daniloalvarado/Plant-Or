@@ -24,7 +24,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
         <H4 color="#1FC451">Datos Reproductivos: Flores</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Presencia</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia</Label>
           <RadioSelect 
             options={['Con flores', 'Sin flores visibles']}
             value={getField('reproductivo', 'flor_presencia')}
@@ -35,7 +35,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
         {getField('reproductivo', 'flor_presencia') === 'Con flores' && (
           <>
             <YStack gap="$2">
-              <Label color="#ffffff">Color de pétalos</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color de pétalos</Label>
               <RadioSelect 
                 options={['Blanco', 'Amarillo', 'Rojo', 'Rosado', 'Morado', 'Anaranjado', 'Verde', 'Crema', 'Otro']}
                 value={getField('reproductivo', 'flor_color')}
@@ -45,7 +45,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
 
             <XStack gap="$3">
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Largo flor (cm)</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo flor (cm)</Label>
                 <Input 
                   keyboardType="numeric" 
                   placeholder="Ej. 5"
@@ -55,7 +55,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                 />
               </YStack>
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Ancho flor (cm)</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho flor (cm)</Label>
                 <Input 
                   keyboardType="numeric" 
                   placeholder="Ej. 5"
@@ -67,7 +67,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             </XStack>
 
             <YStack gap="$2">
-              <Label color="#ffffff">Agrupación</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Agrupación</Label>
               <RadioSelect 
                 options={['Solitaria', 'En racimo', 'En manojo', 'En espiga', 'En cabezuela', 'Otro']}
                 value={getField('reproductivo', 'flor_agrupacion')}
@@ -76,7 +76,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             </YStack>
             
             <YStack gap="$2">
-              <Label color="#ffffff">Olor</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Olor</Label>
               <RadioSelect 
                 options={['Sin olor', 'Aromático', 'Dulce', 'Desagradable', 'Otro']}
                 value={getField('reproductivo', 'flor_olor')}
@@ -92,7 +92,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
         <H4 color="#1FC451">Datos Reproductivos: Frutos</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Presencia</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia</Label>
           <RadioSelect 
             options={['Con frutos', 'Sin frutos visibles']}
             value={getField('reproductivo', 'fruto_presencia')}
@@ -104,7 +104,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
           <>
             <XStack gap="$3">
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Textura</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Textura</Label>
                 <RadioSelect 
                   options={['Carnoso', 'Seco']}
                   value={getField('reproductivo', 'fruto_textura')}
@@ -112,7 +112,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                 />
               </YStack>
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Estado al madurar</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Estado al madurar</Label>
                 <RadioSelect 
                   options={['Entero', 'Se abre (partido)']}
                   value={getField('reproductivo', 'fruto_estado_madurar')}
@@ -122,7 +122,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             </XStack>
 
             <YStack gap="$2">
-              <Label color="#ffffff">Forma</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>
               <RadioSelect 
                 options={['Redondo', 'Ovalado', 'Alargado', 'Aplanado', 'Curvo', 'Irregular', 'Otro']}
                 value={getField('reproductivo', 'fruto_forma')}
@@ -132,7 +132,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
 
             <XStack gap="$3">
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Largo fruto (cm)</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo fruto (cm)</Label>
                 <Input 
                   keyboardType="numeric" 
                   placeholder="Ej. 10"
@@ -142,7 +142,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                 />
               </YStack>
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Ancho fruto (cm)</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho fruto (cm)</Label>
                 <Input 
                   keyboardType="numeric" 
                   placeholder="Ej. 8"
@@ -154,7 +154,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             </XStack>
 
             <YStack gap="$2">
-              <Label color="#ffffff">Color maduro</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color maduro</Label>
               <RadioSelect 
                 options={['Verde', 'Amarillo', 'Rojo', 'Anaranjado', 'Morado', 'Negro', 'Marrón', 'Crema', 'Otro']}
                 value={getField('reproductivo', 'fruto_color')}
@@ -163,7 +163,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             </YStack>
             
             <YStack gap="$2">
-              <Label color="#ffffff">Superficie</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Superficie</Label>
               <RadioSelect 
                 options={['Lisa', 'Brillante', 'Opaca', 'Rugosa', 'Con estrías', 'Con surcos', 'Escamosa', 'Fibrosa', 'Espinosa', 'Aguijonosa', 'Verrugosa', 'Con costillas', 'Otro']}
                 value={getField('reproductivo', 'fruto_superficie')}
@@ -178,7 +178,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">Datos Reproductivos: Semillas</H4>
         <YStack gap="$2">
-          <Label color="#ffffff">Presencia visible</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia visible</Label>
           <RadioSelect 
             options={['Sí', 'No']}
             horizontal
@@ -190,7 +190,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
         {getField('reproductivo', 'semilla_presencia') === 'Sí' && (
           <>
             <YStack gap="$2">
-              <Label color="#ffffff">Número de semillas (Aprox)</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de semillas (Aprox)</Label>
               <Input 
                 keyboardType="numeric" 
                 placeholder="Ej. 5"
@@ -201,7 +201,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             </YStack>
             <XStack gap="$3">
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Largo sem. (cm/mm)</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo sem. (cm/mm)</Label>
                 <Input 
                   keyboardType="numeric" 
                   placeholder="Ej. 1"
@@ -211,7 +211,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                 />
               </YStack>
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Ancho sem. (cm/mm)</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho sem. (cm/mm)</Label>
                 <Input 
                   keyboardType="numeric" 
                   placeholder="Ej. 0.5"
@@ -222,7 +222,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
               </YStack>
             </XStack>
             <YStack gap="$2">
-              <Label color="#ffffff">Color cáscara</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color cáscara</Label>
               <RadioSelect 
                 options={['Blanco', 'Crema', 'Marrón', 'Negro', 'Rojizo', 'Otro']}
                 value={getField('reproductivo', 'semilla_color')}
@@ -238,7 +238,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
         <H4 color="#1FC451">Estado e Impacto</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Estado Fenológico (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Estado Fenológico (Múltiple)</Label>
           <MultiSelect 
             options={['Vegetativo (solo hojas)', 'Con flores', 'Con frutos', 'Sin hojas']} 
             value={getField('compartido', 'estado_fenologico')} 
@@ -247,7 +247,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Estado del individuo (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Estado del individuo (Múltiple)</Label>
           <MultiSelect 
             options={['Bueno', 'Regular', 'Malo', 'Podado', 'Enfermo', 'Con plagas', 'Daño mecánico']} 
             value={getField('compartido', 'estado_individuo')} 
@@ -256,7 +256,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Valor Ornamental (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Valor Ornamental (Múltiple)</Label>
           <MultiSelect 
             options={['Da sombra', 'Flores vistosas', 'Frutos vistosos', 'Copa atractiva', 'Atrae fauna', 'Valor cultural', 'Valor medicinal', 'Otro']} 
             value={getField('compartido', 'valor_ornamental')} 
@@ -265,7 +265,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Impacto Urbano (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Impacto Urbano (Múltiple)</Label>
           <MultiSelect 
             options={['No genera daño', 'Ensucia la vía', 'Obstruye desagüe', 'Raíces rompen piso', 'Afecta cimientos', 'Interfiere cableado', 'Riesgo de caída', 'Otro']} 
             value={getField('compartido', 'impacto_urbano')} 

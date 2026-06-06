@@ -24,7 +24,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
         
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Longitud visible (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Longitud visible (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 5"
@@ -34,7 +34,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Altura máxima (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura máxima (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 10"
@@ -46,7 +46,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Diámetro tallo principal (cm)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Diámetro tallo principal (cm)</Label>
           <Input 
             keyboardType="numeric" 
             placeholder="Ej. 5"
@@ -57,7 +57,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Número de tallos</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de tallos</Label>
           <RadioSelect 
             options={['Un tallo principal', 'Varios tallos', 'Otro']}
             value={getField('dasometria', 'numero_tallos')}
@@ -71,7 +71,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
         <H4 color="#1FC451">II. Crecimiento y Soporte</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de soporte</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de soporte</Label>
           <RadioSelect 
             options={['Árbol', 'Arbusto', 'Cerca', 'Suelo', 'Múltiples', 'Otro']}
             value={getField('crecimiento', 'tipo_soporte')}
@@ -80,7 +80,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Forma de crecimiento</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma de crecimiento</Label>
           <RadioSelect 
             options={['Trepadora', 'Enredadera', 'Colgante', 'Rastrera', 'Escandente', 'Otro']}
             value={getField('crecimiento', 'forma_crecimiento')}
@@ -89,7 +89,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Mecanismo fijación (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Mecanismo fijación (Múltiple)</Label>
           <MultiSelect 
             options={['Zarcillos', 'Raíces adherentes', 'Espinas/ganchos', 'Enrollamiento', 'No visible', 'Otro']}
             value={getField('crecimiento', 'mecanismo_fijacion') || []}
@@ -98,7 +98,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
         </YStack>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Presencia de espinas</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia de espinas</Label>
           <RadioSelect 
             options={['Con espinas', 'Sin espinas']}
             value={getField('crecimiento', 'presencia_espinas')}
@@ -112,7 +112,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
         <H4 color="#1FC451">III. Hojas</H4>
         
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de hoja</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>
           <RadioSelect 
             options={['Simple', 'Compuesta', 'Otro']}
             value={getField('hojas', 'tipo_hoja')}
@@ -122,7 +122,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
 
         {getField('hojas', 'tipo_hoja') === 'Compuesta' && (
           <YStack gap="$2">
-            <Label color="#ffffff">Si es compuesta</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Si es compuesta</Label>
             <RadioSelect 
               options={['Bifoliada', 'Trifoliada', 'Palmada', 'Pinnada', 'Bipinnada']}
               value={getField('hojas', 'hoja_compuesta_tipo')}
@@ -133,7 +133,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Forma</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>
             <RadioSelect 
               options={['Ovalada', 'Alargada', 'Redonda', 'Lanceolada', 'Acorazonada', 'Otro']}
               value={getField('hojas', 'forma_hoja')}
@@ -141,7 +141,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Disposición</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Disposición</Label>
             <RadioSelect 
               options={['Alternas', 'Opuestas', 'Otro']}
               value={getField('hojas', 'disposicion_hoja')}
@@ -152,7 +152,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Borde</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Borde</Label>
             <RadioSelect 
               options={['Entero', 'Dentado', 'Ondulado', 'Otro']}
               value={getField('hojas', 'borde_hoja')}
@@ -160,7 +160,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Color</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color</Label>
             <RadioSelect 
               options={['Verde claro', 'Verde oscuro', 'Variegado', 'Rojizo', 'Otro']}
               value={getField('hojas', 'color_hoja')}

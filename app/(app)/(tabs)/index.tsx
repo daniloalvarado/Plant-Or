@@ -207,10 +207,15 @@ export default function HomeScreen() {
               onPress={() => setActiveHabit(habit)}
               style={[
                 styles.categoryBadge,
-                activeHabit === habit ? styles.activeCategoryBadge : { backgroundColor: "rgba(255,255,255,0.05)" }
+                activeHabit === habit 
+                  ? { backgroundColor: 'rgba(31,196,81,0.2)', borderColor: '#1FC451' } 
+                  : { backgroundColor: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.15)' }
               ]}
             >
-              <Text style={activeHabit === habit ? styles.activeCategoryText : { color: theme.icon }}>
+              <Text style={[
+                activeHabit === habit ? { color: '#1FC451', fontWeight: "bold" } : { color: 'rgba(255,255,255,0.7)' },
+                { fontSize: 13 }
+              ]}>
                 {habit}
               </Text>
             </Pressable>
@@ -499,16 +504,20 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   categoryBadge: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 100,
     marginRight: 10,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   activeCategoryBadge: {
-    backgroundColor: "#1FC451",
+    backgroundColor: "rgba(31,196,81,0.2)",
+    borderColor: "#1FC451",
   },
   activeCategoryText: {
-    color: "#fff",
+    color: "#1FC451",
     fontWeight: "bold",
   },
   gridContainer: {

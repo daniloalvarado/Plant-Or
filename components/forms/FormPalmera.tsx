@@ -24,7 +24,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Altura total (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura total (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 10"
@@ -34,7 +34,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">CAP a 1.30m (cm)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>CAP a 1.30m (cm)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 30"
@@ -47,7 +47,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Ø Copa Paralelo (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Paralelo (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 4"
@@ -57,7 +57,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Ø Copa Perpend. (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Perpend. (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 4"
@@ -69,7 +69,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Altura inicio copa (m)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura inicio copa (m)</Label>
           <Input 
             keyboardType="numeric" 
             placeholder="Ej. 6"
@@ -80,7 +80,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Número de tallos</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de tallos</Label>
           <RadioSelect 
             options={['Un solo tallo', 'Varios tallos', 'Otro']}
             value={getField('dasometria', 'numero_tallos')}
@@ -89,7 +89,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Raíces visibles</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Raíces visibles</Label>
           <RadioSelect 
             options={['Sin raíces visibles', 'Superficiales', 'Zancudas', 'Soporte', 'Adventicias', 'Otro']}
             value={getField('dasometria', 'raices_visibles')}
@@ -114,7 +114,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">III. Tallo (estípite)</H4>
         <YStack gap="$2">
-          <Label color="#ffffff">Características (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Características (Múltiple)</Label>
           <MultiSelect 
             options={['Liso', 'Anillos visibles', 'Con fibras', 'Restos de hojas', 'Con espinas', 'Sin espinas', 'Otro']}
             value={getField('tallo', 'caracteristicas') || []}
@@ -127,7 +127,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">IV. Hojas</H4>
         <YStack gap="$2">
-          <Label color="#ffffff">Tipo de hoja</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>
           <RadioSelect 
             options={['Pluma (pinnada)', 'Abanico (palmada)', 'Simple entera', 'Simple bífida', 'Otro']}
             value={getField('hojas', 'tipo')}
@@ -136,7 +136,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         </YStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Segmentos (Múltiple)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Segmentos (Múltiple)</Label>
           <MultiSelect 
             options={['Un plano', 'Varios planos', 'Rígidos', 'Colgantes', 'Otro']}
             value={getField('hojas', 'segmentos') || []}
@@ -146,7 +146,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Largo hoja (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo hoja (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 2"
@@ -156,7 +156,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Ancho hoja (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho hoja (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 1"
@@ -169,7 +169,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
 
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Largo peciolo (m)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo peciolo (m)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 0.5"
@@ -179,7 +179,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
             />
           </YStack>
           <YStack flex={1} gap="$2">
-            <Label color="#ffffff">Ø peciolo (cm)</Label>
+            <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø peciolo (cm)</Label>
             <Input 
               keyboardType="numeric" 
               placeholder="Ej. 5"
@@ -191,7 +191,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff">Color</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color</Label>
           <RadioSelect 
             options={['Verde claro', 'Verde oscuro', 'Verde azulado', 'Amarillento', 'Otro']}
             value={getField('hojas', 'color_hoja')}
@@ -214,7 +214,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">VI. Inflorescencia</H4>
         <YStack gap="$2">
-          <Label color="#ffffff">Presencia</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia</Label>
           <RadioSelect 
             options={['Con inflorescencia', 'Sin inflorescencia visible']}
             value={getField('inflorescencia', 'inflorescencia_presencia')}
@@ -225,7 +225,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         {getField('inflorescencia', 'inflorescencia_presencia') === 'Con inflorescencia' && (
           <>
             <YStack gap="$2">
-              <Label color="#ffffff">Posición (Múltiple)</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Posición (Múltiple)</Label>
               <MultiSelect 
                 options={['Interfoliar (entre hojas)', 'Infrafoliar (debajo de hojas)', 'Axilar', 'Apical', 'Otro']}
                 value={getField('inflorescencia', 'inflorescencia_posicion') || []}
@@ -235,7 +235,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
             
             <XStack gap="$3">
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Forma</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>
                 <RadioSelect 
                   options={['Erecta', 'Colgante', 'Otro']}
                   value={getField('inflorescencia', 'inflorescencia_forma')}
@@ -243,7 +243,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
                 />
               </YStack>
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff">Presencia de espata</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia de espata</Label>
                 <RadioSelect 
                   options={['Sí', 'No']}
                   value={getField('inflorescencia', 'inflorescencia_espata')}
