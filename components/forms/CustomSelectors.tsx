@@ -16,7 +16,6 @@ export const RadioSelect = React.memo(function RadioSelect({ options, value, onC
       return (
         <Pressable
           key={opt}
-          delayPressIn={0}
           onPress={() => onChange(opt)}
           style={({ pressed }) => ({
             backgroundColor: pressed 
@@ -87,7 +86,6 @@ export const MultiSelect = React.memo(function MultiSelect({ options, value, onC
         return (
           <Pressable
             key={opt}
-            delayPressIn={0}
             onPress={() => toggleOption(opt)}
             style={({ pressed }) => ({
               backgroundColor: pressed 
