@@ -1,6 +1,6 @@
 import React from 'react';
 import './AnimatedButton.css';
-import { Pointer } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface AnimatedButtonProps {
   text: string;
@@ -10,24 +10,36 @@ interface AnimatedButtonProps {
 
 export function AnimatedButton({ text, onClick, className = '' }: AnimatedButtonProps) {
   return (
-    <button className={`btn-animated shadow-sm ${className}`} onClick={(e) => {
-      e.stopPropagation();
-      onClick?.();
-    }}>
-      <div className="original flex items-center justify-center gap-2 w-full h-full">
-        {text}
-      </div>
-      <div className="letters flex items-center justify-center gap-[1px]">
-        {text.split('').map((char, index) => (
-          <span 
-            key={index} 
-            style={{ 
-              '--delay': `${index * 0.03}s` 
-            } as React.CSSProperties}
-          >
-            {char === ' ' ? '\u00A0' : char}
-          </span>
-        ))}
+    <button 
+      className={cn("btn-animated-new", className)} 
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.();
+      }}
+    >
+      <div className="content-wrapper">
+        <div className="hover-underline-animation">
+          <div className="text-wrapper">
+            <div className="original">
+              {text}
+            </div>
+            <div className="letters">
+              {text.split('').map((char, index) => (
+                <span 
+                  key={index} 
+                  style={{ 
+                    '--delay': ${index * 0.03}s 
+                  } as React.CSSProperties}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+        <svg id="arrow-horizontal" xmlns="http://www.w3.org/2000/svg" width={30} height={10} viewBox="0 0 46 16">
+          <path id="Path_10" data-name="Path 10" d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" transform="translate(30)" fill="currentColor" />
+        </svg>
       </div>
     </button>
   );
