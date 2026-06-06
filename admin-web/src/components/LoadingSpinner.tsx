@@ -13,10 +13,10 @@ export function LoadingSpinner({ text = 'Cargando registros...' }: LoadingSpinne
           {[0, 1, 2, 3, 4].map(i => (
             <div
               key={i}
+              className="bg-loading-spinner"
               style={{
                 width: 6,
                 borderRadius: 3,
-                backgroundColor: '#1FC451',
                 animation: 'wave 1.1s ease-in-out infinite',
                 animationDelay: `${i * 0.12}s`,
               }}

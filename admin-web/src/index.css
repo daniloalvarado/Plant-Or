@@ -392,3 +392,11 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 .dark .text-marker-custom {
   color: #1FC351 !important;
 }
+
+/* Loading Spinner Theme */
+.bg-loading-spinner {
+  background-color: #15803d !important;
+}
+.dark .bg-loading-spinner {
+  background-color: #1FC451 !important;
+}
