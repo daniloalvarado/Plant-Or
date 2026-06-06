@@ -314,7 +314,7 @@ export default function CatalogPage() {
                             <Leaf className="w-8 h-8 text-muted-foreground" />
                           </div>
                         )}
-                        <div className="p-2 flex flex-col justify-center">
+                        <div className="px-3 pb-3 pt-1.5 flex flex-col justify-center">
                           <p className="font-bold italic text-foreground text-sm leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</p>
                           {p.nombres_comunes && <p className="text-muted-foreground text-xs truncate mt-0.5">{p.nombres_comunes}</p>}
                           <div className="mt-2 pointer-events-auto">
@@ -669,7 +669,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
             )}
           </div>
           <div className="pointer-events-auto mt-2 lg:mt-0 w-44">
-            <AnimatedButton text="Ficha Técnica" onClick={() => onPlantClick(activePlant)} icon />
+            <AnimatedButton text="Ficha Técnica" onClick={() => onPlantClick(activePlant)} />
           </div>
         </div>
       )}

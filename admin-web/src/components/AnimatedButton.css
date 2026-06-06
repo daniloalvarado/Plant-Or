@@ -24,7 +24,7 @@
 }
 
 .btn-animated .original {
-  background: #1FC451;
+  background: #16a34a;
   color: #ffffff;
   display: grid;
   inset: 0;
@@ -47,6 +47,7 @@
   opacity: 0;
   transform: translateY(-15px);
   transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.3s;
+  transition-delay: 0s;
 }
 
 .btn-animated span:nth-child(2n) {
@@ -56,4 +57,5 @@
 .btn-animated:hover span {
   opacity: 1;
   transform: translateY(0);
+  transition-delay: var(--delay);
 }
