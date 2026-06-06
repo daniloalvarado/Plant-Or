@@ -29,6 +29,20 @@ const markerIcon = L.divIcon({
   iconAnchor: [10, 10],
 })
 
+const ICON_TO_EMOJI: Record<string, string> = {
+  'tree': '🌲', 'tree-outline': '🌳',
+  'pine-tree': '🌲', 'pine-tree-box': '🌲',
+  'leaf': '🌿', 'leaf-maple': '🍁',
+  'flower': '🌸', 'flower-outline': '💮', 'flower-tulip': '🌷',
+  'sprout': '🌱', 'sprout-outline': '🌱',
+  'seed': '🌰', 'seed-outline': '🌰',
+  'grass': '🌾',
+  'mushroom': '🍄', 'mushroom-outline': '🍄',
+  'water': '💧', 'water-outline': '💧',
+  'nature': '🏞️',
+  'palm-tree': '🌴'
+}
+
 function MapController({ focus, markerRefs }: { focus: {lat: number, lng: number, id: string} | null, markerRefs: React.MutableRefObject<Record<string, any>> }) {
   const map = useMap();
   useEffect(() => {
@@ -63,6 +77,15 @@ export default function CatalogPage() {
   const [selectedHabito, setSelectedHabito] = useState('Todos')
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({})
   const [filtersModalOpen, setFiltersModalOpen] = useState(false)
+  const [isClosingFilters, setIsClosingFilters] = useState(false)
+  
+  const closeFiltersModal = () => {
+    setIsClosingFilters(true)
+    setTimeout(() => {
+      setFiltersModalOpen(false)
+      setIsClosingFilters(false)
+    }, 300)
+  }
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isMobileMenuRendered, setIsMobileMenuRendered] = useState(false)
   const [isMobileMenuAnimatingOut, setIsMobileMenuAnimatingOut] = useState(false)
@@ -378,15 +401,15 @@ export default function CatalogPage() {
       </div>
 
       {/* Filters Modal */}
-      {filtersModalOpen && (
+      {(filtersModalOpen || isClosingFilters) && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-md p-4">
-          <div className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
+          <div className={`bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl ${isClosingFilters ? 'modal-scale-y-out' : 'modal-scale-y-in'}`}>
             <div className="p-5 border-b border-border flex justify-between items-center">
               <h2 className="text-xl font-bold flex items-center gap-2 text-foreground">
                 <Filter className="w-5 h-5 text-brand-green" />
                 Filtros Dinámicos
               </h2>
-              <button onClick={() => { setFiltersModalOpen(false); setMobileMenuOpen(true); }} className="p-2 hover:bg-secondary rounded-lg transition-colors cursor-pointer text-muted-foreground hover:text-foreground">
+              <button onClick={() => { closeFiltersModal(); setMobileMenuOpen(true); }} className="p-2 hover:bg-secondary rounded-lg transition-colors cursor-pointer text-muted-foreground hover:text-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -427,9 +450,14 @@ export default function CatalogPage() {
                           }`}
                         >
                           <div className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${isSelected ? 'border-brand-green bg-brand-green' : 'border-muted-foreground/30'}`}>
-                            {isSelected && <CheckCircle2 className="w-3 h-3 text-black" />}
+                            {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
                           </div>
-                          <span className="text-sm font-medium leading-tight truncate">{filtro.nombre_filtro}</span>
+                          <span className="text-sm font-medium leading-tight truncate">
+                            {filtro.icono && ICON_TO_EMOJI[filtro.icono] && (
+                              <span className="mr-1.5">{ICON_TO_EMOJI[filtro.icono]}</span>
+                            )}
+                            {filtro.nombre_filtro}
+                          </span>
                         </button>
                       )
                     })}
@@ -446,8 +474,8 @@ export default function CatalogPage() {
                 Limpiar todo
               </button>
               <button 
-                onClick={() => setFiltersModalOpen(false)}
-                className="px-6 py-2.5 bg-brand-green hover:bg-[#19a343] text-black font-bold rounded-lg transition-colors cursor-pointer shadow-none"
+                onClick={() => closeFiltersModal()}
+                className="px-6 py-2.5 bg-brand-green hover:bg-[#19a343] text-white font-bold rounded-lg transition-colors cursor-pointer shadow-none"
               >
                 Aplicar filtros
               </button>
