@@ -180,7 +180,7 @@ export default function CatalogPage() {
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
-            placeholder="Buscar por nombre, distrito o calle..."
+            placeholder="Buscar por planta, distrito o calle..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brand-green transition-colors"
@@ -390,7 +390,7 @@ export default function CatalogPage() {
                 <div className="bg-card/90 backdrop-blur-md border border-border p-3 rounded-xl shadow-2xl pointer-events-auto">
                   <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Leyenda</h4>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded-full bg-brand-green border-2 border-white shadow-[0_0_8px_rgba(31,196,81,0.5)]"></div>
+                    <div className="w-4 h-4 rounded-full bg-[#1FC351] border-2 border-white shadow-[0_0_8px_rgba(31,196,81,0.5)]"></div>
                     <span className="text-sm font-medium text-foreground">Planta Identificada</span>
                   </div>
                 </div>
