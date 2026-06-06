@@ -8,8 +8,8 @@ export function TooltipLogo() {
       <div className="bg-[#1FC451] p-2 rounded-lg">
         <Leaf className="w-5 h-5 text-black" />
       </div>
-      <span className="font-bold text-lg text-foreground">Plant-OR</span>
-      <span className="t-tooltip">Catálogo interactivo con la flora amazónica registrada y validada por nuestros estudiantes.</span>
+      <span className="font-bold text-lg text-foreground">Plant-Or</span>
+      <span className="t-tooltip">Explora la riqueza botánica de la Amazonía. Un catálogo interactivo con geolocalización, ideal para curiosos y expertos, impulsado por estudiantes y ciudadanos.</span>
     </div>
   );
 }

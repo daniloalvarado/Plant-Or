@@ -9,7 +9,8 @@ import { client, urlFor, urlForImage } from '@/lib/sanity'
 import type { Planta } from '@/types/planta'
 import { CustomSelect } from '@/components/CustomSelect'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
-import { TooltipLogo } from '@/components/TooltipLogo'
+import { TooltipLogo } from '../../components/TooltipLogo'
+import { AnimatedButton } from '../../components/AnimatedButton'
 import { useTheme } from '@/components/ThemeProvider'
 import './CatalogPage.css'
 
@@ -313,15 +314,12 @@ export default function CatalogPage() {
                             <Leaf className="w-8 h-8 text-muted-foreground" />
                           </div>
                         )}
-                        <div className="p-3 text-sm space-y-1">
-                          <p className="font-bold italic text-foreground leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</p>
-                          {p.nombres_comunes && <p className="text-muted-foreground text-xs truncate">{p.nombres_comunes}</p>}
-                          <button
-                            onClick={() => setSelectedPlant(p)}
-                            className="block w-full text-center text-xs font-bold text-black bg-[#1FC451] hover:bg-[#19a343] py-2 mt-3 rounded-lg transition-colors"
-                          >
-                            Ver Detalles
-                          </button>
+                        <div className="p-2 flex flex-col justify-center">
+                          <p className="font-bold italic text-foreground text-sm leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</p>
+                          {p.nombres_comunes && <p className="text-muted-foreground text-xs truncate mt-0.5">{p.nombres_comunes}</p>}
+                          <div className="mt-2 pointer-events-auto">
+                            <AnimatedButton text="Ficha Técnica" onClick={() => setSelectedPlant(p)} />
+                          </div>
                         </div>
                       </div>
                     </Popup>
@@ -330,7 +328,7 @@ export default function CatalogPage() {
               </MarkerClusterGroup>
               
               {/* Legend */}
-              <div className="leaflet-bottom leaflet-right z-[1000] pointer-events-none mb-6 mr-2">
+              <div className="absolute top-4 right-4 z-[1000] pointer-events-none">
                 <div className="bg-card/90 backdrop-blur-md border border-border p-3 rounded-xl shadow-2xl pointer-events-auto">
                   <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Leyenda</h4>
                   <div className="flex items-center gap-2">
@@ -670,13 +668,9 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
               </p>
             )}
           </div>
-          <button 
-            onClick={() => onPlantClick(activePlant)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] hover:bg-[#19a343] text-black text-xs font-bold rounded-full transition-transform hover:scale-105 pointer-events-auto cursor-pointer shadow-sm"
-          >
-            Ver ficha técnica
-            <Pointer className="w-4 h-4" />
-          </button>
+          <div className="pointer-events-auto mt-2 lg:mt-0 w-44">
+            <AnimatedButton text="Ficha Técnica" onClick={() => onPlantClick(activePlant)} icon />
+          </div>
         </div>
       )}
 

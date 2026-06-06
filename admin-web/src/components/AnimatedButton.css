@@ -1,0 +1,59 @@
+.btn-animated {
+  -webkit-tap-highlight-color: transparent;
+  background-color: #1FC451;
+  color: #000;
+  border: none;
+  border-radius: 999px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  overflow: hidden;
+  padding: 0.6rem 1.5rem;
+  position: relative;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 12px;
+  width: 100%;
+  transition: transform 0.2s;
+}
+
+.btn-animated:hover {
+  transform: scale(1.02);
+}
+
+.btn-animated .original {
+  background: #1FC451;
+  color: #000;
+  display: grid;
+  inset: 0;
+  place-content: center;
+  position: absolute;
+  transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
+  width: 100%;
+  height: 100%;
+}
+
+.btn-animated:hover .original {
+  transform: translateY(100%);
+}
+
+.btn-animated .letters {
+  display: inline-flex;
+}
+
+.btn-animated span {
+  opacity: 0;
+  transform: translateY(-15px);
+  transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.3s;
+}
+
+.btn-animated span:nth-child(2n) {
+  transform: translateY(15px);
+}
+
+.btn-animated:hover span {
+  opacity: 1;
+  transform: translateY(0);
+}
