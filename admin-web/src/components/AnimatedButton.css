@@ -24,7 +24,7 @@
 }
 
 .btn-animated .original {
-  background: #229c22;
+  background: #15803d !important;
   color: #ffffff;
   display: grid;
   inset: 0;
@@ -61,5 +61,5 @@
 }
 
 .dark .btn-animated .original {
-  background: #1fc351;
+  background: #229c22 !important;
 }
