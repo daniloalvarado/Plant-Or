@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2, Sun, Moon, ChevronRight, ChevronLeft, Menu, Pointer, MapPin } from 'lucide-react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -29,6 +29,16 @@ const markerIcon = L.divIcon({
   iconAnchor: [10, 10],
 })
 
+function MapController({ center }: { center: [number, number] | null }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center) {
+      map.flyTo(center, 18, { animate: true, duration: 1.5 });
+    }
+  }, [center, map]);
+  return null;
+}
+
 export default function CatalogPage() {
   const { plantas, loading } = usePlantas()
   const [viewMode, setViewMode] = useState<'tunnel' | 'map'>('tunnel')
@@ -41,6 +51,7 @@ export default function CatalogPage() {
   const [isMobileMenuAnimatingOut, setIsMobileMenuAnimatingOut] = useState(false)
   const [sanityFiltros, setSanityFiltros] = useState<any[]>([])
   const [selectedPlant, setSelectedPlant] = useState<Planta | null>(null)
+  const [mapFocus, setMapFocus] = useState<[number, number] | null>(null)
   const { theme, setTheme } = useTheme()
 
   // Solo plantas validadas
@@ -302,6 +313,7 @@ export default function CatalogPage() {
                 url={theme === 'dark' ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
                 subdomains="abcd"
               />
+              <MapController center={mapFocus} />
               <MarkerClusterGroup chunkedLoading maxClusterRadius={50}>
                 {filteredPlants.filter(p => p.latitud && p.longitud).map(p => (
                   <Marker key={p._id} position={[p.latitud!, p.longitud!]} icon={markerIcon}>
@@ -429,6 +441,9 @@ export default function CatalogPage() {
         onShowOnMap={(plant) => {
           setSelectedPlant(null);
           setViewMode('map');
+          if (plant.latitud && plant.longitud) {
+            setMapFocus([plant.latitud, plant.longitud]);
+          }
         }}
       />
     </div>
