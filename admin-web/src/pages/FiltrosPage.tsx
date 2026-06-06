@@ -6,42 +6,7 @@ import { CustomSelect } from '@/components/CustomSelect'
 
 const CATEGORIAS = ['Hábito', 'Tipo de vida', 'Forma', 'Color', 'Tamaño', 'Textura', 'Estructura']
 
-const FLORA_ICONS = [
-  { value: 'tree', label: '🌳 Árbol' },
-  { value: 'tree-outline', label: '🌳 Árbol (Contorno)' },
-  { value: 'pine-tree', label: '🌲 Pino' },
-  { value: 'pine-tree-box', label: '🌲 Pino (Caja)' },
-  { value: 'leaf', label: '🍃 Hoja' },
-  { value: 'leaf-maple', label: '🍁 Hoja de Arce' },
-  { value: 'flower', label: '🌸 Flor' },
-  { value: 'flower-outline', label: '💮 Flor (Contorno)' },
-  { value: 'flower-tulip', label: '🌷 Tulipán' },
-  { value: 'sprout', label: '🌱 Brote' },
-  { value: 'sprout-outline', label: '🌱 Brote (Contorno)' },
-  { value: 'seed', label: '🌰 Semilla' },
-  { value: 'seed-outline', label: '🌰 Semilla (Contorno)' },
-  { value: 'grass', label: '🌾 Pasto/Hierba' },
-  { value: 'mushroom', label: '🍄 Hongo' },
-  { value: 'mushroom-outline', label: '🍄 Hongo (Contorno)' },
-  { value: 'water', label: '💧 Agua' },
-  { value: 'water-outline', label: '💧 Agua (Contorno)' },
-  { value: 'nature', label: '🏞️ Naturaleza' },
-  { value: 'palm-tree', label: '🌴 Palmera' }
-]
-
-const ICON_TO_EMOJI: Record<string, string> = {
-  'tree': '🌳', 'tree-outline': '🌳',
-  'pine-tree': '🌲', 'pine-tree-box': '🌲',
-  'leaf': '🍃', 'leaf-maple': '🍁',
-  'flower': '🌸', 'flower-outline': '💮', 'flower-tulip': '🌷',
-  'sprout': '🌱', 'sprout-outline': '🌱',
-  'seed': '🌰', 'seed-outline': '🌰',
-  'grass': '🌾',
-  'mushroom': '🍄', 'mushroom-outline': '🍄',
-  'water': '💧', 'water-outline': '💧',
-  'nature': '🏞️',
-  'palm-tree': '🌴'
-}
+import { FloraIcon, FLORA_ICONS } from '@/components/FloraIcon'
 
 interface Filtro {
   _id: string
@@ -596,7 +561,7 @@ export default function FiltrosPage() {
                         {filtro.icono && (
                           <span className="inline-flex items-center gap-1 ml-1">
                             · Ícono: 
-                            <span className="text-sm ml-0.5">{ICON_TO_EMOJI[filtro.icono] || ''}</span>
+                            <FloraIcon name={filtro.icono} className="w-4 h-4 ml-0.5 text-brand-green" />
                             <code className="bg-white/5 px-1 rounded">{filtro.icono}</code>
                           </span>
                         )}
