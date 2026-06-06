@@ -12,7 +12,7 @@ export default {
       supportsTablet: true,
     },
     android: {
-      package: "com.plant-or.app",
+      package: "com.plantor.app",
       adaptiveIcon: {
         backgroundColor: "#E6F4FE",
         foregroundImage: "./assets/images/android-icon-foreground.png",
