@@ -61,5 +61,11 @@
 }
 
 .dark .btn-animated .original {
-  background: #1FC351;
+  background: #229c22;
+  color: #15803d;
+}
+
+.dark .btn-animated {
+  background-color: #229c22;
+  color: #15803d;
 }

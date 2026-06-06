@@ -233,7 +233,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
           className="absolute inset-x-0 lg:left-[8rem] lg:right-auto top-[6%] lg:top-1/2 bottom-[25vh] lg:bottom-auto lg:-translate-y-1/2 lg:w-[30vw] lg:max-w-[320px] z-20 flex flex-col justify-between lg:justify-center items-center lg:items-start animate-in fade-in duration-500 pointer-events-none lg:pointer-events-auto break-words px-6 lg:px-0"
         >
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <span className="text-brand-green dark:text-[#1FC351] border-b-2 border-brand-green dark:border-[#1FC351] pb-0.5 text-[10px] lg:text-xs font-bold uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
+            <span className="text-brand-green dark:text-[#15803d] border-b-2 border-brand-green dark:border-[#15803d] pb-0.5 text-[10px] lg:text-xs font-bold uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
               {activePlant.habito || 'Planta'}
             </span>
             <h2 className="text-xl lg:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-1 lg:mb-2 break-words whitespace-normal w-full transition-colors duration-300">
@@ -251,7 +251,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
         </div>
       )}
 
-      <div className="mm-img-preview" onClick={() => activePlant && onPlantClick(activePlant)}>
+      <div className="absolute left-1/2 top-[45%] lg:top-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[38%] lg:w-[50%] lg:h-[75%] overflow-hidden cursor-pointer z-10" onClick={() => activePlant && onPlantClick(activePlant)}>
         <img 
           ref={previewRef} 
           src={activePlant?.galeria?.[0] ? urlForImage(activePlant.galeria[0]).width(800).auto('format').url() : ''} 
@@ -259,16 +259,16 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
         />
       </div>
       
-      <div className="mm-minimap">
-        <div className="mm-indicator" ref={indicatorRef}></div>
-        <div className="mm-items" ref={itemsRef}>
+      <div className="absolute left-0 bottom-8 w-screen h-[80px] overflow-hidden touch-none lg:top-1/2 lg:right-[8rem] lg:w-[80px] lg:h-auto lg:bottom-auto lg:left-auto lg:-translate-y-1/2 pointer-events-auto z-20">
+        <div className="absolute left-1/2 -translate-x-1/2 w-[60px] h-full lg:top-0 lg:left-0 lg:translate-x-0 lg:w-full lg:h-[60px] border-2 border-brand-green z-[2]" ref={indicatorRef}></div>
+        <div className="relative flex flex-row lg:flex-col w-max lg:w-full h-full lg:h-full px-[calc(50vw-30px)] lg:px-0 lg:gap-0 will-change-transform" ref={itemsRef}>
           {plants.map(p => (
-            <div key={p._id} className="mm-item">
+            <div key={p._id} className="w-[60px] lg:w-full h-full lg:h-[60px] p-[5px] cursor-pointer">
               <img 
                 src={p.galeria?.[0] ? urlForImage(p.galeria[0]).width(100).height(100).fit('crop').format('webp').url() : ''} 
                 data-full-src={p.galeria?.[0] ? urlForImage(p.galeria[0]).width(800).auto('format').url() : ''}
                 alt={p.nombre_cientifico || 'Planta'} 
-                loading="lazy"
+                className="w-full h-full object-cover transition-opacity duration-200 select-none" loading="lazy"
                 style={{ background: !p.galeria?.[0] ? 'linear-gradient(135deg, #1a3a2a, #08130D)' : 'none' }}
               />
             </div>
