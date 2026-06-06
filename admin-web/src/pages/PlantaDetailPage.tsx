@@ -147,7 +147,7 @@ export default function PlantaDetailPage() {
         <button
           onClick={() => handleAction('Validado')}
           disabled={actionLoading || planta.estado_revision === 'Validado'}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm bg-brand-green/10 text-[#1FC451] border border-brand-green/20 hover:bg-brand-green/20 transition-colors disabled:opacity-40 cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm bg-[#1FC451]/10 text-[#1FC451] border border-[#1FC451]/20 hover:bg-[#1FC451]/20 transition-colors disabled:opacity-40 cursor-pointer"
         >
           {actionLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
           Aprobar

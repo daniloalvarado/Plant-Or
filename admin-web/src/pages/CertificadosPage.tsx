@@ -275,7 +275,7 @@ export default function CertificadosPage() {
                 <input 
                   value={editingConfig?.nombre_proyecto || '🌿 PLANT-OR'}
                   onChange={e => setEditingConfig({...editingConfig, nombre_proyecto: e.target.value})}
-                  className="text-[#1FC451] font-bold text-xl md:text-2xl bg-transparent text-center border-b border-transparent hover:border-brand-green/30 focus:border-[#1FC451] focus:outline-none transition-colors w-full"
+                  className="text-[#1FC451] font-bold text-xl md:text-2xl bg-transparent text-center border-b border-transparent hover:border-[#1FC451]/30 focus:border-[#1FC451] focus:outline-none transition-colors w-full"
                   placeholder="Nombre del Proyecto"
                 />
               ) : (

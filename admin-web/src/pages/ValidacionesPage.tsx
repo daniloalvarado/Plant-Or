@@ -223,11 +223,11 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                         <div className="relative group/tooltip">
                           <button
                             onClick={() => navigate(`/admin/planta/${p._id}`)}
-                            className="p-1.5 rounded-lg hover:bg-brand-green/10 text-muted-foreground hover:text-[#1FC451] transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg hover:bg-[#1FC451]/10 text-muted-foreground hover:text-[#1FC451] transition-colors cursor-pointer"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
-                          <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-[#12221A] text-[#1FC451] text-xs rounded border border-brand-green/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                          <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-[#12221A] text-[#1FC451] text-xs rounded border border-[#1FC451]/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
                             Ver detalle
                           </span>
                         </div>
@@ -237,11 +237,11 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                             <button
                               onClick={() => handleAprobar(p._id)}
                               disabled={loadingAction === p._id + '-aprobar'}
-                              className="p-1.5 rounded-lg hover:bg-brand-green/10 text-muted-foreground hover:text-[#1FC451] transition-colors disabled:opacity-50 cursor-pointer"
+                              className="p-1.5 rounded-lg hover:bg-[#1FC451]/10 text-muted-foreground hover:text-[#1FC451] transition-colors disabled:opacity-50 cursor-pointer"
                             >
                               <CheckCircle className="w-4 h-4" />
                             </button>
-                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-[#1FC451] text-xs font-bold rounded border border-brand-green/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-[#1FC451] text-xs font-bold rounded border border-[#1FC451]/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
                               Aprobar
                             </span>
                           </div>

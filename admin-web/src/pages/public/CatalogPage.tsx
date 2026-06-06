@@ -161,7 +161,7 @@ export default function CatalogPage() {
             placeholder="Buscar por nombre, distrito o calle..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#1FC451] transition-colors"
+            className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brand-green transition-colors"
           />
         </div>
 
@@ -184,7 +184,7 @@ export default function CatalogPage() {
             <Filter className="w-4 h-4" />
             <span>Filtros</span>
             {Object.values(activeFilters).flat().length > 0 && (
-              <span className="bg-[#1FC451] text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+              <span className="bg-brand-green text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                 {Object.values(activeFilters).flat().length}
               </span>
             )}
@@ -193,13 +193,13 @@ export default function CatalogPage() {
           <div className="flex bg-secondary border border-border rounded-lg p-1">
             <button
               onClick={() => setViewMode('tunnel')}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#229c22] text-white' : 'text-muted-foreground hover:text-foreground'}`}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
             >
               <Box className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('map')}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#229c22] text-white' : 'text-muted-foreground hover:text-foreground'}`}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
             >
               <MapIcon className="w-4 h-4" />
             </button>
@@ -242,7 +242,7 @@ export default function CatalogPage() {
                   placeholder="Buscar planta..."
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
-                  className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-4 text-sm text-foreground focus:outline-none focus:border-[#1FC451]"
+                  className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-4 text-sm text-foreground focus:outline-none focus:border-brand-green"
                 />
               </div>
 
@@ -268,7 +268,7 @@ export default function CatalogPage() {
                   <span>Filtros Dinámicos</span>
                 </div>
                 {Object.values(activeFilters).flat().length > 0 && (
-                  <span className="bg-[#1FC451] text-black text-xs font-bold px-2 py-0.5 rounded-full">
+                  <span className="bg-brand-green text-black text-xs font-bold px-2 py-0.5 rounded-full">
                     {Object.values(activeFilters).flat().length}
                   </span>
                 )}
@@ -280,13 +280,13 @@ export default function CatalogPage() {
                 <div className="flex bg-secondary border border-border rounded-lg p-1">
                   <button
                     onClick={() => { setViewMode('tunnel'); setMobileMenuOpen(false); }}
-                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#229c22] text-white' : 'text-muted-foreground hover:text-foreground'}`}
+                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     <Box className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => { setViewMode('map'); setMobileMenuOpen(false); }}
-                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#229c22] text-white' : 'text-muted-foreground hover:text-foreground'}`}
+                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     <MapIcon className="w-5 h-5" />
                   </button>
@@ -367,7 +367,7 @@ export default function CatalogPage() {
                 <div className="bg-card/90 backdrop-blur-md border border-border p-3 rounded-xl shadow-2xl pointer-events-auto">
                   <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Leyenda</h4>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded-full bg-[#1FC451] border-2 border-white shadow-[0_0_8px_rgba(31,196,81,0.5)]"></div>
+                    <div className="w-4 h-4 rounded-full bg-brand-green border-2 border-white shadow-[0_0_8px_rgba(31,196,81,0.5)]"></div>
                     <span className="text-sm font-medium text-foreground">Planta Identificada</span>
                   </div>
                 </div>
@@ -383,7 +383,7 @@ export default function CatalogPage() {
           <div className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
             <div className="p-5 border-b border-border flex justify-between items-center">
               <h2 className="text-xl font-bold flex items-center gap-2 text-foreground">
-                <Filter className="w-5 h-5 text-[#1FC451]" />
+                <Filter className="w-5 h-5 text-brand-green" />
                 Filtros Dinámicos
               </h2>
               <button onClick={() => { setFiltersModalOpen(false); setMobileMenuOpen(true); }} className="p-2 hover:bg-secondary rounded-lg transition-colors cursor-pointer text-muted-foreground hover:text-foreground">
@@ -422,11 +422,11 @@ export default function CatalogPage() {
                           }}
                           className={`flex items-center gap-2 p-3 rounded-xl border text-left transition-colors cursor-pointer ${
                             isSelected 
-                              ? 'bg-brand-green/10 border-brand-green/50 text-[#1FC451]' 
+                              ? 'bg-brand-green/10 border-brand-green/50 text-brand-green' 
                               : 'bg-secondary/50 border-border text-foreground hover:bg-secondary'
                           }`}
                         >
-                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${isSelected ? 'border-[#1FC451] bg-[#1FC451]' : 'border-muted-foreground/30'}`}>
+                          <div className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${isSelected ? 'border-brand-green bg-brand-green' : 'border-muted-foreground/30'}`}>
                             {isSelected && <CheckCircle2 className="w-3 h-3 text-black" />}
                           </div>
                           <span className="text-sm font-medium leading-tight truncate">{filtro.nombre_filtro}</span>
@@ -447,7 +447,7 @@ export default function CatalogPage() {
               </button>
               <button 
                 onClick={() => setFiltersModalOpen(false)}
-                className="px-6 py-2.5 bg-[#1FC451] hover:bg-[#19a343] text-black font-bold rounded-lg transition-colors cursor-pointer shadow-none"
+                className="px-6 py-2.5 bg-brand-green hover:bg-[#19a343] text-black font-bold rounded-lg transition-colors cursor-pointer shadow-none"
               >
                 Aplicar filtros
               </button>
@@ -702,7 +702,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
           className="absolute inset-x-0 lg:left-[8rem] lg:right-auto top-[6%] lg:top-1/2 bottom-[25vh] lg:bottom-auto lg:-translate-y-1/2 lg:w-[30vw] lg:max-w-[320px] z-20 flex flex-col justify-between lg:justify-center items-center lg:items-start animate-in fade-in duration-500 pointer-events-none lg:pointer-events-auto break-words px-6 lg:px-0"
         >
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <span className="px-3 py-1 bg-[#15803d] text-white border border-transparent text-[10px] lg:text-xs font-bold rounded-full uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
+            <span className="px-3 py-1 bg-brand-green text-white border border-transparent text-[10px] lg:text-xs font-bold rounded-full uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
               {activePlant.habito || 'Planta'}
             </span>
             <h2 className="text-xl lg:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-1 lg:mb-2 break-words whitespace-normal w-full transition-colors duration-300">
@@ -828,7 +828,7 @@ function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plant: Plan
           
           {/* Main Title overlay on image for Mobile */}
           <div className="absolute bottom-4 left-6 right-6 z-10 lg:hidden">
-            <span className="px-2.5 py-1 bg-[#15803d] text-white border border-transparent text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block shadow-lg">
+            <span className="px-2.5 py-1 bg-brand-green text-white border border-transparent text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block shadow-lg">
               {currentPlant.habito || 'Planta'}
             </span>
             <h2 className="text-2xl font-bold text-white leading-tight italic drop-shadow-md">
@@ -844,7 +844,7 @@ function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plant: Plan
         <div className="w-full md:w-1/2 flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar relative bg-card">
           
           <div className="hidden md:block border-b border-border pb-4">
-            <span className="px-2.5 py-1 bg-[#15803d] text-white border border-transparent text-xs font-bold rounded-md uppercase tracking-wider mb-3 inline-block shadow-sm">
+            <span className="px-2.5 py-1 bg-brand-green text-white border border-transparent text-xs font-bold rounded-md uppercase tracking-wider mb-3 inline-block shadow-sm">
               {currentPlant.habito || 'Planta'}
             </span>
             <h2 className="text-3xl font-bold text-foreground leading-tight italic">
@@ -866,7 +866,7 @@ function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plant: Plan
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-[#1FC451] uppercase tracking-wider border-b border-border pb-2">
+            <h3 className="text-sm font-bold text-brand-green uppercase tracking-wider border-b border-border pb-2">
               Ubicación Registrada
             </h3>
             <p className="text-foreground/80 text-sm leading-relaxed">
@@ -877,7 +877,7 @@ function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plant: Plan
             {currentPlant.latitud && currentPlant.longitud && (
               <button
                 onClick={() => onShowOnMap(currentPlant)}
-                className="flex items-center gap-1.5 mt-3 text-sm font-bold text-[#229c22] hover:underline cursor-pointer"
+                className="flex items-center gap-1.5 mt-3 text-sm font-bold text-brand-green hover:underline cursor-pointer"
               >
                 <MapPin className="w-4 h-4" />
                 Ver en el mapa interactivo
@@ -886,7 +886,7 @@ function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plant: Plan
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-[#1FC451] uppercase tracking-wider border-b border-border pb-2">
+            <h3 className="text-sm font-bold text-brand-green uppercase tracking-wider border-b border-border pb-2">
               Evaluación Botánica
             </h3>
             <div className="grid grid-cols-2 gap-y-4 gap-x-4">

@@ -5,7 +5,7 @@ import './TooltipLogo.css';
 export function TooltipLogo() {
   return (
     <div className="tooltip-container flex items-center gap-2">
-      <div className="bg-[#15803d] p-2 rounded-lg transition-colors">
+      <div className="bg-brand-green p-2 rounded-lg transition-colors">
         <Leaf className="w-5 h-5 text-white" />
       </div>
       <span className="font-bold text-lg text-foreground">Plant-Or</span>
