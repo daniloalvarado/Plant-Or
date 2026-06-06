@@ -102,7 +102,7 @@ export function FiltersModal({ isOpen, onClose, onApply, sanityFiltros, activeFi
           </button>
           <button 
             onClick={onApply}
-            className="px-6 py-2.5 bg-brand-green hover:bg-[#19a343] text-white font-bold rounded-lg transition-colors cursor-pointer shadow-none"
+            className="px-6 py-2.5 bg-brand-green hover:brightness-110 text-white font-bold rounded-lg transition-all cursor-pointer shadow-none"
           >
             Aplicar filtros
           </button>

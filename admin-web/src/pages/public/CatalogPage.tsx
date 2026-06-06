@@ -38,7 +38,18 @@ const markerIcon = L.divIcon({
 
 export default function CatalogPage() {
   const { plantas, loading } = usePlantas()
-  const [viewMode, setViewMode] = useState<'tunnel' | 'map'>('tunnel')
+  const [viewMode, setViewMode] = useState<'tunnel' | 'map'>(() => {
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem('catalogViewMode') as 'tunnel' | 'map') || 'tunnel'
+    }
+    return 'tunnel'
+  })
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('catalogViewMode', viewMode)
+    }
+  }, [viewMode])
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedHabito, setSelectedHabito] = useState('Todos')
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({})
@@ -178,7 +189,7 @@ export default function CatalogPage() {
               <Box className="w-4 h-4" />
             </button>
             <button
-              onClick={() => setViewMode('map')}
+              onClick={() => { setMapFocus(null); setViewMode('map'); }}
               className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
             >
               <MapIcon className="w-4 h-4" />
@@ -265,7 +276,7 @@ export default function CatalogPage() {
                     <Box className="w-5 h-5" />
                   </button>
                   <button
-                    onClick={() => { setViewMode('map'); setMobileMenuOpen(false); }}
+                    onClick={() => { setMapFocus(null); setViewMode('map'); setMobileMenuOpen(false); }}
                     className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     <MapIcon className="w-5 h-5" />
@@ -311,8 +322,8 @@ export default function CatalogPage() {
                 url={theme === 'dark' ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
                 subdomains="abcd"
               />
-              <MapController focus={mapFocus} markerRefs={markerRefs} />
-              <MarkerClusterGroup chunkedLoading maxClusterRadius={50}>
+              <MapController focus={mapFocus} markerRefs={markerRefs} viewMode={viewMode} />
+              <MarkerClusterGroup chunkedLoading maxClusterRadius={50} disableClusteringAtZoom={17}>
                 {filteredPlants.filter(p => p.latitud && p.longitud).map(p => (
                   <Marker 
                     key={p._id} 
