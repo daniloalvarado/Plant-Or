@@ -400,3 +400,20 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 .dark .bg-loading-spinner {
   background-color: #1FC451 !important;
 }
+
+/* Gradient Texts */
+.text-gradient-green {
+  background: linear-gradient(90deg, #15803d 0%, #065f46 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+.dark .text-gradient-green {
+  background: linear-gradient(90deg, #229c22 0%, #08FF00 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}

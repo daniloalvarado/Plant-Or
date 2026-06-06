@@ -376,7 +376,7 @@ export default function CatalogPage() {
                           <div className="font-bold italic text-foreground text-sm leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</div>
                           {p.nombres_comunes && <div className="text-muted-foreground text-xs truncate">{p.nombres_comunes}</div>}
                           <div className="mt-2 pointer-events-auto">
-                            <AnimatedButton text="Ficha Técnica" onClick={() => setSelectedPlant(p)} />
+                            <AnimatedButton initialText="VER" hoverText="FICHA TÉCNICA" onClick={() => setSelectedPlant(p)} />
                           </div>
                         </div>
                       </div>

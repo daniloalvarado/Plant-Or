@@ -3,12 +3,18 @@ import './AnimatedButton.css';
 import { cn } from '@/lib/utils';
 
 interface AnimatedButtonProps {
-  text: string;
+  text?: string;
+  initialText?: string;
+  hoverText?: string;
   onClick?: () => void;
   className?: string;
 }
 
-export function AnimatedButton({ text, onClick, className = '' }: AnimatedButtonProps) {
+export function AnimatedButton({ text, initialText, hoverText, onClick, className = '' }: AnimatedButtonProps) {
+  const displayInitial = initialText || text || '';
+  const displayHover = hoverText || text || '';
+  const longestText = displayHover.length > displayInitial.length ? displayHover : displayInitial;
+
   return (
     <button 
       className={cn("btn-animated-new", className)} 
@@ -20,15 +26,18 @@ export function AnimatedButton({ text, onClick, className = '' }: AnimatedButton
       <div className="content-wrapper">
         <div className="hover-underline-animation">
           <div className="text-wrapper">
-            <div className="original">
-              {text}
+            <div className="placeholder">
+              {longestText}
             </div>
-            <div className="letters">
-              {text.split('').map((char, index) => (
+            <div className="original text-gradient-green">
+              {displayInitial}
+            </div>
+            <div className="letters text-gradient-green">
+              {displayHover.split('').map((char, index) => (
                 <span 
                   key={index} 
                   style={{ 
-                    '--delay': `${index * 0.03}s` 
+                    '--delay': \\s\ 
                   } as React.CSSProperties}
                 >
                   {char === ' ' ? '\u00A0' : char}

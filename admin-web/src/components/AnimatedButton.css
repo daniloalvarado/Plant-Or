@@ -47,15 +47,29 @@
   overflow: hidden;
   padding-right: 15px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-wrapper .placeholder {
+  visibility: hidden;
+  font-weight: 900;
+  letter-spacing: 4px;
+  font-size: 14px;
+  text-transform: uppercase;
+  pointer-events: none;
 }
 
 .text-wrapper .original {
+  position: absolute;
   font-weight: 900;
   letter-spacing: 4px;
   font-size: 14px;
   text-transform: uppercase;
   transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
   display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .btn-animated-new:hover .text-wrapper .original {
@@ -65,8 +79,8 @@
 .text-wrapper .letters {
   display: flex;
   position: absolute;
-  top: 0;
-  left: 0;
+  justify-content: center;
+  width: 100%;
   font-weight: 900;
   letter-spacing: 4px;
   font-size: 14px;
