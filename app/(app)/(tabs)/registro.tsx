@@ -1214,7 +1214,7 @@ export default function RegistroScreen() {
                     </Button>
                   </YStack>
                   {!isStep4Valid && (
-                    <Paragraph color="#ff4444" size="$2" ta="center" mt="$3">
+                    <Paragraph color="#ff4444" size="$2" style={{ textAlign: 'center' }} mt="$3">
                       Faltan completar campos obligatorios del formulario botánico para continuar.
                     </Paragraph>
                   )}
