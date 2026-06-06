@@ -99,7 +99,7 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
         <div className="w-full md:w-1/2 flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar relative bg-card">
           
           <div className="hidden md:block border-b border-border pb-4">
-              <span className="text-green-700 dark:text-[#08FF00] border-b-2 border-green-700 dark:border-[#08FF00] pb-0.5 text-xs font-bold uppercase tracking-wider mb-3 inline-block">
+              <span className="text-custom-green border-b-2 border-custom-green pb-0.5 text-xs font-bold uppercase tracking-wider mb-3 inline-block">
               {currentPlant.habito || 'Planta'}
             </span>
             <h2 className="text-3xl font-bold text-foreground leading-tight italic">
@@ -121,7 +121,7 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-green-700 dark:text-[#08FF00] uppercase tracking-wider border-b border-border pb-2">
+            <h3 className="text-sm font-bold text-custom-green uppercase tracking-wider border-b border-border pb-2">
               Ubicación Registrada
             </h3>
             <p className="text-foreground/80 text-sm leading-relaxed">
@@ -132,7 +132,7 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
             {currentPlant.latitud && currentPlant.longitud && (
               <button
                 onClick={() => onShowOnMap(currentPlant)}
-                className="flex items-center gap-1.5 mt-3 text-sm font-bold text-green-700 dark:text-[#08FF00] hover:underline cursor-pointer"
+                className="flex items-center gap-1.5 mt-3 text-sm font-bold text-custom-green hover:underline cursor-pointer"
               >
                 <MapPin className="w-4 h-4" />
                 Ver en el mapa interactivo
@@ -141,7 +141,7 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-green-700 dark:text-[#08FF00] uppercase tracking-wider border-b border-border pb-2">
+            <h3 className="text-sm font-bold text-custom-green uppercase tracking-wider border-b border-border pb-2">
               Evaluación Botánica
             </h3>
             <div className="grid grid-cols-2 gap-y-4 gap-x-4">
