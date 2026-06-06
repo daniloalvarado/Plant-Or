@@ -26,6 +26,7 @@ import { FormArbusto } from '@/components/forms/FormArbusto';
 import { FormLiana } from '@/components/forms/FormLiana';
 import { FormHierba } from '@/components/forms/FormHierba';
 import { FormCompartido } from '@/components/forms/FormCompartido';
+import { validateArbol, validatePalmera, validateArbusto, validateLiana, validateHierba } from '@/lib/validation';
 import { Modal } from 'react-native';
 import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { client, urlFor } from '@/lib/sanity';
@@ -337,6 +338,18 @@ export default function RegistroScreen() {
     : (nombre.trim() !== '' && email.trim() !== ''); // Ciudadano solo necesita nombre y email
   const isStep2Valid = location !== null && distrito.trim() !== '' && direccion.trim() !== '' && tipoUbicacion.trim() !== '' && sustratoPlanta.trim() !== '';
   const isStep3Valid = fotos.planta_completa && fotos.hoja && fotos.flor && fotos.fruto && fotos.semilla;
+  
+  let isStep4Valid = false;
+  if (datosBotanicos.habito && datosBotanicos.tipoVida) {
+    switch (datosBotanicos.habito) {
+      case 'Árbol': isStep4Valid = validateArbol(datosBotanicos); break;
+      case 'Palmera': isStep4Valid = validatePalmera(datosBotanicos); break;
+      case 'Arbusto': isStep4Valid = validateArbusto(datosBotanicos); break;
+      case 'Liana': isStep4Valid = validateLiana(datosBotanicos); break;
+      case 'Hierba': isStep4Valid = validateHierba(datosBotanicos); break;
+      default: isStep4Valid = false;
+    }
+  }
 
   const handleFinalSubmit = async () => {
     if (!process.env.EXPO_PUBLIC_SANITY_TOKEN) {
@@ -1190,8 +1203,8 @@ export default function RegistroScreen() {
                       bg="#1FC451" 
                       color="white" 
                       onPress={nextStep}
-                      disabled={!datosBotanicos.habito || !datosBotanicos.tipoVida} 
-                      opacity={(!datosBotanicos.habito || !datosBotanicos.tipoVida) ? 0.5 : 1}
+                      disabled={!isStep4Valid} 
+                      opacity={!isStep4Valid ? 0.5 : 1}
                       pressStyle={{ bg: '#15963c' }}
                     >
                       Continuar al Resumen
@@ -1200,6 +1213,11 @@ export default function RegistroScreen() {
                       Volver
                     </Button>
                   </YStack>
+                  {!isStep4Valid && (
+                    <Paragraph color="#ff4444" size="$2" textAlign="center" mt="$3">
+                      Faltan completar campos obligatorios del formulario botánico para continuar.
+                    </Paragraph>
+                  )}
                 </Card>
               </YStack>
             )}
