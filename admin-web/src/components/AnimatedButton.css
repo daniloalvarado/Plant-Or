@@ -24,7 +24,7 @@
 }
 
 .btn-animated .original {
-  background: #229c22;
+  background: #15803d;
   color: #ffffff;
   display: grid;
   inset: 0;
@@ -58,4 +58,8 @@
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--delay);
+}
+
+.dark .btn-animated .original {
+  background: #229c22;
 }
