@@ -221,7 +221,7 @@ export default function MapaScreen() {
       <View style={[styles.topOverlay, { top: insets.top + 10, paddingHorizontal: 16 }]}>
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.8)', borderRadius: 12, paddingHorizontal: 12, borderWidth: 1, borderColor: 'rgba(31,196,81,0.3)', width: '100%' }}>
           <MaterialCommunityIcons name="magnify" size={20} color="#1FC451" />
-          <Input 
+          <Input cursorColor="#ffffff" selectionColor="#1FC451" 
             flex={1}
             borderWidth={0}
             bg="transparent"

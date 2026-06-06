@@ -162,7 +162,7 @@ export default function SignUpScreen() {
                 <YStack gap="$2">
                   <YStack gap="$2">
                     <Label color="#ffffff">Código de verificación</Label>
-                    <Input
+                    <Input cursorColor="#ffffff" selectionColor="#1FC451"
                       value={code}
                       placeholder="Ingresa el código"
                       onChangeText={setCode}
@@ -254,7 +254,7 @@ export default function SignUpScreen() {
               <YStack gap="$2">
                 <YStack gap="$2">
                   <Label color="#ffffff">Correo electrónico</Label>
-                  <Input
+                  <Input cursorColor="#ffffff" selectionColor="#1FC451"
                     autoCapitalize="none"
                     keyboardType="email-address"
                     value={emailAddress}
@@ -273,7 +273,7 @@ export default function SignUpScreen() {
                 <YStack gap="$2">
                   <Label color="#ffffff">Contraseña</Label>
                   <YStack style={{ position: "relative", width: "100%", justifyContent: "center" }}>
-                    <Input
+                    <Input cursorColor="#ffffff" selectionColor="#1FC451"
                       secureTextEntry={!showPassword}
                       value={password}
                       placeholder="Crea una contraseña"
