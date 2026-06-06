@@ -51,7 +51,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                   placeholder="Ej. 5"
                   value={getField('reproductivo', 'flor_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'flor_tamano_largo', val)}
-                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                 />
               </YStack>
               <YStack flex={1} gap="$2">
@@ -61,7 +61,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                   placeholder="Ej. 5"
                   value={getField('reproductivo', 'flor_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'flor_tamano_ancho', val)}
-                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                 />
               </YStack>
             </XStack>
@@ -138,7 +138,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                   placeholder="Ej. 10"
                   value={getField('reproductivo', 'fruto_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_largo', val)}
-                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                 />
               </YStack>
               <YStack flex={1} gap="$2">
@@ -148,7 +148,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                   placeholder="Ej. 8"
                   value={getField('reproductivo', 'fruto_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_ancho', val)}
-                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                 />
               </YStack>
             </XStack>
@@ -196,7 +196,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                 placeholder="Ej. 5"
                 value={getField('reproductivo', 'semilla_numero')}
                 onChangeText={(val) => setField('reproductivo', 'semilla_numero', val)}
-                borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+                borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
               />
             </YStack>
             <XStack gap="$3">
@@ -207,7 +207,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                   placeholder="Ej. 1"
                   value={getField('reproductivo', 'semilla_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'semilla_tamano_largo', val)}
-                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                 />
               </YStack>
               <YStack flex={1} gap="$2">
@@ -217,7 +217,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                   placeholder="Ej. 0.5"
                   value={getField('reproductivo', 'semilla_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'semilla_tamano_ancho', val)}
-                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+                  borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                 />
               </YStack>
             </XStack>

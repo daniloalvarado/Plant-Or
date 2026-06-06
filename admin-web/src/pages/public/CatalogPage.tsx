@@ -137,14 +137,23 @@ export default function CatalogPage() {
 
         {/* Desktop Controls */}
         <div className="hidden md:flex items-center gap-4">
-          <div className="w-40">
-            <CustomSelect
-              value={selectedHabito}
-              onChange={setSelectedHabito}
-              options={habitoOptions}
-              placeholder="Hábito..."
-              className="min-w-0 w-full"
-            />
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide max-w-[400px]">
+            {habitoOptions.map(opt => {
+              const isSelected = selectedHabito === opt.value;
+              return (
+                <button
+                  key={opt.value}
+                  onClick={() => setSelectedHabito(opt.value)}
+                  className={`px-4 py-1.5 rounded-full whitespace-nowrap text-sm border transition-colors ${
+                    isSelected
+                      ? 'bg-[#1FC451]/20 border-[#1FC451] text-[#1FC451] font-semibold'
+                      : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              )
+            })}
           </div>
           
           <button 
@@ -219,13 +228,24 @@ export default function CatalogPage() {
               {/* Habito */}
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase mb-2 block">Hábito de Crecimiento</label>
-                <CustomSelect
-                  value={selectedHabito}
-                  onChange={setSelectedHabito}
-                  options={habitoOptions}
-                  placeholder="Todos"
-                  className="w-full"
-                />
+                <div className="flex items-center gap-2 flex-wrap">
+                  {habitoOptions.map(opt => {
+                    const isSelected = selectedHabito === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        onClick={() => setSelectedHabito(opt.value)}
+                        className={`px-4 py-2 rounded-full whitespace-nowrap text-sm border transition-colors ${
+                          isSelected
+                            ? 'bg-[#1FC451]/20 border-[#1FC451] text-[#1FC451] font-semibold'
+                            : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
 
               {/* Filters */}

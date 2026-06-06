@@ -718,7 +718,7 @@ export default function RegistroScreen() {
                       borderWidth={0}
                       bg="rgba(255,255,255,0.05)"
                       color="#ffffff"
-                      placeholderTextColor="rgba(255,255,255,0.3)"
+                      placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                     />
                   </YStack>
 
@@ -733,7 +733,7 @@ export default function RegistroScreen() {
                       borderWidth={0}
                       bg="rgba(255,255,255,0.05)"
                       color="#ffffff"
-                      placeholderTextColor="rgba(255,255,255,0.3)"
+                      placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                     />
                   </YStack>
 
@@ -750,7 +750,7 @@ export default function RegistroScreen() {
                           borderWidth={0}
                           bg="rgba(255,255,255,0.05)"
                           color="#ffffff"
-                          placeholderTextColor="rgba(255,255,255,0.3)"
+                          placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                         />
                       </YStack>
 
@@ -763,7 +763,7 @@ export default function RegistroScreen() {
                           borderWidth={0}
                           bg="rgba(255,255,255,0.05)"
                           color="#ffffff"
-                          placeholderTextColor="rgba(255,255,255,0.3)"
+                          placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                         />
                       </YStack>
 
@@ -776,7 +776,7 @@ export default function RegistroScreen() {
                           borderWidth={0}
                           bg="rgba(255,255,255,0.05)"
                           color="#ffffff"
-                          placeholderTextColor="rgba(255,255,255,0.3)"
+                          placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                         />
                       </YStack>
 
@@ -789,7 +789,7 @@ export default function RegistroScreen() {
                           borderWidth={0}
                           bg="rgba(255,255,255,0.05)"
                           color="#ffffff"
-                          placeholderTextColor="rgba(255,255,255,0.3)"
+                          placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                         />
                       </YStack>
 
@@ -802,7 +802,7 @@ export default function RegistroScreen() {
                           borderWidth={0}
                           bg="rgba(255,255,255,0.05)"
                           color="#ffffff"
-                          placeholderTextColor="rgba(255,255,255,0.3)"
+                          placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                         />
                       </YStack>
                     </>
@@ -875,7 +875,7 @@ export default function RegistroScreen() {
                       borderWidth={0}
                       bg="rgba(255,255,255,0.05)"
                       color="#ffffff"
-                      placeholderTextColor="rgba(255,255,255,0.3)"
+                      placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                     />
                   </YStack>
 
@@ -889,7 +889,7 @@ export default function RegistroScreen() {
                       borderWidth={0}
                       bg="rgba(255,255,255,0.05)"
                       color="#ffffff"
-                      placeholderTextColor="rgba(255,255,255,0.3)"
+                      placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                     />
                   </YStack>
 
@@ -923,7 +923,7 @@ export default function RegistroScreen() {
                         borderWidth={0}
                         bg="rgba(255,255,255,0.05)"
                         color="#ffffff"
-                        placeholderTextColor="rgba(255,255,255,0.3)"
+                        placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                       />
                     </YStack>
                     <YStack flex={1} gap="$2">
@@ -993,6 +993,7 @@ export default function RegistroScreen() {
                             color="white"
                             icon={<MaterialCommunityIcons name="camera" size={16} color="white" />}
                             onPress={() => takePhoto(item.id as keyof typeof fotos)}
+                            pressStyle={{ bg: 'rgba(255,255,255,0.15)' }}
                           >
                             Cámara
                           </Button>
@@ -1003,6 +1004,7 @@ export default function RegistroScreen() {
                             color="white"
                             icon={<MaterialCommunityIcons name="image-multiple" size={16} color="white" />}
                             onPress={() => pickFromGallery(item.id as keyof typeof fotos)}
+                            pressStyle={{ bg: 'rgba(255,255,255,0.15)' }}
                           >
                             Galería
                           </Button>
@@ -1040,10 +1042,10 @@ export default function RegistroScreen() {
                     ))}
                     
                     <XStack gap="$2" mt="$2">
-                       <Button flex={1} size="$3" bg="rgba(255,255,255,0.08)" color="white" icon={<MaterialCommunityIcons name="camera-plus" size={16} color="white" />} onPress={takeExtraPhoto}>
+                       <Button flex={1} size="$3" bg="rgba(255,255,255,0.08)" color="white" icon={<MaterialCommunityIcons name="camera-plus" size={16} color="white" />} onPress={takeExtraPhoto} pressStyle={{ bg: 'rgba(255,255,255,0.15)' }}>
                          Cámara Extra
                        </Button>
-                       <Button flex={1} size="$3" bg="rgba(255,255,255,0.08)" color="white" icon={<MaterialCommunityIcons name="image-plus" size={16} color="white" />} onPress={pickExtraFromGallery}>
+                       <Button flex={1} size="$3" bg="rgba(255,255,255,0.08)" color="white" icon={<MaterialCommunityIcons name="image-plus" size={16} color="white" />} onPress={pickExtraFromGallery} pressStyle={{ bg: 'rgba(255,255,255,0.15)' }}>
                          Galería Extra
                        </Button>
                     </XStack>
@@ -1110,7 +1112,7 @@ export default function RegistroScreen() {
                       borderWidth={0}
                       bg="rgba(255,255,255,0.05)"
                       color="#ffffff"
-                      placeholderTextColor="rgba(255,255,255,0.3)"
+                      placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                     />
                   </YStack>
 
@@ -1123,7 +1125,7 @@ export default function RegistroScreen() {
                       borderWidth={0}
                       bg="rgba(255,255,255,0.05)"
                       color="#ffffff"
-                      placeholderTextColor="rgba(255,255,255,0.3)"
+                      placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                       autoCapitalize="words"
                     />
                   </YStack>
@@ -1137,7 +1139,7 @@ export default function RegistroScreen() {
                       borderWidth={0}
                       bg="rgba(255,255,255,0.05)"
                       color="#ffffff"
-                      placeholderTextColor="rgba(255,255,255,0.3)"
+                      placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                       autoCapitalize="words"
                     />
                   </YStack>

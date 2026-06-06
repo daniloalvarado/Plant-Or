@@ -30,7 +30,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
               placeholder="Ej. 10"
               value={getField('dasometria', 'altura_total')}
               onChangeText={(val) => setField('dasometria', 'altura_total', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
           <YStack flex={1} gap="$2">
@@ -40,7 +40,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
               placeholder="Ej. 30"
               value={getField('dasometria', 'cap')}
               onChangeText={(val) => setField('dasometria', 'cap', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
         </XStack>
@@ -53,7 +53,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
               placeholder="Ej. 4"
               value={getField('dasometria', 'diametro_copa_paralelo')}
               onChangeText={(val) => setField('dasometria', 'diametro_copa_paralelo', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
           <YStack flex={1} gap="$2">
@@ -63,7 +63,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
               placeholder="Ej. 4"
               value={getField('dasometria', 'diametro_copa_perpendicular')}
               onChangeText={(val) => setField('dasometria', 'diametro_copa_perpendicular', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
         </XStack>
@@ -75,7 +75,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
             placeholder="Ej. 6"
             value={getField('dasometria', 'altura_inicio_copa')}
             onChangeText={(val) => setField('dasometria', 'altura_inicio_copa', val)}
-            borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+            borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
           />
         </YStack>
 
@@ -152,7 +152,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
               placeholder="Ej. 2"
               value={getField('hojas', 'hoja_largo')}
               onChangeText={(val) => setField('hojas', 'hoja_largo', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
           <YStack flex={1} gap="$2">
@@ -162,7 +162,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
               placeholder="Ej. 1"
               value={getField('hojas', 'hoja_ancho')}
               onChangeText={(val) => setField('hojas', 'hoja_ancho', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
         </XStack>
@@ -175,7 +175,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
               placeholder="Ej. 0.5"
               value={getField('hojas', 'peciolo_largo')}
               onChangeText={(val) => setField('hojas', 'peciolo_largo', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
           <YStack flex={1} gap="$2">
@@ -185,7 +185,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
               placeholder="Ej. 5"
               value={getField('hojas', 'peciolo_diametro')}
               onChangeText={(val) => setField('hojas', 'peciolo_diametro', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
         </XStack>

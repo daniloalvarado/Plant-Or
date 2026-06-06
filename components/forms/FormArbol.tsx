@@ -30,7 +30,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
               placeholder="Ej. 15"
               value={getField('dasometria', 'altura_total')}
               onChangeText={(val) => setField('dasometria', 'altura_total', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
           <YStack flex={1} gap="$2">
@@ -40,7 +40,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
               placeholder="Ej. 50"
               value={getField('dasometria', 'cap')}
               onChangeText={(val) => setField('dasometria', 'cap', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
         </XStack>
@@ -53,7 +53,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
               placeholder="Ej. 5"
               value={getField('dasometria', 'diametro_copa_paralelo')}
               onChangeText={(val) => setField('dasometria', 'diametro_copa_paralelo', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
           <YStack flex={1} gap="$2">
@@ -63,7 +63,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
               placeholder="Ej. 6"
               value={getField('dasometria', 'diametro_copa_perpendicular')}
               onChangeText={(val) => setField('dasometria', 'diametro_copa_perpendicular', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
         </XStack>
@@ -75,7 +75,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
             placeholder="Ej. 2"
             value={getField('dasometria', 'altura_inicio_copa')}
             onChangeText={(val) => setField('dasometria', 'altura_inicio_copa', val)}
-            borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+            borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
           />
         </YStack>
 
@@ -100,7 +100,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
             placeholder="Ej. 1"
             value={getField('tronco', 'numero_troncos')}
             onChangeText={(val) => setField('tronco', 'numero_troncos', val)}
-            borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+            borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
           />
         </YStack>
 
@@ -314,7 +314,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
                 placeholder="Ej. 2"
                 value={getField('hojas', 'longitud_peciolo')}
                 onChangeText={(val) => setField('hojas', 'longitud_peciolo', val)}
-                borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+                borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
               />
             </YStack>
             <YStack flex={1} gap="$2">
@@ -324,7 +324,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
                 placeholder="Ej. 5"
                 value={getField('hojas', 'diametro_peciolo')}
                 onChangeText={(val) => setField('hojas', 'diametro_peciolo', val)}
-                borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+                borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
               />
             </YStack>
           </XStack>

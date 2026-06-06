@@ -30,7 +30,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
               placeholder="Ej. 40"
               value={getField('dasometria', 'altura_total')}
               onChangeText={(val) => setField('dasometria', 'altura_total', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
           <YStack flex={1} gap="$2">
@@ -40,7 +40,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
               placeholder="Ej. 60"
               value={getField('dasometria', 'cobertura')}
               onChangeText={(val) => setField('dasometria', 'cobertura', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
         </XStack>

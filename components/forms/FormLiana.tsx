@@ -30,7 +30,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
               placeholder="Ej. 5"
               value={getField('dasometria', 'longitud_visible')}
               onChangeText={(val) => setField('dasometria', 'longitud_visible', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
           <YStack flex={1} gap="$2">
@@ -40,7 +40,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
               placeholder="Ej. 10"
               value={getField('dasometria', 'altura_maxima')}
               onChangeText={(val) => setField('dasometria', 'altura_maxima', val)}
-              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+              borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
         </XStack>
@@ -52,7 +52,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
             placeholder="Ej. 5"
             value={getField('dasometria', 'diametro_tallo')}
             onChangeText={(val) => setField('dasometria', 'diametro_tallo', val)}
-            borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff"
+            borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
           />
         </YStack>
 
