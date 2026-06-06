@@ -4,7 +4,7 @@ import { RadioSelect } from './CustomSelectors';
 
 interface FormArbustoProps {
   data: any;
-  updateData: (key: string, value: any) => void;
+  updateData: (sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => void;
 }
 
 export function FormArbusto({ data, updateData }: FormArbustoProps) {
@@ -57,7 +57,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura inicio ramificación (m)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura de inicio de ramificación (m)</Label>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
             placeholder="Ej. 0.5"

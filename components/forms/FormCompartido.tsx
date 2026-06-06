@@ -4,7 +4,7 @@ import { RadioSelect, MultiSelect } from './CustomSelectors';
 
 interface FormCompartidoProps {
   data: any;
-  updateData: (key: string, value: any) => void;
+  updateData: (sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => void;
 }
 
 export function FormCompartido({ data, updateData }: FormCompartidoProps) {

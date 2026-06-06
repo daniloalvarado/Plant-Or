@@ -4,7 +4,7 @@ import { RadioSelect, MultiSelect } from './CustomSelectors';
 
 interface FormLianaProps {
   data: any;
-  updateData: (key: string, value: any) => void;
+  updateData: (sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => void;
 }
 
 export function FormLiana({ data, updateData }: FormLianaProps) {

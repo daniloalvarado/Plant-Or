@@ -4,7 +4,7 @@ import { RadioSelect, MultiSelect } from './CustomSelectors';
 
 interface FormArbolProps {
   data: any;
-  updateData: (key: string, value: any) => void;
+  updateData: (sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => void;
 }
 
 export function FormArbol({ data, updateData }: FormArbolProps) {
@@ -69,7 +69,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         </XStack>
 
         <YStack gap="$2">
-          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura inicio copa (m)</Label>
+          <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura de inicio de copa (m)</Label>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
             placeholder="Ej. 2"

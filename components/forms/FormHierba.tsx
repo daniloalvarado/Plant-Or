@@ -4,7 +4,7 @@ import { RadioSelect } from './CustomSelectors';
 
 interface FormHierbaProps {
   data: any;
-  updateData: (key: string, value: any) => void;
+  updateData: (sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => void;
 }
 
 export function FormHierba({ data, updateData }: FormHierbaProps) {
