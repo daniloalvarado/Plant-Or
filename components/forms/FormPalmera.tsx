@@ -25,7 +25,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura total (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 10"
               value={getField('dasometria', 'altura_total')}
@@ -35,7 +35,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
           </YStack>
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>CAP a 1.30m (cm)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 30"
               value={getField('dasometria', 'cap')}
@@ -48,7 +48,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Paralelo (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 4"
               value={getField('dasometria', 'diametro_copa_paralelo')}
@@ -58,7 +58,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
           </YStack>
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Perpend. (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 4"
               value={getField('dasometria', 'diametro_copa_perpendicular')}
@@ -70,7 +70,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
 
         <YStack gap="$2">
           <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura inicio copa (m)</Label>
-          <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+          <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
             placeholder="Ej. 6"
             value={getField('dasometria', 'altura_inicio_copa')}
@@ -147,7 +147,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo hoja (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 2"
               value={getField('hojas', 'hoja_largo')}
@@ -157,7 +157,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
           </YStack>
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho hoja (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 1"
               value={getField('hojas', 'hoja_ancho')}
@@ -170,7 +170,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo peciolo (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 0.5"
               value={getField('hojas', 'peciolo_largo')}
@@ -180,7 +180,7 @@ export function FormPalmera({ data, updateData }: FormPalmeraProps) {
           </YStack>
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø peciolo (cm)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 5"
               value={getField('hojas', 'peciolo_diametro')}

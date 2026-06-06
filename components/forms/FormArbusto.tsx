@@ -24,7 +24,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         
         <YStack gap="$2">
           <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura total aproximada (m)</Label>
-          <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+          <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
             placeholder="Ej. 2"
             value={getField('dasometria', 'altura_total')}
@@ -36,7 +36,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Paralelo (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 1.5"
               value={getField('dasometria', 'diametro_copa_paralelo')}
@@ -46,7 +46,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
           </YStack>
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Perpend. (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 1.5"
               value={getField('dasometria', 'diametro_copa_perpendicular')}
@@ -58,7 +58,7 @@ export function FormArbusto({ data, updateData }: FormArbustoProps) {
 
         <YStack gap="$2">
           <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura inicio ramificación (m)</Label>
-          <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+          <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
             placeholder="Ej. 0.5"
             value={getField('dasometria', 'altura_inicio_ramificacion')}

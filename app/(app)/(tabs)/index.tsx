@@ -168,7 +168,7 @@ export default function HomeScreen() {
         {/* Search Bar */}
         <View style={[styles.searchContainer, { backgroundColor: "rgba(255,255,255,0.05)" }]}>
           <MaterialCommunityIcons name="magnify" size={20} color={theme.icon} />
-          <TextInput cursorColor="#ffffff" selectionColor="#1FC451"
+          <TextInput cursorColor="#ffffff" selectionColor="#0D5E26"
             style={[styles.searchInput, { color: theme.text }]}
             placeholder="Por nombre científico o común..."
             placeholderTextColor={theme.icon}

@@ -46,7 +46,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             <XStack gap="$3">
               <YStack flex={1} gap="$2">
                 <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo flor (cm)</Label>
-                <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+                <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   keyboardType="numeric" 
                   placeholder="Ej. 5"
                   value={getField('reproductivo', 'flor_tamano_largo')}
@@ -56,7 +56,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
               </YStack>
               <YStack flex={1} gap="$2">
                 <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho flor (cm)</Label>
-                <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+                <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   keyboardType="numeric" 
                   placeholder="Ej. 5"
                   value={getField('reproductivo', 'flor_tamano_ancho')}
@@ -133,7 +133,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             <XStack gap="$3">
               <YStack flex={1} gap="$2">
                 <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo fruto (cm)</Label>
-                <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+                <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   keyboardType="numeric" 
                   placeholder="Ej. 10"
                   value={getField('reproductivo', 'fruto_tamano_largo')}
@@ -143,7 +143,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
               </YStack>
               <YStack flex={1} gap="$2">
                 <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho fruto (cm)</Label>
-                <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+                <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   keyboardType="numeric" 
                   placeholder="Ej. 8"
                   value={getField('reproductivo', 'fruto_tamano_ancho')}
@@ -191,7 +191,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
           <>
             <YStack gap="$2">
               <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de semillas (Aprox)</Label>
-              <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+              <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 keyboardType="numeric" 
                 placeholder="Ej. 5"
                 value={getField('reproductivo', 'semilla_numero')}
@@ -202,7 +202,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             <XStack gap="$3">
               <YStack flex={1} gap="$2">
                 <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo sem. (cm/mm)</Label>
-                <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+                <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   keyboardType="numeric" 
                   placeholder="Ej. 1"
                   value={getField('reproductivo', 'semilla_tamano_largo')}
@@ -212,7 +212,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
               </YStack>
               <YStack flex={1} gap="$2">
                 <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho sem. (cm/mm)</Label>
-                <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+                <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   keyboardType="numeric" 
                   placeholder="Ej. 0.5"
                   value={getField('reproductivo', 'semilla_tamano_ancho')}

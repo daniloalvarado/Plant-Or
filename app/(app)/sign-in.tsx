@@ -127,7 +127,7 @@ export default function Page() {
               <YStack gap="$2">
                 <YStack gap="$2">
                   <Label color="#ffffff">Correo electrónico</Label>
-                  <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                  <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                     autoCapitalize="none"
                     keyboardType="email-address"
                     value={emailAddress}
@@ -146,7 +146,7 @@ export default function Page() {
                 <YStack gap="$2">
                   <Label color="#ffffff">Contraseña</Label>
                   <YStack style={{ position: "relative", width: "100%", justifyContent: "center" }}>
-                  <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                  <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                     secureTextEntry={!showPassword}
                     value={password}
                     placeholder="Ingresa tu contraseña"

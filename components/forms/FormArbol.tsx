@@ -25,7 +25,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura total (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 15"
               value={getField('dasometria', 'altura_total')}
@@ -35,7 +35,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
           </YStack>
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>CAP (cm)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 50"
               value={getField('dasometria', 'cap')}
@@ -48,7 +48,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Paralelo (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 5"
               value={getField('dasometria', 'diametro_copa_paralelo')}
@@ -58,7 +58,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
           </YStack>
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø Copa Perpend. (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 6"
               value={getField('dasometria', 'diametro_copa_perpendicular')}
@@ -70,7 +70,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
 
         <YStack gap="$2">
           <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura inicio copa (m)</Label>
-          <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+          <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
             placeholder="Ej. 2"
             value={getField('dasometria', 'altura_inicio_copa')}
@@ -95,7 +95,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
         
         <YStack gap="$2">
           <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de troncos desde la base</Label>
-          <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+          <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
             placeholder="Ej. 1"
             value={getField('tronco', 'numero_troncos')}
@@ -309,7 +309,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
           <XStack gap="$3">
             <YStack flex={1} gap="$2">
               <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Longitud peciolo (cm)</Label>
-              <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+              <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 keyboardType="numeric" 
                 placeholder="Ej. 2"
                 value={getField('hojas', 'longitud_peciolo')}
@@ -319,7 +319,7 @@ export function FormArbol({ data, updateData }: FormArbolProps) {
             </YStack>
             <YStack flex={1} gap="$2">
               <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø peciolo (mm)</Label>
-              <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+              <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 keyboardType="numeric" 
                 placeholder="Ej. 5"
                 value={getField('hojas', 'diametro_peciolo')}

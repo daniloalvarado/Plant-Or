@@ -25,7 +25,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Longitud visible (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 5"
               value={getField('dasometria', 'longitud_visible')}
@@ -35,7 +35,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
           </YStack>
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura máxima (m)</Label>
-            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+            <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
               placeholder="Ej. 10"
               value={getField('dasometria', 'altura_maxima')}
@@ -47,7 +47,7 @@ export function FormLiana({ data, updateData }: FormLianaProps) {
 
         <YStack gap="$2">
           <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Diámetro tallo principal (cm)</Label>
-          <Input cursorColor="#ffffff" selectionColor="#1FC451" 
+          <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
             placeholder="Ej. 5"
             value={getField('dasometria', 'diametro_tallo')}

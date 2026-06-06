@@ -691,11 +691,11 @@ export default function Profile() {
               <XStack gap="$3">
                 <YStack flex={1}>
                   <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Nombres</Text>
-                  <Input cursorColor="#ffffff" selectionColor="#1FC451" height={40} value={firstName} onChangeText={setFirstName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  <Input cursorColor="#ffffff" selectionColor="#0D5E26" height={40} value={firstName} onChangeText={setFirstName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                 </YStack>
                 <YStack flex={1}>
                   <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Apellidos</Text>
-                  <Input cursorColor="#ffffff" selectionColor="#1FC451" height={40} value={lastName} onChangeText={setLastName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                  <Input cursorColor="#ffffff" selectionColor="#0D5E26" height={40} value={lastName} onChangeText={setLastName} bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                 </YStack>
               </XStack>
 
@@ -715,27 +715,27 @@ export default function Profile() {
                   <XStack gap="$3">
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>DNI (Obligatorio)</Text>
-                      <Input cursorColor="#ffffff" selectionColor="#1FC451" height={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" placeholder="Ej. 89765434" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                      <Input cursorColor="#ffffff" selectionColor="#0D5E26" height={40} value={dni} onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} maxLength={8} keyboardType="numeric" placeholder="Ej. 89765434" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                     </YStack>
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Día de clase (Opcional)</Text>
-                      <Input cursorColor="#ffffff" selectionColor="#1FC451" height={40} value={diaClase} onChangeText={setDiaClase} placeholder="Ej. Martes" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                      <Input cursorColor="#ffffff" selectionColor="#0D5E26" height={40} value={diaClase} onChangeText={setDiaClase} placeholder="Ej. Martes" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                     </YStack>
                   </XStack>
 
                   <YStack>
                     <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Facultad (Obligatorio)</Text>
-                    <Input cursorColor="#ffffff" selectionColor="#1FC451" height={40} value={facultad} onChangeText={setFacultad} placeholder="Ej. Ciencias Forestales" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                    <Input cursorColor="#ffffff" selectionColor="#0D5E26" height={40} value={facultad} onChangeText={setFacultad} placeholder="Ej. Ciencias Forestales" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                   </YStack>
 
                   <XStack gap="$3">
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Escuela (Obligatorio)</Text>
-                      <Input cursorColor="#ffffff" selectionColor="#1FC451" height={40} value={escuela} onChangeText={setEscuela} placeholder="Ej. Ing. Forestal" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                      <Input cursorColor="#ffffff" selectionColor="#0D5E26" height={40} value={escuela} onChangeText={setEscuela} placeholder="Ej. Ing. Forestal" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                     </YStack>
                     <YStack flex={1}>
                       <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Curso (Opcional)</Text>
-                      <Input cursorColor="#ffffff" selectionColor="#1FC451" height={40} value={curso} onChangeText={setCurso} placeholder="Ej. Botánica" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
+                      <Input cursorColor="#ffffff" selectionColor="#0D5E26" height={40} value={curso} onChangeText={setCurso} placeholder="Ej. Botánica" placeholderTextColor="rgba(255,255,255,0.3)" bg="rgba(255,255,255,0.05)" borderWidth={0} color="white" />
                     </YStack>
                   </XStack>
                 </YStack>

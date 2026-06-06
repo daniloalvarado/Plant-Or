@@ -18,9 +18,7 @@ export const RadioSelect = React.memo(function RadioSelect({ options, value, onC
           key={opt}
           onPress={() => onChange(opt)}
           style={({ pressed }) => ({
-            backgroundColor: pressed 
-              ? (isSelected ? '#15963c' : 'rgba(255,255,255,0.08)') 
-              : (isSelected ? 'rgba(31,196,81,0.2)' : 'rgba(255,255,255,0.04)'),
+            backgroundColor: isSelected ? 'rgba(31,196,81,0.2)' : 'rgba(255,255,255,0.04)',
             borderColor: isSelected ? '#1FC451' : 'rgba(255,255,255,0.15)',
             borderWidth: 1,
             borderRadius: 100,
@@ -88,9 +86,7 @@ export const MultiSelect = React.memo(function MultiSelect({ options, value, onC
             key={opt}
             onPress={() => toggleOption(opt)}
             style={({ pressed }) => ({
-              backgroundColor: pressed 
-                ? (isSelected ? '#15963c' : 'rgba(255,255,255,0.08)') 
-                : (isSelected ? 'rgba(31,196,81,0.2)' : 'rgba(255,255,255,0.04)'),
+              backgroundColor: isSelected ? 'rgba(31,196,81,0.2)' : 'rgba(255,255,255,0.04)',
               borderColor: isSelected ? '#1FC451' : 'rgba(255,255,255,0.15)',
               borderWidth: 1,
               borderRadius: 100,

@@ -724,7 +724,7 @@ export default function RegistroScreen() {
                   <YStack gap="$2">
                     <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre completo *</Label>
                     {/* Email is always required */}
-                    <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                    <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={nombre}
                       onChangeText={setNombre}
                       placeholder="Ej. Juan Pérez"
@@ -737,7 +737,7 @@ export default function RegistroScreen() {
 
                   <YStack gap="$2">
                     <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Email *</Label>
-                    <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                    <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={email}
                       onChangeText={setEmail}
                       placeholder="Ej. juan@gmail.com"
@@ -754,7 +754,7 @@ export default function RegistroScreen() {
                     <>
                       <YStack gap="$2">
                         <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>DNI *</Label>
-                        <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                        <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                           value={dni}
                           onChangeText={(text) => setDni(text.replace(/[^0-9]/g, ''))} // Solo permite números
                           maxLength={8}
@@ -769,7 +769,7 @@ export default function RegistroScreen() {
 
                       <YStack gap="$2">
                         <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Facultad *</Label>
-                        <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                        <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                           value={facultad}
                           onChangeText={setFacultad}
                           placeholder="Ej. Ciencias Forestales"
@@ -782,7 +782,7 @@ export default function RegistroScreen() {
 
                       <YStack gap="$2">
                         <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Escuela *</Label>
-                        <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                        <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                           value={escuela}
                           onChangeText={setEscuela}
                           placeholder="Ej. Ingeniería Forestal"
@@ -795,7 +795,7 @@ export default function RegistroScreen() {
 
                       <YStack gap="$2">
                         <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Curso</Label>
-                        <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                        <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                           value={curso}
                           onChangeText={setCurso}
                           placeholder="Ej. Botánica"
@@ -808,7 +808,7 @@ export default function RegistroScreen() {
 
                       <YStack gap="$2">
                         <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Día de clase</Label>
-                        <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                        <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                           value={diaClase}
                           onChangeText={setDiaClase}
                           placeholder="Ej. Lunes"
@@ -880,7 +880,7 @@ export default function RegistroScreen() {
 
                   <YStack gap="$2">
                     <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Distrito</Label>
-                    <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                    <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       size="$3"
                       value={distrito}
                       onChangeText={setDistrito}
@@ -894,7 +894,7 @@ export default function RegistroScreen() {
 
                   <YStack gap="$2">
                     <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Dirección / Referencia</Label>
-                    <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                    <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       size="$3"
                       value={direccion}
                       onChangeText={setDireccion}
@@ -928,7 +928,7 @@ export default function RegistroScreen() {
                   <XStack gap="$3">
                     <YStack flex={1} gap="$2">
                       <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>N° de Casa</Label>
-                      <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                      <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                         size="$3"
                         value={numeroCasa}
                         onChangeText={setNumeroCasa}
@@ -1118,7 +1118,7 @@ export default function RegistroScreen() {
                   {/* Identificación botánica */}
                   <YStack gap="$2">
                     <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre local / común</Label>
-                    <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                    <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={nombresComunes}
                       onChangeText={setNombresComunes}
                       placeholder="Ej. Platanillo, Bijao rojo"
@@ -1131,7 +1131,7 @@ export default function RegistroScreen() {
 
                   <YStack gap="$2">
                     <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre científico</Label>
-                    <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                    <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={nombreCientifico}
                       onChangeText={setNombreCientifico}
                       placeholder="Ej. Heliconia rostrata"
@@ -1145,7 +1145,7 @@ export default function RegistroScreen() {
 
                   <YStack gap="$2">
                     <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Familia botánica</Label>
-                    <Input cursorColor="#ffffff" selectionColor="#1FC451"
+                    <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={familia}
                       onChangeText={setFamilia}
                       placeholder="Ej. Heliconiaceae"
