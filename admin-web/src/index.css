@@ -347,3 +347,17 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 .dark .border-custom-green {
   border-color: #08FF00 !important;
 }
+
+.bg-custom-green-light {
+  background-color: rgba(21, 128, 61, 0.1) !important;
+}
+.dark .bg-custom-green-light {
+  background-color: rgba(31, 196, 81, 0.1) !important; /* using primary color rgba */
+}
+
+.ring-custom-green {
+  --tw-ring-color: #15803d !important;
+}
+.dark .ring-custom-green {
+  --tw-ring-color: #1fc451 !important;
+}
