@@ -468,7 +468,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
     if (!containerRef.current || !itemsRef.current || !indicatorRef.current || !previewRef.current) return;
     if (plants.length === 0) return;
 
-    let isHorizontal = window.innerWidth <= 900;
+    let isHorizontal = window.innerWidth <= 1024;
     let dimensions = { itemSize: 0, containerSize: 0, indicatorSize: 0 };
     let maxTranslate = 0;
     let currentTranslate = 0;
@@ -598,7 +598,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
     };
 
     const handleResize = () => {
-        isHorizontal = window.innerWidth <= 900;
+        isHorizontal = window.innerWidth <= 1024;
         dimensions = updateDimensions();
         maxTranslate = Math.max(0, (plants.length - 1) * dimensions.itemSize);
 
@@ -655,17 +655,17 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
       {activePlant && (
         <div 
           key={`info-${activePlant._id}`}
-          className="absolute inset-x-0 md:left-[8rem] md:right-auto top-[6%] md:top-1/2 bottom-[25vh] md:bottom-auto md:-translate-y-1/2 md:w-[30vw] md:max-w-[320px] z-20 flex flex-col justify-between md:justify-center items-center md:items-start animate-in fade-in duration-500 pointer-events-none md:pointer-events-auto break-words px-6 md:px-0"
+          className="absolute inset-x-0 lg:left-[8rem] lg:right-auto top-[6%] lg:top-1/2 bottom-[25vh] lg:bottom-auto lg:-translate-y-1/2 lg:w-[30vw] lg:max-w-[320px] z-20 flex flex-col justify-between lg:justify-center items-center lg:items-start animate-in fade-in duration-500 pointer-events-none lg:pointer-events-auto break-words px-6 lg:px-0"
         >
-          <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-[10px] md:text-xs font-bold rounded-full uppercase tracking-wider mb-2 md:mb-3 inline-block transition-colors duration-300">
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+            <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-[10px] lg:text-xs font-bold rounded-full uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
               {activePlant.habito || 'Planta'}
             </span>
-            <h2 className="text-xl md:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-1 md:mb-2 break-words whitespace-normal w-full transition-colors duration-300">
+            <h2 className="text-xl lg:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-1 lg:mb-2 break-words whitespace-normal w-full transition-colors duration-300">
               {activePlant.nombre_cientifico || 'Especie por identificar'}
             </h2>
             {activePlant.nombres_comunes && (
-              <p className="text-muted-foreground font-medium text-xs md:text-sm mb-0 md:mb-5 break-words whitespace-normal w-full transition-colors duration-300">
+              <p className="text-muted-foreground font-medium text-xs lg:text-sm mb-0 lg:mb-5 break-words whitespace-normal w-full transition-colors duration-300">
                 {activePlant.nombres_comunes}
               </p>
             )}
