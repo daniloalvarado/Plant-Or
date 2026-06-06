@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2, Sun, Moon, ChevronRight, ChevronLeft, Menu, Pointer, MapPin } from 'lucide-react'
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -36,6 +36,20 @@ const markerIcon = L.divIcon({
 
 
 
+function MapPersister() {
+  const map = useMapEvents({
+    moveend: () => {
+      if (typeof window !== 'undefined') {
+        const center = map.getCenter();
+        localStorage.setItem('catalogMapLat', center.lat.toString());
+        localStorage.setItem('catalogMapLng', center.lng.toString());
+        localStorage.setItem('catalogMapZoom', map.getZoom().toString());
+      }
+    }
+  })
+  return null;
+}
+
 export default function CatalogPage() {
   const { plantas, loading } = usePlantas()
   const [viewMode, setViewMode] = useState<'tunnel' | 'map'>(() => {
@@ -50,6 +64,23 @@ export default function CatalogPage() {
       localStorage.setItem('catalogViewMode', viewMode)
     }
   }, [viewMode])
+
+  const initialMapState = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      const lat = localStorage.getItem('catalogMapLat');
+      const lng = localStorage.getItem('catalogMapLng');
+      const zoom = localStorage.getItem('catalogMapZoom');
+      if (lat && lng && zoom) {
+        return {
+          center: [parseFloat(lat), parseFloat(lng)] as [number, number],
+          zoom: parseInt(zoom)
+        }
+      }
+    }
+    return { center: [-12.0464, -77.0428] as [number, number], zoom: 13 }
+  }, [])
+
+  const [mapResetSignal, setMapResetSignal] = useState(0)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedHabito, setSelectedHabito] = useState('Todos')
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({})
@@ -189,7 +220,7 @@ export default function CatalogPage() {
               <Box className="w-4 h-4" />
             </button>
             <button
-              onClick={() => { setMapFocus(null); setViewMode('map'); }}
+              onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); }}
               className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
             >
               <MapIcon className="w-4 h-4" />
@@ -276,7 +307,7 @@ export default function CatalogPage() {
                     <Box className="w-5 h-5" />
                   </button>
                   <button
-                    onClick={() => { setMapFocus(null); setViewMode('map'); setMobileMenuOpen(false); }}
+                    onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); setMobileMenuOpen(false); }}
                     className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     <MapIcon className="w-5 h-5" />
@@ -311,18 +342,19 @@ export default function CatalogPage() {
         ) : (
           <div className="h-[calc(100vh-70px)] w-full">
             <MapContainer
-              center={[-3.74912, -73.25383]}
-              zoom={13}
+              center={initialMapState.center}
+              zoom={initialMapState.zoom}
               scrollWheelZoom
               style={{ height: '100%', width: '100%' }}
               className="z-0"
             >
+              <MapPersister />
               <TileLayer
                 attribution='&copy; CARTO'
                 url={theme === 'dark' ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
                 subdomains="abcd"
               />
-              <MapController focus={mapFocus} markerRefs={markerRefs} viewMode={viewMode} />
+              <MapController focus={mapFocus} markerRefs={markerRefs} mapResetSignal={mapResetSignal} plants={filteredPlants} />
               <MarkerClusterGroup chunkedLoading maxClusterRadius={50} disableClusteringAtZoom={17}>
                 {filteredPlants.filter(p => p.latitud && p.longitud).map(p => (
                   <Marker 
