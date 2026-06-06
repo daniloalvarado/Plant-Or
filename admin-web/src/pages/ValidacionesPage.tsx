@@ -205,7 +205,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                     className="border-b border-border hover:bg-secondary/20 transition-colors group cascade-item"
                   >
                     <td className="px-4 py-3">
-                      <p className="font-medium text-foreground italic">{p.nombre_cientifico || '—'}</p>
+                      <p className="font-medium text-foreground">{p.nombres_comunes || 'Nombre com�n no registrado'}</p>
                       {p.nombre_cientifico && <p className="text-xs text-muted-foreground italic">{p.nombre_cientifico}</p>}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">{p.habito || '—'}</td>
@@ -337,4 +337,5 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
     </div>
   )
 }
+
 
