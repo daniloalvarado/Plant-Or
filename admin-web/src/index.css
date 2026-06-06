@@ -361,3 +361,34 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
 .dark .ring-custom-green {
   --tw-ring-color: #1fc451 !important;
 }
+
+/* Map marker dynamic theme */
+.custom-map-marker div {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.9);
+  background-color: #15803d !important;
+  box-shadow: 0 0 10px rgba(21, 128, 61, 0.5), 0 2px 6px rgba(0,0,0,.5) !important;
+}
+.dark .custom-map-marker div {
+  background-color: #1FC451 !important;
+  box-shadow: 0 0 10px rgba(31, 196, 81, 0.5), 0 2px 6px rgba(0,0,0,.5) !important;
+}
+
+/* Legend dynamic theme */
+.bg-marker-custom {
+  background-color: #15803d !important;
+  box-shadow: 0 0 8px rgba(21, 128, 61, 0.5) !important;
+}
+.dark .bg-marker-custom {
+  background-color: #1FC351 !important;
+  box-shadow: 0 0 8px rgba(31, 196, 81, 0.5) !important;
+}
+
+.text-marker-custom {
+  color: #15803d !important;
+}
+.dark .text-marker-custom {
+  color: #1FC351 !important;
+}

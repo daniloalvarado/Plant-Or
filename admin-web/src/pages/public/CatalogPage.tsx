@@ -28,8 +28,8 @@ L.Icon.Default.mergeOptions({
 })
 
 const markerIcon = L.divIcon({
-  className: '',
-  html: `<div style="width:20px;height:20px;border-radius:50%;background-color:#1FC451;border:3px solid rgba(255,255,255,0.9);box-shadow:0 0 10px rgba(31,196,81,0.5),0 2px 6px rgba(0,0,0,.5);"></div>`,
+  className: 'custom-map-marker',
+  html: `<div></div>`,
   iconSize: [20, 20],
   iconAnchor: [10, 10],
 })
@@ -390,8 +390,8 @@ export default function CatalogPage() {
                 <div className="bg-card/90 backdrop-blur-md border border-border p-3 rounded-xl shadow-2xl pointer-events-auto">
                   <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Leyenda</h4>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded-full bg-[#1FC351] border-2 border-white shadow-[0_0_8px_rgba(31,196,81,0.5)]"></div>
-                    <span className="text-sm font-bold text-[#1FC351]">Planta Identificada</span>
+                    <div className="w-4 h-4 rounded-full border-2 border-white bg-marker-custom"></div>
+                    <span className="text-sm font-bold text-marker-custom">Planta Identificada</span>
                   </div>
                 </div>
               </div>
