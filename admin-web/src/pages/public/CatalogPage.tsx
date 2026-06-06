@@ -164,13 +164,13 @@ export default function CatalogPage() {
           <div className="flex bg-secondary border border-border rounded-lg p-1">
             <button
               onClick={() => setViewMode('tunnel')}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#1FC451] text-black' : 'text-muted-foreground hover:text-foreground'}`}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#229c22] text-white' : 'text-muted-foreground hover:text-foreground'}`}
             >
               <Box className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('map')}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#1FC451] text-black' : 'text-muted-foreground hover:text-foreground'}`}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#229c22] text-white' : 'text-muted-foreground hover:text-foreground'}`}
             >
               <MapIcon className="w-4 h-4" />
             </button>
@@ -251,13 +251,13 @@ export default function CatalogPage() {
                 <div className="flex bg-secondary border border-border rounded-lg p-1">
                   <button
                     onClick={() => { setViewMode('tunnel'); setMobileMenuOpen(false); }}
-                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#1FC451] text-black' : 'text-muted-foreground hover:text-foreground'}`}
+                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-[#229c22] text-white' : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     <Box className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => { setViewMode('map'); setMobileMenuOpen(false); }}
-                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#1FC451] text-black' : 'text-muted-foreground hover:text-foreground'}`}
+                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-[#229c22] text-white' : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     <MapIcon className="w-5 h-5" />
                   </button>

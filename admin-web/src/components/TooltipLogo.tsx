@@ -5,8 +5,8 @@ import './TooltipLogo.css';
 export function TooltipLogo() {
   return (
     <div className="tooltip-container flex items-center gap-2">
-      <div className="bg-[#1FC451] p-2 rounded-lg">
-        <Leaf className="w-5 h-5 text-black" />
+      <div className="bg-[#229c22] p-2 rounded-lg">
+        <Leaf className="w-5 h-5 text-white" />
       </div>
       <span className="font-bold text-lg text-foreground">Plant-Or</span>
       <span className="t-tooltip">Explora la riqueza botánica de la Amazonía con nuestro catálogo interactivo y geolocalizado, ideal tanto para curiosos como para expertos. ¡Sé parte del proyecto! Descarga nuestra aplicación, registra las plantas de tu entorno y ayúdanos a expandir el mapa de nuestra biodiversidad.</span>
