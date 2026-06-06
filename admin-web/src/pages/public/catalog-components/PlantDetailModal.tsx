@@ -43,7 +43,7 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
         className={`w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-border origin-center ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}
         onClick={e => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-secondary hover:bg-secondary/80 text-foreground border border-border dark:bg-black/50 dark:hover:bg-black/80 dark:text-white dark:border-white/20 rounded-full transition-colors cursor-pointer z-[9999]">
+        <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-secondary hover:bg-secondary/80 text-foreground border border-border dark:bg-white/10 dark:hover:bg-white/30 dark:text-white dark:border-white/20 rounded-full transition-colors cursor-pointer z-[9999]">
           <X className="w-5 h-5" />
         </button>
 
