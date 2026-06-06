@@ -25,7 +25,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
         <XStack gap="$3">
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura total (cm)</Label>
-            <Input 
+            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
               keyboardType="numeric" 
               placeholder="Ej. 40"
               value={getField('dasometria', 'altura_total')}
@@ -35,7 +35,7 @@ export function FormHierba({ data, updateData }: FormHierbaProps) {
           </YStack>
           <YStack flex={1} gap="$2">
             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Cobertura Ø (cm)</Label>
-            <Input 
+            <Input cursorColor="#ffffff" selectionColor="#1FC451" 
               keyboardType="numeric" 
               placeholder="Ej. 60"
               value={getField('dasometria', 'cobertura')}

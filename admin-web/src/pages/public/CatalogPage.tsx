@@ -674,7 +674,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
             onClick={() => onPlantClick(activePlant)}
             className="flex items-center gap-2 px-4 py-2 bg-[#1FC451] hover:bg-[#19a343] text-black text-xs font-bold rounded-full transition-transform hover:scale-105 pointer-events-auto cursor-pointer shadow-sm"
           >
-            Ver fichas técnica
+            Ver ficha técnica
             <Pointer className="w-4 h-4" />
           </button>
         </div>
