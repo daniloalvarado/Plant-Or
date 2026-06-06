@@ -206,7 +206,7 @@ export default function CatalogPage() {
             <Filter className="w-4 h-4" />
             <span>Filtros</span>
             {Object.values(activeFilters).flat().length > 0 && (
-              <span className="bg-brand-green text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+              <span className="bg-brand-green text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
                 {Object.values(activeFilters).flat().length}
               </span>
             )}
@@ -290,7 +290,7 @@ export default function CatalogPage() {
                   <span>Filtros Dinámicos</span>
                 </div>
                 {Object.values(activeFilters).flat().length > 0 && (
-                  <span className="bg-brand-green text-black text-xs font-bold px-2 py-0.5 rounded-full">
+                  <span className="bg-brand-green text-white text-xs font-bold px-2 py-0.5 rounded-full">
                     {Object.values(activeFilters).flat().length}
                   </span>
                 )}
