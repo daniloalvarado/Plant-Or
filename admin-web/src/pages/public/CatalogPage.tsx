@@ -29,13 +29,17 @@ const markerIcon = L.divIcon({
   iconAnchor: [10, 10],
 })
 
-function MapController({ center }: { center: [number, number] | null }) {
+function MapController({ center, plantId, markerRefs }: { center: [number, number] | null, plantId: string | null, markerRefs: React.MutableRefObject<Record<string, any>> }) {
   const map = useMap();
   useEffect(() => {
-    if (center) {
+    if (center && plantId) {
       map.flyTo(center, 18, { animate: true, duration: 1.5 });
+      setTimeout(() => {
+        const marker = markerRefs.current[plantId];
+        if (marker) marker.openPopup();
+      }, 1500);
     }
-  }, [center, map]);
+  }, [center, plantId, map, markerRefs]);
   return null;
 }
 
@@ -51,7 +55,8 @@ export default function CatalogPage() {
   const [isMobileMenuAnimatingOut, setIsMobileMenuAnimatingOut] = useState(false)
   const [sanityFiltros, setSanityFiltros] = useState<any[]>([])
   const [selectedPlant, setSelectedPlant] = useState<Planta | null>(null)
-  const [mapFocus, setMapFocus] = useState<[number, number] | null>(null)
+  const [mapFocus, setMapFocus] = useState<{lat: number, lng: number, id: string} | null>(null)
+  const markerRefs = useRef<Record<string, any>>({})
   const { theme, setTheme } = useTheme()
 
   // Solo plantas validadas
@@ -313,10 +318,15 @@ export default function CatalogPage() {
                 url={theme === 'dark' ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"}
                 subdomains="abcd"
               />
-              <MapController center={mapFocus} />
+              <MapController center={mapFocus ? [mapFocus.lat, mapFocus.lng] : null} plantId={mapFocus?.id || null} markerRefs={markerRefs} />
               <MarkerClusterGroup chunkedLoading maxClusterRadius={50}>
                 {filteredPlants.filter(p => p.latitud && p.longitud).map(p => (
-                  <Marker key={p._id} position={[p.latitud!, p.longitud!]} icon={markerIcon}>
+                  <Marker 
+                    key={p._id} 
+                    position={[p.latitud!, p.longitud!]} 
+                    icon={markerIcon}
+                    ref={(r) => { if (r) markerRefs.current[p._id] = r; }}
+                  >
                     <Popup className="plant-popup dark-popup !p-0 overflow-hidden rounded-xl border border-border bg-card text-card-foreground">
                       <div className="flex flex-col w-[200px]">
                         {p.galeria?.[0] ? (
@@ -442,7 +452,7 @@ export default function CatalogPage() {
           setSelectedPlant(null);
           setViewMode('map');
           if (plant.latitud && plant.longitud) {
-            setMapFocus([plant.latitud, plant.longitud]);
+            setMapFocus({lat: plant.latitud, lng: plant.longitud, id: plant._id});
           }
         }}
       />
@@ -679,7 +689,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
           className="absolute inset-x-0 lg:left-[8rem] lg:right-auto top-[6%] lg:top-1/2 bottom-[25vh] lg:bottom-auto lg:-translate-y-1/2 lg:w-[30vw] lg:max-w-[320px] z-20 flex flex-col justify-between lg:justify-center items-center lg:items-start animate-in fade-in duration-500 pointer-events-none lg:pointer-events-auto break-words px-6 lg:px-0"
         >
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <span className="px-3 py-1 bg-[#1FC451]/20 text-[#1FC451] border border-[#1FC451]/30 text-[10px] lg:text-xs font-bold rounded-full uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
+            <span className="px-3 py-1 bg-[#229c22]/10 text-[#229c22] border border-[#229c22]/20 dark:bg-[#1FC451]/20 dark:text-[#1FC451] dark:border-[#1FC451]/30 text-[10px] lg:text-xs font-bold rounded-full uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
               {activePlant.habito || 'Planta'}
             </span>
             <h2 className="text-xl lg:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-1 lg:mb-2 break-words whitespace-normal w-full transition-colors duration-300">
