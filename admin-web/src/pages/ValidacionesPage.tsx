@@ -206,7 +206,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                   >
                     <td className="px-4 py-3">
                       <p className="font-medium text-foreground italic">{p.nombre_cientifico || '—'}</p>
-                      <p className="text-xs text-muted-foreground">{p.nombres_comunes || ''}</p>
+                      {p.nombre_cientifico && <p className="text-xs text-muted-foreground italic">{p.nombre_cientifico}</p>}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">{p.habito || '—'}</td>
                     <td className="px-4 py-3">
@@ -337,3 +337,4 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
     </div>
   )
 }
+

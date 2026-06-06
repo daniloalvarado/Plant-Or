@@ -86,12 +86,8 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
             <span className="text-white border-b-2 border-white pb-0.5 text-xs font-bold uppercase tracking-wider mb-2 inline-block drop-shadow-md">
               {currentPlant.habito || 'Planta'}
             </span>
-            <h2 className="text-2xl font-bold text-white leading-tight italic drop-shadow-md">
-              {currentPlant.nombre_cientifico || 'Especie por identificar'}
-            </h2>
-            {currentPlant.nombres_comunes && (
-              <p className="text-white/80 font-medium drop-shadow-md">{currentPlant.nombres_comunes}</p>
-            )}
+            <h2 className="text-2xl font-bold text-white leading-tight drop-shadow-md">{currentPlant.nombres_comunes || 'Nombre común no registrado'}</h2>
+            {currentPlant.nombre_cientifico && (<p className="text-white/80 font-medium italic drop-shadow-md">{currentPlant.nombre_cientifico}</p>)}
           </div>
         </div>
 
@@ -102,12 +98,8 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
               <span className="text-custom-green border-b-2 border-custom-green pb-0.5 text-xs font-bold uppercase tracking-wider mb-3 inline-block">
               {currentPlant.habito || 'Planta'}
             </span>
-            <h2 className="text-3xl font-bold text-foreground leading-tight italic">
-              {currentPlant.nombre_cientifico || 'Especie por identificar'}
-            </h2>
-            {currentPlant.nombres_comunes && (
-              <p className="text-muted-foreground font-medium mt-1 text-lg">{currentPlant.nombres_comunes}</p>
-            )}
+            <h2 className="text-3xl font-bold text-foreground leading-tight">{currentPlant.nombres_comunes || 'Nombre común no registrado'}</h2>
+            {currentPlant.nombre_cientifico && (<p className="text-muted-foreground font-medium italic mt-1 text-lg">{currentPlant.nombre_cientifico}</p>)}
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-secondary/50 rounded-xl p-4 border border-border">
@@ -200,3 +192,4 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
     </div>
   )
 }
+

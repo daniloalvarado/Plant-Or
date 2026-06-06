@@ -373,8 +373,8 @@ export default function CatalogPage() {
                           </div>
                         )}
                         <div className="px-3 pb-3 pt-1.5 flex flex-col justify-center gap-1">
-                          <div className="font-bold italic text-foreground text-sm leading-tight truncate">{p.nombre_cientifico || 'Por identificar'}</div>
-                          {p.nombres_comunes && <div className="text-muted-foreground text-xs truncate">{p.nombres_comunes}</div>}
+                          <div className="font-bold text-foreground text-sm leading-tight truncate">{p.nombres_comunes || 'Nombre común no registrado'}</div>
+                          {p.nombre_cientifico && <div className="text-muted-foreground text-xs truncate italic">{p.nombre_cientifico}</div>}
                           <div className="mt-2 pointer-events-auto">
                             <AnimatedButton initialText="VER" hoverText="FICHA TÃ‰CNICA" onClick={() => setSelectedPlant(p)} />
                           </div>
@@ -426,4 +426,5 @@ export default function CatalogPage() {
     </div>
   )
 }
+
 
