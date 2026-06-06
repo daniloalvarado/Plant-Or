@@ -4,7 +4,7 @@ import type { PlantaEstado } from '@/types/planta'
 
 const estadoConfig: Record<PlantaEstado, { label: string; className: string }> = {
   'En revisión': { label: 'En revisión', className: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' },
-  'Validado': { label: 'Validado', className: 'bg-[#1FC451]/10 text-[#1FC451] border-[#1FC451]/20' },
+  'Validado': { label: 'Validado', className: 'bg-brand-green/10 text-[#1FC451] border-brand-green/20' },
   'Observado': { label: 'Observado', className: 'bg-orange-500/10 text-orange-400 border-orange-500/20' },
   'Rechazado': { label: 'Rechazado', className: 'bg-red-500/10 text-red-500 border-red-500/20' },
 }

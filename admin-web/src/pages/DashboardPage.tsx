@@ -60,7 +60,7 @@ export default function DashboardPage() {
         {[
           { label: 'Total registros', value: stats.total, icon: Leaf, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
           { label: 'En revisión', value: stats.enRevision, icon: Clock, color: 'text-yellow-400', bg: 'bg-yellow-500/10' },
-          { label: 'Validados', value: stats.validados, icon: CheckCircle, color: 'text-[#1FC451]', bg: 'bg-[#1FC451]/10' },
+          { label: 'Validados', value: stats.validados, icon: CheckCircle, color: 'text-[#1FC451]', bg: 'bg-brand-green/10' },
           { label: 'Observados', value: stats.observados, icon: AlertCircle, color: 'text-orange-400', bg: 'bg-orange-500/10' },
           { label: 'Rechazados', value: stats.rechazados, icon: XCircle, color: 'text-red-500', bg: 'bg-red-500/10' },
         ].map((stat) => (

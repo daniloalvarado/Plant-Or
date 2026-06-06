@@ -422,7 +422,7 @@ export default function CatalogPage() {
                           }}
                           className={`flex items-center gap-2 p-3 rounded-xl border text-left transition-colors cursor-pointer ${
                             isSelected 
-                              ? 'bg-[#1FC451]/10 border-[#1FC451]/50 text-[#1FC451]' 
+                              ? 'bg-brand-green/10 border-brand-green/50 text-[#1FC451]' 
                               : 'bg-secondary/50 border-border text-foreground hover:bg-secondary'
                           }`}
                         >
@@ -702,7 +702,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
           className="absolute inset-x-0 lg:left-[8rem] lg:right-auto top-[6%] lg:top-1/2 bottom-[25vh] lg:bottom-auto lg:-translate-y-1/2 lg:w-[30vw] lg:max-w-[320px] z-20 flex flex-col justify-between lg:justify-center items-center lg:items-start animate-in fade-in duration-500 pointer-events-none lg:pointer-events-auto break-words px-6 lg:px-0"
         >
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <span className="px-3 py-1 bg-[#15803d] dark:bg-[#229c22] text-white border border-transparent text-[10px] lg:text-xs font-bold rounded-full uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
+            <span className="px-3 py-1 bg-[#15803d] text-white border border-transparent text-[10px] lg:text-xs font-bold rounded-full uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
               {activePlant.habito || 'Planta'}
             </span>
             <h2 className="text-xl lg:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-1 lg:mb-2 break-words whitespace-normal w-full transition-colors duration-300">
@@ -828,7 +828,7 @@ function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plant: Plan
           
           {/* Main Title overlay on image for Mobile */}
           <div className="absolute bottom-4 left-6 right-6 z-10 lg:hidden">
-            <span className="px-2.5 py-1 bg-[#15803d] dark:bg-[#229c22] text-white border border-transparent text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block shadow-lg">
+            <span className="px-2.5 py-1 bg-[#15803d] text-white border border-transparent text-xs font-bold rounded-md uppercase tracking-wider mb-2 inline-block shadow-lg">
               {currentPlant.habito || 'Planta'}
             </span>
             <h2 className="text-2xl font-bold text-white leading-tight italic drop-shadow-md">
@@ -844,7 +844,7 @@ function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plant: Plan
         <div className="w-full md:w-1/2 flex-1 overflow-y-auto p-6 md:p-8 space-y-8 custom-scrollbar relative bg-card">
           
           <div className="hidden md:block border-b border-border pb-4">
-            <span className="px-2.5 py-1 bg-[#15803d] dark:bg-[#229c22] text-white border border-transparent text-xs font-bold rounded-md uppercase tracking-wider mb-3 inline-block shadow-sm">
+            <span className="px-2.5 py-1 bg-[#15803d] text-white border border-transparent text-xs font-bold rounded-md uppercase tracking-wider mb-3 inline-block shadow-sm">
               {currentPlant.habito || 'Planta'}
             </span>
             <h2 className="text-3xl font-bold text-foreground leading-tight italic">

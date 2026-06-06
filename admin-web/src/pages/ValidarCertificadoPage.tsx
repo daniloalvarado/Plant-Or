@@ -35,7 +35,7 @@ export default function ValidarCertificadoPage() {
       <div className="w-full max-w-lg">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="w-16 h-16 bg-[#1FC451]/10 rounded-2xl flex items-center justify-center border border-[#1FC451]/20 mx-auto mb-6">
+          <div className="w-16 h-16 bg-brand-green/10 rounded-2xl flex items-center justify-center border border-brand-green/20 mx-auto mb-6">
             <Award className="w-8 h-8 text-[#1FC451]" />
           </div>
           <h1 className="text-3xl font-bold text-slate-900 mb-3 tracking-tight">Validar Certificado</h1>
@@ -72,11 +72,11 @@ export default function ValidarCertificadoPage() {
         {buscado && !loading && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             {resultado ? (
-              <div className="bg-white border border-[#1FC451]/30 rounded-2xl p-8 shadow-[0_0_40px_-15px_rgba(31,196,81,0.2)] relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#1FC451]/5 rounded-bl-full -mr-16 -mt-16" />
+              <div className="bg-white border border-brand-green/30 rounded-2xl p-8 shadow-[0_0_40px_-15px_rgba(31,196,81,0.2)] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-green/5 rounded-bl-full -mr-16 -mt-16" />
                 
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="bg-[#1FC451]/10 p-3 rounded-full">
+                  <div className="bg-brand-green/10 p-3 rounded-full">
                     <CheckCircle className="w-8 h-8 text-[#1FC451]" />
                   </div>
                   <div>

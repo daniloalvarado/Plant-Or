@@ -154,7 +154,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             </XStack>
 
             <YStack gap="$2">
-              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color maduro</Label>
+              <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color del fruto maduro</Label>
               <RadioSelect 
                 options={['Verde', 'Amarillo', 'Rojo', 'Anaranjado', 'Morado', 'Negro', 'Marrón', 'Crema', 'Otro']}
                 value={getField('reproductivo', 'fruto_color')}
@@ -201,7 +201,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
             </YStack>
             <XStack gap="$3">
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo sem. (cm/mm)</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo sem. (cm)</Label>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   keyboardType="numeric" 
                   placeholder="Ej. 1"
@@ -211,7 +211,7 @@ export function FormCompartido({ data, updateData }: FormCompartidoProps) {
                 />
               </YStack>
               <YStack flex={1} gap="$2">
-                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho sem. (cm/mm)</Label>
+                <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho sem. (cm)</Label>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   keyboardType="numeric" 
                   placeholder="Ej. 0.5"

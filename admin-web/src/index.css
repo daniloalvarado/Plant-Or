@@ -32,6 +32,8 @@
     --sidebar-border: 240 6% 85%;
     --sidebar-ring: 138 73% 44%;
     --radius: 0.5rem;
+    
+    --brand-green: #15803d; /* Dark green for light mode */
   }
 
   .dark {
@@ -66,10 +68,13 @@
     --sidebar-ring: 138 73% 44%;
     --sidebar-ring: 138 73% 44%;
     --radius: 0.5rem;
+    
+    --brand-green: #229c22; /* Bright green for dark mode */
   }
 }
 
 @theme {
+  --color-brand-green: var(--brand-green);
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
