@@ -236,7 +236,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
             <span className="text-custom-green border-b-2 border-custom-green pb-0.5 text-[10px] lg:text-xs font-bold uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
               {activePlant.habito || 'Planta'}
             </span>
-            <h2 className="text-xl lg:text-2xl font-bold text-foreground leading-tight drop-shadow-md mb-1 lg:mb-2 break-words whitespace-normal w-full transition-colors duration-300">{activePlant.nombres_comunes || 'Nombre común no registrado'}</h2>
+            <h2 className="text-xl lg:text-2xl font-bold text-foreground leading-tight drop-shadow-md mb-1 lg:mb-2 break-words whitespace-normal w-full transition-colors duration-300">{activePlant.nombres_comunes || 'Nombre comï¿½n no registrado'}</h2>
             {activePlant.nombre_cientifico && (
               <p className="text-muted-foreground font-medium italic text-xs lg:text-sm mb-0 lg:mb-5 break-words whitespace-normal w-full transition-colors duration-300">{activePlant.nombre_cientifico || 'Especie por identificar'}</p>
             )}
