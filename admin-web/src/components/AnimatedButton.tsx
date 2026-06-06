@@ -37,7 +37,7 @@ export function AnimatedButton({ text, initialText, hoverText, onClick, classNam
                 <span 
                   key={index} 
                   style={{ 
-                    '--delay': \\s\ 
+                    '--delay': `${index * 0.03}s` 
                   } as React.CSSProperties}
                 >
                   {char === ' ' ? '\u00A0' : char}
