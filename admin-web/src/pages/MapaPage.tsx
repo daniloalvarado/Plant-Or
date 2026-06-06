@@ -168,8 +168,8 @@ export default function MapaPage() {
                 <Popup className={`plant-popup ${theme === 'dark' ? 'dark-popup' : ''} overflow-hidden rounded-xl border border-border bg-card text-card-foreground p-0`}>
                   <div className="text-sm px-3 py-2 flex flex-col justify-center min-w-[180px] bg-card rounded-xl gap-1">
                     <div className="mb-1.5"><EstadoBadge estado={p.estado_revision} /></div>
-                    <div className="font-bold italic text-foreground leading-none">{p.nombre_cientifico || '—'}</div>
-                    {p.nombre_cientifico && <div className="text-muted-foreground text-xs leading-none italic">{p.nombre_cientifico}</div>}
+                    <div className="font-bold text-foreground leading-none">{p.nombres_comunes || 'Nombre com�n no registrado'}</div>
+                      {p.nombre_cientifico && <div className="text-muted-foreground text-xs leading-none italic">{p.nombre_cientifico}</div>}
                     <div className="text-[10px] text-muted-foreground mt-0.5">Por: {p.registrador_nombre || '—'}</div>
                     <button
                       onClick={() => navigate(`/admin/planta/${p._id}`)}
@@ -201,4 +201,5 @@ export default function MapaPage() {
     </>
   )
 }
+
 
