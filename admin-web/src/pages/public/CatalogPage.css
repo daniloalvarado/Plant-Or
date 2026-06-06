@@ -76,7 +76,7 @@
   user-select: none;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1024px) {
   .mm-container {
     touch-action: none;
   }

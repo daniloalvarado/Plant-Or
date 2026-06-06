@@ -391,7 +391,7 @@ export default function CatalogPage() {
                   <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Leyenda</h4>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded-full bg-[#1FC351] border-2 border-white shadow-[0_0_8px_rgba(31,196,81,0.5)]"></div>
-                    <span className="text-sm font-medium text-foreground">Planta Identificada</span>
+                    <span className="text-sm font-bold text-[#1FC351]">Planta Identificada</span>
                   </div>
                 </div>
               </div>
