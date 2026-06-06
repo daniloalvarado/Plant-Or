@@ -165,15 +165,15 @@ export default function MapaPage() {
           >
             {filtered.map(p => (
               <Marker key={p._id} position={[p.latitud!, p.longitud!]} icon={createMarkerIcon(p.estado_revision)}>
-                <Popup className="plant-popup">
-                  <div className="text-sm space-y-2 min-w-[180px]">
-                    <p className="font-bold italic text-gray-900 leading-tight">{p.nombre_cientifico || '—'}</p>
-                    {p.nombres_comunes && <p className="text-gray-500 text-xs">{p.nombres_comunes}</p>}
-                    <EstadoBadge estado={p.estado_revision} />
-                    <p className="text-xs text-gray-600">Por: {p.registrador_nombre || '—'}</p>
+                <Popup className={`plant-popup ${theme === 'dark' ? 'dark-popup' : ''} overflow-hidden rounded-xl border border-border bg-card text-card-foreground p-0`}>
+                  <div className="text-sm p-3 flex flex-col justify-center min-w-[180px] bg-card rounded-xl">
+                    <p className="font-bold italic text-foreground leading-tight">{p.nombre_cientifico || '—'}</p>
+                    {p.nombres_comunes && <p className="text-muted-foreground text-xs mt-0.5">{p.nombres_comunes}</p>}
+                    <div className="mt-1.5"><EstadoBadge estado={p.estado_revision} /></div>
+                    <p className="text-xs text-muted-foreground mt-1.5">Por: {p.registrador_nombre || '—'}</p>
                     <button
                       onClick={() => navigate(`/admin/planta/${p._id}`)}
-                      className="block w-full text-center text-xs font-bold text-green-700 hover:text-green-800 pt-1 border-t border-gray-200"
+                      className="block w-full text-center text-xs font-bold text-[#1FC451] hover:text-[#19a343] pt-2 mt-2 border-t border-border"
                     >
                       Ver Detalles →
                     </button>

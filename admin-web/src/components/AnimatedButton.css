@@ -1,7 +1,7 @@
 .btn-animated {
   -webkit-tap-highlight-color: transparent;
-  background-color: #1FC451;
-  color: #000;
+  background-color: #ffffff;
+  color: #000000;
   border: none;
   border-radius: 999px;
   box-sizing: border-box;
@@ -25,7 +25,7 @@
 
 .btn-animated .original {
   background: #1FC451;
-  color: #000;
+  color: #ffffff;
   display: grid;
   inset: 0;
   place-content: center;

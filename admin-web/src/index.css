@@ -312,3 +312,18 @@ div[class*="cl-internal-"][style*="display: flex"][style*="align-items: center"]
   transform-origin: top right;
 }
 
+/* Leaflet Popup Resets */
+.dark-popup .leaflet-popup-content-wrapper {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+.dark-popup .leaflet-popup-content {
+    margin: 0;
+    width: auto !important;
+}
+.dark-popup .leaflet-popup-tip {
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
