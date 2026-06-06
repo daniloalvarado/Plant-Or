@@ -28,7 +28,7 @@ export function AnimatedButton({ text, onClick, className = '' }: AnimatedButton
                 <span 
                   key={index} 
                   style={{ 
-                    '--delay': ${index * 0.03}s 
+                    '--delay': `${index * 0.03}s` 
                   } as React.CSSProperties}
                 >
                   {char === ' ' ? '\u00A0' : char}
