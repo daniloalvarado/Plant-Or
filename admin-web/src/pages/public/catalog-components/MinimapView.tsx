@@ -233,7 +233,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
           className="absolute inset-x-0 lg:left-[8rem] lg:right-auto top-[6%] lg:top-1/2 bottom-[25vh] lg:bottom-auto lg:-translate-y-1/2 lg:w-[30vw] lg:max-w-[320px] z-20 flex flex-col justify-between lg:justify-center items-center lg:items-start animate-in fade-in duration-500 pointer-events-none lg:pointer-events-auto break-words px-6 lg:px-0"
         >
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <span className="text-brand-green dark:text-[#08FF00] border-b-2 border-brand-green dark:border-[#08FF00] pb-0.5 text-[10px] lg:text-xs font-bold uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
+            <span className="text-[#15803d] dark:text-[#08FF00] border-b-2 border-[#15803d] dark:border-[#08FF00] pb-0.5 text-[10px] lg:text-xs font-bold uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
               {activePlant.habito || 'Planta'}
             </span>
             <h2 className="text-xl lg:text-2xl font-bold text-foreground leading-tight italic drop-shadow-md mb-1 lg:mb-2 break-words whitespace-normal w-full transition-colors duration-300">
