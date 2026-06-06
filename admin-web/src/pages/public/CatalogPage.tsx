@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
-import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2, Sun, Moon, ChevronRight, ChevronLeft, Menu, Pointer } from 'lucide-react'
+import { Search, Map as MapIcon, Box, Filter, X, Leaf, CheckCircle2, Sun, Moon, ChevronRight, ChevronLeft, Menu, Pointer, MapPin } from 'lucide-react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
@@ -422,7 +422,15 @@ export default function CatalogPage() {
       )}
 
       {/* Plant Detail Modal */}
-      <PlantDetailModal isOpen={!!selectedPlant} plant={selectedPlant} onClose={() => setSelectedPlant(null)} />
+      <PlantDetailModal 
+        isOpen={!!selectedPlant} 
+        plant={selectedPlant} 
+        onClose={() => setSelectedPlant(null)} 
+        onShowOnMap={(plant) => {
+          setSelectedPlant(null);
+          setViewMode('map');
+        }}
+      />
     </div>
   )
 }
@@ -702,7 +710,7 @@ function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlantClick:
   )
 }
 
-function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, isOpen: boolean, onClose: () => void }) {
+function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plant: Planta | null, isOpen: boolean, onClose: () => void, onShowOnMap: (p: Planta) => void }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [isRendered, setIsRendered] = useState(isOpen)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
@@ -829,15 +837,13 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
               <span className="font-semibold text-foreground">Referencia:</span> {currentPlant.ubicacion_planta || '—'}
             </p>
             {currentPlant.latitud && currentPlant.longitud && (
-              <a
-                href={`https://www.google.com/maps?q=${currentPlant.latitud},${currentPlant.longitud}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 mt-3 text-sm font-bold text-[#229c22] hover:underline"
+              <button
+                onClick={() => onShowOnMap(currentPlant)}
+                className="flex items-center gap-1.5 mt-3 text-sm font-bold text-[#229c22] hover:underline cursor-pointer"
               >
                 <MapPin className="w-4 h-4" />
-                Ver en Google Maps
-              </a>
+                Ver en el mapa interactivo
+              </button>
             )}
           </div>
 
