@@ -129,10 +129,10 @@ export default function PlantaDetailPage() {
             <ArrowLeft className="w-4 h-4" />
             Volver
           </button>
-          <h1 className="text-2xl font-bold text-foreground italic">
-            {planta.nombre_cientifico || 'Sin nombre científico'}
-          </h1>
-          {planta.nombre_cientifico && (<p className="text-muted-foreground italic">{planta.nombre_cientifico}</p>)}
+            <h1 className="text-2xl font-bold text-foreground">
+              {planta.nombres_comunes || 'Nombre común no registrado'}
+            </h1>
+            {planta.nombre_cientifico && (<p className="text-muted-foreground italic">{planta.nombre_cientifico}</p>)}
           <div className="mt-2 text-xs font-mono bg-white/5 border border-white/10 px-2 py-1 rounded inline-block text-zinc-400">
             Cód: {planta._id}
           </div>

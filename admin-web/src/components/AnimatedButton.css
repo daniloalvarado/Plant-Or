@@ -81,8 +81,8 @@
 
 .text-wrapper .original {
   font-weight: 900;
-  letter-spacing: 4px;
-  font-size: 14px;
+  letter-spacing: 2px;
+  font-size: 11px;
   text-transform: uppercase;
   transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
   white-space: nowrap;
@@ -95,8 +95,8 @@
 .text-wrapper .letters {
   display: flex;
   font-weight: 900;
-  letter-spacing: 4px;
-  font-size: 14px;
+  letter-spacing: 2px;
+  font-size: 11px;
   text-transform: uppercase;
   white-space: nowrap;
 }

@@ -174,37 +174,4 @@
 }
 
 
-/* Global Leaflet Close Button Fixes */
-.leaflet-popup-close-button {
-    color: #666 !important;
-    font-size: 22px !important;
-    font-weight: bold !important;
-    text-decoration: none !important;
-    background: white !important;
-    border-radius: 50% !important;
-    width: 28px !important;
-    height: 28px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
-    top: 8px !important;
-    right: 8px !important;
-    z-index: 9999 !important;
-    line-height: 1 !important;
-}
 
-.leaflet-popup-close-button:hover {
-    color: #000 !important;
-    background: #f0f0f0 !important;
-}
-
-.dark-popup .leaflet-popup-close-button, .dark .leaflet-popup-close-button {
-    color: #fff !important;
-    background: rgba(255,255,255,0.2) !important;
-    border: 1px solid rgba(255,255,255,0.3) !important;
-}
-
-.dark-popup .leaflet-popup-close-button:hover, .dark .leaflet-popup-close-button:hover {
-    background: rgba(255,255,255,0.3) !important;
-}
