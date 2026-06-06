@@ -6,7 +6,9 @@
   padding: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: flex-start;
   color: #15803d !important;
+  width: 100%; /* Fill container so it aligns with names */
 }
 
 .dark .btn-animated-new {
@@ -16,12 +18,14 @@
 .btn-animated-new .content-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  width: auto;
 }
 
 .hover-underline-animation {
   position: relative;
   padding-bottom: 7px;
+  display: flex;
 }
 
 .hover-underline-animation:after {
@@ -47,7 +51,7 @@
   overflow: hidden;
   padding-right: 15px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -58,18 +62,21 @@
   font-size: 14px;
   text-transform: uppercase;
   pointer-events: none;
+  white-space: nowrap;
 }
 
 .text-wrapper .original {
   position: absolute;
+  left: 0;
   font-weight: 900;
   letter-spacing: 4px;
   font-size: 14px;
   text-transform: uppercase;
   transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
+  white-space: nowrap;
 }
 
 .btn-animated-new:hover .text-wrapper .original {
@@ -79,19 +86,23 @@
 .text-wrapper .letters {
   display: flex;
   position: absolute;
-  justify-content: center;
+  left: 0;
+  justify-content: flex-start;
   width: 100%;
   font-weight: 900;
   letter-spacing: 4px;
   font-size: 14px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .text-wrapper .letters span {
+  display: inline-block; /* Crucial for transform to work on spans */
   opacity: 0;
   transform: translateY(-15px);
   transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.3s;
   transition-delay: 0s;
+  will-change: transform, opacity; /* Fix WebKit repaint bug */
 }
 
 .text-wrapper .letters span:nth-child(2n) {
@@ -108,6 +119,7 @@
   transform: translateX(-8px);
   transition: all 0.3s ease;
   fill: currentColor;
+  flex-shrink: 0;
 }
 
 .btn-animated-new:hover svg {
