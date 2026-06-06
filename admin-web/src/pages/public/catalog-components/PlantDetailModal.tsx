@@ -43,7 +43,7 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
         className={`w-full max-w-5xl h-full max-h-[85vh] bg-card rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-border origin-center ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}
         onClick={e => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer border border-white/20 z-50">
+        <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm transition-colors cursor-pointer border border-white/20 z-50">
           <X className="w-5 h-5" />
         </button>
 
@@ -62,10 +62,10 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
                   <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-white z-10 border border-white/10 shadow-lg">
                     {currentPlant.galeria.length} FOTOS
                   </div>
-                  <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
+                  <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
                     <ChevronLeft className="w-6 h-6" />
                   </button>
-                  <button onClick={scrollRight} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
+                  <button onClick={scrollRight} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
                     <ChevronRight className="w-6 h-6" />
                   </button>
                 </>
