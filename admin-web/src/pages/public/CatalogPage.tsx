@@ -828,6 +828,17 @@ function PlantDetailModal({ plant, isOpen, onClose }: { plant: Planta | null, is
               <span className="font-semibold text-foreground">Dirección:</span> {currentPlant.direccion || '—'} {currentPlant.numero_casa}<br/>
               <span className="font-semibold text-foreground">Referencia:</span> {currentPlant.ubicacion_planta || '—'}
             </p>
+            {currentPlant.latitud && currentPlant.longitud && (
+              <a
+                href={`https://www.google.com/maps?q=${currentPlant.latitud},${currentPlant.longitud}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 mt-3 text-sm font-bold text-[#229c22] hover:underline"
+              >
+                <MapPin className="w-4 h-4" />
+                Ver en Google Maps
+              </a>
+            )}
           </div>
 
           <div className="space-y-3">
