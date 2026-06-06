@@ -12,7 +12,7 @@
 }
 
 .dark .btn-animated-new {
-  color: #229c22 !important;
+  color: #1FD21F !important;
 }
 
 .btn-animated-new .content-wrapper {
@@ -134,3 +134,4 @@
 .btn-animated-new:active svg {
   transform: scale(0.9);
 }
+
