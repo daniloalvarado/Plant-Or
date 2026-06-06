@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: flex-start;
   color: #15803d !important;
-  width: 100%; /* Fill container so it aligns with names */
+  width: auto;
 }
 
 .dark .btn-animated-new {
@@ -19,7 +19,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: auto;
 }
 
 .hover-underline-animation {
@@ -38,7 +37,7 @@
   left: 0;
   background-color: currentColor;
   transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
+  transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
 }
 
 .btn-animated-new:hover .hover-underline-animation:after {
@@ -48,34 +47,44 @@
 
 .text-wrapper {
   position: relative;
-  overflow: hidden;
   padding-right: 15px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-.text-wrapper .placeholder {
-  visibility: hidden;
-  font-weight: 900;
-  letter-spacing: 4px;
-  font-size: 14px;
-  text-transform: uppercase;
-  pointer-events: none;
-  white-space: nowrap;
+.original-container {
+  display: inline-flex;
+  overflow: hidden;
+  max-width: 150px;
+  opacity: 1;
+  transition: max-width 0.3s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.3s;
+}
+
+.btn-animated-new:hover .original-container {
+  max-width: 0;
+  opacity: 0;
+}
+
+.letters-container {
+  display: inline-flex;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  transition: max-width 0.3s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.3s;
+}
+
+.btn-animated-new:hover .letters-container {
+  max-width: 250px;
+  opacity: 1;
 }
 
 .text-wrapper .original {
-  position: absolute;
-  left: 0;
   font-weight: 900;
   letter-spacing: 4px;
   font-size: 14px;
   text-transform: uppercase;
   transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
   white-space: nowrap;
 }
 
@@ -85,10 +94,6 @@
 
 .text-wrapper .letters {
   display: flex;
-  position: absolute;
-  left: 0;
-  justify-content: flex-start;
-  width: 100%;
   font-weight: 900;
   letter-spacing: 4px;
   font-size: 14px;
@@ -97,12 +102,12 @@
 }
 
 .text-wrapper .letters span {
-  display: inline-block; /* Crucial for transform to work on spans */
+  display: inline-block;
   opacity: 0;
   transform: translateY(-15px);
   transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.3s;
   transition-delay: 0s;
-  will-change: transform, opacity; /* Fix WebKit repaint bug */
+  will-change: transform, opacity;
 }
 
 .text-wrapper .letters span:nth-child(2n) {
@@ -117,7 +122,7 @@
 
 .btn-animated-new svg {
   transform: translateX(-8px);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.87, 0, 0.13, 1);
   fill: currentColor;
   flex-shrink: 0;
 }

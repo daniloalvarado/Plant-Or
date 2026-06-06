@@ -26,23 +26,25 @@ export function AnimatedButton({ text, initialText, hoverText, onClick, classNam
       <div className="content-wrapper">
         <div className="hover-underline-animation">
           <div className="text-wrapper">
-            <div className="placeholder">
-              {longestText}
+            <div className="original-container">
+              <div className="original">
+                {displayInitial}
+              </div>
             </div>
-            <div className="original text-gradient-green">
-              {displayInitial}
-            </div>
-            <div className="letters text-gradient-green">
-              {displayHover.split('').map((char, index) => (
-                <span 
-                  key={index} 
-                  style={{ 
-                    '--delay': `${index * 0.03}s` 
-                  } as React.CSSProperties}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </span>
-              ))}
+
+            <div className="letters-container">
+              <div className="letters">
+                {displayHover.split('').map((char, index) => (
+                  <span 
+                    key={index} 
+                    style={{ 
+                      '--delay': `${index * 0.03}s` 
+                    } as React.CSSProperties}
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
