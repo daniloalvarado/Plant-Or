@@ -394,7 +394,7 @@ export default function HomeScreen() {
                   ]}
                 >
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: theme.text, fontWeight: 'bold' }}>{planta.nombre_cientifico || 'Planta sin nombre'}</Text>
+                    <Text style={{ color: theme.text, fontWeight: 'bold' }}>{planta.nombres_comunes || planta.nombre_cientifico || 'Planta sin nombre'}</Text>
                     <Text style={{ color: theme.icon, fontSize: 11, marginTop: 2 }}>
                       Cód: {planta._id}
                     </Text>

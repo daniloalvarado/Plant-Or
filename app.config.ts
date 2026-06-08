@@ -4,7 +4,7 @@ export default {
     slug: "plant-or",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/images/logo_unap.png",
+    icon: "./assets/images/Plant-Or.png",
     scheme: "plant-or",
     userInterfaceStyle: "dark",
     newArchEnabled: true,
@@ -14,17 +14,15 @@ export default {
     android: {
       package: "com.plantor.app",
       adaptiveIcon: {
-        backgroundColor: "#E6F4FE",
-        foregroundImage: "./assets/images/android-icon-foreground.png",
-        backgroundImage: "./assets/images/android-icon-background.png",
-        monochromeImage: "./assets/images/android-icon-monochrome.png",
+        backgroundColor: "#ffffff",
+        foregroundImage: "./assets/images/Plant-Or.png",
       },
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
     },
     web: {
       output: "server",
-      favicon: "./assets/images/logo_unap.png",
+      favicon: "./assets/images/Plant-Or.png",
     },
     plugins: [
       "expo-router",
@@ -33,7 +31,7 @@ export default {
       [
         "expo-splash-screen",
         {
-          image: "./assets/images/logo_unap.png",
+          image: "./assets/images/Plant-Or.png",
           imageWidth: 200,
           resizeMode: "contain",
           backgroundColor: "#ffffff",
@@ -59,7 +57,7 @@ export default {
     },
     extra: {
       eas: {
-        "projectId": "3ecbf864-5fec-4a82-a82d-e3a8a7bcccb5"
+        projectId: "fcbd8109-d7d2-4653-b034-e2235a312515"
       }
     }
   },
