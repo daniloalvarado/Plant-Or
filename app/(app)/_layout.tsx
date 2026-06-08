@@ -13,23 +13,36 @@ export default function Layout() {
   const router = useRouter();
   const segments = useSegments();
 
+  // Si Clerk no carga en 4 segundos (sin internet), desbloqueamos con la sesión en caché
+  const [offlineUnblocked, setOfflineUnblocked] = React.useState(false);
+
   React.useEffect(() => {
-    if (!isLoaded) return;
+    if (isLoaded) return; // Si Clerk ya cargó, no necesitamos el timeout
+    const timeout = setTimeout(() => {
+      setOfflineUnblocked(true);
+    }, 4000);
+    return () => clearTimeout(timeout);
+  }, [isLoaded]);
+
+  const effectivelyLoaded = isLoaded || offlineUnblocked;
+
+  React.useEffect(() => {
+    if (!effectivelyLoaded) return;
 
     // Check if the user is in an auth screen (login/register)
     const inAuthGroup = segments[1] === "sign-in" || segments[1] === "sign-up";
 
-    // If logged out and not in auth screens, FORCE redirect to sign-in lock
+    // Si no hay sesión Y tampoco estamos en auth screens, ir al login
     if (!isSignedIn && !inAuthGroup) {
       router.replace("/sign-in");
     }
-    // If logged in and in auth screens, FORCE redirect to app (prevent seeing login page)
+    // Si hay sesión y estamos en auth screens, ir al app
     else if (isSignedIn && inAuthGroup) {
       router.replace("/");
     }
-  }, [isSignedIn, isLoaded, segments]);
+  }, [isSignedIn, effectivelyLoaded, segments]);
 
-  if (!isLoaded) {
+  if (!effectivelyLoaded) {
     return (
       <View flex={1} bg="#08130D" style={{ justifyContent: "center", alignItems: "center" }}>
         <Spinner size="large" color="#1FC451" />
