@@ -193,9 +193,23 @@ export default function MapaScreen() {
 
               {/* Info */}
               <YStack flex={1} gap="$1">
-                <Text fontSize={18} fontWeight="bold" style={{ color: theme.text as any }} numberOfLines={1}>
-                  {selectedPlanta.nombre_cientifico || selectedPlanta.nombres_comunes}
-                </Text>
+                <XStack style={{ flexWrap: 'wrap', alignItems: 'center' }}>
+                  {!!selectedPlanta.nombres_comunes && (
+                    <Text fontSize={18} fontWeight="bold" style={{ color: theme.text as any }}>
+                      {selectedPlanta.nombres_comunes}{" "}
+                    </Text>
+                  )}
+                  {!!selectedPlanta.nombre_cientifico && (
+                    <Text fontSize={18} fontWeight="bold" fontStyle="italic" style={{ color: theme.text as any }}>
+                      ({selectedPlanta.nombre_cientifico})
+                    </Text>
+                  )}
+                  {!selectedPlanta.nombres_comunes && !selectedPlanta.nombre_cientifico && (
+                    <Text fontSize={18} fontWeight="bold" style={{ color: theme.text as any }}>
+                      Planta
+                    </Text>
+                  )}
+                </XStack>
                 
                 <XStack gap="$2" flexWrap="wrap">
                   <View style={styles.badge}>

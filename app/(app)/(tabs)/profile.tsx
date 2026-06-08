@@ -520,7 +520,7 @@ export default function Profile() {
               <Text fontSize={14} color="rgba(255,255,255,0.7)">
                 {validatedCount >= certThreshold 
                   ? 'Has alcanzado los requisitos. Ya puedes generar tu certificado oficial del proyecto.'
-                  : `Al alcanzar ${certThreshold} registros validados obtendrás un Certificado Digital oficial del proyecto. (Aplica para estudiantes y ciudadanos).`}
+                  : `Al alcanzar ${certThreshold} registros validados obtendrás un Certificado Digital oficial del proyecto.`}
               </Text>
               
               {validatedCount >= certThreshold ? (

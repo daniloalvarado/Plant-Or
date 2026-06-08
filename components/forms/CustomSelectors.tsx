@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, Pressable, Text } from 'react-native';
-import { XStack, YStack } from 'tamagui';
+import { XStack, YStack, Input } from 'tamagui';
 
 interface RadioSelectProps {
   options: string[];
@@ -12,7 +12,7 @@ interface RadioSelectProps {
 export const RadioSelect = React.memo(function RadioSelect({ options, value, onChange, horizontal = false }: RadioSelectProps) {
   const renderButtons = () =>
     options.map((opt) => {
-      const isSelected = value === opt;
+      const isSelected = opt === 'Otro' ? value?.toString().startsWith('Otro') : value === opt;
       return (
         <Pressable
           key={opt}
@@ -52,9 +52,22 @@ export const RadioSelect = React.memo(function RadioSelect({ options, value, onC
   }
 
   return (
-    <XStack flexWrap="wrap" gap="$2">
-      {renderButtons()}
-    </XStack>
+    <YStack gap="$2">
+      <XStack flexWrap="wrap" gap="$2">
+        {renderButtons()}
+      </XStack>
+      {value?.toString().startsWith('Otro') && (
+        <Input 
+          placeholder="Especifique otro..." 
+          value={value === 'Otro' ? '' : value.substring(5)} 
+          onChangeText={(t) => onChange('Otro:' + t)}
+          borderWidth={1} 
+          borderColor={(value === 'Otro' || value.substring(5).trim() === '') ? '#ff4444' : "#ffffff"} 
+          focusStyle={{ borderColor: (value === 'Otro' || value.substring(5).trim() === '') ? '#ff4444' : "#ffffff" }}
+          bg="rgba(255,255,255,0.05)" color="#ffffff"
+        />
+      )}
+    </YStack>
   );
 }, (prev, next) => {
   return prev.value === next.value && 
@@ -70,17 +83,27 @@ interface MultiSelectProps {
 
 export const MultiSelect = React.memo(function MultiSelect({ options, value, onChange }: MultiSelectProps) {
   const toggleOption = (opt: string) => {
-    if (value.includes(opt)) {
-      onChange(value.filter((item) => item !== opt));
+    if (opt === 'Otro') {
+      const hasOtro = (Array.isArray(value) ? value : []).some(v => v?.startsWith?.('Otro'));
+      if (hasOtro) {
+        onChange((Array.isArray(value) ? value : []).filter(v => !v.startsWith('Otro')));
+      } else {
+        onChange([...(Array.isArray(value) ? value : []), 'Otro']);
+      }
+      return;
+    }
+    if ((Array.isArray(value) ? value : []).includes(opt)) {
+      onChange((Array.isArray(value) ? value : []).filter((item) => item !== opt));
     } else {
       onChange([...value, opt]);
     }
   };
 
   return (
-    <XStack flexWrap="wrap" gap="$2">
-      {options.map((opt) => {
-        const isSelected = value.includes(opt);
+    <YStack gap="$2">
+      <XStack flexWrap="wrap" gap="$2">
+        {options.map((opt) => {
+        const isSelected = opt === 'Otro' ? (Array.isArray(value) ? value : []).some(v => v?.startsWith?.('Otro')) : (Array.isArray(value) ? value : []).includes(opt);
         return (
           <Pressable
             key={opt}
@@ -107,8 +130,23 @@ export const MultiSelect = React.memo(function MultiSelect({ options, value, onC
             </Text>
           </Pressable>
         );
-      })}
-    </XStack>
+      })}</XStack>
+      {(Array.isArray(value) ? value : []).some(v => v?.startsWith?.('Otro')) && (
+        <Input 
+          placeholder="Especifique otro..." 
+          value={(Array.isArray(value) ? value : []).find(v => v?.startsWith?.('Otro')) === 'Otro' ? '' : (Array.isArray(value) ? value : []).find(v => v?.startsWith?.('Otro'))?.substring(5) || ''} 
+          onChangeText={(t) => {
+            const newValue = value.filter(v => !v.startsWith('Otro'));
+            newValue.push('Otro:' + t);
+            onChange(newValue);
+          }}
+          borderWidth={1} 
+          borderColor={(Array.isArray(value) ? value : []).some(v => v === 'Otro' || (v?.startsWith('Otro:') && v.substring(5).trim() === '')) ? '#ff4444' : "#ffffff"} 
+          focusStyle={{ borderColor: (Array.isArray(value) ? value : []).some(v => v === 'Otro' || (v?.startsWith('Otro:') && v.substring(5).trim() === '')) ? '#ff4444' : "#ffffff" }}
+          bg="rgba(255,255,255,0.05)" color="#ffffff"
+        />
+      )}
+    </YStack>
   );
 }, (prev, next) => {
   const prevValue = Array.isArray(prev.value) ? prev.value : [];
@@ -119,3 +157,5 @@ export const MultiSelect = React.memo(function MultiSelect({ options, value, onC
   return prevValue.join(',') === nextValue.join(',') && 
          prevOptions.join(',') === nextOptions.join(',');
 });
+
+

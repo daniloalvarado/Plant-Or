@@ -234,7 +234,7 @@ export default function HomeScreen() {
                 <PlantCard
                   key={planta._id}
                   id={planta._id}
-                  title={planta.nombre_cientifico || planta.nombres_comunes || "Planta"}
+                  title={planta.nombres_comunes || planta.nombre_cientifico || "Planta"}
                   habito={planta.habito || "Planta"}
                   familia={planta.familia || "-"}
                   imageUrl={imageUrl || undefined}

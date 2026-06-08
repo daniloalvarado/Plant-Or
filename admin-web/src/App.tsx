@@ -72,8 +72,8 @@ function RoleCheck({ children }: { children: React.ReactNode }) {
 
 function MainContent() {
   React.useEffect(() => {
-    document.title = 'Plant-OR Admin';
-    return () => { document.title = 'Plant-OR'; };
+    document.title = 'Plant-Or Admin';
+    return () => { document.title = 'Plant-Or'; };
   }, []);
 
   return (

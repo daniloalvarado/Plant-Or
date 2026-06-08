@@ -276,11 +276,10 @@ export const planta = {
       of: [{ type: 'string' }],
       options: {
         list: [
-          { title: 'Vegetativo (solo hojas)', value: 'Vegetativo (solo hojas)' },
+          { title: 'Solo hojas', value: 'Solo hojas' },
           { title: 'Con flores', value: 'Con flores' },
           { title: 'Con frutos', value: 'Con frutos' },
           { title: 'Sin hojas', value: 'Sin hojas' },
-          { title: 'Secándose', value: 'Secándose' },
         ]
       }
     },
@@ -297,8 +296,8 @@ export const planta = {
           { title: 'Malo', value: 'Malo' },
           { title: 'Podado', value: 'Podado' },
           { title: 'Enfermo', value: 'Enfermo' },
-          { title: 'Con plagas', value: 'Con plagas' },
-          { title: 'Daño mecánico', value: 'Daño mecánico' },
+          { title: 'Con plagas visibles', value: 'Con plagas visibles' },
+          { title: 'Con daño mecánico', value: 'Con daño mecánico' },
         ]
       }
     },
@@ -313,15 +312,14 @@ export const planta = {
       options: {
         list: [
           { title: 'Da sombra', value: 'Da sombra' },
-          { title: 'Flores vistosas', value: 'Flores vistosas' },
-          { title: 'Frutos vistosos', value: 'Frutos vistosos' },
-          { title: 'Hojas vistosas', value: 'Hojas vistosas' },
-          { title: 'Copa atractiva', value: 'Copa atractiva' },
+          { title: 'Tiene flores vistosas', value: 'Tiene flores vistosas' },
+          { title: 'Tiene frutos vistosos', value: 'Tiene frutos vistosos' },
+          { title: 'Tiene copa atractiva', value: 'Tiene copa atractiva' },
           { title: 'Atrae fauna', value: 'Atrae fauna' },
           { title: 'Valor cultural', value: 'Valor cultural' },
           { title: 'Valor alimenticio', value: 'Valor alimenticio' },
           { title: 'Valor medicinal', value: 'Valor medicinal' },
-          { title: 'Mejora microclima', value: 'Mejora microclima' },
+          { title: 'Mejora el microclima', value: 'Mejora el microclima' },
           { title: 'Otro', value: 'Otro' },
         ]
       }
@@ -335,13 +333,16 @@ export const planta = {
       options: {
         list: [
           { title: 'No genera daño', value: 'No genera daño' },
-          { title: 'Frutos ensucian', value: 'Frutos ensucian' },
-          { title: 'Obstruye desagüe', value: 'Obstruye desagüe' },
-          { title: 'Raíces rompen piso', value: 'Raíces rompen piso' },
+          { title: 'Frutos ensucian la vía', value: 'Frutos ensucian la vía' },
+          { title: 'Frutos obstruyen desagüe', value: 'Frutos obstruyen desagüe' },
+          { title: 'Raíces rompen el piso', value: 'Raíces rompen el piso' },
+          { title: 'Raíces afectan veredas', value: 'Raíces afectan veredas' },
+          { title: 'Raíces afectan cimientos', value: 'Raíces afectan cimientos' },
           { title: 'Levanta pavimento', value: 'Levanta pavimento' },
-          { title: 'Interfiere cableado', value: 'Interfiere cableado' },
-          { title: 'Riesgo caída', value: 'Riesgo caída' },
-          { title: 'Tronco inclinado', value: 'Tronco inclinado' },
+          { title: 'Interfiere con cableado', value: 'Interfiere con cableado' },
+          { title: 'Interfiere con luminarias', value: 'Interfiere con luminarias' },
+          { title: 'Riesgo de caída de ramas', value: 'Riesgo de caída de ramas' },
+          { title: 'Tronco inclinado (riesgo)', value: 'Tronco inclinado (riesgo)' },
           { title: 'Otro', value: 'Otro' },
         ]
       }

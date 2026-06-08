@@ -12,32 +12,6 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
   const indicatorRef = useRef<HTMLDivElement>(null)
   const previewRef = useRef<HTMLImageElement>(null)
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!containerRef.current) return;
-      const isHorizontal = window.innerWidth <= 900;
-      const scrollAmount = isHorizontal ? window.innerWidth * 0.2 : window.innerHeight * 0.2;
-      
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        containerRef.current.scrollBy({
-          top: isHorizontal ? 0 : scrollAmount,
-          left: isHorizontal ? scrollAmount : 0,
-          behavior: 'smooth'
-        });
-      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-        e.preventDefault();
-        containerRef.current.scrollBy({
-          top: isHorizontal ? 0 : -scrollAmount,
-          left: isHorizontal ? -scrollAmount : 0,
-          behavior: 'smooth'
-        });
-      }
-    };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   useEffect(() => {
     if (!containerRef.current || !itemsRef.current || !indicatorRef.current || !previewRef.current) return;
@@ -172,6 +146,27 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
         );
     };
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+        const isScrollingKey = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'PageDown', 'PageUp', 'Home', 'End'].includes(e.key);
+        
+        // Prevent default scrolling for the entire page
+        if (isScrollingKey) {
+            e.preventDefault();
+        }
+
+        const scrollAmount = dimensions.itemSize * 2;
+        
+        if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) {
+            targetTranslate = Math.max(targetTranslate - scrollAmount, -maxTranslate);
+        } else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
+            targetTranslate = Math.min(targetTranslate + scrollAmount, 0);
+        } else if (e.key === 'Home') {
+            targetTranslate = 0;
+        } else if (e.key === 'End') {
+            targetTranslate = -maxTranslate;
+        }
+    };
+
     const handleResize = () => {
         isHorizontal = window.innerWidth < 1024;
         dimensions = updateDimensions();
@@ -199,6 +194,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
     container.addEventListener("touchstart", handleTouchStart, { passive: false });
     container.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("resize", handleResize);
+    window.addEventListener("keydown", handleKeyDown, { passive: false });
 
     updatePreviewImage(0);
     animate();
@@ -209,6 +205,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
         container.removeEventListener("touchstart", handleTouchStart);
         container.removeEventListener("touchmove", handleTouchMove);
         window.removeEventListener("resize", handleResize);
+        window.removeEventListener("keydown", handleKeyDown);
     };
   }, [plants]);
 
@@ -232,7 +229,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
           key={`info-${activePlant._id}`}
           className="absolute inset-x-0 lg:left-[8rem] lg:right-auto top-[6%] lg:top-1/2 bottom-[25vh] lg:bottom-auto lg:-translate-y-1/2 lg:w-[30vw] lg:max-w-[320px] z-20 flex flex-col justify-between lg:justify-center items-center lg:items-start animate-in fade-in duration-500 pointer-events-none lg:pointer-events-auto break-words px-6 lg:px-0"
         >
-          <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left max-w-[260px] lg:max-w-[280px]">
             <span className="text-custom-green border-b-2 border-custom-green pb-0.5 text-[10px] lg:text-xs font-bold uppercase tracking-wider mb-2 lg:mb-3 inline-block transition-colors duration-300">
               {activePlant.habito || 'Planta'}
             </span>

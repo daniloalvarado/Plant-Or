@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, View, Image } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View, Image, findNodeHandle, UIManager, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Button,
@@ -26,7 +26,7 @@ import { FormArbusto } from '@/components/forms/FormArbusto';
 import { FormLiana } from '@/components/forms/FormLiana';
 import { FormHierba } from '@/components/forms/FormHierba';
 import { FormCompartido } from '@/components/forms/FormCompartido';
-import { validateArbol, validatePalmera, validateArbusto, validateLiana, validateHierba } from '@/lib/validation';
+import { validateArbol, validatePalmera, validateArbusto, validateLiana, validateHierba, getMissingSections } from '@/lib/validation';
 import { Modal } from 'react-native';
 import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { client, urlFor } from '@/lib/sanity';
@@ -43,6 +43,7 @@ export default function RegistroScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
   const [rolRegistro, setRolRegistro] = useState<'estudiante' | 'ciudadano'>('estudiante');
+
 
   // Form State: Bloque 1
   const [nombre, setNombre] = useState(user?.fullName || '');
@@ -95,6 +96,96 @@ export default function RegistroScreen() {
     habito: '',
     tipoVida: '',
   });
+
+
+  const [missingSections, setMissingSections] = useState<{ id: string; label: string }[]>([]);
+  const [showHelperButton, setShowHelperButton] = useState(false);
+  const [showMissingModal, setShowMissingModal] = useState(false);
+  const [showStep3Error, setShowStep3Error] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const scrollViewRef = React.useRef<ScrollView>(null);
+  const fieldRefs = React.useRef<{ [key: string]: any }>({});
+
+  const registerFieldRef = useCallback((key: string, el: any) => {
+    if (el) {
+      fieldRefs.current[key] = el;
+    }
+  }, []);
+
+  const scrollToField = (key: string) => {
+    const el = fieldRefs.current[key];
+    const sv = scrollViewRef.current;
+    
+    if (el && sv) {
+      const scrollNode = (sv as any).getInnerViewNode ? (sv as any).getInnerViewNode() : findNodeHandle(sv);
+      const elNode = findNodeHandle(el);
+      
+      if (elNode && scrollNode) {
+        UIManager.measureLayout(
+          elNode,
+          scrollNode,
+          () => console.log('Failed to measure layout'),
+          (x: number, y: number) => {
+            sv.scrollTo({ y: Math.max(0, y - 50), animated: true });
+          }
+        );
+      } else {
+        // Fallback
+        if (el.measureLayout) {
+          try {
+            el.measureLayout(
+              findNodeHandle(sv),
+              (x: number, y: number) => {
+                sv.scrollTo({ y: Math.max(0, y - 50), animated: true });
+              },
+              () => console.log('Failed fallback measure layout')
+            );
+          } catch (e) {}
+        }
+      }
+    }
+    setShowMissingModal(false);
+  };
+
+  const checkStep3Valid = () => {
+    // Primero: campos de identificación botánica (inicio del bloque 3)
+    const identMissing: { id: string; label: string }[] = [];
+    if (!nombresComunes.trim()) identMissing.push({ id: 'nombresComunes', label: 'Nombre local / común' });
+    if (!nombreCientifico.trim()) identMissing.push({ id: 'nombreCientifico', label: 'Nombre científico' });
+    if (!familia.trim()) identMissing.push({ id: 'familia', label: 'Familia botánica' });
+    if (!datosBotanicos.habito) identMissing.push({ id: 'habito', label: 'Hábito de la planta' });
+    if (!datosBotanicos.tipoVida) identMissing.push({ id: 'tipoVida', label: 'Tipo de vida' });
+
+    // Luego: campos dasométricos, tronco, hojas, reproductivos, estado e impacto
+    const botanicMissing = getMissingSections(datosBotanicos.habito, datosBotanicos);
+
+    // El orden del modal debe reflejar exactamente el orden visual del formulario
+    return [...identMissing, ...botanicMissing];
+  };
+
+  useEffect(() => {
+    if (showHelperButton) {
+      const missing = checkStep3Valid();
+      setMissingSections(missing);
+      if (missing.length === 0) {
+        setShowHelperButton(false);
+        setShowMissingModal(false);
+      }
+    }
+  }, [datosBotanicos, nombresComunes, nombreCientifico, familia, showHelperButton]);
+
+  const handleContinuarBloque3 = () => {
+    const missing = checkStep3Valid();
+    if (missing.length > 0) {
+      setMissingSections(missing);
+      setShowMissingModal(true);
+      setShowHelperButton(true);
+    } else {
+      setShowHelperButton(false);
+      nextStep();
+    }
+  };
+
 
   const updateBotanic = (sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => {
     setDatosBotanicos((prev: any) => {
@@ -188,10 +279,28 @@ export default function RegistroScreen() {
         }
         setDistrito(doc.distrito || '');
         setDireccion(doc.direccion || '');
-        setTipoUbicacion(doc.tipo_ubicacion_1 || '');
-        setTipoUbicacion2(doc.tipo_ubicacion_2 || '');
+        
+        // Handle "Otro" options correctly when loading
+        if (['Jirón', 'Avenida', 'Calle', 'Pasaje', 'Parque'].includes(doc.tipo_ubicacion_1)) {
+          setTipoUbicacion(doc.tipo_ubicacion_1 || '');
+        } else if (doc.tipo_ubicacion_1) {
+          setTipoUbicacion('Otro:' + doc.tipo_ubicacion_1);
+        } else { setTipoUbicacion(''); }
+        
+        if (['Vereda', 'Berma central', 'Dentro del domicilio'].includes(doc.tipo_ubicacion_2)) {
+          setTipoUbicacion2(doc.tipo_ubicacion_2 || '');
+        } else if (doc.tipo_ubicacion_2) {
+          setTipoUbicacion2('Otro:' + doc.tipo_ubicacion_2);
+        } else { setTipoUbicacion2(''); }
+        
         setNumeroCasa(doc.numero_casa || '');
-        setSustratoPlanta(doc.ubicacion_planta || '');
+        
+        if (['En tierra', 'En macetero'].includes(doc.ubicacion_planta)) {
+          setSustratoPlanta(doc.ubicacion_planta || '');
+        } else if (doc.ubicacion_planta) {
+          setSustratoPlanta('Otro:' + doc.ubicacion_planta);
+        } else { setSustratoPlanta(''); }
+        
         if (doc.numero_planta) setNumeroPlantaAutogenerado(Number(doc.numero_planta));
 
         setDatosBotanicos({
@@ -327,29 +436,48 @@ export default function RegistroScreen() {
         console.error("Auto-save profile error:", e);
       }
     }
-    setStep(step + 1);
+    
+    if (step === 2 && rolRegistro === 'ciudadano') {
+      setStep(4);
+    } else {
+      setStep(step + 1);
+    }
   };
   
-  const prevStep = () => setStep(step - 1);
+  const prevStep = () => {
+    if (step === 4 && rolRegistro === 'ciudadano') {
+      setStep(2);
+    } else {
+      setStep(step - 1);
+    }
+  };
 
   // Validaciones estrictas
   const isStep1Valid = rolRegistro === 'estudiante' 
     ? (nombre.trim() !== '' && dni.length === 8 && email.trim() !== '' && facultad.trim() !== '' && escuela.trim() !== '')
     : (nombre.trim() !== '' && email.trim() !== ''); // Ciudadano solo necesita nombre y email
-  const isStep2Valid = location !== null && distrito.trim() !== '' && direccion.trim() !== '' && tipoUbicacion.trim() !== '' && sustratoPlanta.trim() !== '';
-  const isStep3Valid = fotos.planta_completa && fotos.hoja && fotos.flor && fotos.fruto && fotos.semilla;
-  
-  let isStep4Valid = false;
+  const isValidSelector = (val: string) => val.trim() !== '' && val !== 'Otro' && !(val.startsWith('Otro:') && val.substring(5).trim() === '');
+  const isStep2Valid = location !== null && 
+    distrito.trim() !== '' && 
+    direccion.trim() !== '' && 
+    isValidSelector(tipoUbicacion) && 
+    (tipoUbicacion2 === '' || isValidSelector(tipoUbicacion2)) && 
+    isValidSelector(sustratoPlanta);
+  // isStep3Valid es ahora la validación de Botánica
+  let isStep3Valid = false;
   if (datosBotanicos.habito && datosBotanicos.tipoVida) {
     switch (datosBotanicos.habito) {
-      case 'Árbol': isStep4Valid = validateArbol(datosBotanicos); break;
-      case 'Palmera': isStep4Valid = validatePalmera(datosBotanicos); break;
-      case 'Arbusto': isStep4Valid = validateArbusto(datosBotanicos); break;
-      case 'Liana': isStep4Valid = validateLiana(datosBotanicos); break;
-      case 'Hierba': isStep4Valid = validateHierba(datosBotanicos); break;
-      default: isStep4Valid = false;
+      case 'Árbol': isStep3Valid = validateArbol(datosBotanicos); break;
+      case 'Palmera': isStep3Valid = validatePalmera(datosBotanicos); break;
+      case 'Arbusto': isStep3Valid = validateArbusto(datosBotanicos); break;
+      case 'Liana': isStep3Valid = validateLiana(datosBotanicos); break;
+      case 'Hierba': isStep3Valid = validateHierba(datosBotanicos); break;
+      default: isStep3Valid = false;
     }
   }
+
+  // isStep4Valid es ahora la validación de Fotografías
+  const isStep4Valid = fotos.planta_completa && fotos.hoja && fotos.flor && fotos.fruto && fotos.semilla;
 
   const handleFinalSubmit = async () => {
     if (!process.env.EXPO_PUBLIC_SANITY_TOKEN) {
@@ -472,10 +600,10 @@ export default function RegistroScreen() {
         longitud: location?.longitude,
         distrito: distrito,
         direccion: direccion,
-        tipo_ubicacion_1: tipoUbicacion,
-        tipo_ubicacion_2: tipoUbicacion2,
+        tipo_ubicacion_1: tipoUbicacion.startsWith('Otro:') ? tipoUbicacion.substring(5).trim() : tipoUbicacion,
+        tipo_ubicacion_2: tipoUbicacion2.startsWith('Otro:') ? tipoUbicacion2.substring(5).trim() : tipoUbicacion2,
         numero_casa: numeroCasa,
-        ubicacion_planta: sustratoPlanta,
+        ubicacion_planta: sustratoPlanta.startsWith('Otro:') ? sustratoPlanta.substring(5).trim() : sustratoPlanta,
         numero_planta: numeroPlantaAutogenerado.toString(),
         
         // Fotos principales en la galería (Se poblarán luego si es online)
@@ -619,6 +747,9 @@ export default function RegistroScreen() {
     setEscuela((user?.unsafeMetadata?.escuela as string) || '');
     setDiaClase((user?.unsafeMetadata?.dia_clase as string) || '');
     setLocation(null);
+    setTipoUbicacion('');
+    setTipoUbicacion2('');
+    setSustratoPlanta('');
     setFotos({ planta_completa: null, hoja: null, flor: null, fruto: null, semilla: null });
     setFotosExtra([]);
     setDatosBotanicos({ habito: '', tipoVida: '' });
@@ -635,6 +766,7 @@ export default function RegistroScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <ScrollView
+          ref={scrollViewRef}
           style={{ flex: 1 }}
           contentContainerStyle={{ padding: 20, paddingBottom: 100 }}
           keyboardShouldPersistTaps="handled"
@@ -906,27 +1038,27 @@ export default function RegistroScreen() {
                     />
                   </YStack>
 
-                  <XStack gap="$3">
-                    <YStack flex={1} gap="$2">
+                  <YStack gap="$4">
+                    <YStack gap="$2">
                       <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de ubicación 1</Label>
                       <RadioSelect 
-                        options={['Jirón', 'Avenida', 'Calle', 'Pasaje', 'Parque']}
+                        options={['Jirón', 'Avenida', 'Calle', 'Pasaje', 'Parque', 'Otro']}
                         value={tipoUbicacion}
                         onChange={setTipoUbicacion}
                       />
                     </YStack>
-                    <YStack flex={1} gap="$2">
+                    <YStack gap="$2">
                       <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de ubicación 2</Label>
                       <RadioSelect 
-                        options={['Vereda', 'Berma central']}
+                        options={['Vereda', 'Berma central', 'Dentro del domicilio', 'Otro']}
                         value={tipoUbicacion2}
                         onChange={setTipoUbicacion2}
                       />
                     </YStack>
-                  </XStack>
+                  </YStack>
 
-                  <XStack gap="$3">
-                    <YStack flex={1} gap="$2">
+                  <YStack gap="$4">
+                    <YStack gap="$2">
                       <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>N° de Casa</Label>
                       <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                         size="$3"
@@ -939,21 +1071,21 @@ export default function RegistroScreen() {
                         placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                       />
                     </YStack>
-                    <YStack flex={1} gap="$2">
+                    <YStack gap="$2">
                       <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Sustrato / Ubicación</Label>
                       <RadioSelect 
-                        options={['Tierra', 'Macetero']}
+                        options={['En tierra', 'En macetero', 'Otro']}
                         value={sustratoPlanta}
                         onChange={setSustratoPlanta}
                       />
                     </YStack>
-                  </XStack>
+                  </YStack>
 
                   <Spacer size="$2" />
                   
                   <YStack gap="$2">
                     <Button bg="#1FC451" color="white" onPress={nextStep} disabled={!isStep2Valid} opacity={!isStep2Valid ? 0.5 : 1} pressStyle={{ bg: '#15963c' }}>
-                      Confirmar y Continuar
+                      {rolRegistro === 'estudiante' ? "Siguiente: Identificación" : "Siguiente: Fotografías"}
                     </Button>
                     <Button variant="outlined" borderColor="rgba(255,255,255,0.2)" color="white" onPress={prevStep} pressStyle={{ bg: 'rgba(255,255,255,0.05)' }}>
                       Volver
@@ -963,9 +1095,9 @@ export default function RegistroScreen() {
               </Card>
             )}
 
-            {step === 3 && (
+            {step === 4 && (
               <Card padding="$4" gap="$2" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
-                <H4 color="#1FC451" mb="$2">Bloque 3: Fotografías</H4>
+                <H4 color="#1FC451" mb="$2">Bloque 4: Fotografías</H4>
                 <Paragraph color="rgba(255,255,255,0.7)" mb="$4">
                   El documento exige capturar 5 fotografías clave de la planta.
                 </Paragraph>
@@ -984,7 +1116,9 @@ export default function RegistroScreen() {
                       <YStack key={item.id} style={{ backgroundColor: "rgba(255,255,255,0.02)", padding: 12, borderRadius: 8 }} gap="$2">
                         <XStack style={{ alignItems: "center" }} gap="$3">
                           {uri ? (
-                            <Image source={{ uri }} style={{ width: 56, height: 56, borderRadius: 8 }} />
+                            <Pressable onPress={() => setSelectedPhoto(uri)}>
+                              <Image source={{ uri }} style={{ width: 56, height: 56, borderRadius: 8 }} />
+                            </Pressable>
                           ) : (
                             <View style={{ width: 56, height: 56, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.05)', alignItems: 'center', justifyContent: 'center' }}>
                               <MaterialCommunityIcons name="image-outline" size={28} color="rgba(255,255,255,0.3)" />
@@ -993,7 +1127,12 @@ export default function RegistroScreen() {
                           <YStack flex={1}>
                             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>{item.label}</Label>
                             {uri
-                              ? <Paragraph color="#1FC451" size="$1">✓ Capturada</Paragraph>
+                              ? <XStack style={{ alignItems: "center" }} gap="$2">
+                                  <Paragraph color="#1FC451" size="$1">✓ Capturada</Paragraph>
+                                  <Button size="$2" bg="transparent" onPress={() => setFotos(prev => ({...prev, [item.id]: null}))}>
+                                    <MaterialCommunityIcons name="trash-can-outline" size={16} color="#ff4444" />
+                                  </Button>
+                                </XStack>
                               : <Paragraph color="rgba(255,255,255,0.4)" size="$1">Sin foto</Paragraph>
                             }
                           </YStack>
@@ -1038,7 +1177,9 @@ export default function RegistroScreen() {
                     {fotosExtra.map((uri, idx) => (
                       <YStack key={`extra-${idx}`} style={{ backgroundColor: "rgba(255,255,255,0.02)", padding: 12, borderRadius: 8 }} gap="$2">
                         <XStack style={{ alignItems: "center" }} gap="$3">
-                          <Image source={{ uri }} style={{ width: 56, height: 56, borderRadius: 8 }} />
+                          <Pressable onPress={() => setSelectedPhoto(uri)}>
+                            <Image source={{ uri }} style={{ width: 56, height: 56, borderRadius: 8 }} />
+                          </Pressable>
                           <YStack flex={1}>
                             <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Foto Extra {idx + 1}</Label>
                             <Paragraph color="#1FC451" size="$1">✓ Agregada</Paragraph>
@@ -1071,9 +1212,12 @@ export default function RegistroScreen() {
                       <Button 
                         bg="#1FC451" 
                         color="white" 
-                        onPress={handleFinalSubmit} 
-                        disabled={!isStep3Valid || isSubmitting}
-                        opacity={(!isStep3Valid || isSubmitting) ? 0.5 : 1}
+                        onPress={() => {
+                          if (!isStep4Valid) setShowStep3Error(true);
+                          else { setShowStep3Error(false); handleFinalSubmit(); }
+                        }}
+                        disabled={isSubmitting}
+                        opacity={isSubmitting ? 0.5 : 1}
                         pressStyle={{ bg: '#15963c' }}
                       >
                         {isSubmitting ? "Enviando fotos..." : (editId ? "Guardar Cambios" : "Finalizar (Ciudadano)")}
@@ -1082,16 +1226,17 @@ export default function RegistroScreen() {
                       <Button 
                         bg="#1FC451" 
                         color="white" 
-                        onPress={nextStep} 
-                        disabled={!isStep3Valid}
-                        opacity={!isStep3Valid ? 0.5 : 1}
+                        onPress={() => {
+                          if (!isStep4Valid) setShowStep3Error(true);
+                          else { setShowStep3Error(false); nextStep(); }
+                        }}
                         pressStyle={{ bg: '#15963c' }}
                       >
-                        Siguiente: Clasificación
+                        Continuar al Resumen
                       </Button>
                     )}
                     
-                    {!isStep3Valid && (
+                    {(!isStep4Valid && showStep3Error) && (
                       <Paragraph style={{ textAlign: 'center' }} color="#ff4444" size="$2">
                         Faltan tomar fotografías obligatorias
                       </Paragraph>
@@ -1105,19 +1250,18 @@ export default function RegistroScreen() {
               </Card>
             )}
 
-            {step === 4 && (
+            {step === 3 && (
               <YStack gap="$4">
                 <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
-                  <H4 color="#1FC451">Bloque 4: Identificación y Hábito</H4>
+                  <H4 color="#1FC451">Bloque 3: Identificación y Hábito</H4>
                   
-                  <YStack gap="$2" style={{ backgroundColor: "rgba(31, 196, 81, 0.1)", padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1FC451" }}>
-                    <Label color="#1FC451">Número de planta del estudiante</Label>
+                  <YStack style={{ backgroundColor: "rgba(31, 196, 81, 0.1)", padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#1FC451" }}>
                     <Text color="#ffffff" fontSize={16} fontWeight="bold">Planta N° {numeroPlantaAutogenerado + 1} de 20</Text>
                   </YStack>
 
                   {/* Identificación botánica */}
-                  <YStack gap="$2">
-                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre local / común</Label>
+                  <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('nombresComunes', el)}>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre local / común *</Label>{(showHelperButton && missingSections.some(m => m.id === 'nombresComunes')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={nombresComunes}
                       onChangeText={setNombresComunes}
@@ -1129,8 +1273,8 @@ export default function RegistroScreen() {
                     />
                   </YStack>
 
-                  <YStack gap="$2">
-                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre científico</Label>
+                  <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('nombreCientifico', el)}>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre científico *</Label>{(showHelperButton && missingSections.some(m => m.id === 'nombreCientifico')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={nombreCientifico}
                       onChangeText={setNombreCientifico}
@@ -1143,8 +1287,8 @@ export default function RegistroScreen() {
                     />
                   </YStack>
 
-                  <YStack gap="$2">
-                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Familia botánica</Label>
+                  <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('familia', el)}>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Familia botánica *</Label>{(showHelperButton && missingSections.some(m => m.id === 'familia')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={familia}
                       onChangeText={setFamilia}
@@ -1157,8 +1301,8 @@ export default function RegistroScreen() {
                     />
                   </YStack>
 
-                  <YStack gap="$2">
-                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>1. Hábito de la planta *</Label>
+                  <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('habito', el)}>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>1. Hábito de la planta *</Label>{(showHelperButton && missingSections.some(m => m.id === 'habito')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <RadioSelect 
                       options={['Árbol', 'Palmera', 'Arbusto', 'Liana', 'Hierba']}
                       value={datosBotanicos.habito}
@@ -1166,8 +1310,8 @@ export default function RegistroScreen() {
                     />
                   </YStack>
 
-                  <YStack gap="$2">
-                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>2. Tipo de vida *</Label>
+                  <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('tipoVida', el)}>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>2. Tipo de vida *</Label>{(showHelperButton && missingSections.some(m => m.id === 'tipoVida')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <RadioSelect 
                       options={['Terrestre', 'Epífita', 'Parásita']}
                       value={datosBotanicos.tipoVida}
@@ -1177,24 +1321,24 @@ export default function RegistroScreen() {
                 </Card>
 
                 {datosBotanicos.habito === 'Árbol' && (
-                  <FormArbol data={datosBotanicos} updateData={updateBotanic} />
+                  <FormArbol data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 {datosBotanicos.habito === 'Palmera' && (
-                  <FormPalmera data={datosBotanicos} updateData={updateBotanic} />
+                  <FormPalmera data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 {datosBotanicos.habito === 'Arbusto' && (
-                  <FormArbusto data={datosBotanicos} updateData={updateBotanic} />
+                  <FormArbusto data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 {datosBotanicos.habito === 'Liana' && (
-                  <FormLiana data={datosBotanicos} updateData={updateBotanic} />
+                  <FormLiana data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 {datosBotanicos.habito === 'Hierba' && (
-                  <FormHierba data={datosBotanicos} updateData={updateBotanic} />
+                  <FormHierba data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
 
-                {/* Variables compartidas por todas las plantas (solo se muestra si se eligió un hábito) */}
-                {datosBotanicos.habito !== '' && (
-                  <FormCompartido data={datosBotanicos} updateData={updateBotanic} />
+                {/* Variables compartidas por todas las plantas (solo se muestra si se eligió un hábito y NO es Palmera/Arbusto/Liana/Hierba, ya que tienen sus propios campos) */}
+                {datosBotanicos.habito !== '' && datosBotanicos.habito !== 'Palmera' && datosBotanicos.habito !== 'Arbusto' && datosBotanicos.habito !== 'Liana' && datosBotanicos.habito !== 'Hierba' && (
+                  <FormCompartido data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 
                 <Card padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
@@ -1202,22 +1346,15 @@ export default function RegistroScreen() {
                     <Button 
                       bg="#1FC451" 
                       color="white" 
-                      onPress={nextStep}
-                      disabled={!isStep4Valid} 
-                      opacity={!isStep4Valid ? 0.5 : 1}
+                      onPress={handleContinuarBloque3}
                       pressStyle={{ bg: '#15963c' }}
                     >
-                      Continuar al Resumen
+                      Continuar a Fotografías
                     </Button>
                     <Button variant="outlined" borderColor="rgba(255,255,255,0.2)" color="white" onPress={prevStep} pressStyle={{ bg: 'rgba(255,255,255,0.05)' }}>
                       Volver
                     </Button>
                   </YStack>
-                  {!isStep4Valid && (
-                    <Paragraph color="#ff4444" size="$2" style={{ textAlign: 'center' }} mt="$3">
-                      Faltan completar campos obligatorios del formulario botánico para continuar.
-                    </Paragraph>
-                  )}
                 </Card>
               </YStack>
             )}
@@ -1274,44 +1411,139 @@ export default function RegistroScreen() {
                   {/* Renderizar TODOS los datos marcados (Opción A) */}
                   <View style={{ marginTop: 10, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.1)', paddingTop: 10 }}>
                     <Text color="#1FC451" fontWeight="bold" mb="$2">Detalle Completo (Bloques):</Text>
-                    
-                    {/* Dasometría (si existe) */}
-                    {datosBotanicos.dasometria && Object.entries(datosBotanicos.dasometria).map(([k, v]) => (
-                      <Text key={`daso-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
-                        • {k.replace(/_/g, ' ')}: <Text color="white">{String(v)}</Text>
-                      </Text>
-                    ))}
-                    
-                    {/* Compartido (Fenológico, Impacto, Valor, Reproductivo) */}
-                    {datosBotanicos.compartido && Object.entries(datosBotanicos.compartido).map(([k, v]) => {
-                      if (!v || (Array.isArray(v) && v.length === 0)) return null;
-                      return (
-                        <Text key={`comp-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
-                          • {k.replace(/_/g, ' ')}: <Text color="white">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
-                        </Text>
-                      );
-                    })}
+                    {/* 1. Dasometría */}
+                    {datosBotanicos.dasometria && Object.keys(datosBotanicos.dasometria).length > 0 && (
+                      <YStack mb="$2">
+                        <Text color="#1FC451" fontWeight="bold" mt="$2">I. Datos dasométricos</Text>
+                        {Object.entries(datosBotanicos.dasometria).map(([k, v]) => (
+                          <Text key={`daso-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{String(v)}</Text>
+                          </Text>
+                        ))}
+                      </YStack>
+                    )}
 
-                    {/* Hojas */}
-                    {datosBotanicos.hojas && Object.entries(datosBotanicos.hojas).map(([k, v]) => (
-                      <Text key={`hoja-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
-                        • hojas ({k.replace(/_/g, ' ')}): <Text color="white">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
-                      </Text>
-                    ))}
-                    
-                    {/* Tallo / Tronco */}
-                    {(datosBotanicos.tallo || datosBotanicos.tronco) && Object.entries(datosBotanicos.tallo || datosBotanicos.tronco).map(([k, v]) => (
-                      <Text key={`tronco-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
-                        • tronco/tallo ({k.replace(/_/g, ' ')}): <Text color="white">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
-                      </Text>
-                    ))}
+                    {/* 2. Tallo / Tronco / Estipe */}
+                    {(datosBotanicos.tallo || datosBotanicos.tronco || datosBotanicos.estipe) && Object.keys(datosBotanicos.tallo || datosBotanicos.tronco || datosBotanicos.estipe || {}).length > 0 && (
+                      <YStack mb="$2">
+                        <Text color="#1FC451" fontWeight="bold" mt="$2">II. Tronco y corteza / Tallo</Text>
+                        {Object.entries(datosBotanicos.tallo || datosBotanicos.tronco || datosBotanicos.estipe || {}).map(([k, v]) => (
+                          <Text key={`tronco-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                          </Text>
+                        ))}
+                      </YStack>
+                    )}
 
-                    {/* Exudado */}
-                    {datosBotanicos.exudado && Object.entries(datosBotanicos.exudado).map(([k, v]) => (
-                      <Text key={`exu-${k}`} color="rgba(255,255,255,0.6)" fontSize={13}>
-                        • exudado ({k.replace(/_/g, ' ')}): <Text color="white">{String(v)}</Text>
-                      </Text>
-                    ))}
+                    {/* 3. Exudado */}
+                    {datosBotanicos.exudado && Object.keys(datosBotanicos.exudado).length > 0 && (
+                      <YStack mb="$2">
+                        <Text color="#1FC451" fontWeight="bold" mt="$2">III. Exudado</Text>
+                        {Object.entries(datosBotanicos.exudado).map(([k, v]) => (
+                          <Text key={`exu-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{String(v)}</Text>
+                          </Text>
+                        ))}
+                      </YStack>
+                    )}
+
+                    {/* 4. Copa / Ramificación / Crecimiento / Inflorescencia */}
+                    {(datosBotanicos.copa || datosBotanicos.crecimiento || datosBotanicos.inflorescencia) && Object.keys(datosBotanicos.copa || datosBotanicos.crecimiento || datosBotanicos.inflorescencia || {}).length > 0 && (
+                      <YStack mb="$2">
+                        <Text color="#1FC451" fontWeight="bold" mt="$2">IV. Ramificación / Copa / Crecimiento</Text>
+                        {Object.entries(datosBotanicos.copa || datosBotanicos.crecimiento || datosBotanicos.inflorescencia || {}).map(([k, v]) => (
+                          <Text key={`copa-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{String(v)}</Text>
+                          </Text>
+                        ))}
+                      </YStack>
+                    )}
+
+                    {/* 5. Hojas */}
+                    {datosBotanicos.hojas && Object.keys(datosBotanicos.hojas).length > 0 && (
+                      <YStack mb="$2">
+                        <Text color="#1FC451" fontWeight="bold" mt="$2">V. Hojas</Text>
+                        {Object.entries(datosBotanicos.hojas).map(([k, v]) => (
+                          <Text key={`hoja-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                          </Text>
+                        ))}
+                      </YStack>
+                    )}
+
+                    {/* 6. Reproductivo (Flores, Frutos, Semillas) */}
+                    {datosBotanicos.reproductivo && (
+                      <YStack mb="$2">
+                        {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('flor_')).length > 0 && (
+                          <YStack mb="$2">
+                            <Text color="#1FC451" fontWeight="bold" mt="$2">VI. Flores</Text>
+                            {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('flor_')).map(([k, v]) => (
+                               v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                                • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                              </Text> : null
+                            ))}
+                          </YStack>
+                        )}
+                        {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('fruto_')).length > 0 && (
+                          <YStack mb="$2">
+                            <Text color="#1FC451" fontWeight="bold" mt="$2">VII. Frutos</Text>
+                            {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('fruto_')).map(([k, v]) => (
+                               v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                                • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                              </Text> : null
+                            ))}
+                          </YStack>
+                        )}
+                        {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('semilla_')).length > 0 && (
+                          <YStack mb="$2">
+                            <Text color="#1FC451" fontWeight="bold" mt="$2">VIII. Semillas</Text>
+                            {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('semilla_')).map(([k, v]) => (
+                               v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                                • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                              </Text> : null
+                            ))}
+                          </YStack>
+                        )}
+                      </YStack>
+                    )}
+
+                    {/* 7. Compartido (Fenológico, Impacto, Valor) */}
+                    {datosBotanicos.compartido && (
+                      <YStack mb="$2">
+                        {datosBotanicos.compartido.estado_fenologico && (
+                          <YStack mb="$2">
+                            <Text color="#1FC451" fontWeight="bold" mt="$2">IX. Estado fenológico</Text>
+                            <Text color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                              • estado fenologico: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.estado_fenologico) ? datosBotanicos.compartido.estado_fenologico.join(', ') : String(datosBotanicos.compartido.estado_fenologico)}</Text>
+                            </Text>
+                          </YStack>
+                        )}
+                        {datosBotanicos.compartido.estado_individuo && (
+                          <YStack mb="$2">
+                            <Text color="#1FC451" fontWeight="bold" mt="$2">X. Estado del individuo</Text>
+                            <Text color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                              • estado individuo: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.estado_individuo) ? datosBotanicos.compartido.estado_individuo.join(', ') : String(datosBotanicos.compartido.estado_individuo)}</Text>
+                            </Text>
+                          </YStack>
+                        )}
+                        {datosBotanicos.compartido.valor_ornamental && (
+                          <YStack mb="$2">
+                            <Text color="#1FC451" fontWeight="bold" mt="$2">XI. Valor ornamental</Text>
+                            <Text color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                              • valor ornamental: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.valor_ornamental) ? datosBotanicos.compartido.valor_ornamental.join(', ') : String(datosBotanicos.compartido.valor_ornamental)}</Text>
+                            </Text>
+                          </YStack>
+                        )}
+                        {datosBotanicos.compartido.impacto_urbano && (
+                          <YStack mb="$2">
+                            <Text color="#1FC451" fontWeight="bold" mt="$2">XII. Impacto urbano</Text>
+                            <Text color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
+                              • impacto urbano: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.impacto_urbano) ? datosBotanicos.compartido.impacto_urbano.join(', ') : String(datosBotanicos.compartido.impacto_urbano)}</Text>
+                            </Text>
+                          </YStack>
+                        )}
+                      </YStack>
+                    )}
                   </View>
                 </Card>
 
@@ -1320,7 +1552,11 @@ export default function RegistroScreen() {
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     <XStack gap="$2">
                       {[fotos.planta_completa, fotos.hoja, fotos.flor, fotos.fruto, fotos.semilla].map((uri, idx) => (
-                        uri ? <Image key={idx} source={{ uri }} style={{ width: 64, height: 64, borderRadius: 8 }} /> : null
+                        uri ? (
+                          <Pressable key={idx} onPress={() => setSelectedPhoto(uri)}>
+                            <Image source={{ uri }} style={{ width: 64, height: 64, borderRadius: 8 }} />
+                          </Pressable>
+                        ) : null
                       ))}
                     </XStack>
                   </ScrollView>
@@ -1352,7 +1588,59 @@ export default function RegistroScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
 
+      {/* FAB para re-abrir modal de errores */}
+      {showHelperButton && missingSections.length > 0 && (
+        <View style={{ position: 'absolute', top: 100, right: 20, zIndex: 1000 }}>
+          <Button 
+            bg="rgba(220, 30, 30, 0.95)" 
+            color="#ffffff" 
+            borderColor="#ff4444"
+            borderWidth={1}
+            circular
+            size="$5" 
+            onPress={() => setShowMissingModal(true)}
+            pressStyle={{ bg: '#ff4444' }}
+            icon={<MaterialCommunityIcons name="alert-circle-outline" size={24} color="#ffffff" />}
+          />
+        </View>
+      )}
+
       {/* Modal de Éxito */}
+      <Modal visible={showMissingModal} transparent animationType="slide">
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' }}>
+          <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderWidth: 1, borderColor: '#1FC451', maxHeight: '70%' }}>
+            <XStack style={{ justifyContent: "space-between", alignItems: "center" }} mb="$4">
+              <H4 color="#1FC451">Campos Obligatorios</H4>
+              <Button size="$2" circular bg="white" pressStyle={{ bg: '#cccccc' }} onPress={() => setShowMissingModal(false)} icon={<MaterialCommunityIcons name="close" size={20} color="black" />} />
+            </XStack>
+            <Paragraph color="rgba(255,255,255,0.7)" mb="$4">
+              Por favor completa los siguientes campos para poder continuar con el registro:
+            </Paragraph>
+            <ScrollView>
+              <YStack gap="$2">
+                {missingSections.map((item, idx) => (
+                  <Button 
+                    key={idx} 
+                    bg="rgba(255,68,68,0.1)" 
+                    borderColor="#ff4444" 
+                    borderWidth={1}
+                    style={{ justifyContent: "flex-start" }}
+                    icon={<MaterialCommunityIcons name="alert-circle" size={18} color="#ff4444" />}
+                    pressStyle={{ bg: 'rgba(255,68,68,0.3)' }}
+                    onPress={() => {
+                      setShowMissingModal(false);
+                      setTimeout(() => scrollToField(item.id), 300);
+                    }}
+                  >
+                    <Text color="white" flex={1}>{item.label}</Text>
+                  </Button>
+                ))}
+              </YStack>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
       <Modal visible={showSuccess} transparent animationType="fade">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 24 }}>
           <View style={{ backgroundColor: '#12221A', borderWidth: 1, borderColor: '#1FC451', borderRadius: 20, padding: 32, width: '100%', alignItems: 'center', gap: 16 }}>
@@ -1377,6 +1665,20 @@ export default function RegistroScreen() {
               Volver al Inicio
             </Button>
           </View>
+        </View>
+      </Modal>
+
+      <Modal visible={!!selectedPhoto} transparent animationType="fade">
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.9)', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ position: 'absolute', top: 40, right: 20, zIndex: 1000 }}>
+            <Button 
+              circular bg="rgba(255,255,255,0.2)"
+              icon={<MaterialCommunityIcons name="close" size={24} color="white" />}
+              onPress={() => setSelectedPhoto(null)} 
+              pressStyle={{ bg: 'rgba(255,255,255,0.4)' }}
+            />
+          </View>
+          {selectedPhoto && <Image source={{ uri: selectedPhoto }} style={{ width: '95%', height: '85%', resizeMode: 'contain' }} />}
         </View>
       </Modal>
 
