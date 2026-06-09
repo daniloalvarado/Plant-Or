@@ -343,16 +343,34 @@ export default function RegistroScreen() {
           },
           // Map back the flattened data based on habit
           ...(doc.habito === 'Árbol' && {
-            dasometria: { altura_total: doc.arbol_datos?.altura_total, cap: doc.arbol_datos?.cap, raices_visibles: doc.arbol_datos?.raices_visibles },
-            tronco: { forma: doc.arbol_datos?.forma_tronco, color_corteza: doc.arbol_datos?.color_corteza, lenticelas: doc.arbol_datos?.lenticelas, corteza_externa: doc.arbol_datos?.corteza_externa },
+            dasometria: { altura_total: doc.arbol_datos?.altura_total, cap: doc.arbol_datos?.cap, diametro_copa_paralelo: doc.arbol_datos?.diametro_copa_paralelo, diametro_copa_perpendicular: doc.arbol_datos?.diametro_copa_perpendicular, altura_inicio_copa: doc.arbol_datos?.altura_inicio_copa, raices_visibles: doc.arbol_datos?.raices_visibles },
+            tronco: { forma: doc.arbol_datos?.forma_tronco, color_corteza: doc.arbol_datos?.color_corteza, lenticelas: doc.arbol_datos?.lenticelas, corteza_externa: doc.arbol_datos?.corteza_externa, numero_troncos: doc.arbol_datos?.numero_troncos, espinas_tronco: doc.arbol_datos?.espinas_tronco, olor_corteza: doc.arbol_datos?.olor_corteza },
             exudado: { presencia: doc.arbol_datos?.exudado_presencia, tipo: doc.arbol_datos?.exudado_tipo, color: doc.arbol_datos?.exudado_color },
-            hojas: { tipo: doc.arbol_datos?.tipo_hoja }
+            copa: { tipo_ramificacion: doc.arbol_datos?.tipo_ramificacion, forma_copa: doc.arbol_datos?.forma_copa, densidad_copa: doc.arbol_datos?.densidad_copa },
+            hojas: { tipo: doc.arbol_datos?.tipo_hoja, disposicion_hoja: doc.arbol_datos?.disposicion_hoja, forma_hoja: doc.arbol_datos?.forma_hoja, borde_hoja: doc.arbol_datos?.borde_hoja, textura_hoja: doc.arbol_datos?.textura_hoja, color_enves: doc.arbol_datos?.color_enves, pelos_hoja: doc.arbol_datos?.pelos_hoja, tipo_peciolo: doc.arbol_datos?.tipo_peciolo, longitud_peciolo: doc.arbol_datos?.longitud_peciolo, diametro_peciolo: doc.arbol_datos?.diametro_peciolo, peciolo_pulvino: doc.arbol_datos?.peciolo_pulvino }
           }),
           ...(doc.habito === 'Palmera' && {
-            dasometria: { altura_total: doc.palmera_datos?.altura_total, cap: doc.palmera_datos?.cap, numero_tallos: doc.palmera_datos?.numero_tallos, raices_visibles: doc.palmera_datos?.raices_visibles },
+            dasometria: { altura_total: doc.palmera_datos?.altura_total, cap: doc.palmera_datos?.cap, diametro_copa_paralelo: doc.palmera_datos?.diametro_copa_paralelo, diametro_copa_perpendicular: doc.palmera_datos?.diametro_copa_perpendicular, altura_inicio_copa: doc.palmera_datos?.altura_inicio_copa, numero_tallos: doc.palmera_datos?.numero_tallos, raices_visibles: doc.palmera_datos?.raices_visibles },
             general: { tipo: doc.palmera_datos?.tipo_palmera },
             tallo: { caracteristicas: doc.palmera_datos?.tallo },
-            hojas: { tipo: doc.palmera_datos?.tipo_hoja, segmentos: doc.palmera_datos?.segmentos_hoja }
+            hojas: { tipo: doc.palmera_datos?.tipo_hoja, segmentos: doc.palmera_datos?.segmentos, hoja_largo: doc.palmera_datos?.hoja_largo, hoja_ancho: doc.palmera_datos?.hoja_ancho, peciolo_largo: doc.palmera_datos?.peciolo_largo, peciolo_diametro: doc.palmera_datos?.peciolo_diametro, color_hoja: doc.palmera_datos?.color_hoja },
+            espinas: { presencia: doc.palmera_datos?.espinas_palmera },
+            inflorescencia: { presencia: doc.palmera_datos?.inflorescencia_presencia, posicion: doc.palmera_datos?.inflorescencia_posicion, forma: doc.palmera_datos?.inflorescencia_forma, espata: doc.palmera_datos?.inflorescencia_espata }
+          }),
+          ...(doc.habito === 'Arbusto' && {
+            dasometria: { altura_total: doc.arbusto_datos?.altura_total, diametro_copa_paralelo: doc.arbusto_datos?.diametro_copa_paralelo, diametro_copa_perpendicular: doc.arbusto_datos?.diametro_copa_perpendicular, altura_inicio_ramificacion: doc.arbusto_datos?.altura_inicio_ramificacion },
+            tallo: { numero_tallos: doc.arbusto_datos?.numero_tallos, forma_general: doc.arbusto_datos?.forma_general, densidad_follaje: doc.arbusto_datos?.densidad_follaje, tipo_ramificacion: doc.arbusto_datos?.tipo_ramificacion, tipo_tallo: doc.arbusto_datos?.tipo_tallo, presencia_espinas: doc.arbusto_datos?.presencia_espinas },
+            hojas: { tipo: doc.arbusto_datos?.tipo_hoja, hoja_compuesta_tipo: doc.arbusto_datos?.hoja_compuesta_tipo, forma_hoja: doc.arbusto_datos?.forma_hoja, disposicion_hoja: doc.arbusto_datos?.disposicion_hoja, borde_hoja: doc.arbusto_datos?.borde_hoja, color_hoja: doc.arbusto_datos?.color_hoja }
+          }),
+          ...(doc.habito === 'Liana' && {
+            dasometria: { longitud_visible: doc.liana_datos?.longitud_visible, altura_maxima: doc.liana_datos?.altura_maxima, diametro_tallo: doc.liana_datos?.diametro_tallo, numero_tallos: doc.liana_datos?.numero_tallos },
+            crecimiento: { tipo_soporte: doc.liana_datos?.tipo_soporte, forma_crecimiento: doc.liana_datos?.forma_crecimiento, mecanismo_fijacion: doc.liana_datos?.mecanismo_fijacion, presencia_espinas: doc.liana_datos?.presencia_espinas },
+            hojas: { tipo: doc.liana_datos?.tipo_hoja, hoja_compuesta_tipo: doc.liana_datos?.hoja_compuesta_tipo, forma_hoja: doc.liana_datos?.forma_hoja, disposicion_hoja: doc.liana_datos?.disposicion_hoja, borde_hoja: doc.liana_datos?.borde_hoja, color_hoja: doc.liana_datos?.color_hoja }
+          }),
+          ...(doc.habito === 'Hierba' && {
+            dasometria: { altura_total: doc.hierba_datos?.altura_total, cobertura: doc.hierba_datos?.cobertura, numero_tallos: doc.hierba_datos?.numero_tallos },
+            crecimiento: { tipo_crecimiento: doc.hierba_datos?.tipo_crecimiento, tipo_tallo: doc.hierba_datos?.tipo_tallo },
+            hojas: { tipo: doc.hierba_datos?.tipo_hoja, hoja_compuesta_tipo: doc.hierba_datos?.hoja_compuesta_tipo, forma_hoja: doc.hierba_datos?.forma_hoja, disposicion_hoja: doc.hierba_datos?.disposicion_hoja, borde_hoja: doc.hierba_datos?.borde_hoja, color_hoja: doc.hierba_datos?.color_hoja, olor_hoja: doc.hierba_datos?.olor_hoja, exudado_corte: doc.hierba_datos?.exudado_corte }
           })
         });
 
@@ -651,12 +669,28 @@ export default function RegistroScreen() {
       if (datosBotanicos.habito === 'Árbol') {
         nuevoRegistro.arbol_datos = parseNumbers({
           ...datosBotanicos.dasometria,
-          ...datosBotanicos.tronco,
+          numero_troncos: datosBotanicos.tronco?.numero_troncos,
+          forma_tronco: datosBotanicos.tronco?.forma,
+          corteza_externa: datosBotanicos.tronco?.corteza_externa,
+          lenticelas: datosBotanicos.tronco?.lenticelas,
+          color_corteza: datosBotanicos.tronco?.color_corteza,
+          olor_corteza: datosBotanicos.tronco?.olor_corteza,
+          espinas_tronco: datosBotanicos.tronco?.espinas_tronco,
           exudado_presencia: datosBotanicos.exudado?.presencia,
           exudado_tipo:      datosBotanicos.exudado?.tipo,
           exudado_color:     datosBotanicos.exudado?.color,
           ...datosBotanicos.copa,
-          ...datosBotanicos.hojas,
+          tipo_hoja: datosBotanicos.hojas?.tipo,
+          disposicion_hoja: datosBotanicos.hojas?.disposicion_hoja,
+          forma_hoja: datosBotanicos.hojas?.forma_hoja,
+          borde_hoja: datosBotanicos.hojas?.borde_hoja,
+          textura_hoja: datosBotanicos.hojas?.textura_hoja,
+          color_enves: datosBotanicos.hojas?.color_enves,
+          pelos_hoja: datosBotanicos.hojas?.pelos_hoja,
+          tipo_peciolo: datosBotanicos.hojas?.tipo_peciolo,
+          longitud_peciolo: datosBotanicos.hojas?.longitud_peciolo,
+          diametro_peciolo: datosBotanicos.hojas?.diametro_peciolo,
+          peciolo_pulvino: datosBotanicos.hojas?.peciolo_pulvino,
         });
       }
 
@@ -665,9 +699,18 @@ export default function RegistroScreen() {
           ...datosBotanicos.dasometria,
           tipo_palmera:    datosBotanicos.general?.tipo,
           tallo:           datosBotanicos.tallo?.caracteristicas,
-          ...datosBotanicos.hojas,
-          ...datosBotanicos.espinas,
-          ...datosBotanicos.inflorescencia,
+          tipo_hoja: datosBotanicos.hojas?.tipo,
+          segmentos: datosBotanicos.hojas?.segmentos,
+          hoja_largo: datosBotanicos.hojas?.hoja_largo,
+          hoja_ancho: datosBotanicos.hojas?.hoja_ancho,
+          peciolo_largo: datosBotanicos.hojas?.peciolo_largo,
+          peciolo_diametro: datosBotanicos.hojas?.peciolo_diametro,
+          color_hoja: datosBotanicos.hojas?.color_hoja,
+          espinas_palmera: datosBotanicos.espinas?.presencia,
+          inflorescencia_presencia: datosBotanicos.inflorescencia?.presencia,
+          inflorescencia_posicion: datosBotanicos.inflorescencia?.posicion,
+          inflorescencia_forma: datosBotanicos.inflorescencia?.forma,
+          inflorescencia_espata: datosBotanicos.inflorescencia?.espata,
         });
       }
 
@@ -675,7 +718,12 @@ export default function RegistroScreen() {
         nuevoRegistro.arbusto_datos = parseNumbers({
           ...datosBotanicos.dasometria,
           ...datosBotanicos.tallo,
-          ...datosBotanicos.hojas,
+          tipo_hoja: datosBotanicos.hojas?.tipo,
+          hoja_compuesta_tipo: datosBotanicos.hojas?.hoja_compuesta_tipo,
+          forma_hoja: datosBotanicos.hojas?.forma_hoja,
+          disposicion_hoja: datosBotanicos.hojas?.disposicion_hoja,
+          borde_hoja: datosBotanicos.hojas?.borde_hoja,
+          color_hoja: datosBotanicos.hojas?.color_hoja,
         });
       }
 
@@ -683,7 +731,12 @@ export default function RegistroScreen() {
         nuevoRegistro.liana_datos = parseNumbers({
           ...datosBotanicos.dasometria,
           ...datosBotanicos.crecimiento,
-          ...datosBotanicos.hojas,
+          tipo_hoja: datosBotanicos.hojas?.tipo,
+          hoja_compuesta_tipo: datosBotanicos.hojas?.hoja_compuesta_tipo,
+          forma_hoja: datosBotanicos.hojas?.forma_hoja,
+          disposicion_hoja: datosBotanicos.hojas?.disposicion_hoja,
+          borde_hoja: datosBotanicos.hojas?.borde_hoja,
+          color_hoja: datosBotanicos.hojas?.color_hoja,
         });
       }
 
@@ -691,7 +744,14 @@ export default function RegistroScreen() {
         nuevoRegistro.hierba_datos = parseNumbers({
           ...datosBotanicos.dasometria,
           ...datosBotanicos.crecimiento,
-          ...datosBotanicos.hojas,
+          tipo_hoja: datosBotanicos.hojas?.tipo,
+          hoja_compuesta_tipo: datosBotanicos.hojas?.hoja_compuesta_tipo,
+          forma_hoja: datosBotanicos.hojas?.forma_hoja,
+          disposicion_hoja: datosBotanicos.hojas?.disposicion_hoja,
+          borde_hoja: datosBotanicos.hojas?.borde_hoja,
+          color_hoja: datosBotanicos.hojas?.color_hoja,
+          olor_hoja: datosBotanicos.hojas?.olor_hoja,
+          exudado_corte: datosBotanicos.hojas?.exudado_corte,
         });
       }
       if (isOffline) {
@@ -1633,10 +1693,10 @@ export default function RegistroScreen() {
         </View>
       )}
 
-      {/* Modal de Éxito */}
+      {/* Modal de Validacion de Faltantes */}
       <Modal visible={showMissingModal} transparent animationType="slide">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' }}>
-          <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderWidth: 1, borderColor: '#1FC451', maxHeight: '70%' }}>
+          <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderWidth: 1, borderColor: '#1FC451', maxHeight: '70%', paddingBottom: 24 + insets.bottom }}>
             <XStack style={{ justifyContent: "space-between", alignItems: "center" }} mb="$4">
               <H4 color="#1FC451">Campos Obligatorios</H4>
               <Button size="$2" circular bg="white" pressStyle={{ bg: '#cccccc' }} onPress={() => setShowMissingModal(false)} icon={<MaterialCommunityIcons name="close" size={20} color="black" />} />
