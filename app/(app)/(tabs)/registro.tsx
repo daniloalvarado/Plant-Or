@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, View, Image, findNodeHandle, UIManager, Pressable } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Button,
   Card,
@@ -34,6 +34,7 @@ import * as Network from 'expo-network';
 import { saveRegistroOffline, persistImage } from '@/lib/offline-storage';
 
 export default function RegistroScreen() {
+  const insets = useSafeAreaInsets();
   const { user } = useUser();
   const router = useRouter();
   const { editId } = useLocalSearchParams();

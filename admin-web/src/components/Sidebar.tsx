@@ -227,7 +227,7 @@ export function Sidebar() {
                 Cancelar
               </button>
               <button
-                onClick={() => signOut()}
+                onClick={() => signOut({ redirectUrl: '/admin' })}
                 className="px-5 py-2 text-sm bg-red-500/80 hover:bg-red-500/90 text-white font-semibold rounded-lg transition-all cursor-pointer"
               >
                 Cerrar sesión
