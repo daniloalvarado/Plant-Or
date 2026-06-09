@@ -19,9 +19,13 @@ export default {
       },
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
+      config: {
+        googleMaps: {
+          apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
+        },
+      },
     },
     web: {
-      output: "server",
       favicon: "./assets/images/Plant-Or.png",
     },
     plugins: [

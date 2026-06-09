@@ -80,7 +80,7 @@ function MainContent() {
     <>
       <SignedOut>
         <div className="auth-container min-h-screen flex flex-col items-center justify-center bg-background p-4">
-          <SignIn routing="hash" />
+          <SignIn routing="hash" fallbackRedirectUrl="/admin" />
         </div>
       </SignedOut>
 

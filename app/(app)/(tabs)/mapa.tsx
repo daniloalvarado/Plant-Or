@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, StyleSheet, Dimensions, Pressable, ActivityIndicator, Image } from "react-native";
-import { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import { View, StyleSheet, Dimensions, Pressable, ActivityIndicator, Image, Platform } from "react-native";
+import { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
 import MapView from "react-native-map-clustering";
 import { client, urlFor } from "@/lib/sanity";
 import { Colors } from "@/constants/theme";
@@ -114,7 +114,7 @@ export default function MapaScreen() {
       <MapView
         ref={mapRef}
         style={styles.map}
-        provider={PROVIDER_DEFAULT}
+        provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
         initialRegion={iquitosRegion}
         customMapStyle={colorScheme === "dark" ? darkMapStyle : []}
         onPress={handleMapPress}

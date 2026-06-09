@@ -43,6 +43,31 @@ export default function RegistroScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
   const [rolRegistro, setRolRegistro] = useState<'estudiante' | 'ciudadano'>('estudiante');
+  const [offlineUserCache, setOfflineUserCache] = useState<any>(null);
+
+  // Intentar cargar la sesión offline
+  useEffect(() => {
+    import('@react-native-async-storage/async-storage').then(({ default: AsyncStorage }) => {
+      AsyncStorage.getItem('offline_user_profile').then(data => {
+        if (data) {
+          const parsedUser = JSON.parse(data);
+          setOfflineUserCache(parsedUser);
+          
+          // Si estamos offline (user de clerk no cargó), rellenamos con el caché
+          if (!user && !editId) {
+            setNombre(parsedUser.fullName || '');
+            setEmail(parsedUser.primaryEmailAddress?.emailAddress || '');
+            if (parsedUser.unsafeMetadata?.dni) setDni(parsedUser.unsafeMetadata.dni);
+            if (parsedUser.unsafeMetadata?.curso) setCurso(parsedUser.unsafeMetadata.curso);
+            if (parsedUser.unsafeMetadata?.facultad) setFacultad(parsedUser.unsafeMetadata.facultad);
+            if (parsedUser.unsafeMetadata?.escuela) setEscuela(parsedUser.unsafeMetadata.escuela);
+            if (parsedUser.unsafeMetadata?.dia_clase) setDiaClase(parsedUser.unsafeMetadata.dia_clase);
+            if (parsedUser.unsafeMetadata?.role) setRolRegistro(parsedUser.unsafeMetadata.role);
+          }
+        }
+      });
+    });
+  }, [user, editId]);
 
 
   // Form State: Bloque 1
@@ -224,6 +249,9 @@ export default function RegistroScreen() {
       }
     }, [user, editId])
   );
+
+  // Use offline user data to bypass validation checks if necessary
+  const effectiveUser = user || offlineUserCache;
 
   const fetchLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -578,7 +606,7 @@ export default function RegistroScreen() {
       // Crear el documento de la planta
       const nuevoRegistro: any = {
         _type: 'planta',
-        autor: user?.id,
+        autor: effectiveUser?.id,
         nombre_cientifico: nombreCientifico || 'Por identificar',
         nombres_comunes: nombresComunes || '',
         familia: familia || '',
@@ -740,12 +768,12 @@ export default function RegistroScreen() {
     setStep(1);
     setEstadoRevision('');
     setMotivoObservacion('');
-    setNombre(user?.fullName || '');
-    setDni((user?.unsafeMetadata?.dni as string) || '');
-    setCurso((user?.unsafeMetadata?.curso as string) || '');
-    setFacultad((user?.unsafeMetadata?.facultad as string) || '');
-    setEscuela((user?.unsafeMetadata?.escuela as string) || '');
-    setDiaClase((user?.unsafeMetadata?.dia_clase as string) || '');
+    setNombre(effectiveUser?.fullName || '');
+    setDni((effectiveUser?.unsafeMetadata?.dni as string) || '');
+    setCurso((effectiveUser?.unsafeMetadata?.curso as string) || '');
+    setFacultad((effectiveUser?.unsafeMetadata?.facultad as string) || '');
+    setEscuela((effectiveUser?.unsafeMetadata?.escuela as string) || '');
+    setDiaClase((effectiveUser?.unsafeMetadata?.dia_clase as string) || '');
     setLocation(null);
     setTipoUbicacion('');
     setTipoUbicacion2('');
@@ -756,8 +784,8 @@ export default function RegistroScreen() {
     router.replace('/');
   };
 
-  const isStudentByMetadata = !!(user?.unsafeMetadata?.dni || user?.unsafeMetadata?.facultad || user?.unsafeMetadata?.escuela);
-  const derivedRole = user?.unsafeMetadata?.role || (isStudentByMetadata ? 'estudiante' : (numeroPlantaAutogenerado > 0 ? 'ciudadano' : null));
+  const isStudentByMetadata = !!(effectiveUser?.unsafeMetadata?.dni || effectiveUser?.unsafeMetadata?.facultad || effectiveUser?.unsafeMetadata?.escuela);
+  const derivedRole = effectiveUser?.unsafeMetadata?.role || (isStudentByMetadata ? 'estudiante' : (numeroPlantaAutogenerado > 0 ? 'ciudadano' : null));
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#08130D' }} edges={['top']}>

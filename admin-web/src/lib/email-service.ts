@@ -27,7 +27,7 @@ export const sendStatusEmail = async (
     bg_color = '#f0fdf4'; // Verde claro
     border_color = '#1FC451'; // Verde brillante
   } else if (estado_nuevo === 'Observado') {
-    instructions = `El docente ${docente_nombre || 'asignado'} ha revisado tu registro y ha dejado una observación que debes corregir.\n\nMotivo/Comentario:\n"${motivo_observacion}"\n\nPor favor, abre la aplicación móvil, dirígete a la pestaña "Historial" y edita el registro para subsanar esta observación.`;
+    instructions = `El docente ${docente_nombre || 'asignado'} ha revisado tu registro y ha dejado una observación que debes corregir.\n\nMotivo/Comentario:\n"${motivo_observacion}"\n\nPor favor, abre la aplicación móvil, dirígete a "Mis aportes" y edita el registro para subsanar esta observación.`;
     text_color = '#9A3412'; // Naranja oscuro
     bg_color = '#FFF7ED'; // Naranja claro
     border_color = '#F97316'; // Naranja brillante
