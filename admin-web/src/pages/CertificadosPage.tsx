@@ -255,11 +255,15 @@ export default function CertificadosPage() {
         {/* Visual Canvas */}
         <div className="p-4 md:p-6 overflow-y-auto overflow-x-hidden bg-muted/10 flex-1 relative flex justify-center items-start pt-4 md:pt-8">
 
-          <div className="bg-white shadow-2xl relative p-8 md:p-12 transition-all overflow-hidden flex flex-col justify-between origin-top" style={{ 
+          <div className="bg-white shadow-2xl relative p-8 md:p-12 transition-all overflow-hidden flex flex-col justify-between origin-top shrink-0" style={{ 
             width: '900px', 
             height: '600px', 
+            minWidth: '900px',
+            minHeight: '600px',
             transform: 'scale(var(--cert-scale))',
             marginBottom: 'calc(600px * (var(--cert-scale) - 1))',
+            marginLeft: 'calc(900px * (var(--cert-scale) - 1) / 2)',
+            marginRight: 'calc(900px * (var(--cert-scale) - 1) / 2)',
             '--cert-scale': 'min(1, calc((100vw - 32px) / 900))',
             color: '#1a1a1a', 
             border: '15px solid #1FC451',
