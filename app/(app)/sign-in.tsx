@@ -74,6 +74,8 @@ export default function Page() {
         errorMessage = "No se encontró ninguna cuenta con este correo electrónico.";
       } else if (errorCode === "form_param_nil" || originalMessage.toLowerCase().includes("enter email address")) {
         errorMessage = "Por favor, ingresa tu correo electrónico.";
+      } else if (errorCode === "too_many_requests" || originalMessage.toLowerCase().includes("too many")) {
+        errorMessage = "Demasiados intentos. Por favor espera un momento (aproximadamente 1 minuto) e inténtalo de nuevo.";
       } else if (clerkError?.errors[0]) {
         errorMessage = originalMessage; // Fallback to original message if not specifically handled
       }

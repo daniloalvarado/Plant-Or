@@ -4,6 +4,7 @@ import { useRouter, useSegments, withLayoutContext } from "expo-router";
 import React from "react";
 import { Spinner, View } from "tamagui";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Network from 'expo-network';
 
 // Create a JS-based Stack (not Native Stack) for full animation control
 const { Navigator } = createStackNavigator();
@@ -17,7 +18,6 @@ export default function Layout() {
 
   const [isOffline, setIsOffline] = React.useState(false);
   const [networkChecked, setNetworkChecked] = React.useState(false);
-  const [hasOfflineSession, setHasOfflineSession] = React.useState(false);
 
   // Guardar sesión cuando estamos online
   React.useEffect(() => {
@@ -32,38 +32,50 @@ export default function Layout() {
     }
   }, [isSignedIn, user]);
 
+  // Verificar estado de red de forma síncrona y robusta
   React.useEffect(() => {
-    import('expo-network').then(Network => {
-      Network.getNetworkStateAsync().then(state => {
-        setIsOffline(!state.isConnected);
-        setNetworkChecked(true);
-      });
-    });
+    let isMounted = true;
 
-    AsyncStorage.getItem('has_offline_session').then(val => {
-      if (val === 'true') {
-        setHasOfflineSession(true);
+    const checkNetwork = async () => {
+      try {
+        const state = await Network.getNetworkStateAsync();
+        if (isMounted) {
+          setIsOffline(!state.isConnected);
+          setNetworkChecked(true);
+        }
+      } catch (e) {
+        // Si falla la verificación de red, asumimos offline
+        console.warn('Network check failed, assuming offline:', e);
+        if (isMounted) {
+          setIsOffline(true);
+          setNetworkChecked(true);
+        }
       }
-    });
+    };
+
+    checkNetwork();
+
+    return () => { isMounted = false; };
   }, []);
 
-  // Solo consideramos que cargó si ya verificamos la red Y (estamos offline o Clerk ya cargó)
+  // LÓGICA CENTRAL:
+  // - effectivelyLoaded: necesitamos saber el estado de red ANTES de decidir algo.
+  //   Si estamos offline, no necesitamos que Clerk cargue.
+  //   Si estamos online, esperamos a que Clerk termine de cargar.
   const effectivelyLoaded = networkChecked && (isOffline || isLoaded);
-  // Consider signed in if Clerk signed in OR we are offline (Guest Offline or Cached)
-  const effectivelySignedIn = isSignedIn || isOffline;
+
+  // - effectivelySignedIn: si estamos offline, SIEMPRE dejamos entrar (Guest Offline).
+  //   Si estamos online, respetamos lo que diga Clerk.
+  const effectivelySignedIn = isOffline || isSignedIn;
 
   React.useEffect(() => {
     if (!effectivelyLoaded) return;
 
-    // Check if the user is in an auth screen (login/register)
     const inAuthGroup = segments[1] === "sign-in" || segments[1] === "sign-up";
 
-    // Si no hay sesión Y tampoco estamos en auth screens, ir al login
     if (!effectivelySignedIn && !inAuthGroup) {
       router.replace("/sign-in");
-    }
-    // Si hay sesión y estamos en auth screens, ir al app
-    else if (effectivelySignedIn && inAuthGroup) {
+    } else if (effectivelySignedIn && inAuthGroup) {
       router.replace("/");
     }
   }, [effectivelySignedIn, effectivelyLoaded, segments]);
