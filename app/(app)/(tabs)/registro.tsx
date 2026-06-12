@@ -1697,7 +1697,7 @@ export default function RegistroScreen() {
       {/* Modal de Validacion de Faltantes */}
       <Modal visible={showMissingModal} transparent animationType="slide">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' }}>
-          <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderWidth: 1, borderColor: '#1FC451', maxHeight: '70%', paddingBottom: 24 + insets.bottom }}>
+          <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderWidth: 1, borderColor: '#1FC451', maxHeight: '70%', paddingBottom: Math.max(64, insets.bottom + 24) }}>
             <XStack style={{ justifyContent: "space-between", alignItems: "center" }} mb="$4">
               <H4 color="#1FC451">Campos Obligatorios</H4>
               <Button size="$2" circular bg="white" pressStyle={{ bg: '#cccccc' }} onPress={() => setShowMissingModal(false)} icon={<MaterialCommunityIcons name="close" size={20} color="black" />} />

@@ -260,7 +260,7 @@ export default function HomeScreen() {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Math.max(40, insets.bottom + 20) }]}>
+          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Math.max(64, insets.bottom + 24) }]}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
               <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.text }}>Filtros</Text>
               <Pressable onPress={() => setModalVisible(false)} style={styles.closeModalButton}>
@@ -364,7 +364,7 @@ export default function HomeScreen() {
         onRequestClose={() => setNotifVisible(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Math.max(40, insets.bottom + 20) }]}>
+          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Math.max(64, insets.bottom + 24) }]}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
               <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.text }}>Mis Aportes</Text>
               <Pressable onPress={() => setNotifVisible(false)} style={styles.closeModalButton}>
