@@ -855,9 +855,15 @@ export default function RegistroScreen() {
     setEscuela((effectiveUser?.unsafeMetadata?.escuela as string) || '');
     setDiaClase((effectiveUser?.unsafeMetadata?.dia_clase as string) || '');
     setLocation(null);
+    setDistrito('');
+    setDireccion('');
+    setNumeroCasa('');
     setTipoUbicacion('');
     setTipoUbicacion2('');
     setSustratoPlanta('');
+    setNombresComunes('');
+    setNombreCientifico('');
+    setFamilia('');
     setFotos({ planta_completa: null, hoja: null, flor: null, fruto: null, semilla: null });
     setFotosExtra([]);
     setDatosBotanicos({ habito: '', tipoVida: '' });
