@@ -47,8 +47,8 @@ export default function Layout() {
     });
   }, []);
 
-  // Consider it loaded if Clerk loaded OR we checked network and we are offline
-  const effectivelyLoaded = isLoaded || (networkChecked && isOffline);
+  // Solo consideramos que cargó si ya verificamos la red Y (estamos offline o Clerk ya cargó)
+  const effectivelyLoaded = networkChecked && (isOffline || isLoaded);
   // Consider signed in if Clerk signed in OR we are offline (Guest Offline or Cached)
   const effectivelySignedIn = isSignedIn || isOffline;
 

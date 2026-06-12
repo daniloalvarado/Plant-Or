@@ -824,7 +824,7 @@ export default function RegistroScreen() {
     }
   };
 
-  const resetFormAndGoHome = () => {
+  const resetFormState = () => {
     setShowSuccess(false);
     setIsOfflineSaved(false);
     setStep(1);
@@ -843,7 +843,16 @@ export default function RegistroScreen() {
     setFotos({ planta_completa: null, hoja: null, flor: null, fruto: null, semilla: null });
     setFotosExtra([]);
     setDatosBotanicos({ habito: '', tipoVida: '' });
+  };
+
+  const resetFormAndGoHome = () => {
+    resetFormState();
     router.replace('/');
+  };
+
+  const cancelEdit = () => {
+    router.setParams({ editId: undefined });
+    resetFormState();
   };
 
   const isStudentByMetadata = !!(effectiveUser?.unsafeMetadata?.dni || effectiveUser?.unsafeMetadata?.facultad || effectiveUser?.unsafeMetadata?.escuela);
@@ -889,7 +898,17 @@ export default function RegistroScreen() {
                   <MaterialCommunityIcons name="alert-circle-outline" size={20} color="#FFA500" />
                   <H4 color="#FFA500">Registro Observado</H4>
                 </XStack>
-                <Paragraph color="white">{motivoObservacion}</Paragraph>
+                <Paragraph color="white" mb="$3">{motivoObservacion}</Paragraph>
+                <Button 
+                  bg="rgba(255,255,255,0.1)" 
+                  color="white" 
+                  onPress={cancelEdit}
+                  size="$3"
+                  pressStyle={{ bg: "rgba(255,255,255,0.2)" }}
+                  icon={<MaterialCommunityIcons name="close-circle-outline" size={18} color="white" />}
+                >
+                  Corregir luego y hacer nuevo registro
+                </Button>
               </Card>
             ) : null}
 
