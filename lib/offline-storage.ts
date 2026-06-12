@@ -106,11 +106,19 @@ export async function uploadImageToSanity(uri: string): Promise<any> {
   }
 }
 
-export async function syncRegistro(registro: OfflineRegistro) {
+export async function syncRegistro(registro: OfflineRegistro, user?: any) {
   try {
     await updateRegistroStatus(registro.id, 'syncing');
 
     const doc = { ...registro.data };
+    
+    // Conflict resolution: override offline data with verified Clerk data if logged in
+    if (user) {
+      doc.autor = user.id;
+      doc.registrador_nombre = user.fullName || doc.registrador_nombre;
+      doc.registrador_email = user.primaryEmailAddress?.emailAddress || doc.registrador_email;
+    }
+
     doc.galeria = []; // Preparar array de galería
 
     // Subir imágenes una por una

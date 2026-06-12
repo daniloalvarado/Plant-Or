@@ -15,8 +15,8 @@ export default function Layout() {
   const router = useRouter();
   const segments = useSegments();
 
-  // Si Clerk no carga en 4 segundos (sin internet), desbloqueamos con la sesión en caché
-  const [offlineUnblocked, setOfflineUnblocked] = React.useState(false);
+  const [isOffline, setIsOffline] = React.useState(false);
+  const [networkChecked, setNetworkChecked] = React.useState(false);
   const [hasOfflineSession, setHasOfflineSession] = React.useState(false);
 
   // Guardar sesión cuando estamos online
@@ -33,23 +33,24 @@ export default function Layout() {
   }, [isSignedIn, user]);
 
   React.useEffect(() => {
-    if (isLoaded) return; // Si Clerk ya cargó, no necesitamos el timeout
-    
-    // Check if we have an offline session
+    import('expo-network').then(Network => {
+      Network.getNetworkStateAsync().then(state => {
+        setIsOffline(!state.isConnected);
+        setNetworkChecked(true);
+      });
+    });
+
     AsyncStorage.getItem('has_offline_session').then(val => {
       if (val === 'true') {
         setHasOfflineSession(true);
       }
     });
+  }, []);
 
-    const timeout = setTimeout(() => {
-      setOfflineUnblocked(true);
-    }, 4000);
-    return () => clearTimeout(timeout);
-  }, [isLoaded]);
-
-  const effectivelyLoaded = isLoaded || offlineUnblocked;
-  const effectivelySignedIn = isSignedIn || (offlineUnblocked && hasOfflineSession);
+  // Consider it loaded if Clerk loaded OR we checked network and we are offline
+  const effectivelyLoaded = isLoaded || (networkChecked && isOffline);
+  // Consider signed in if Clerk signed in OR we are offline (Guest Offline or Cached)
+  const effectivelySignedIn = isSignedIn || isOffline;
 
   React.useEffect(() => {
     if (!effectivelyLoaded) return;

@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, YStack, XStack, Button, Card, H3, Paragraph } from 'tamagui';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Network from 'expo-network';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useAuth, useUser } from '@clerk/clerk-expo';
 import { getRegistrosOffline, syncRegistro, OfflineRegistro, removeRegistroOffline } from '@/lib/offline-storage';
 
 export default function SyncScreen() {
@@ -12,6 +13,10 @@ export default function SyncScreen() {
   const [isOnline, setIsOnline] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
+  const router = useRouter();
 
   const loadData = async () => {
     const networkState = await Network.getNetworkStateAsync();
@@ -37,12 +42,37 @@ export default function SyncScreen() {
       alert("No tienes conexión a internet para sincronizar.");
       return;
     }
+
+    if (!isSignedIn || !user) {
+      alert("Para subir tus registros a la base de datos necesitamos asociarlos a tu cuenta. Por favor inicia sesión.");
+      router.push('/sign-in');
+      return;
+    }
     
     setIsSyncing(true);
     let successCount = 0;
 
     for (const reg of registros) {
-      const success = await syncRegistro(reg);
+      // Si el usuario recién se loguea y no tiene DNI en su cuenta, sacarlo del registro
+      if (!user.unsafeMetadata.dni && reg.data.registrador_dni) {
+        try {
+          await user.update({
+            unsafeMetadata: {
+              ...user.unsafeMetadata,
+              dni: reg.data.registrador_dni,
+              facultad: reg.data.registrador_facultad,
+              escuela: reg.data.registrador_escuela,
+              curso: reg.data.registrador_curso,
+              dia_clase: reg.data.registrador_dia_clase,
+              role: 'estudiante'
+            }
+          });
+        } catch (e) {
+          console.error("Error guardando metadatos en Clerk:", e);
+        }
+      }
+
+      const success = await syncRegistro(reg, user);
       if (success) {
         successCount++;
       }

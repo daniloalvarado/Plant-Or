@@ -6,10 +6,12 @@ import { Tabs } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import React from "react";
 import { StyleSheet } from "react-native";
+import { useAuth } from "@clerk/clerk-expo";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme() ?? "dark";
   const insets = useSafeAreaInsets();
+  const { isSignedIn } = useAuth();
 
   return (
     <Tabs
@@ -32,6 +34,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Buscador",
+          href: !isSignedIn ? null : undefined,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons size={28} name="magnify" color={color} />
           ),
@@ -42,6 +45,7 @@ export default function TabLayout() {
         name="mapa"
         options={{
           title: "Mapa",
+          href: !isSignedIn ? null : undefined,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons size={28} name="map-marker-radius" color={color} />
           ),
@@ -72,6 +76,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Perfil",
+          href: !isSignedIn ? null : undefined,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons size={28} name="account" color={color} />
           ),
