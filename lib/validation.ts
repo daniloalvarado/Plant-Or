@@ -440,7 +440,6 @@ const labelsMap: Record<string, string> = {
   "reproductivo.fruto_forma": "Forma",
   "reproductivo.fruto_tamano_largo": "Largo fruto (cm)",
   "reproductivo.fruto_tamano_ancho": "Ancho fruto (cm)",
-  "reproductivo.fruto_color": "Color del fruto maduro",
   "reproductivo.fruto_superficie": "Superficie",
   "reproductivo.semilla_presencia": "Presencia visible de semillas",
   "reproductivo.semilla_numero": "Número de semillas",
