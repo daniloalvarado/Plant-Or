@@ -88,9 +88,18 @@ export default function Layout() {
       }
     };
 
+    // Primera comprobación inmediata
     checkNetwork();
 
-    return () => { isMounted = false; };
+    // Comprobación periódica cada 5 segundos para detectar cambios de red en tiempo real
+    const networkInterval = setInterval(() => {
+      checkNetwork();
+    }, 5000);
+
+    return () => { 
+      isMounted = false; 
+      clearInterval(networkInterval);
+    };
   }, []);
 
   // LÓGICA CENTRAL:
