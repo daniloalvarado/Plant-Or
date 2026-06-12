@@ -95,10 +95,10 @@ export default function SyncScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#08130D' }} edges={['top']}>
-      <YStack padding="$4" gap="$4" flex={1}>
-        <XStack alignItems="center" justifyContent="space-between">
+      <YStack style={{ padding: 16, flex: 1 }} gap="$4">
+        <XStack style={{ alignItems: "center", justifyContent: "space-between" }}>
           <H3 color="white">Sincronización</H3>
-          <XStack alignItems="center" gap="$2" backgroundColor={isOnline ? 'rgba(31,196,81,0.2)' : 'rgba(255,68,68,0.2)'} paddingHorizontal="$3" paddingVertical="$1" borderRadius={20}>
+          <XStack gap="$2" backgroundColor={isOnline ? 'rgba(31,196,81,0.2)' : 'rgba(255,68,68,0.2)'} style={{ alignItems: "center", paddingHorizontal: 12, paddingVertical: 4, borderRadius: 20 }}>
             <MaterialCommunityIcons name={isOnline ? "wifi" : "wifi-off"} size={16} color={isOnline ? "#1FC451" : "#ff4444"} />
             <Text color={isOnline ? "#1FC451" : "#ff4444"} fontSize={12} fontWeight="bold">
               {isOnline ? "Conectado" : "Sin conexión"}
@@ -128,7 +128,7 @@ export default function SyncScreen() {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#1FC451" />}
         >
           {registros.length === 0 ? (
-            <YStack flex={1} alignItems="center" justify="center" gap="$4" mt="$10">
+            <YStack style={{ flex: 1, alignItems: "center", justifyContent: "center" }} gap="$4" mt="$10">
               <MaterialCommunityIcons name="cloud-check-outline" size={64} color="rgba(255,255,255,0.2)" />
               <Text color="rgba(255,255,255,0.5)" textAlign="center">
                 No hay registros pendientes por sincronizar.
@@ -137,8 +137,8 @@ export default function SyncScreen() {
           ) : (
             registros.map((reg) => (
               <Card key={reg.id} padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={1} borderColor="rgba(255,255,255,0.1)">
-                <XStack justifyContent="space-between" alignItems="flex-start">
-                  <YStack gap="$1" flex={1}>
+                <XStack style={{ justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <YStack gap="$1" style={{ flex: 1 }}>
                     <Text color="white" fontWeight="bold" fontSize={16} numberOfLines={1}>
                       {reg.data.nombre_cientifico || 'Por identificar'}
                     </Text>
