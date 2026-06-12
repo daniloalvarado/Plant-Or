@@ -72,7 +72,7 @@ export default function Profile() {
     period: string,
     config: any
   ) => {
-    const textoBase = config?.texto_certificado || 'Por haber participado en el proyecto PLANT-OR en calidad de {tipo}, durante el periodo académico {periodo}. Aportando significativamente a la catalogación botánica con un total de {count} especies validadas.';
+    const textoBase = config?.texto_certificado || 'Por haber participado en el proyecto Plant-Or en calidad de {tipo}, durante el periodo académico {periodo}. Aportando significativamente a la catalogación botánica con un total de {count} especies validadas.';
     const textoFinal = textoBase
       .replace('{count}', `<strong>${count}</strong>`)
       .replace('{tipo}', `<strong>${type}</strong>`)
@@ -121,7 +121,7 @@ export default function Profile() {
       <div class="container">
         <div class="bg-icon">🌿</div>
         
-        <div class="logo">${config?.nombre_proyecto || '🌿 PLANT-OR'}</div>
+        <div class="logo">${config?.nombre_proyecto || '🌿 Plant-Or'}</div>
         
         <div class="content-wrapper">
           <div class="title">${titulo}</div>
@@ -139,13 +139,13 @@ export default function Profile() {
             <div class="signature">
               ${firma1Url ? '<img src="' + firma1Url + '" class="signature-img" />' : ''}
               <strong>${config?.responsable_1_nombre || 'Firma Autorizada'}</strong><br>
-              ${config?.responsable_1_cargo || 'Proyecto PLANT-OR'}
+              ${config?.responsable_1_cargo || 'Proyecto Plant-Or'}
             </div>
             ${config?.responsable_2_nombre ? 
             '<div class="signature">' +
               (firma2Url ? '<img src="' + firma2Url + '" class="signature-img" />' : '') +
               '<strong>' + config.responsable_2_nombre + '</strong><br>' +
-              (config.responsable_2_cargo || 'Proyecto PLANT-OR') +
+              (config.responsable_2_cargo || 'Proyecto Plant-Or') +
             '</div>'
              : ''}
           </div>
@@ -263,7 +263,7 @@ export default function Profile() {
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(renamedUri, {
           mimeType: 'application/pdf',
-          dialogTitle: 'Mi Certificado PLANT-OR',
+          dialogTitle: 'Mi Certificado Plant-Or',
           UTI: 'com.adobe.pdf'
         });
       } else {
@@ -492,7 +492,7 @@ export default function Profile() {
               {/* Plan Badge */}
               <View style={styles.proPlanBadge}>
                 <Text fontSize={13} fontWeight="700" color="#1FC451">
-                  🌱 PLANT-OR
+                  🌱 Plant-Or
                 </Text>
               </View>
             </YStack>
@@ -633,7 +633,7 @@ export default function Profile() {
                     <XStack style={{ alignItems: "center" }} gap="$2">
                       <MaterialCommunityIcons name="leaf" size={22} color="#1FC451" />
                       <H2 fontSize={18} fontWeight="700" color="#ffffff">
-                        PLANT-OR
+                        Plant-Or
                       </H2>
                     </XStack>
                     <Feather name="chevron-right" size={20} color="rgba(255,255,255,0.4)" />

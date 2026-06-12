@@ -1,6 +1,6 @@
 export default {
   expo: {
-    name: "PLANT-OR",
+    name: "Plant-Or",
     slug: "plant-or",
     version: "1.0.0",
     orientation: "portrait",
@@ -44,14 +44,14 @@ export default {
       [
         "expo-image-picker",
         {
-          "cameraPermission": "PLANT-OR necesita acceder a tu cámara para capturar las fotos obligatorias de la planta.",
-          "photosPermission": "PLANT-OR necesita acceder a tu galería para subir fotos de plantas."
+          "cameraPermission": "Plant-Or necesita acceder a tu cámara para capturar las fotos obligatorias de la planta.",
+          "photosPermission": "Plant-Or necesita acceder a tu galería para subir fotos de plantas."
         }
       ],
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "PLANT-OR necesita tu ubicación GPS para mapear exactamente dónde está la planta."
+          "locationAlwaysAndWhenInUsePermission": "Plant-Or necesita tu ubicación GPS para mapear exactamente dónde está la planta."
         }
       ]
     ],

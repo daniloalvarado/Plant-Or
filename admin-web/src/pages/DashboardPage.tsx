@@ -86,7 +86,7 @@ export default function DashboardPage() {
               <div key={p._id} className="flex items-center justify-between py-2 border-b border-border last:border-0 cascade-item">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground truncate">
-                    {p.nombre_cientifico || p.nombres_comunes || 'Sin nombre'}
+                    {p.nombres_comunes || p.nombre_cientifico || 'Sin nombre'}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {p.registrador_nombre} · {p.habito || '—'} · {p.registrador_curso || '—'}

@@ -119,7 +119,7 @@ export default function Page() {
                 color="rgba(255,255,255,0.7)"
                 style={{ textAlign: "center" }}
               >
-                Inicia sesión en PLANT-OR para explorar
+                Inicia sesión en Plant-Or para explorar
               </Paragraph>
             </YStack>
 
