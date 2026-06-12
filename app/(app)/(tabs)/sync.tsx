@@ -98,7 +98,7 @@ export default function SyncScreen() {
       <YStack style={{ padding: 16, flex: 1 }} gap="$4">
         <XStack style={{ alignItems: "center", justifyContent: "space-between" }}>
           <H3 color="white">Sincronización</H3>
-          <XStack gap="$2" backgroundColor={isOnline ? 'rgba(31,196,81,0.2)' : 'rgba(255,68,68,0.2)'} style={{ alignItems: "center", paddingHorizontal: 12, paddingVertical: 4, borderRadius: 20 }}>
+          <XStack gap="$2" style={{ backgroundColor: isOnline ? 'rgba(31,196,81,0.2)' : 'rgba(255,68,68,0.2)', alignItems: "center", paddingHorizontal: 12, paddingVertical: 4, borderRadius: 20 }}>
             <MaterialCommunityIcons name={isOnline ? "wifi" : "wifi-off"} size={16} color={isOnline ? "#1FC451" : "#ff4444"} />
             <Text color={isOnline ? "#1FC451" : "#ff4444"} fontSize={12} fontWeight="bold">
               {isOnline ? "Conectado" : "Sin conexión"}
@@ -130,7 +130,7 @@ export default function SyncScreen() {
           {registros.length === 0 ? (
             <YStack style={{ flex: 1, alignItems: "center", justifyContent: "center" }} gap="$4" mt="$10">
               <MaterialCommunityIcons name="cloud-check-outline" size={64} color="rgba(255,255,255,0.2)" />
-              <Text color="rgba(255,255,255,0.5)" textAlign="center">
+              <Text color="rgba(255,255,255,0.5)" style={{ textAlign: "center" }}>
                 No hay registros pendientes por sincronizar.
               </Text>
             </YStack>
