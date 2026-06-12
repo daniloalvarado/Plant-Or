@@ -39,12 +39,40 @@ export default function Layout() {
     const checkNetwork = async () => {
       try {
         const state = await Network.getNetworkStateAsync();
-        if (isMounted) {
-          setIsOffline(!state.isConnected);
-          setNetworkChecked(true);
+        
+        // 1. Si el SO nos dice explícitamente que no hay conexión o no hay internet
+        if (!state.isConnected || state.isInternetReachable === false) {
+          if (isMounted) {
+            setIsOffline(true);
+            setNetworkChecked(true);
+          }
+          return;
+        }
+
+        // 2. Ping de confirmación rápido (2 segundos) por si el estado es engañoso
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 2000);
+          
+          await fetch('https://1.1.1.1', {
+            method: 'HEAD',
+            signal: controller.signal,
+            cache: 'no-store'
+          });
+          clearTimeout(timeoutId);
+          
+          if (isMounted) {
+            setIsOffline(false);
+            setNetworkChecked(true);
+          }
+        } catch (fetchError) {
+          // Si el ping falla o da timeout, consideramos que no hay internet
+          if (isMounted) {
+            setIsOffline(true);
+            setNetworkChecked(true);
+          }
         }
       } catch (e) {
-        // Si falla la verificación de red, asumimos offline
         console.warn('Network check failed, assuming offline:', e);
         if (isMounted) {
           setIsOffline(true);
