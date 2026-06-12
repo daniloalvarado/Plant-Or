@@ -213,7 +213,25 @@ export default function RegistroScreen() {
   };
 
 
+  const numericFields = [
+    'altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular',
+    'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo',
+    'fruto_tamano_largo', 'fruto_tamano_ancho', 'flor_tamano', 'flor_tamano_largo', 'flor_tamano_ancho',
+    'semilla_numero', 'semilla_tamano_largo', 'semilla_tamano_ancho', 'semilla_tamano',
+    'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro', 'numero_tallos',
+    'altura_inicio_ramificacion', 'longitud_visible', 'altura_maxima', 'diametro_tallo',
+    'cobertura', 'fruto_tamano'
+  ];
+
   const updateBotanic = (sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => {
+    let finalValue = nestedValue !== undefined ? nestedValue : fieldOrValue;
+    const finalField = nestedValue !== undefined ? fieldOrValue : sectionOrKey;
+
+    // Sanitización para campos numéricos: solo dejar números y puntos
+    if (typeof finalValue === 'string' && numericFields.includes(finalField)) {
+      finalValue = finalValue.replace(/[^0-9.]/g, '');
+    }
+
     setDatosBotanicos((prev: any) => {
       if (nestedValue !== undefined) {
         // Es una actualización anidada: section, field, value
@@ -221,12 +239,12 @@ export default function RegistroScreen() {
           ...prev,
           [sectionOrKey]: {
             ...(prev[sectionOrKey] || {}),
-            [fieldOrValue]: nestedValue
+            [finalField]: finalValue
           }
         };
       }
       // Actualización directa: key, value
-      return { ...prev, [sectionOrKey]: fieldOrValue };
+      return { ...prev, [finalField]: finalValue };
     });
   };
 

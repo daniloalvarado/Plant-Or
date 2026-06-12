@@ -43,7 +43,7 @@ export const validateCompartido = (datos: any) => {
         !isFilled(reproductivo.fruto_forma) ||
         !isFilled(reproductivo.fruto_tamano_largo) ||
         !isFilled(reproductivo.fruto_tamano_ancho) ||
-        !isFilled(reproductivo.fruto_color) ||
+        !isFilled(reproductivo.fruto_color_maduro) ||
         !isFilled(reproductivo.fruto_superficie)) return false;
   }
 
@@ -497,7 +497,7 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     if (!isFilled(r.fruto_presencia)) {
       missing.push({ id: 'reproductivo.fruto_presencia', label: labelsMap['reproductivo.fruto_presencia'] || 'Presencia de frutos' });
     } else if (r.fruto_presencia === 'Con frutos') {
-      checkSection('reproductivo', r, ['fruto_textura','fruto_estado_madurar','fruto_forma','fruto_tamano_largo','fruto_tamano_ancho','fruto_color','fruto_superficie']);
+      checkSection('reproductivo', r, ['fruto_textura','fruto_estado_madurar','fruto_forma','fruto_tamano_largo','fruto_tamano_ancho','fruto_color_maduro','fruto_superficie']);
     }
     
     if (!isFilled(r.semilla_presencia)) {
