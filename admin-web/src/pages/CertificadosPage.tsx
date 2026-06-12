@@ -37,6 +37,22 @@ export default function CertificadosPage() {
   const firma1Ref = useRef<HTMLInputElement>(null);
   const firma2Ref = useRef<HTMLInputElement>(null);
 
+  // Certificate scale for mobile responsiveness
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [certScale, setCertScale] = useState(1);
+
+  useEffect(() => {
+    const updateScale = () => {
+      if (canvasRef.current) {
+        const containerWidth = canvasRef.current.clientWidth - 32; // padding
+        setCertScale(Math.min(1, containerWidth / 900));
+      }
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, [viewMode]);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -255,15 +271,15 @@ export default function CertificadosPage() {
 
         {/* Visual Canvas */}
         <div 
+          ref={canvasRef}
           className="p-4 md:p-6 overflow-y-auto overflow-x-hidden bg-muted/10 flex-1 relative flex justify-center items-start pt-4 md:pt-8"
-          style={{ '--cert-scale': 'min(1, calc((100vw - 32px) / 900))' } as React.CSSProperties}
         >
           
-          <div className="relative shrink-0" style={{ width: 'calc(900px * var(--cert-scale))', height: 'calc(600px * var(--cert-scale))' }}>
-            <div className="bg-white shadow-2xl absolute top-0 left-0 p-8 md:p-12 transition-all overflow-hidden flex flex-col justify-between origin-top-left" style={{ 
-              width: '900px', 
-              height: '600px', 
-              transform: 'scale(var(--cert-scale))',
+          <div className="relative shrink-0" style={{ width: 900 * certScale, height: 600 * certScale }}>
+            <div className="bg-white shadow-2xl absolute top-0 left-0 p-12 overflow-hidden flex flex-col justify-between origin-top-left" style={{ 
+              width: 900, 
+              height: 600, 
+              transform: `scale(${certScale})`,
               color: '#1a1a1a', 
               border: '15px solid #1FC451',
               backgroundImage: `repeating-linear-gradient(45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
