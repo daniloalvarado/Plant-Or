@@ -54,15 +54,22 @@ export default function Layout() {
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 2000);
           
-          await fetch('https://1.1.1.1', {
-            method: 'HEAD',
+          // Usamos el endpoint de Google diseñado específicamente para detectar portales cautivos.
+          // Solo si devuelve exactamente 204 (Sin contenido), significa que tenemos internet real sin intercepciones.
+          const response = await fetch('https://clients3.google.com/generate_204', {
+            method: 'GET',
             signal: controller.signal,
             cache: 'no-store'
           });
           clearTimeout(timeoutId);
           
           if (isMounted) {
-            setIsOffline(false);
+            if (response.status === 204) {
+              setIsOffline(false);
+            } else {
+              // Si devuelve 200 (portal cautivo del operador), asumimos offline
+              setIsOffline(true);
+            }
             setNetworkChecked(true);
           }
         } catch (fetchError) {
