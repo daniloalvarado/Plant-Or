@@ -338,38 +338,39 @@ export default function RegistroScreen() {
           compartido: {
             estado_fenologico: doc.estado_fenologico,
             estado_individuo: doc.estado_individuo,
-            valor_ornamental: doc.valor_ornamental,
-            impacto_urbano: doc.impacto_urbano,
-            ...doc.reproductivo
+            // Map old sanity values to new form values if necessary, otherwise keep them
+            valor_ornamental: doc.valor_ornamental?.map((v: string) => v === 'Da sombra' ? 'Genera sombra' : v === 'Tiene copa atractiva' ? 'Tiene copa o forma atractiva' : v === 'Valor cultural' ? 'Tiene valor cultural' : v === 'Valor alimenticio' ? 'Tiene valor alimenticio' : v === 'Valor medicinal' ? 'Tiene valor medicinal' : v),
+            impacto_urbano: doc.impacto_urbano?.map((v: string) => v === 'Raíces rompen el piso' ? 'Raíces levantan vereda' : v === 'Raíces afectan veredas' ? 'Raíces levantan vereda' : v === 'Raíces afectan cimientos' ? 'Raíces afectan cimientos o paredes' : v === 'Tronco inclinado (riesgo)' ? 'Tronco o tallo inclinado' : v),
           },
+          reproductivo: doc.reproductivo || {},
           // Map back the flattened data based on habit
           ...(doc.habito === 'Árbol' && {
-            dasometria: { altura_total: doc.arbol_datos?.altura_total, cap: doc.arbol_datos?.cap, diametro_copa_paralelo: doc.arbol_datos?.diametro_copa_paralelo, diametro_copa_perpendicular: doc.arbol_datos?.diametro_copa_perpendicular, altura_inicio_copa: doc.arbol_datos?.altura_inicio_copa, raices_visibles: doc.arbol_datos?.raices_visibles },
-            tronco: { forma: doc.arbol_datos?.forma_tronco, color_corteza: doc.arbol_datos?.color_corteza, lenticelas: doc.arbol_datos?.lenticelas, corteza_externa: doc.arbol_datos?.corteza_externa, numero_troncos: doc.arbol_datos?.numero_troncos, espinas_tronco: doc.arbol_datos?.espinas_tronco, olor_corteza: doc.arbol_datos?.olor_corteza },
+            dasometria: { altura_total: doc.arbol_datos?.altura_total?.toString(), cap: doc.arbol_datos?.cap?.toString(), diametro_copa_paralelo: doc.arbol_datos?.diametro_copa_paralelo?.toString(), diametro_copa_perpendicular: doc.arbol_datos?.diametro_copa_perpendicular?.toString(), altura_inicio_copa: doc.arbol_datos?.altura_inicio_copa?.toString(), raices_visibles: doc.arbol_datos?.raices_visibles },
+            tronco: { forma: doc.arbol_datos?.forma_tronco, color_corteza: doc.arbol_datos?.color_corteza, lenticelas: doc.arbol_datos?.lenticelas, corteza_externa: doc.arbol_datos?.corteza_externa, numero_troncos: doc.arbol_datos?.numero_troncos?.toString(), espinas_tronco: doc.arbol_datos?.espinas_tronco, olor_corteza: doc.arbol_datos?.olor_corteza },
             exudado: { presencia: doc.arbol_datos?.exudado_presencia, tipo: doc.arbol_datos?.exudado_tipo, color: doc.arbol_datos?.exudado_color },
             copa: { tipo_ramificacion: doc.arbol_datos?.tipo_ramificacion, forma_copa: doc.arbol_datos?.forma_copa, densidad_copa: doc.arbol_datos?.densidad_copa },
-            hojas: { tipo: doc.arbol_datos?.tipo_hoja, disposicion_hoja: doc.arbol_datos?.disposicion_hoja, forma_hoja: doc.arbol_datos?.forma_hoja, borde_hoja: doc.arbol_datos?.borde_hoja, textura_hoja: doc.arbol_datos?.textura_hoja, color_enves: doc.arbol_datos?.color_enves, pelos_hoja: doc.arbol_datos?.pelos_hoja, tipo_peciolo: doc.arbol_datos?.tipo_peciolo, longitud_peciolo: doc.arbol_datos?.longitud_peciolo, diametro_peciolo: doc.arbol_datos?.diametro_peciolo, peciolo_pulvino: doc.arbol_datos?.peciolo_pulvino }
+            hojas: { tipo: doc.arbol_datos?.tipo_hoja, disposicion_hoja: doc.arbol_datos?.disposicion_hoja, forma_hoja: doc.arbol_datos?.forma_hoja, borde_hoja: doc.arbol_datos?.borde_hoja, textura_hoja: doc.arbol_datos?.textura_hoja, color_enves: doc.arbol_datos?.color_enves, pelos_hoja: doc.arbol_datos?.pelos_hoja, tipo_peciolo: doc.arbol_datos?.tipo_peciolo, longitud_peciolo: doc.arbol_datos?.longitud_peciolo?.toString(), diametro_peciolo: doc.arbol_datos?.diametro_peciolo?.toString(), peciolo_pulvino: doc.arbol_datos?.peciolo_pulvino }
           }),
           ...(doc.habito === 'Palmera' && {
-            dasometria: { altura_total: doc.palmera_datos?.altura_total, cap: doc.palmera_datos?.cap, diametro_copa_paralelo: doc.palmera_datos?.diametro_copa_paralelo, diametro_copa_perpendicular: doc.palmera_datos?.diametro_copa_perpendicular, altura_inicio_copa: doc.palmera_datos?.altura_inicio_copa, numero_tallos: doc.palmera_datos?.numero_tallos, raices_visibles: doc.palmera_datos?.raices_visibles },
+            dasometria: { altura_total: doc.palmera_datos?.altura_total?.toString(), cap: doc.palmera_datos?.cap?.toString(), diametro_copa_paralelo: doc.palmera_datos?.diametro_copa_paralelo?.toString(), diametro_copa_perpendicular: doc.palmera_datos?.diametro_copa_perpendicular?.toString(), altura_inicio_copa: doc.palmera_datos?.altura_inicio_copa?.toString(), numero_tallos: doc.palmera_datos?.numero_tallos, raices_visibles: doc.palmera_datos?.raices_visibles },
             general: { tipo: doc.palmera_datos?.tipo_palmera },
             tallo: { caracteristicas: doc.palmera_datos?.tallo },
-            hojas: { tipo: doc.palmera_datos?.tipo_hoja, segmentos: doc.palmera_datos?.segmentos, hoja_largo: doc.palmera_datos?.hoja_largo, hoja_ancho: doc.palmera_datos?.hoja_ancho, peciolo_largo: doc.palmera_datos?.peciolo_largo, peciolo_diametro: doc.palmera_datos?.peciolo_diametro, color_hoja: doc.palmera_datos?.color_hoja },
+            hojas: { tipo: doc.palmera_datos?.tipo_hoja, segmentos: doc.palmera_datos?.segmentos, hoja_largo: doc.palmera_datos?.hoja_largo?.toString(), hoja_ancho: doc.palmera_datos?.hoja_ancho?.toString(), peciolo_largo: doc.palmera_datos?.peciolo_largo?.toString(), peciolo_diametro: doc.palmera_datos?.peciolo_diametro?.toString(), color_hoja: doc.palmera_datos?.color_hoja },
             espinas: { presencia: doc.palmera_datos?.espinas_palmera },
             inflorescencia: { presencia: doc.palmera_datos?.inflorescencia_presencia, posicion: doc.palmera_datos?.inflorescencia_posicion, forma: doc.palmera_datos?.inflorescencia_forma, espata: doc.palmera_datos?.inflorescencia_espata }
           }),
           ...(doc.habito === 'Arbusto' && {
-            dasometria: { altura_total: doc.arbusto_datos?.altura_total, diametro_copa_paralelo: doc.arbusto_datos?.diametro_copa_paralelo, diametro_copa_perpendicular: doc.arbusto_datos?.diametro_copa_perpendicular, altura_inicio_ramificacion: doc.arbusto_datos?.altura_inicio_ramificacion },
+            dasometria: { altura_total: doc.arbusto_datos?.altura_total?.toString(), diametro_copa_paralelo: doc.arbusto_datos?.diametro_copa_paralelo?.toString(), diametro_copa_perpendicular: doc.arbusto_datos?.diametro_copa_perpendicular?.toString(), altura_inicio_ramificacion: doc.arbusto_datos?.altura_inicio_ramificacion?.toString() },
             tallo: { numero_tallos: doc.arbusto_datos?.numero_tallos, forma_general: doc.arbusto_datos?.forma_general, densidad_follaje: doc.arbusto_datos?.densidad_follaje, tipo_ramificacion: doc.arbusto_datos?.tipo_ramificacion, tipo_tallo: doc.arbusto_datos?.tipo_tallo, presencia_espinas: doc.arbusto_datos?.presencia_espinas },
             hojas: { tipo: doc.arbusto_datos?.tipo_hoja, hoja_compuesta_tipo: doc.arbusto_datos?.hoja_compuesta_tipo, forma_hoja: doc.arbusto_datos?.forma_hoja, disposicion_hoja: doc.arbusto_datos?.disposicion_hoja, borde_hoja: doc.arbusto_datos?.borde_hoja, color_hoja: doc.arbusto_datos?.color_hoja }
           }),
           ...(doc.habito === 'Liana' && {
-            dasometria: { longitud_visible: doc.liana_datos?.longitud_visible, altura_maxima: doc.liana_datos?.altura_maxima, diametro_tallo: doc.liana_datos?.diametro_tallo, numero_tallos: doc.liana_datos?.numero_tallos },
+            dasometria: { longitud_visible: doc.liana_datos?.longitud_visible?.toString(), altura_maxima: doc.liana_datos?.altura_maxima?.toString(), diametro_tallo: doc.liana_datos?.diametro_tallo?.toString(), numero_tallos: doc.liana_datos?.numero_tallos },
             crecimiento: { tipo_soporte: doc.liana_datos?.tipo_soporte, forma_crecimiento: doc.liana_datos?.forma_crecimiento, mecanismo_fijacion: doc.liana_datos?.mecanismo_fijacion, presencia_espinas: doc.liana_datos?.presencia_espinas },
             hojas: { tipo: doc.liana_datos?.tipo_hoja, hoja_compuesta_tipo: doc.liana_datos?.hoja_compuesta_tipo, forma_hoja: doc.liana_datos?.forma_hoja, disposicion_hoja: doc.liana_datos?.disposicion_hoja, borde_hoja: doc.liana_datos?.borde_hoja, color_hoja: doc.liana_datos?.color_hoja }
           }),
           ...(doc.habito === 'Hierba' && {
-            dasometria: { altura_total: doc.hierba_datos?.altura_total, cobertura: doc.hierba_datos?.cobertura, numero_tallos: doc.hierba_datos?.numero_tallos },
+            dasometria: { altura_total: doc.hierba_datos?.altura_total?.toString(), cobertura: doc.hierba_datos?.cobertura?.toString(), numero_tallos: doc.hierba_datos?.numero_tallos },
             crecimiento: { tipo_crecimiento: doc.hierba_datos?.tipo_crecimiento, tipo_tallo: doc.hierba_datos?.tipo_tallo },
             hojas: { tipo: doc.hierba_datos?.tipo_hoja, hoja_compuesta_tipo: doc.hierba_datos?.hoja_compuesta_tipo, forma_hoja: doc.hierba_datos?.forma_hoja, disposicion_hoja: doc.hierba_datos?.disposicion_hoja, borde_hoja: doc.hierba_datos?.borde_hoja, color_hoja: doc.hierba_datos?.color_hoja, olor_hoja: doc.hierba_datos?.olor_hoja, exudado_corte: doc.hierba_datos?.exudado_corte }
           })
