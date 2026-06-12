@@ -451,13 +451,13 @@ const labelsMap: Record<string, string> = {
   "compartido.estado_individuo": "Estado del individuo (Múltiple)",
   "compartido.valor_ornamental": "Valor Ornamental (Múltiple)",
   "compartido.impacto_urbano": "Impacto Urbano (Múltiple)",
-  "reproductivo.flor_tamano": "Tamaño de flor (cm)",
+
   "reproductivo.flor_forma": "Forma de flor",
   "reproductivo.fruto_tamano": "Tamaño del fruto (cm)",
   "reproductivo.fruto_color_maduro": "Color del fruto maduro",
   "reproductivo.semilla_tamano": "Tamaño de semilla (mm o cm)",
   "reproductivo.fruto_tipo": "Tipo de fruto",
-  "hojas.disposicion_hoja": "Disposición",
+
   "tallo.tipo_tallo_liana": "Tipo de tallo",
   "tallo.espinas_tallo": "Espinas",
   "general.tipo": "Tipo de palmera",
