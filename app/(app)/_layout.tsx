@@ -3,6 +3,7 @@ import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/
 import { useRouter, useSegments, withLayoutContext } from "expo-router";
 import React from "react";
 import { Spinner, View } from "tamagui";
+import { AppState } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Network from 'expo-network';
 
@@ -91,14 +92,17 @@ export default function Layout() {
     // Primera comprobación inmediata
     checkNetwork();
 
-    // Comprobación periódica cada 5 segundos para detectar cambios de red en tiempo real
-    const networkInterval = setInterval(() => {
-      checkNetwork();
-    }, 5000);
+    // En lugar de un intervalo (que gasta batería), escuchamos cuando la app vuelve a estar activa.
+    // Esto cubre el caso en el que el usuario baja la barra de notificaciones, cambia el Wi-Fi/Datos y vuelve a la app.
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active') {
+        checkNetwork();
+      }
+    });
 
     return () => { 
       isMounted = false; 
-      clearInterval(networkInterval);
+      subscription.remove();
     };
   }, []);
 
