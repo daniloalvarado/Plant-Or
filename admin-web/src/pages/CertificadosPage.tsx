@@ -253,19 +253,22 @@ export default function CertificadosPage() {
         </div>
 
         {/* Visual Canvas */}
-        <div className="p-6 overflow-y-auto bg-muted/10 flex-1 relative">
+        <div className="p-4 md:p-6 overflow-y-auto overflow-x-hidden bg-muted/10 flex-1 relative flex justify-center items-start pt-4 md:pt-8">
 
-          <div className="bg-white mx-auto shadow-2xl relative p-8 md:p-12 my-8 transition-all overflow-hidden flex flex-col justify-between" style={{ 
-            maxWidth: '900px', 
-            minHeight: '600px', 
+          <div className="bg-white shadow-2xl relative p-8 md:p-12 transition-all overflow-hidden flex flex-col justify-between origin-top" style={{ 
+            width: '900px', 
+            height: '600px', 
+            transform: 'scale(var(--cert-scale))',
+            marginBottom: 'calc(600px * (var(--cert-scale) - 1))',
+            '--cert-scale': 'min(1, calc((100vw - 32px) / 900))',
             color: '#1a1a1a', 
             border: '15px solid #1FC451',
             backgroundImage: `repeating-linear-gradient(45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
             repeating-linear-gradient(-45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
             repeating-radial-gradient(circle at 50% 50%, rgba(31,196,81,0.02) 0, rgba(31,196,81,0.02) 2px, transparent 2px, transparent 30px)`
-          }}>
+          } as React.CSSProperties} >
             {/* Watermark Icon */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 text-[300px] md:text-[400px] pointer-events-none z-0 select-none">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 text-[400px] pointer-events-none z-0 select-none">
               🌿
             </div>
 

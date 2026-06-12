@@ -437,7 +437,13 @@ export default function FiltrosPage() {
               <CustomSelect
                 value={form.icono}
                 onChange={(val) => setForm(f => ({ ...f, icono: val }))}
-                options={[{ value: '', label: 'Ninguno' }, ...FLORA_ICONS]}
+                options={[
+                  { value: '', label: 'Ninguno' }, 
+                  ...FLORA_ICONS.map(icon => ({
+                    ...icon,
+                    icon: <FloraIcon name={icon.value} className="w-4 h-4 text-brand-green" />
+                  }))
+                ]}
                 placeholder="Seleccionar ícono..."
               />
             </div>

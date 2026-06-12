@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 interface Option {
   value: string
   label: string
+  icon?: React.ReactNode
 }
 
 interface CustomSelectProps {
@@ -43,10 +44,15 @@ export function CustomSelect({ value, onChange, options, placeholder = 'Seleccio
             : "border-border"
         )}
       >
-        <span className={cn("truncate", !selectedOption && "text-muted-foreground")}>
-          {selectedOption ? selectedOption.label : placeholder}
+        <span className={cn("truncate flex items-center gap-2", !selectedOption && "text-muted-foreground")}>
+          {selectedOption ? (
+            <>
+              {selectedOption.icon}
+              <span className="truncate">{selectedOption.label}</span>
+            </>
+          ) : placeholder}
         </span>
-        <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform duration-200", isOpen && "rotate-180")} />
+        <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform duration-200 flex-shrink-0", isOpen && "rotate-180")} />
       </button>
 
       <div 
@@ -72,8 +78,11 @@ export function CustomSelect({ value, onChange, options, placeholder = 'Seleccio
                   : "text-foreground hover:bg-secondary"
               )}
             >
-              <span className="truncate">{option.label}</span>
-              {value === option.value && <Check className="w-4 h-4 flex-shrink-0" />}
+              <div className="flex items-center gap-2 min-w-0">
+                {option.icon}
+                <span className="truncate">{option.label}</span>
+              </div>
+              {value === option.value && <Check className="w-4 h-4 flex-shrink-0 ml-2" />}
             </li>
           ))}
           {options.length === 0 && (
