@@ -217,16 +217,17 @@ export default function CertificadosPage() {
     return (
       <div className="bg-card w-full min-h-[calc(100vh-4rem)] relative flex flex-col rounded-2xl border border-border shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border bg-muted/30">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-6 border-b border-border bg-muted/30 gap-4">
+          <div className="flex flex-col items-start gap-2">
             <button 
               onClick={handleCancel}
-              className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors cursor-pointer"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors cursor-pointer pr-3"
             >
               <ArrowLeft className="w-5 h-5" />
+              <span className="text-sm font-medium">Volver</span>
             </button>
             <div>
-              <h2 className="text-xl font-bold text-foreground">
+              <h2 className="text-xl md:text-2xl font-bold text-foreground">
                 {isGlobal ? 'Editor de Plantilla Global' : 'Corregir Nombre del Estudiante'}
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
@@ -234,17 +235,17 @@ export default function CertificadosPage() {
               </p>
             </div>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
             <button 
               onClick={handleCancel}
-              className="px-6 py-2.5 rounded-lg font-medium text-foreground hover:bg-muted transition-colors cursor-pointer"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-lg font-medium text-foreground border border-border hover:bg-muted transition-colors cursor-pointer order-2 sm:order-1"
             >
               Cancelar
             </button>
             <button 
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold bg-[#1FC451] text-white hover:bg-[#19a343] transition-colors disabled:opacity-50 cursor-pointer"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg font-bold bg-[#1FC451] text-white hover:bg-[#19a343] transition-colors disabled:opacity-50 cursor-pointer order-1 sm:order-2"
             >
               {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
               Guardar Cambios
@@ -253,24 +254,22 @@ export default function CertificadosPage() {
         </div>
 
         {/* Visual Canvas */}
-        <div className="p-4 md:p-6 overflow-y-auto overflow-x-hidden bg-muted/10 flex-1 relative flex justify-center items-start pt-4 md:pt-8">
-
-          <div className="bg-white shadow-2xl relative p-8 md:p-12 transition-all overflow-hidden flex flex-col justify-between origin-top shrink-0" style={{ 
-            width: '900px', 
-            height: '600px', 
-            minWidth: '900px',
-            minHeight: '600px',
-            transform: 'scale(var(--cert-scale))',
-            marginBottom: 'calc(600px * (var(--cert-scale) - 1))',
-            marginLeft: 'calc(900px * (var(--cert-scale) - 1) / 2)',
-            marginRight: 'calc(900px * (var(--cert-scale) - 1) / 2)',
-            '--cert-scale': 'min(1, calc((100vw - 32px) / 900))',
-            color: '#1a1a1a', 
-            border: '15px solid #1FC451',
-            backgroundImage: `repeating-linear-gradient(45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
-            repeating-linear-gradient(-45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
-            repeating-radial-gradient(circle at 50% 50%, rgba(31,196,81,0.02) 0, rgba(31,196,81,0.02) 2px, transparent 2px, transparent 30px)`
-          } as React.CSSProperties} >
+        <div 
+          className="p-4 md:p-6 overflow-y-auto overflow-x-hidden bg-muted/10 flex-1 relative flex justify-center items-start pt-4 md:pt-8"
+          style={{ '--cert-scale': 'min(1, calc((100vw - 32px) / 900))' } as React.CSSProperties}
+        >
+          
+          <div className="relative shrink-0" style={{ width: 'calc(900px * var(--cert-scale))', height: 'calc(600px * var(--cert-scale))' }}>
+            <div className="bg-white shadow-2xl absolute top-0 left-0 p-8 md:p-12 transition-all overflow-hidden flex flex-col justify-between origin-top-left" style={{ 
+              width: '900px', 
+              height: '600px', 
+              transform: 'scale(var(--cert-scale))',
+              color: '#1a1a1a', 
+              border: '15px solid #1FC451',
+              backgroundImage: `repeating-linear-gradient(45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
+              repeating-linear-gradient(-45deg, rgba(31,196,81,0.03) 0, rgba(31,196,81,0.03) 1px, transparent 1px, transparent 15px),
+              repeating-radial-gradient(circle at 50% 50%, rgba(31,196,81,0.02) 0, rgba(31,196,81,0.02) 2px, transparent 2px, transparent 30px)`
+            }}>
             {/* Watermark Icon */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 text-[400px] pointer-events-none z-0 select-none">
               🌿
