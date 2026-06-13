@@ -32,6 +32,23 @@ export async function saveRegistroOffline(registro: OfflineRegistro) {
   }
 }
 
+export async function updateRegistroOffline(registro: OfflineRegistro) {
+  try {
+    const queueJson = await AsyncStorage.getItem(QUEUE_KEY);
+    let queue: OfflineRegistro[] = queueJson ? JSON.parse(queueJson) : [];
+    const index = queue.findIndex(r => r.id === registro.id);
+    if (index > -1) {
+      queue[index] = registro;
+    } else {
+      queue.push(registro);
+    }
+    await AsyncStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+  } catch (error) {
+    console.error('Error al actualizar registro offline:', error);
+    throw error;
+  }
+}
+
 export async function getRegistrosOffline(): Promise<OfflineRegistro[]> {
   try {
     const queueJson = await AsyncStorage.getItem(QUEUE_KEY);

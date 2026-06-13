@@ -7,6 +7,8 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [isRendered, setIsRendered] = useState(isOpen)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
   const lastPlant = useRef(plant)
 
   if (plant) lastPlant.current = plant
@@ -34,6 +36,14 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
     if (scrollContainerRef.current) scrollContainerRef.current.scrollBy({ left: scrollContainerRef.current.clientWidth, behavior: 'smooth' })
   }
 
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 5);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 5);
+    }
+  }
+
   return (
     <div 
       className={`fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 md:p-8 transition-opacity duration-300 ${isAnimatingOut ? 'opacity-0' : 'opacity-100'}`} 
@@ -51,7 +61,7 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
         <div className="w-full md:w-1/2 h-[40vh] md:h-full bg-black relative group flex-shrink-0">
           {currentPlant.galeria && currentPlant.galeria.length > 0 ? (
             <>
-              <div ref={scrollContainerRef} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar bg-black touch-pan-x">
+              <div ref={scrollContainerRef} onScroll={handleScroll} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar bg-black touch-pan-x">
                 {currentPlant.galeria.map((foto, index) => (
                   <img key={index} src={urlForImage(foto).width(800).auto('format').url()} draggable={false} className="w-full h-full object-contain flex-shrink-0 snap-center select-none" alt="Foto de planta" />
                 ))}
@@ -62,12 +72,16 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
                   <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-white z-10 border border-white/10 shadow-lg">
                     {currentPlant.galeria.length} FOTOS
                   </div>
-                  <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-                  <button onClick={scrollRight} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
-                    <ChevronRight className="w-6 h-6" />
-                  </button>
+                  {canScrollLeft && (
+                    <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                  )}
+                  {canScrollRight && (
+                    <button onClick={scrollRight} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                  )}
                 </>
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none lg:hidden" />

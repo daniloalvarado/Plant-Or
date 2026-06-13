@@ -31,16 +31,165 @@ import { Modal } from 'react-native';
 import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { client, urlFor } from '@/lib/sanity';
 import * as Network from 'expo-network';
-import { saveRegistroOffline, persistImage } from '@/lib/offline-storage';
+import { saveRegistroOffline, persistImage, updateRegistroOffline, getRegistrosOffline } from '@/lib/offline-storage';
 import { checkIsOffline } from '@/lib/network';
 
 export default function RegistroScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useUser();
   const router = useRouter();
-  const { editId } = useLocalSearchParams();
+  const params = useLocalSearchParams();
+  const editId = params.editId;
+  const localEditId = params.localEditId as string | undefined;
   const [step, setStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    if (params.step) {
+      setStep(parseInt(params.step as string));
+    }
+  }, [params.step]);
+
+  useEffect(() => {
+    if (localEditId) {
+      setIsLoadingEdit(true);
+      getRegistrosOffline().then(registros => {
+        const reg = registros.find(r => r.id === localEditId);
+        if (reg) {
+          const { data, photos } = reg;
+          setNombre(data.registrador_nombre || '');
+          setDni(data.registrador_dni || '');
+          setEmail(data.registrador_email || '');
+          setCurso(data.registrador_curso || '');
+          setFacultad(data.registrador_facultad || '');
+          setEscuela(data.registrador_escuela || '');
+          setDiaClase(data.registrador_dia_clase || '');
+          
+          setNombreCientifico(data.nombre_cientifico || '');
+          setNombresComunes(data.nombres_comunes || '');
+          setFamilia(data.familia || '');
+          setEstadoRevision(data.estado_revision || '');
+          
+          if (data.latitud && data.longitud) setLocation({ latitude: data.latitud, longitude: data.longitud });
+          setDistrito(data.distrito || '');
+          setDireccion(data.direccion || '');
+          setTipoUbicacion(data.tipo_ubicacion_1 || '');
+          setTipoUbicacion2(data.tipo_ubicacion_2 || '');
+          setNumeroCasa(data.numero_casa || '');
+          setSustratoPlanta(data.ubicacion_planta || '');
+          
+          const h = data.habito;
+          const source = data.arbol_datos || data.arbusto_datos || data.liana_datos || data.hierba_datos || data.palmera_datos || {};
+          
+          let rehydratedBotanic: any = {
+            habito: h,
+            tipoVida: data.tipo_vida,
+            reproductivo: data.reproductivo || {},
+            compartido: {
+              estado_fenologico: data.estado_fenologico || [],
+              estado_individuo: data.estado_individuo || [],
+              valor_ornamental: data.valor_ornamental || [],
+              impacto_urbano: data.impacto_urbano || [],
+            }
+          };
+
+          rehydratedBotanic.dasometria = {
+            altura_total: source.altura_total || '',
+            cap: source.cap || '',
+            diametro_copa_paralelo: source.diametro_copa_paralelo || '',
+            diametro_copa_perpendicular: source.diametro_copa_perpendicular || '',
+            altura_inicio_copa: source.altura_inicio_copa || '',
+            longitud_visible: source.longitud_visible || '',
+            altura_maxima: source.altura_maxima || '',
+            diametro_tallo: source.diametro_tallo || '',
+            cobertura: source.cobertura || ''
+          };
+
+          rehydratedBotanic.hojas = {
+            tipo: source.tipo_hoja || '',
+            disposicion_hoja: source.disposicion_hoja || '',
+            forma_hoja: source.forma_hoja || '',
+            borde_hoja: source.borde_hoja || '',
+            textura_hoja: source.textura_hoja || '',
+            color_enves: source.color_enves || '',
+            pelos_hoja: source.pelos_hoja || '',
+            tipo_peciolo: source.tipo_peciolo || '',
+            longitud_peciolo: source.longitud_peciolo || '',
+            diametro_peciolo: source.diametro_peciolo || '',
+            peciolo_pulvino: source.peciolo_pulvino || '',
+            hoja_compuesta_tipo: source.hoja_compuesta_tipo || '',
+            color_hoja: source.color_hoja || '',
+            olor_hoja: source.olor_hoja || '',
+            exudado_corte: source.exudado_corte || '',
+            segmentos: source.segmentos || '',
+            hoja_largo: source.hoja_largo || '',
+            hoja_ancho: source.hoja_ancho || '',
+          };
+
+          if (h === 'Árbol') {
+            rehydratedBotanic.tronco = {
+              numero_troncos: source.numero_troncos || '',
+              forma: source.forma_tronco || '',
+              corteza_externa: source.corteza_externa || '',
+              lenticelas: source.lenticelas || '',
+              color_corteza: source.color_corteza || '',
+              olor_corteza: source.olor_corteza || '',
+              espinas_tronco: source.espinas_tronco || '',
+            };
+            rehydratedBotanic.exudado = {
+              presencia: source.exudado_presencia || '',
+              tipo: source.exudado_tipo || '',
+              color: source.exudado_color || '',
+            };
+            rehydratedBotanic.copa = {
+              tipo_ramificacion: source.tipo_ramificacion || '',
+              forma_copa: source.forma_copa || '',
+            };
+          } else if (h === 'Arbusto' || h === 'Liana') {
+            rehydratedBotanic.tallo = {
+              numero_tallos: source.numero_tallos || '',
+              forma_tallo: source.forma_tallo || '',
+              color_tallo: source.color_tallo || '',
+              espinas_tallo: source.espinas_tallo || '',
+            };
+            if (h === 'Liana') {
+              rehydratedBotanic.crecimiento = {
+                hospedero: source.hospedero || '',
+                mecanismo_trepador: source.mecanismo_trepador || '',
+              };
+            }
+          } else if (h === 'Hierba') {
+            rehydratedBotanic.crecimiento = {
+              hospedero: source.hospedero || '',
+              habito_crecimiento: source.habito_crecimiento || '',
+            };
+          } else if (h === 'Palmera') {
+            rehydratedBotanic.general = { tipo: source.tipo_palmera || '' };
+            rehydratedBotanic.tallo = { caracteristicas: source.tallo || '' };
+            rehydratedBotanic.espinas = { presencia: source.espinas_palmera || '' };
+            rehydratedBotanic.inflorescencia = {
+              presencia: source.inflorescencia_presencia || '',
+              posicion: source.inflorescencia_posicion || '',
+              forma: source.inflorescencia_forma || '',
+              espata: source.inflorescencia_espata || '',
+            };
+          }
+
+          setDatosBotanicos(rehydratedBotanic);
+          
+          setFotos({
+            planta_completa: photos.planta_completa || null,
+            hoja: photos.hoja || null,
+            flor: photos.flor || null,
+            fruto: photos.fruto || null,
+            semilla: photos.semilla || null,
+          });
+          if (photos.extras) setFotosExtra(photos.extras);
+        }
+        setIsLoadingEdit(false);
+      });
+    }
+  }, [localEditId]);
   const [isOfflineSaved, setIsOfflineSaved] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
@@ -786,20 +935,26 @@ export default function RegistroScreen() {
           if (localUri) localExtras.push(localUri);
         }
 
-        await saveRegistroOffline({
-          id: Math.random().toString(36).substring(7) + Date.now().toString(),
+        const offlineReg = {
+          id: localEditId || (Math.random().toString(36).substring(7) + Date.now().toString()),
           timestamp: Date.now(),
           data: nuevoRegistro,
           photos: {
-            planta_completa: localPlanta,
-            hoja: localHoja,
-            flor: localFlor,
-            fruto: localFruto,
-            semilla: localSemilla,
-            extras: localExtras
+            planta_completa: localPlanta || (localEditId ? fotos.planta_completa : null),
+            hoja: localHoja || (localEditId ? fotos.hoja : null),
+            flor: localFlor || (localEditId ? fotos.flor : null),
+            fruto: localFruto || (localEditId ? fotos.fruto : null),
+            semilla: localSemilla || (localEditId ? fotos.semilla : null),
+            extras: localExtras.length > 0 ? localExtras : (localEditId ? fotosExtra : [])
           },
-          status: 'pending'
-        });
+          status: 'pending' as const
+        };
+
+        if (localEditId) {
+          await updateRegistroOffline(offlineReg);
+        } else {
+          await saveRegistroOffline(offlineReg);
+        }
 
         setIsOfflineSaved(true);
       } else {

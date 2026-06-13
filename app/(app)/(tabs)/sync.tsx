@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, ScrollView, RefreshControl } from 'react-native';
+import { View, ScrollView, RefreshControl, Alert, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, YStack, XStack, Button, Card, H3, Paragraph } from 'tamagui';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -137,35 +137,47 @@ export default function SyncScreen() {
             </YStack>
           ) : (
             registros.map((reg) => (
-              <Card key={reg.id} padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={1} borderColor="rgba(255,255,255,0.1)">
-                <XStack style={{ justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <YStack gap="$1" style={{ flex: 1 }}>
-                    <Text color="white" fontWeight="bold" fontSize={16} numberOfLines={1}>
-                      {reg.data.nombre_cientifico || 'Por identificar'}
-                    </Text>
-                    <Text color="rgba(255,255,255,0.7)" fontSize={14}>
-                      Hábito: {reg.data.habito}
-                    </Text>
-                    <Text color="rgba(255,255,255,0.5)" fontSize={12}>
-                      Guardado el: {new Date(reg.timestamp).toLocaleString()}
-                    </Text>
-                    
-                    {reg.status === 'error' && reg.errorMsg && (
-                      <Text color="#ff4444" fontSize={12} mt="$2">
-                        Error: {reg.errorMsg}
+              <Pressable key={reg.id} onPress={() => router.push(`/(app)/(tabs)/registro?localEditId=${reg.id}&step=5`)}>
+                <Card padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={1} borderColor="rgba(255,255,255,0.1)">
+                  <XStack style={{ justifyContent: "space-between", alignItems: "flex-start" }}>
+                    <YStack gap="$1" style={{ flex: 1 }}>
+                      <Text color="white" fontWeight="bold" fontSize={16} numberOfLines={1}>
+                        {reg.data.nombre_cientifico || 'Por identificar'}
                       </Text>
-                    )}
-                  </YStack>
-                  <Button 
-                    circular 
-                    size="$3" 
-                    bg="rgba(255,68,68,0.1)" 
-                    onPress={() => handleRemove(reg.id)}
-                  >
-                    <MaterialCommunityIcons name="delete" size={18} color="#ff4444" />
-                  </Button>
-                </XStack>
-              </Card>
+                      <Text color="rgba(255,255,255,0.7)" fontSize={14}>
+                        Hábito: {reg.data.habito}
+                      </Text>
+                      <Text color="rgba(255,255,255,0.5)" fontSize={12}>
+                        Guardado el: {new Date(reg.timestamp).toLocaleString()}
+                      </Text>
+                      
+                      {reg.status === 'error' && reg.errorMsg && (
+                        <Text color="#ff4444" fontSize={12} mt="$2">
+                          Error: {reg.errorMsg}
+                        </Text>
+                      )}
+                    </YStack>
+                    <Button 
+                      circular 
+                      size="$3" 
+                      bg="rgba(255,68,68,0.1)" 
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        Alert.alert(
+                          "Eliminar registro",
+                          "¿Estás seguro de que deseas eliminar este registro local permanentemente?",
+                          [
+                            { text: "Cancelar", style: "cancel" },
+                            { text: "Eliminar", style: "destructive", onPress: () => handleRemove(reg.id) }
+                          ]
+                        );
+                      }}
+                    >
+                      <MaterialCommunityIcons name="delete" size={18} color="#ff4444" />
+                    </Button>
+                  </XStack>
+                </Card>
+              </Pressable>
             ))
           )}
         </ScrollView>
