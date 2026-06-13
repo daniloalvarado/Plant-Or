@@ -61,7 +61,7 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
         <div className="w-full md:w-1/2 h-[40vh] md:h-full bg-black relative group flex-shrink-0">
           {currentPlant.galeria && currentPlant.galeria.length > 0 ? (
             <>
-              <div ref={scrollContainerRef} onScroll={handleScroll} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar bg-black touch-pan-x">
+              <div ref={scrollContainerRef} onScroll={handleScroll} className="w-full h-full relative overflow-x-auto flex snap-x snap-proximity md:snap-mandatory custom-scrollbar no-scrollbar bg-black">
                 {currentPlant.galeria.map((foto, index) => (
                   <img key={index} src={urlForImage(foto).width(800).auto('format').url()} draggable={false} className="w-full h-full object-contain flex-shrink-0 snap-center select-none" alt="Foto de planta" />
                 ))}
