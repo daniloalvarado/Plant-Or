@@ -8,6 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { client, urlFor } from "@/lib/sanity";
+import { checkIsOffline } from "@/lib/network";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -36,6 +37,7 @@ export default function PlantDetailScreen() {
 
   const [planta, setPlanta] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isOffline, setIsOffline] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
 
@@ -60,21 +62,53 @@ export default function PlantDetailScreen() {
       setLoading(false);
       return;
     }
-    client.fetch(`*[_type == "planta" && _id == $id][0]`, { id })
-      .then((data) => {
-        setPlanta(data);
+    checkIsOffline().then(offline => {
+      if (offline) {
+        setIsOffline(true);
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
+        return;
+      }
+      client.fetch(`*[_type == "planta" && _id == $id][0]`, { id })
+        .then((data) => {
+          setPlanta(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
+    });
   }, [id]);
 
   if (loading) {
     return (
       <View style={[styles.container, { backgroundColor: theme.background, justifyContent: 'center', alignItems: 'center' }]}>
         <ActivityIndicator size="large" color="#1FC451" />
+      </View>
+    );
+  }
+
+  if (isOffline) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.background, paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        <View style={styles.imageHeaderContainer}>
+          <View style={[styles.imagePlaceholder, { backgroundColor: "#1A2F22" }]}>
+            <MaterialCommunityIcons name="wifi-off" size={120} color="#1FC451" opacity={0.5} />
+          </View>
+          <Pressable 
+            onPress={() => router.back()} 
+            style={[styles.backButton, { top: 20 }]}
+          >
+            <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
+          </Pressable>
+        </View>
+        <View style={[styles.contentContainer, { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 60 }]}>
+           <MaterialCommunityIcons name="cloud-off-outline" size={64} color="#ff4444" style={{ marginBottom: 16 }} />
+           <Text style={{ color: theme.text, fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 }}>Estás en modo offline</Text>
+           <Text style={{ color: theme.icon, fontSize: 16, textAlign: 'center', lineHeight: 24 }}>
+             Necesitas conexión a internet para ver los detalles, ficha técnica y fotografías completas de esta planta.
+           </Text>
+        </View>
       </View>
     );
   }
