@@ -28,10 +28,10 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
   if (!isRendered || !currentPlant) return null;
 
   const scrollLeft = () => {
-    if (scrollContainerRef.current) scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' })
+    if (scrollContainerRef.current) scrollContainerRef.current.scrollBy({ left: -scrollContainerRef.current.clientWidth, behavior: 'smooth' })
   }
   const scrollRight = () => {
-    if (scrollContainerRef.current) scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' })
+    if (scrollContainerRef.current) scrollContainerRef.current.scrollBy({ left: scrollContainerRef.current.clientWidth, behavior: 'smooth' })
   }
 
   return (
@@ -51,9 +51,9 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
         <div className="w-full md:w-1/2 h-[40vh] md:h-full bg-black relative group flex-shrink-0">
           {currentPlant.galeria && currentPlant.galeria.length > 0 ? (
             <>
-              <div ref={scrollContainerRef} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar bg-black">
+              <div ref={scrollContainerRef} className="w-full h-full relative overflow-x-auto flex snap-x snap-mandatory custom-scrollbar no-scrollbar bg-black touch-pan-x">
                 {currentPlant.galeria.map((foto, index) => (
-                  <img key={index} src={urlForImage(foto).width(800).auto('format').url()} className="w-full h-full object-contain flex-shrink-0 snap-center" alt="Foto de planta" />
+                  <img key={index} src={urlForImage(foto).width(800).auto('format').url()} draggable={false} className="w-full h-full object-contain flex-shrink-0 snap-center select-none" alt="Foto de planta" />
                 ))}
               </div>
               
@@ -62,10 +62,10 @@ export function PlantDetailModal({ plant, isOpen, onClose, onShowOnMap }: { plan
                   <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-white z-10 border border-white/10 shadow-lg">
                     {currentPlant.galeria.length} FOTOS
                   </div>
-                  <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
+                  <button onClick={scrollLeft} className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
                     <ChevronLeft className="w-6 h-6" />
                   </button>
-                  <button onClick={scrollRight} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
+                  <button onClick={scrollRight} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 dark:bg-white/10 dark:hover:bg-white/30 rounded-full text-white backdrop-blur-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer border border-white/20 z-10">
                     <ChevronRight className="w-6 h-6" />
                   </button>
                 </>
