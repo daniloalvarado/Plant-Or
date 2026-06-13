@@ -141,9 +141,8 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
         const deltaY = touchStartY - touchY;
 
         if (!touchIsDragging) {
-            if (isHorizontal) {
-                if (Math.abs(deltaY) > Math.abs(deltaX)) return;
-            } else {
+            // Only block horizontal swipes on desktop vertical minimap
+            if (!isHorizontal) {
                 if (Math.abs(deltaX) > Math.abs(deltaY)) return;
             }
             touchIsDragging = true;
@@ -151,7 +150,8 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
 
         if (touchIsDragging) {
             e.preventDefault();
-            const delta = isHorizontal ? deltaX : deltaY;
+            // On mobile (isHorizontal), any swipe (X or Y) moves the minimap
+            const delta = isHorizontal ? (Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY) : deltaY;
             targetTranslate = Math.min(
                 Math.max(targetTranslate - delta, -maxTranslate),
                 0
