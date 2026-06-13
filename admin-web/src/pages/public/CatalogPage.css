@@ -1,5 +1,5 @@
 .public-catalog-bg {
-    min-height: 100vh;
+    min-height: 100dvh;
     overscroll-behavior: none;
 }
 
@@ -7,7 +7,7 @@
 .mm-container {
   position: relative;
   width: 100vw;
-  height: calc(100vh - 70px);
+  height: calc(100dvh - 70px);
   overflow: hidden;
   background-color: transparent;
 }
@@ -84,7 +84,7 @@
   .mm-minimap {
     top: auto;
     right: auto;
-    bottom: 2em;
+    bottom: calc(2em + env(safe-area-inset-bottom, 0px));
     left: 0;
     transform: none;
     width: 100vw;

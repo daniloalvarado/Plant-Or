@@ -340,7 +340,7 @@ export default function CatalogPage() {
         ) : viewMode === 'tunnel' ? (
           <MinimapView plants={filteredPlants} onPlantClick={setSelectedPlant} />
         ) : (
-          <div className="h-[calc(100vh-70px)] w-full">
+          <div className="h-[calc(100dvh-70px)] w-full">
             <MapContainer
               center={initialMapState.center}
               zoom={initialMapState.zoom}
