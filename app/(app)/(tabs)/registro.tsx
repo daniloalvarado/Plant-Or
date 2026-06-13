@@ -32,6 +32,7 @@ import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { client, urlFor } from '@/lib/sanity';
 import * as Network from 'expo-network';
 import { saveRegistroOffline, persistImage } from '@/lib/offline-storage';
+import { checkIsOffline } from '@/lib/network';
 
 export default function RegistroScreen() {
   const insets = useSafeAreaInsets();
@@ -554,8 +555,7 @@ export default function RegistroScreen() {
     setIsSubmitting(true);
 
     try {
-      const networkState = await Network.getNetworkStateAsync();
-      const isOffline = !networkState.isConnected;
+      const isOffline = await checkIsOffline();
 
       const writeClient = client.withConfig({
         token: process.env.EXPO_PUBLIC_SANITY_TOKEN,

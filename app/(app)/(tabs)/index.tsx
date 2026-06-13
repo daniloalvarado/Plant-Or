@@ -11,6 +11,7 @@ import { Avatar, Text, View } from "tamagui";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
+import { checkIsOffline } from "@/lib/network";
 
 export default function HomeScreen() {
   const { user } = useUser();
@@ -23,6 +24,7 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeHabit, setActiveHabit] = useState("Todo");
+  const [isOffline, setIsOffline] = useState(false);
   const router = useRouter();
   const params = useLocalSearchParams();
 
@@ -40,6 +42,11 @@ export default function HomeScreen() {
   const [selectedFiltros, setSelectedFiltros] = useState<string[]>([]);
 
   const fetchData = async () => {
+    const offlineStatus = await checkIsOffline();
+    setIsOffline(offlineStatus);
+
+    if (offlineStatus) return;
+
     try {
       const data = await client.fetch(`*[_type == "planta" && !(_id in path("drafts.**")) && estado_revision == "Validado"]`);
       setPlantas(data);
@@ -176,12 +183,13 @@ export default function HomeScreen() {
             onChangeText={setSearchQuery}
           />
           <Pressable
-            onPress={async () => {
-              try {
-                const filtrosData = await client.fetch(`*[_type == "filtro" && activo == true] | order(categoria asc, nombre_filtro asc)`);
-                setFiltrosDinamicos(filtrosData);
-              } catch (e) { console.error(e); }
+            onPress={() => {
               setModalVisible(true);
+              if (!isOffline) {
+                client.fetch(`*[_type == "filtro" && activo == true] | order(categoria asc, nombre_filtro asc)`)
+                  .then(setFiltrosDinamicos)
+                  .catch(console.error);
+              }
             }}
             style={[styles.filterButton, { backgroundColor: selectedFiltros.length > 0 ? "#1FC451" : "rgba(255,255,255,0.1)", justifyContent: 'center', alignItems: 'center', width: 40, height: 40 }]}
           >
@@ -243,9 +251,11 @@ export default function HomeScreen() {
             })
           ) : (
             <View style={{ width: '100%', padding: 40, alignItems: 'center', justifyContent: 'center' }}>
-              <MaterialCommunityIcons name="leaf-off" size={48} color={theme.icon} style={{ opacity: 0.5, marginBottom: 16 }} />
+              <MaterialCommunityIcons name={isOffline ? "wifi-off" : "leaf-off"} size={48} color={theme.icon} style={{ opacity: 0.5, marginBottom: 16 }} />
               <Text style={{ color: theme.text, opacity: 0.7, textAlign: 'center', fontSize: 16 }}>
-                No se encontraron especies con los filtros o parámetros de búsqueda actuales.
+                {isOffline 
+                  ? "Estás en Modo Offline. Conéctate a internet para ver la galería de especies amazónicas." 
+                  : "No se encontraron especies con los filtros o parámetros de búsqueda actuales."}
               </Text>
             </View>
           )}

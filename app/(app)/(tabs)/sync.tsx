@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, YStack, XStack, Button, Card, H3, Paragraph } from 'tamagui';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Network from 'expo-network';
+import { checkIsOffline } from '@/lib/network';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useAuth, useUser } from '@clerk/clerk-expo';
 import { getRegistrosOffline, syncRegistro, OfflineRegistro, removeRegistroOffline } from '@/lib/offline-storage';
@@ -19,8 +20,8 @@ export default function SyncScreen() {
   const router = useRouter();
 
   const loadData = async () => {
-    const networkState = await Network.getNetworkStateAsync();
-    setIsOnline(!!networkState.isConnected);
+    const isOffline = await checkIsOffline();
+    setIsOnline(!isOffline);
     const data = await getRegistrosOffline();
     setRegistros(data);
   };

@@ -6,6 +6,7 @@ import { Spinner, View } from "tamagui";
 import { AppState } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Network from 'expo-network';
+import { checkIsOffline } from "@/lib/network";
 
 // Create a JS-based Stack (not Native Stack) for full animation control
 const { Navigator } = createStackNavigator();
@@ -39,54 +40,11 @@ export default function Layout() {
 
     const checkNetwork = async () => {
       try {
-        const state = await Network.getNetworkStateAsync();
-        
-        // 1. Si el SO nos dice explícitamente que no hay conexión o no hay internet
-        if (!state.isConnected || state.isInternetReachable === false) {
-          if (isMounted) {
-            setIsOffline(true);
-            setNetworkChecked(true);
-          }
-          return;
-        }
-
-        // 2. Ping de confirmación rápido (2 segundos) por si el estado es engañoso
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 2000);
-          
-          // Usamos el endpoint de Google diseñado específicamente para detectar portales cautivos.
-          // Solo si devuelve exactamente 204 (Sin contenido), significa que tenemos internet real sin intercepciones.
-          const response = await fetch('https://clients3.google.com/generate_204', {
-            method: 'GET',
-            signal: controller.signal,
-            cache: 'no-store'
-          });
-          clearTimeout(timeoutId);
-          
-          if (isMounted) {
-            if (response.status === 204) {
-              setIsOffline(false);
-            } else {
-              // Si devuelve 200 (portal cautivo del operador), asumimos offline
-              setIsOffline(true);
-            }
-            setNetworkChecked(true);
-          }
-        } catch (fetchError) {
-          // Si el ping falla o da timeout, consideramos que no hay internet
-          if (isMounted) {
-            setIsOffline(true);
-            setNetworkChecked(true);
-          }
-        }
-      } catch (e) {
-        console.warn('Network check failed, assuming offline:', e);
+        const isCurrentlyOffline = await checkIsOffline();
         if (isMounted) {
-          setIsOffline(true);
+          setIsOffline(isCurrentlyOffline);
           setNetworkChecked(true);
         }
-      }
     };
 
     // Primera comprobación inmediata
