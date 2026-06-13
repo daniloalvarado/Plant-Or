@@ -23,8 +23,9 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
     let currentTranslate = 0;
     let targetTranslate = 0;
     let animationFrameId: number;
+    let touchStartX = 0;
     let touchStartY = 0;
-
+    let touchIsDragging = false;
     const items = itemsRef.current;
     const indicator = indicatorRef.current;
     const container = containerRef.current;
@@ -127,23 +128,37 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
     };
 
     const handleTouchStart = (e: TouchEvent) => {
-        if (isHorizontal) {
-            touchStartY = e.touches[0].clientX;
-        } else {
-            touchStartY = e.touches[0].clientY;
-        }
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchIsDragging = false;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-        e.preventDefault();
-        const touchY = isHorizontal ? e.touches[0].clientX : e.touches[0].clientY;
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        
+        const deltaX = touchStartX - touchX;
         const deltaY = touchStartY - touchY;
-        const scrollVelocity = Math.min(Math.max(deltaY * 0.5, -20), 20);
 
-        targetTranslate = Math.min(
-            Math.max(targetTranslate - scrollVelocity, -maxTranslate),
-            0
-        );
+        if (!touchIsDragging) {
+            if (isHorizontal) {
+                if (Math.abs(deltaY) > Math.abs(deltaX)) return;
+            } else {
+                if (Math.abs(deltaX) > Math.abs(deltaY)) return;
+            }
+            touchIsDragging = true;
+        }
+
+        if (touchIsDragging) {
+            e.preventDefault();
+            const delta = isHorizontal ? deltaX : deltaY;
+            targetTranslate = Math.min(
+                Math.max(targetTranslate - delta, -maxTranslate),
+                0
+            );
+            touchStartX = touchX;
+            touchStartY = touchY;
+        }
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
