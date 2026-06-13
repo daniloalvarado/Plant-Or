@@ -154,7 +154,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
             e.preventDefault();
         }
 
-        const scrollAmount = dimensions.itemSize * 2;
+        const scrollAmount = dimensions.itemSize;
         
         if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) {
             targetTranslate = Math.max(targetTranslate - scrollAmount, -maxTranslate);
@@ -238,7 +238,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
               <p className="text-muted-foreground font-medium italic text-xs lg:text-sm mb-0 lg:mb-5 break-words whitespace-normal w-full transition-colors duration-300">{activePlant.nombre_cientifico || 'Especie por identificar'}</p>
             )}
           </div>
-          <div className="pointer-events-auto mt-2 lg:mt-0 w-44">
+          <div className="pointer-events-auto mt-2 lg:mt-0 w-44 flex justify-center lg:justify-start">
             <AnimatedButton initialText="VER" hoverText="FICHA TÉCNICA" onClick={() => onPlantClick(activePlant)} />
           </div>
         </div>
