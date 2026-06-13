@@ -135,6 +135,18 @@
   transform: scale(0.9) translateY(-3.5px);
 }
 
+@media (min-width: 1024px) {
+  .btn-animated-new svg {
+    transform: translate(-8px, -1.5px);
+  }
+  .btn-animated-new:hover svg {
+    transform: translate(0, -1.5px);
+  }
+  .btn-animated-new:active svg {
+    transform: scale(0.9) translateY(-1.5px);
+  }
+}
+
 
 
 /* Map Popup Overrides for compact button */
