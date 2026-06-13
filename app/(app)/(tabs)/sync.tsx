@@ -116,6 +116,7 @@ export default function SyncScreen() {
           <Button 
             bg="#1FC451" 
             color="white" 
+            pressStyle={{ bg: "#17993E" }}
             onPress={handleSyncAll}
             disabled={!isOnline || isSyncing}
             opacity={(!isOnline || isSyncing) ? 0.5 : 1}
@@ -189,8 +190,8 @@ export default function SyncScreen() {
               <View style={{ backgroundColor: 'rgba(255,68,68,0.1)', width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center', marginBottom: 16 }}>
                 <MaterialCommunityIcons name="alert-circle-outline" size={32} color="#ff4444" />
               </View>
-              <H3 color="white" textAlign="center" mb="$2">¿Eliminar registro?</H3>
-              <Paragraph color="rgba(255,255,255,0.7)" textAlign="center">
+              <H3 color="white" style={{ textAlign: "center" }} mb="$2">¿Eliminar registro?</H3>
+              <Paragraph color="rgba(255,255,255,0.7)" style={{ textAlign: "center" }}>
                 ¿Estás seguro de que deseas eliminar este registro local permanentemente? Esta acción no se puede deshacer.
               </Paragraph>
             </View>
