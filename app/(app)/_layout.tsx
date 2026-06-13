@@ -39,12 +39,11 @@ export default function Layout() {
     let isMounted = true;
 
     const checkNetwork = async () => {
-      try {
-        const isCurrentlyOffline = await checkIsOffline();
-        if (isMounted) {
-          setIsOffline(isCurrentlyOffline);
-          setNetworkChecked(true);
-        }
+      const isCurrentlyOffline = await checkIsOffline();
+      if (isMounted) {
+        setIsOffline(isCurrentlyOffline);
+        setNetworkChecked(true);
+      }
     };
 
     // Primera comprobación inmediata
