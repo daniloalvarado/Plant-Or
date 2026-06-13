@@ -121,18 +121,18 @@
 }
 
 .btn-animated-new svg {
-  transform: translateX(-8px);
+  transform: translate(-8px, -3.5px);
   transition: all 0.3s cubic-bezier(0.87, 0, 0.13, 1);
   fill: currentColor;
   flex-shrink: 0;
 }
 
 .btn-animated-new:hover svg {
-  transform: translateX(0);
+  transform: translate(0, -3.5px);
 }
 
 .btn-animated-new:active svg {
-  transform: scale(0.9);
+  transform: scale(0.9) translateY(-3.5px);
 }
 
 
