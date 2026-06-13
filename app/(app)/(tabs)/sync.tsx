@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, ScrollView, RefreshControl, Alert, Pressable } from 'react-native';
+import { View, ScrollView, RefreshControl, Alert, Pressable, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, YStack, XStack, Button, Card, H3, Paragraph } from 'tamagui';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -14,6 +14,7 @@ export default function SyncScreen() {
   const [isOnline, setIsOnline] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   
   const { isSignedIn } = useAuth();
   const { user } = useUser();
@@ -163,14 +164,7 @@ export default function SyncScreen() {
                       bg="rgba(255,68,68,0.1)" 
                       onPress={(e) => {
                         e.stopPropagation();
-                        Alert.alert(
-                          "Eliminar registro",
-                          "¿Estás seguro de que deseas eliminar este registro local permanentemente?",
-                          [
-                            { text: "Cancelar", style: "cancel" },
-                            { text: "Eliminar", style: "destructive", onPress: () => handleRemove(reg.id) }
-                          ]
-                        );
+                        setItemToDelete(reg.id);
                       }}
                     >
                       <MaterialCommunityIcons name="delete" size={18} color="#ff4444" />
@@ -182,6 +176,40 @@ export default function SyncScreen() {
           )}
         </ScrollView>
       </YStack>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={!!itemToDelete}
+        onRequestClose={() => setItemToDelete(null)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+          <View style={{ backgroundColor: '#12221A', borderRadius: 16, padding: 24, width: '100%', maxWidth: 400, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
+            <View style={{ alignItems: 'center', marginBottom: 16 }}>
+              <View style={{ backgroundColor: 'rgba(255,68,68,0.1)', width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center', marginBottom: 16 }}>
+                <MaterialCommunityIcons name="alert-circle-outline" size={32} color="#ff4444" />
+              </View>
+              <H3 color="white" textAlign="center" mb="$2">¿Eliminar registro?</H3>
+              <Paragraph color="rgba(255,255,255,0.7)" textAlign="center">
+                ¿Estás seguro de que deseas eliminar este registro local permanentemente? Esta acción no se puede deshacer.
+              </Paragraph>
+            </View>
+            <XStack gap="$3" mt="$4">
+              <Button flex={1} bg="rgba(255,255,255,0.1)" color="white" onPress={() => setItemToDelete(null)}>
+                Cancelar
+              </Button>
+              <Button flex={1} bg="#ff4444" color="white" onPress={() => {
+                if (itemToDelete) {
+                  handleRemove(itemToDelete);
+                  setItemToDelete(null);
+                }
+              }}>
+                Eliminar
+              </Button>
+            </XStack>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
