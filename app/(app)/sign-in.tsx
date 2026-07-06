@@ -179,6 +179,7 @@ export default function Page() {
                   bg="#1FC451"
                   color="white"
                   borderColor="#1FC451"
+                  pressStyle={{ bg: "#17993E", borderColor: "#17993E" }}
                   onPress={onSignInPress}
                   disabled={!isLoaded || isLoading}
                   opacity={!isLoaded || isLoading ? 0.5 : 1}

@@ -31,8 +31,9 @@ import { Modal } from 'react-native';
 import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
 import { client, urlFor } from '@/lib/sanity';
 import * as Network from 'expo-network';
-import { saveRegistroOffline, persistImage, updateRegistroOffline, getRegistrosOffline } from '@/lib/offline-storage';
+import { saveRegistroOffline, persistImage, updateRegistroOffline, getRegistrosOffline, removeRegistroOffline } from '@/lib/offline-storage';
 import { checkIsOffline } from '@/lib/network';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function RegistroScreen() {
   const insets = useSafeAreaInsets();
@@ -43,12 +44,49 @@ export default function RegistroScreen() {
   const localEditId = params.localEditId as string | undefined;
   const [step, setStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [hasPausedDraft, setHasPausedDraft] = useState(false);
 
   useEffect(() => {
     if (params.step) {
       setStep(parseInt(params.step as string));
     }
   }, [params.step]);
+
+  const restoreDraftFromStorage = async () => {
+    try {
+      const draftStr = await AsyncStorage.getItem('registro_borrador');
+      if (draftStr) {
+        const draft = JSON.parse(draftStr);
+        if (draft.step) setStep(draft.step);
+        if (draft.nombre) setNombre(draft.nombre);
+        if (draft.dni) setDni(draft.dni);
+        if (draft.email) setEmail(draft.email);
+        if (draft.curso) setCurso(draft.curso);
+        if (draft.facultad) setFacultad(draft.facultad);
+        if (draft.escuela) setEscuela(draft.escuela);
+        if (draft.diaClase) setDiaClase(draft.diaClase);
+        if (draft.rolRegistro) setRolRegistro(draft.rolRegistro);
+        if (draft.nombreCientifico) setNombreCientifico(draft.nombreCientifico);
+        if (draft.nombresComunes) setNombresComunes(draft.nombresComunes);
+        if (draft.familia) setFamilia(draft.familia);
+        if (draft.location) setLocation(draft.location);
+        if (draft.distrito) setDistrito(draft.distrito);
+        if (draft.direccion) setDireccion(draft.direccion);
+        if (draft.tipoUbicacion) setTipoUbicacion(draft.tipoUbicacion);
+        if (draft.tipoUbicacion2) setTipoUbicacion2(draft.tipoUbicacion2);
+        if (draft.numeroCasa) setNumeroCasa(draft.numeroCasa);
+        if (draft.sustratoPlanta) setSustratoPlanta(draft.sustratoPlanta);
+        if (draft.datosBotanicos) setDatosBotanicos(draft.datosBotanicos);
+      }
+    } catch (e) {
+      console.log('Error loading draft', e);
+    }
+  };
+
+  useEffect(() => {
+    if (editId || localEditId) return;
+    restoreDraftFromStorage();
+  }, []);
 
   useEffect(() => {
     if (localEditId) {
@@ -368,7 +406,7 @@ export default function RegistroScreen() {
     'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo',
     'fruto_tamano_largo', 'fruto_tamano_ancho', 'flor_tamano', 'flor_tamano_largo', 'flor_tamano_ancho',
     'semilla_numero', 'semilla_tamano_largo', 'semilla_tamano_ancho', 'semilla_tamano',
-    'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro', 'numero_tallos',
+    'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro',
     'altura_inicio_ramificacion', 'longitud_visible', 'altura_maxima', 'diametro_tallo',
     'cobertura', 'fruto_tamano'
   ];
@@ -448,9 +486,29 @@ export default function RegistroScreen() {
 
   // Load existing data if editId is provided
   useEffect(() => {
-    if (editId) {
-      loadExistingData(editId as string);
-    }
+    const checkDraftAndLoad = async () => {
+      if (editId) {
+        try {
+          const draftStr = await AsyncStorage.getItem('registro_borrador');
+          if (draftStr) {
+            const draft = JSON.parse(draftStr);
+            if (draft.step > 1 || draft.nombresComunes || (draft.datosBotanicos && draft.datosBotanicos.habito)) {
+              setHasPausedDraft(true);
+            } else {
+              setHasPausedDraft(false);
+            }
+          } else {
+            setHasPausedDraft(false);
+          }
+        } catch (e) {
+          setHasPausedDraft(false);
+        }
+        loadExistingData(editId as string);
+      } else {
+        setHasPausedDraft(false);
+      }
+    };
+    checkDraftAndLoad();
   }, [editId]);
 
   const loadExistingData = async (id: string) => {
@@ -506,10 +564,8 @@ export default function RegistroScreen() {
           compartido: {
             estado_fenologico: doc.estado_fenologico,
             estado_individuo: doc.estado_individuo,
-            // Map old sanity values to new form values if necessary, otherwise keep them
-            valor_ornamental: doc.valor_ornamental?.map((v: string) => v === 'Da sombra' ? 'Genera sombra' : v === 'Tiene copa atractiva' ? 'Tiene copa o forma atractiva' : v === 'Valor cultural' ? 'Tiene valor cultural' : v === 'Valor alimenticio' ? 'Tiene valor alimenticio' : v === 'Valor medicinal' ? 'Tiene valor medicinal' : v),
-            impacto_urbano: doc.impacto_urbano?.map((v: string) => v === 'Raíces rompen el piso' ? 'Raíces levantan vereda' : v === 'Raíces afectan veredas' ? 'Raíces levantan vereda' : v === 'Raíces afectan cimientos' ? 'Raíces afectan cimientos o paredes' : v === 'Tronco inclinado (riesgo)' ? 'Tronco o tallo inclinado' : v),
-          },
+            valor_ornamental: doc.valor_ornamental,
+            impacto_urbano: doc.impacto_urbano,          },
           reproductivo: doc.reproductivo || {},
           // Map back the flattened data based on habit
           ...(doc.habito === 'Árbol' && {
@@ -631,6 +687,34 @@ export default function RegistroScreen() {
     setFotosExtra(prev => prev.filter((_, i) => i !== index));
   };
 
+  const saveDraft = async (targetStep?: number) => {
+    if (editId || localEditId) return;
+    try {
+      const draft = {
+        step: targetStep !== undefined ? targetStep : step,
+        nombre, dni, email, curso, facultad, escuela, diaClase, rolRegistro,
+        nombreCientifico, nombresComunes, familia,
+        location, distrito, direccion, tipoUbicacion, tipoUbicacion2, numeroCasa, sustratoPlanta,
+        datosBotanicos
+      };
+      await AsyncStorage.setItem('registro_borrador', JSON.stringify(draft));
+    } catch (e) {
+      console.log('Error saving draft', e);
+    }
+  };
+
+  useEffect(() => {
+    if (editId || localEditId) return;
+    const timeoutId = setTimeout(() => {
+      saveDraft();
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [
+    step, nombre, dni, email, curso, facultad, escuela, diaClase, rolRegistro,
+    nombreCientifico, nombresComunes, familia, location, distrito, direccion,
+    tipoUbicacion, tipoUbicacion2, numeroCasa, sustratoPlanta, datosBotanicos
+  ]);
+
   const nextStep = async () => {
     if (step === 1 && user) {
       try {
@@ -654,16 +738,20 @@ export default function RegistroScreen() {
     }
     
     if (step === 2 && rolRegistro === 'ciudadano') {
+      await saveDraft(4);
       setStep(4);
     } else {
+      await saveDraft(step + 1);
       setStep(step + 1);
     }
   };
   
-  const prevStep = () => {
+  const prevStep = async () => {
     if (step === 4 && rolRegistro === 'ciudadano') {
+      await saveDraft(2);
       setStep(2);
     } else {
+      await saveDraft(step - 1);
       setStep(step - 1);
     }
   };
@@ -977,6 +1065,10 @@ export default function RegistroScreen() {
         } else {
           await writeClient.create(nuevoRegistro);
         }
+        
+        if (localEditId) {
+          await removeRegistroOffline(localEditId);
+        }
       }
       
       // Guardar el rol de forma permanente si es la primera vez que registra
@@ -997,7 +1089,10 @@ export default function RegistroScreen() {
     }
   };
 
-  const resetFormState = () => {
+  const resetFormState = (keepDraft: boolean = false) => {
+    if (!keepDraft) {
+      AsyncStorage.removeItem('registro_borrador');
+    }
     setShowSuccess(false);
     setIsOfflineSaved(false);
     setStep(1);
@@ -1032,6 +1127,13 @@ export default function RegistroScreen() {
   const cancelEdit = () => {
     router.setParams({ editId: undefined });
     resetFormState();
+  };
+
+  const resumeDraft = async () => {
+    router.setParams({ editId: undefined });
+    resetFormState(true); // Clear UI but keep the draft in memory
+    await restoreDraftFromStorage(); // Load the draft into UI
+    setHasPausedDraft(false);
   };
 
   const isStudentByMetadata = !!(effectiveUser?.unsafeMetadata?.dni || effectiveUser?.unsafeMetadata?.facultad || effectiveUser?.unsafeMetadata?.escuela);
@@ -1078,6 +1180,20 @@ export default function RegistroScreen() {
                   <H4 color="#FFA500">Registro Observado</H4>
                 </XStack>
                 <Paragraph color="white" mb="$3">{motivoObservacion}</Paragraph>
+                {hasPausedDraft ? (
+                  <Button 
+                    bg="rgba(31, 196, 81, 0.2)" 
+                    color="#1FC451" 
+                    onPress={resumeDraft}
+                    size="$3"
+                    pressStyle={{ bg: "rgba(31, 196, 81, 0.3)" }}
+                    icon={<MaterialCommunityIcons name="play-circle-outline" size={18} color="#1FC451" />}
+                    mb="$2"
+                  >
+                    Volver a mi borrador pausado
+                  </Button>
+                ) : null}
+
                 <Button 
                   bg="rgba(255,255,255,0.1)" 
                   color="white" 

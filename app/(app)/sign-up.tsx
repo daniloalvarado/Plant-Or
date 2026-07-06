@@ -185,6 +185,7 @@ export default function SignUpScreen() {
                     bg="#1FC451"
                     color="white"
                     borderColor="#1FC451"
+                    pressStyle={{ bg: "#17993E", borderColor: "#17993E" }}
                     onPress={onVerifyPress}
                     disabled={!isLoaded || isLoading}
                     opacity={!isLoaded || isLoading ? 0.5 : 1}
@@ -304,6 +305,7 @@ export default function SignUpScreen() {
                   bg="#1FC451"
                   color="white"
                   borderColor="#1FC451"
+                  pressStyle={{ bg: "#17993E", borderColor: "#17993E" }}
                   onPress={onSignUpPress}
                   disabled={!isLoaded || isLoading}
                   opacity={!isLoaded || isLoading ? 0.5 : 1}

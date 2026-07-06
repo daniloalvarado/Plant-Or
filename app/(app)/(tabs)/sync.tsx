@@ -144,7 +144,10 @@ export default function SyncScreen() {
                   <XStack style={{ justifyContent: "space-between", alignItems: "flex-start" }}>
                     <YStack gap="$1" style={{ flex: 1 }}>
                       <Text color="white" fontWeight="bold" fontSize={16} numberOfLines={1}>
-                        {reg.data.nombre_cientifico || 'Por identificar'}
+                        {reg.data.nombres_comunes || 'Por identificar'}
+                      </Text>
+                      <Text color="rgba(255,255,255,0.8)" fontSize={14} numberOfLines={1} fontStyle="italic">
+                        {reg.data.nombre_cientifico || 'Sin nombre científico'}
                       </Text>
                       <Text color="rgba(255,255,255,0.7)" fontSize={14}>
                         Hábito: {reg.data.habito}

@@ -103,7 +103,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
               {modalConfig.onConfirm && (
                 <Dialog.Close displayWhenAdapted asChild>
                   <Button onPress={handleConfirm} flex={1}>
-                    {modalConfig.confirmText || "Confirm"}
+                    {modalConfig.confirmText || "Confirmar"}
                   </Button>
                 </Dialog.Close>
               )}
@@ -153,14 +153,14 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
             <XStack pb="$4" gap="$3" style={{ justifyContent: "center" }}>
               <AlertDialog.Cancel asChild>
                 <Button onPress={handleCancel} flex={1}>
-                  {modalConfig.cancelText || "Cancel"}
+                  {modalConfig.cancelText || "Cerrar"}
                 </Button>
               </AlertDialog.Cancel>
 
               {modalConfig.onConfirm && (
                 <AlertDialog.Action asChild>
                   <Button onPress={handleConfirm} flex={1}>
-                    {modalConfig.confirmText || "Confirm"}
+                    {modalConfig.confirmText || "Confirmar"}
                   </Button>
                 </AlertDialog.Action>
               )}

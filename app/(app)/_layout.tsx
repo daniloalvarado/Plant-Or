@@ -77,8 +77,9 @@ export default function Layout() {
     if (!effectivelyLoaded) return;
 
     const inAuthGroup = segments[1] === "sign-in" || segments[1] === "sign-up";
+    const onRegistroTab = segments[1] === "(tabs)" && segments[2] === "registro";
 
-    if (!effectivelySignedIn && !inAuthGroup) {
+    if (!effectivelySignedIn && !inAuthGroup && !onRegistroTab) {
       router.replace("/sign-in");
     } else if (effectivelySignedIn && inAuthGroup) {
       router.replace("/");

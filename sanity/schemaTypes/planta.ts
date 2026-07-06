@@ -308,44 +308,14 @@ export const planta = {
       title: 'Valor ornamental',
       type: 'array',
       fieldset: 'impacto',
-      of: [{ type: 'string' }],
-      options: {
-        list: [
-          { title: 'Da sombra', value: 'Da sombra' },
-          { title: 'Tiene flores vistosas', value: 'Tiene flores vistosas' },
-          { title: 'Tiene frutos vistosos', value: 'Tiene frutos vistosos' },
-          { title: 'Tiene copa atractiva', value: 'Tiene copa atractiva' },
-          { title: 'Atrae fauna', value: 'Atrae fauna' },
-          { title: 'Valor cultural', value: 'Valor cultural' },
-          { title: 'Valor alimenticio', value: 'Valor alimenticio' },
-          { title: 'Valor medicinal', value: 'Valor medicinal' },
-          { title: 'Mejora el microclima', value: 'Mejora el microclima' },
-          { title: 'Otro', value: 'Otro' },
-        ]
-      }
+      of: [{ type: 'string' }]
     },
     {
       name: 'impacto_urbano',
       title: 'Impacto urbano',
       type: 'array',
       fieldset: 'impacto',
-      of: [{ type: 'string' }],
-      options: {
-        list: [
-          { title: 'No genera daño', value: 'No genera daño' },
-          { title: 'Frutos ensucian la vía', value: 'Frutos ensucian la vía' },
-          { title: 'Frutos obstruyen desagüe', value: 'Frutos obstruyen desagüe' },
-          { title: 'Raíces rompen el piso', value: 'Raíces rompen el piso' },
-          { title: 'Raíces afectan veredas', value: 'Raíces afectan veredas' },
-          { title: 'Raíces afectan cimientos', value: 'Raíces afectan cimientos' },
-          { title: 'Levanta pavimento', value: 'Levanta pavimento' },
-          { title: 'Interfiere con cableado', value: 'Interfiere con cableado' },
-          { title: 'Interfiere con luminarias', value: 'Interfiere con luminarias' },
-          { title: 'Riesgo de caída de ramas', value: 'Riesgo de caída de ramas' },
-          { title: 'Tronco inclinado (riesgo)', value: 'Tronco inclinado (riesgo)' },
-          { title: 'Otro', value: 'Otro' },
-        ]
-      }
+      of: [{ type: 'string' }]
     },
 
     // 7. FOTOGRAFÍAS

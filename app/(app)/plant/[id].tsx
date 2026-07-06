@@ -187,6 +187,7 @@ export default function PlantDetailScreen() {
           ) : (
             <View style={[styles.imagePlaceholder, { backgroundColor: "#1A2F22" }]}>
                <MaterialCommunityIcons name="leaf" size={120} color="#1FC451" />
+               <Text style={{ color: "rgba(255,255,255,0.5)", marginTop: 10, fontSize: 16 }}>Sin imagen</Text>
             </View>
           )}
           

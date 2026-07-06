@@ -37,7 +37,7 @@ export default function Profile() {
   const colorScheme = useColorScheme() ?? "dark";
   const theme = Colors[colorScheme];
   const router = useRouter();
-  
+
   const [stats, setStats] = useState({ total: 0, validados: 0, observados: 0, rechazados: 0, primerValidado: null, ultimoValidado: null });
   const [validatedCount, setValidatedCount] = useState(0);
 
@@ -52,23 +52,23 @@ export default function Profile() {
   const [escuela, setEscuela] = useState((user?.unsafeMetadata?.escuela as string) || '');
   const [diaClase, setDiaClase] = useState((user?.unsafeMetadata?.dia_clase as string) || '');
   const [isSaving, setIsSaving] = useState(false);
-  
+
   const [isEditing, setIsEditing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [showStudentFields, setShowStudentFields] = useState(
     !!(user?.unsafeMetadata?.dni || user?.unsafeMetadata?.facultad || user?.unsafeMetadata?.escuela)
   );
-  
+
   const [isGeneratingCert, setIsGeneratingCert] = useState(false);
   const [photoOptionsVisible, setPhotoOptionsVisible] = useState(false);
 
   const generateCertificateHTML = (
-    name: string, 
-    date: string, 
-    code: string, 
-    type: string, 
-    count: number, 
+    name: string,
+    date: string,
+    code: string,
+    type: string,
+    count: number,
     period: string,
     config: any
   ) => {
@@ -77,13 +77,13 @@ export default function Profile() {
       .replace('{count}', `<strong>${count}</strong>`)
       .replace('{tipo}', `<strong>${type}</strong>`)
       .replace('{periodo}', `<strong>${period}</strong>`);
-      
+
     const titulo = config?.titulo_certificado || 'Certificado de Reconocimiento';
     const subtitulo = config?.subtitulo_certificado || 'Otorgado a:';
-    
+
     const firma1Url = config?.responsable_1_firma ? urlFor(config.responsable_1_firma) : '';
     const firma2Url = config?.responsable_2_firma ? urlFor(config.responsable_2_firma) : '';
-    
+
     return `
     <!DOCTYPE html>
     <html lang="es">
@@ -141,13 +141,13 @@ export default function Profile() {
               <strong>${config?.responsable_1_nombre || 'Firma Autorizada'}</strong><br>
               ${config?.responsable_1_cargo || 'Proyecto Plant-Or'}
             </div>
-            ${config?.responsable_2_nombre ? 
-            '<div class="signature">' +
-              (firma2Url ? '<img src="' + firma2Url + '" class="signature-img" />' : '') +
-              '<strong>' + config.responsable_2_nombre + '</strong><br>' +
-              (config.responsable_2_cargo || 'Proyecto Plant-Or') +
-            '</div>'
-             : ''}
+            ${config?.responsable_2_nombre ?
+        '<div class="signature">' +
+        (firma2Url ? '<img src="' + firma2Url + '" class="signature-img" />' : '') +
+        '<strong>' + config.responsable_2_nombre + '</strong><br>' +
+        (config.responsable_2_cargo || 'Proyecto Plant-Or') +
+        '</div>'
+        : ''}
           </div>
           
           <div class="validation-box">
@@ -166,11 +166,11 @@ export default function Profile() {
   const handleGenerateCertificate = async () => {
     if (!user) return;
     setIsGeneratingCert(true);
-    
+
     try {
       // 1. Check if certificate exists
       const existingCert = await client.fetch(`*[_type == "certificado" && usuario_id == $userId][0]`, { userId: user.id });
-      
+
       const isStudent = !!(user.unsafeMetadata?.dni || user.unsafeMetadata?.facultad || user.unsafeMetadata?.escuela);
       const tipoCalc = isStudent ? 'Estudiante' : 'Ciudadano';
 
@@ -180,19 +180,19 @@ export default function Profile() {
         const last = new Date(stats.ultimoValidado);
         const firstStr = first.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         const lastStr = last.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-        
+
         if (firstStr === lastStr) {
           periodCalc = `el ${firstStr}`;
         } else {
           periodCalc = `del ${firstStr} al ${lastStr}`;
         }
       }
-      
+
       let certData;
-      
+
       if (existingCert) {
         certData = existingCert;
-        
+
         // Auto-update if they have more validated plants now than what was saved
         if (validatedCount > (certData.registros_validados || 0)) {
           certData.registros_validados = validatedCount;
@@ -206,11 +206,11 @@ export default function Profile() {
         const randomStr = Math.random().toString(36).substring(2, 8).toUpperCase();
         const dateStr = new Date().toISOString().split('T')[0].replace(/-/g, '');
         const newCode = `CERT-${dateStr}-${randomStr}`;
-        
+
         const writeClient = client.withConfig({
           token: process.env.EXPO_PUBLIC_SANITY_TOKEN,
         });
-        
+
         certData = await writeClient.create({
           _type: 'certificado',
           codigo: newCode,
@@ -222,13 +222,13 @@ export default function Profile() {
           fecha_emision: new Date().toISOString()
         });
       }
-      
+
       // 1.5 Get dynamic info for certificate
       const config = await client.fetch(`*[_type == "configuracion"][0]`);
-      
+
       // 2. Generate PDF
       const dateStrFormatted = new Date(certData.fecha_emision).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-      
+
       // Leer valores de certData estrictamente (prioriza lo guardado en BD, falla a calculados si es viejo)
       const finalName = certData.usuario_nombre;
       const finalCount = certData.registros_validados ?? validatedCount;
@@ -236,29 +236,29 @@ export default function Profile() {
       const finalPeriod = certData.periodo || periodCalc;
 
       const html = generateCertificateHTML(
-        finalName, 
-        dateStrFormatted, 
+        finalName,
+        dateStrFormatted,
         certData.codigo,
         finalType,
         finalCount,
         finalPeriod,
         config
       );
-      
+
       const { uri } = await Print.printToFileAsync({
         html,
         base64: false,
         width: 1000,
         height: 700
       });
-      
+
       // 2.5 Rename the file to Certificado_PlantOR.pdf
       const renamedUri = `${(FileSystem as any).cacheDirectory}Certificado_PlantOR.pdf`;
       await FileSystem.moveAsync({
         from: uri,
         to: renamedUri
       });
-      
+
       // 3. Share / Save
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(renamedUri, {
@@ -269,7 +269,7 @@ export default function Profile() {
       } else {
         Alert.alert("Error", "La función de compartir no está disponible en este dispositivo.");
       }
-      
+
     } catch (error) {
       console.error("Error generating certificate", error);
       Alert.alert("Error", "No se pudo generar el certificado. Verifica tu conexión.");
@@ -291,7 +291,7 @@ export default function Profile() {
       quality: 0.5,
       base64: true,
     });
-    
+
     if (!result.canceled && result.assets[0].base64) {
       try {
         setIsSaving(true);
@@ -333,9 +333,9 @@ export default function Profile() {
   const saveProfile = async () => {
     setErrorMsg('');
     if (!user) return;
-    
+
     const isStudentFieldsFilled = showStudentFields && (dni || facultad || escuela || curso || diaClase);
-    
+
     if (isStudentFieldsFilled) {
       if (!dni || dni.length !== 8 || !facultad || !escuela) {
         setErrorMsg("Si eres estudiante, debes llenar obligatoriamente el DNI, Facultad y Escuela.");
@@ -351,7 +351,7 @@ export default function Profile() {
         dni: '', curso: '', facultad: '', escuela: '', dia_clase: ''
       };
 
-      const studentDataChanged = 
+      const studentDataChanged =
         academicData.dni !== (user.unsafeMetadata.dni || '') ||
         academicData.facultad !== (user.unsafeMetadata.facultad || '') ||
         academicData.escuela !== (user.unsafeMetadata.escuela || '') ||
@@ -368,7 +368,7 @@ export default function Profile() {
       });
       // Forzar recarga de Clerk para sincronizar de inmediato
       await user.reload();
-      
+
       setIsEditing(false);
       if (studentDataChanged) {
         setShowSuccess(true);
@@ -433,7 +433,7 @@ export default function Profile() {
           >
             <YStack gap="$4" style={{ alignItems: "center" }}>
               {/* Profile Picture */}
-              <Pressable 
+              <Pressable
                 onPress={handlePhotoPress}
                 style={({ pressed }) => [
                   {
@@ -502,58 +502,58 @@ export default function Profile() {
 
           {/* Certificación Progress Card */}
           {stats.total > 0 && (
-          <Card
-            size="$4"
-            bordered
-            bg="rgba(255,255,255,0.05)"
-            borderColor="rgba(255,255,255,0.1)"
-            padding="$5"
-          >
-            <YStack gap="$3">
-              <XStack style={{ alignItems: 'center' }} gap="$2" mb="$1">
-                <MaterialCommunityIcons name="certificate" size={24} color="#1FC451" />
-                <H2 fontSize={18} fontWeight="700" color="#ffffff">
-                  {validatedCount >= certThreshold ? '¡Certificado Desbloqueado!' : 'Progreso para Certificado'}
-                </H2>
-              </XStack>
-              
-              <Text fontSize={14} color="rgba(255,255,255,0.7)">
-                {validatedCount >= certThreshold 
-                  ? 'Has alcanzado los requisitos. Ya puedes generar tu certificado oficial del proyecto.'
-                  : `Al alcanzar ${certThreshold} registros validados obtendrás un Certificado Digital oficial del proyecto.`}
-              </Text>
-              
-              {validatedCount >= certThreshold ? (
-                <Button
-                  mt="$2"
-                  bg="#1FC451"
-                  color="white"
-                  pressStyle={{ bg: '#19a343' }}
-                  onPress={handleGenerateCertificate}
-                  disabled={isGeneratingCert}
-                  opacity={isGeneratingCert ? 0.7 : 1}
-                  icon={isGeneratingCert ? <Spinner color="white" /> : <MaterialCommunityIcons name="download" size={20} color="white" />}
-                >
-                  {isGeneratingCert ? 'Generando PDF...' : 'Generar Certificado Oficial'}
-                </Button>
-              ) : (
-                <>
-                  <View style={{ width: '100%', height: 12, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 6, overflow: 'hidden', marginTop: 10 }}>
-                    <View style={{ width: `${Math.min((validatedCount / certThreshold) * 100, 100)}%`, height: '100%', backgroundColor: '#1FC451', borderRadius: 6 }} />
-                  </View>
-                  
-                  <XStack style={{ justifyContent: 'space-between' }} mt="$1">
-                    <Text fontSize={12} color="#1FC451" fontWeight="bold">
-                      {validatedCount} validadas
-                    </Text>
-                    <Text fontSize={12} color="rgba(255,255,255,0.5)">
-                      Meta: {certThreshold}
-                    </Text>
-                  </XStack>
-                </>
-              )}
-            </YStack>
-          </Card>
+            <Card
+              size="$4"
+              bordered
+              bg="rgba(255,255,255,0.05)"
+              borderColor="rgba(255,255,255,0.1)"
+              padding="$5"
+            >
+              <YStack gap="$3">
+                <XStack style={{ alignItems: 'center' }} gap="$2" mb="$1">
+                  <MaterialCommunityIcons name="certificate" size={24} color="#1FC451" />
+                  <H2 fontSize={18} fontWeight="700" color="#ffffff">
+                    {validatedCount >= certThreshold ? '¡Certificado Desbloqueado!' : 'Progreso para Certificado'}
+                  </H2>
+                </XStack>
+
+                <Text fontSize={14} color="rgba(255,255,255,0.7)">
+                  {validatedCount >= certThreshold
+                    ? 'Has alcanzado los requisitos. Ya puedes generar tu certificado oficial del proyecto.'
+                    : `Al alcanzar ${certThreshold} registros validados obtendrás un Certificado Digital oficial del proyecto.`}
+                </Text>
+
+                {validatedCount >= certThreshold ? (
+                  <Button
+                    mt="$2"
+                    bg="#1FC451"
+                    color="white"
+                    pressStyle={{ bg: '#19a343' }}
+                    onPress={handleGenerateCertificate}
+                    disabled={isGeneratingCert}
+                    opacity={isGeneratingCert ? 0.7 : 1}
+                    icon={isGeneratingCert ? <Spinner color="white" /> : <MaterialCommunityIcons name="download" size={20} color="white" />}
+                  >
+                    {isGeneratingCert ? 'Generando PDF...' : 'Generar Certificado Oficial'}
+                  </Button>
+                ) : (
+                  <>
+                    <View style={{ width: '100%', height: 12, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 6, overflow: 'hidden', marginTop: 10 }}>
+                      <View style={{ width: `${Math.min((validatedCount / certThreshold) * 100, 100)}%`, height: '100%', backgroundColor: '#1FC451', borderRadius: 6 }} />
+                    </View>
+
+                    <XStack style={{ justifyContent: 'space-between' }} mt="$1">
+                      <Text fontSize={12} color="#1FC451" fontWeight="bold">
+                        {validatedCount} validadas
+                      </Text>
+                      <Text fontSize={12} color="rgba(255,255,255,0.5)">
+                        Meta: {certThreshold}
+                      </Text>
+                    </XStack>
+                  </>
+                )}
+              </YStack>
+            </Card>
           )}
 
 
@@ -576,7 +576,7 @@ export default function Profile() {
               <Text fontSize={14} color="rgba(255,255,255,0.7)">
                 Estadísticas generales de todos los registros enviados a la plataforma.
               </Text>
-              
+
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: 8, marginTop: 4 }}>
                 <View style={{ width: '48%', backgroundColor: 'rgba(255,255,255,0.03)', padding: 12, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' }}>
                   <Text fontSize={12} color="rgba(255,255,255,0.6)" mb="$1">Enviados Totales</Text>
@@ -612,7 +612,7 @@ export default function Profile() {
           </Card>
 
           {/* Acerca de Section */}
-          <Pressable 
+          <Pressable
             onPress={() => {
               if (isNavigatingToAbout) return;
               isNavigatingToAbout = true;
@@ -699,7 +699,7 @@ export default function Profile() {
                 </YStack>
               </XStack>
 
-              <Pressable 
+              <Pressable
                 onPress={() => setShowStudentFields(!showStudentFields)}
                 style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 12, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.1)', marginTop: 8 }}
               >
@@ -747,10 +747,10 @@ export default function Profile() {
                 </View>
               ) : null}
 
-              <Button 
-                mt="$2" 
-                bg="#1FC451" 
-                color="#08130D" 
+              <Button
+                mt="$2"
+                bg="#1FC451"
+                color="#08130D"
                 onPress={saveProfile}
                 disabled={isSaving}
                 opacity={isSaving ? 0.5 : 1}

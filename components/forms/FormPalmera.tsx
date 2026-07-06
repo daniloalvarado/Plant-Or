@@ -356,6 +356,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_largo', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo: (cm o mm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
+              keyboardType="numeric"
               placeholder="Ej. 1 cm"
               value={getField('reproductivo', 'semilla_tamano_largo')}
               onChangeText={(val) => setField('reproductivo', 'semilla_tamano_largo', val)}
@@ -365,6 +366,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_ancho', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho: (cm o mm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
+              keyboardType="numeric"
               placeholder="Ej. 5 mm"
               value={getField('reproductivo', 'semilla_tamano_ancho')}
               onChangeText={(val) => setField('reproductivo', 'semilla_tamano_ancho', val)}
@@ -399,7 +401,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
         <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.valor_ornamental', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>XI. Valor Ornamental (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.valor_ornamental') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
-            options={['Genera sombra', 'Tiene flores vistosas', 'Tiene frutos vistosos', 'Tiene hojas vistosas', 'Tiene copa o forma atractiva', 'Mejora el microclima', 'Atrae fauna', 'Tiene valor cultural', 'Tiene valor alimenticio', 'Tiene valor medicinal', 'Otro']}
+            options={['Genera sombra', 'Tiene flores vistosas', 'Tiene frutos vistosos', 'Tiene hojas vistosas', 'Forma de copa atractiva', 'Mejora el microclima', 'Atrae fauna', 'Valor cultural', 'Valor alimenticio', 'Valor medicinal', 'Otro']}
             value={getField('compartido', 'valor_ornamental') || []}
             onChange={(val) => setField('compartido', 'valor_ornamental', val)}
           />
@@ -408,7 +410,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
         <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.impacto_urbano', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>XII. Impacto Urbano (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.impacto_urbano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
-            options={['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Frutos resbalosos', 'Raíces levantan vereda', 'Raíces afectan cimientos o paredes', 'Levanta pavimento', 'Interfiere con cableado', 'Interfiere con luminarias', 'Riesgo de caída de ramas', 'Riesgo de caída de hojas', 'Tronco o tallo inclinado', 'Invade estructuras', 'Dificulta mantenimiento', 'Otro']}
+            options={['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Frutos resbalosos', 'Raíces levantan vereda', 'Raíces afectan cimientos', 'Levanta pavimento', 'Interfiere con cableado', 'Interfiere con luminarias', 'Riesgo de caída de hojas', 'Tronco inclinado (riesgo)', 'Otro']}
             value={getField('compartido', 'impacto_urbano') || []}
             onChange={(val) => setField('compartido', 'impacto_urbano', val)}
           />

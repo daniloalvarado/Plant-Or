@@ -292,7 +292,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
         <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.valor_ornamental', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>X. Valor Ornamental (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.valor_ornamental') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
-            options={['Genera sombra', 'Tiene flores vistosas', 'Tiene frutos vistosos', 'Tiene hojas vistosas', 'Tiene copa o forma atractiva', 'Mejora el microclima', 'Atrae fauna', 'Tiene valor cultural', 'Tiene valor alimenticio', 'Tiene valor medicinal', 'Otro']} 
+            options={['Flores vistosas', 'Hojas vistosas', 'Frutos vistosos', 'Cubre suelo', 'Forma bordes o jardines', 'Atrae fauna', 'Valor cultural', 'Valor alimenticio', 'Valor medicinal', 'Mejora el microclima', 'Otro']} 
             value={getField('compartido', 'valor_ornamental')} 
             onChange={(val) => setField('compartido', 'valor_ornamental', val)} 
           />
@@ -301,7 +301,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
         <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.impacto_urbano', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>XI. Impacto Urbano (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.impacto_urbano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
-            options={['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Frutos resbalosos', 'Raíces levantan vereda', 'Raíces afectan cimientos o paredes', 'Levanta pavimento', 'Interfiere con cableado', 'Interfiere con luminarias', 'Riesgo de caída de ramas', 'Riesgo de caída de hojas', 'Tronco o tallo inclinado', 'Invade estructuras', 'Dificulta mantenimiento', 'Otro']} 
+            options={['No genera daño', 'Invade jardines', 'Invade veredas', 'Cubre drenajes', 'Dificulta mantenimiento', 'Puede ser resbalosa', 'Puede atraer plagas', 'Otro']} 
             value={getField('compartido', 'impacto_urbano')} 
             onChange={(val) => setField('compartido', 'impacto_urbano', val)} 
           />

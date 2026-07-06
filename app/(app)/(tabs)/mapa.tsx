@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { View, StyleSheet, Dimensions, Pressable, ActivityIndicator, Image, Platform } from "react-native";
 import { Marker, PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
 import MapView from "react-native-map-clustering";
@@ -8,7 +8,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets, SafeAreaView } from "react-native-safe-area-context";
 import { Text, Card, XStack, YStack, Button, Input } from "tamagui";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 
 // Estilo oscuro simple para el mapa
 const darkMapStyle = [
@@ -37,9 +37,11 @@ export default function MapaScreen() {
     longitudeDelta: 0.05,
   };
 
-  useEffect(() => {
-    fetchMapData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchMapData();
+    }, [])
+  );
 
   const fetchMapData = async () => {
     try {
