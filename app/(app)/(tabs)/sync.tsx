@@ -97,7 +97,7 @@ export default function SyncScreen() {
       showModal({
         type: "dialog",
         title: "Sincronización Exitosa",
-        description: `Se sincronizaron ${successCount} registros exitosamente.`
+        description: successCount === 1 ? 'Se sincronizó 1 registro exitosamente.' : `Se sincronizaron ${successCount} registros exitosamente.`
       });
     } else if (registros.length > 0) {
       showModal({

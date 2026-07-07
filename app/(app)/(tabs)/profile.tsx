@@ -4,7 +4,8 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { getUserDisplayName, getUserInitials } from "@/lib/utils/user";
 import { useUser } from "@clerk/clerk-expo";
 import { useRouter, useFocusEffect } from "expo-router";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { checkIsOffline } from "@/lib/network";
 import { client, urlFor } from "@/lib/sanity";
 import { Image, Pressable, StyleSheet, Modal, Alert } from "react-native";
 import * as Sharing from "expo-sharing";
@@ -40,6 +41,11 @@ export default function Profile() {
 
   const [stats, setStats] = useState({ total: 0, validados: 0, observados: 0, rechazados: 0, primerValidado: null, ultimoValidado: null });
   const [validatedCount, setValidatedCount] = useState(0);
+  const [isOffline, setIsOffline] = useState(false);
+
+  useEffect(() => {
+    checkIsOffline().then(setIsOffline);
+  }, []);
 
   const isStudent = !!(user?.unsafeMetadata?.dni || user?.unsafeMetadata?.facultad || user?.unsafeMetadata?.escuela);
   const certThreshold = isStudent ? 20 : 100;
@@ -401,7 +407,7 @@ export default function Profile() {
     }, [user?.id])
   );
 
-  if (!isLoaded) {
+  if (!isLoaded && !isOffline) {
     return (
       <View style={styles.container}>
         <View style={styles.loadingContainer}>
@@ -411,12 +417,12 @@ export default function Profile() {
     );
   }
 
-  if (!user) {
+  if (!user || isOffline) {
     return (
       <View style={[styles.container, { backgroundColor: theme.background, paddingTop: insets.top, justifyContent: 'center', alignItems: 'center', padding: 20 }]}>
         <MaterialCommunityIcons name="account-circle-outline" size={80} color="rgba(255,255,255,0.2)" />
-        <H2 color="white" mt="$4" textAlign="center">Modo Invitado</H2>
-        <Paragraph color="rgba(255,255,255,0.7)" mt="$2" textAlign="center" mb="$6">
+        <H2 color="white" mt="$4" style={{ textAlign: "center" }}>Modo Invitado</H2>
+        <Paragraph color="rgba(255,255,255,0.7)" mt="$2" mb="$6" style={{ textAlign: "center" }}>
           Actualmente estás explorando sin conexión o sin cuenta. Inicia sesión para subir tus registros a la base de datos, acceder al catálogo completo y obtener tu certificado.
         </Paragraph>
         <Button 

@@ -1,6 +1,6 @@
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack";
-import { useRouter, useSegments, withLayoutContext } from "expo-router";
+import { useRouter, useSegments, withLayoutContext, Redirect } from "expo-router";
 import React from "react";
 import { Spinner, View } from "tamagui";
 import { AppState } from "react-native";
@@ -52,25 +52,21 @@ export default function Layout() {
   const effectivelyLoaded = isLoaded || forceLoaded;
   const effectivelySignedIn = isLoaded ? isSignedIn : false;
 
-  React.useEffect(() => {
-    if (!effectivelyLoaded) return;
-
-    const inAuthGroup = segments[1] === "sign-in" || segments[1] === "sign-up";
-    const isGuestTab = segments[1] === "(tabs)" && (segments[2] === "registro" || segments[2] === "sync" || segments[2] === "profile");
-
-    if (!effectivelySignedIn && !inAuthGroup && !isGuestTab) {
-      router.replace("/sign-in");
-    } else if (effectivelySignedIn && inAuthGroup) {
-      router.replace("/");
-    }
-  }, [effectivelySignedIn, effectivelyLoaded, segments]);
-
   if (!effectivelyLoaded) {
     return (
       <View flex={1} bg="#08130D" style={{ justifyContent: "center", alignItems: "center" }}>
         <Spinner size="large" color="#1FC451" />
       </View>
     );
+  }
+
+  const inAuthGroup = segments[1] === "sign-in" || segments[1] === "sign-up";
+  const isGuestTab = segments[1] === "(tabs)" && (segments[2] === "registro" || segments[2] === "sync" || segments[2] === "profile");
+
+  if (!effectivelySignedIn && !inAuthGroup && !isGuestTab) {
+    return <Redirect href="/sign-in" />;
+  } else if (effectivelySignedIn && inAuthGroup) {
+    return <Redirect href="/" />;
   }
 
   return (
@@ -92,7 +88,7 @@ export default function Layout() {
       <JsStack.Screen name="plant/[id]" options={{ headerShown: false, gestureEnabled: false }} />
 
       {/* Vistas de Autenticación */}
-      <JsStack.Screen name="sign-in" options={{ headerShown: false, animationEnabled: false, gestureEnabled: false }} />
+      <JsStack.Screen name="sign-in" options={{ headerShown: false, gestureEnabled: false }} />
       <JsStack.Screen name="sign-up" options={{ headerShown: false, gestureEnabled: false }} />
       <JsStack.Screen name="about" options={{ headerShown: false, gestureEnabled: false }} />
       <JsStack.Screen

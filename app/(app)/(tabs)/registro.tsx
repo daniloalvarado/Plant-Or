@@ -142,7 +142,8 @@ export default function RegistroScreen() {
             longitud_visible: source.longitud_visible || '',
             altura_maxima: source.altura_maxima || '',
             diametro_tallo: source.diametro_tallo || '',
-            cobertura: source.cobertura || ''
+            cobertura: source.cobertura || '',
+            raices_visibles: source.raices_visibles || ''
           };
 
           rehydratedBotanic.hojas = {
@@ -184,6 +185,7 @@ export default function RegistroScreen() {
             rehydratedBotanic.copa = {
               tipo_ramificacion: source.tipo_ramificacion || '',
               forma_copa: source.forma_copa || '',
+              densidad_copa: source.densidad_copa || '',
             };
           } else if (h === 'Arbusto' || h === 'Liana') {
             rehydratedBotanic.tallo = {
@@ -1123,8 +1125,13 @@ export default function RegistroScreen() {
   };
 
   const resetFormAndGoHome = () => {
+    const wasOffline = isOfflineSaved;
     resetFormState();
-    router.replace('/');
+    if (wasOffline) {
+      router.replace('/sync');
+    } else {
+      router.replace('/');
+    }
   };
 
   const cancelEdit = () => {

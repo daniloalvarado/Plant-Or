@@ -161,7 +161,7 @@ export default function SignUpScreen() {
               <Card padding="$4" gap="$2" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
                 <YStack gap="$2">
                   <YStack gap="$2">
-                    <Label color="#ffffff">Código de verificación</Label>
+                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Código de verificación</Label>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={code}
                       placeholder="Ingresa el código"
@@ -173,6 +173,7 @@ export default function SignUpScreen() {
                       focusStyle={{
                         borderColor: "#1FC451",
                       }}
+                      style={{ color: "#ffffff" }}
                       keyboardType="numeric"
                       autoComplete="one-time-code"
                     />
@@ -254,7 +255,7 @@ export default function SignUpScreen() {
             <Card padding="$4" gap="$2" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
               <YStack gap="$2">
                 <YStack gap="$2">
-                  <Label color="#ffffff">Correo electrónico</Label>
+                  <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Correo electrónico</Label>
                   <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                     autoCapitalize="none"
                     keyboardType="email-address"
@@ -267,13 +268,13 @@ export default function SignUpScreen() {
                     placeholderTextColor="rgba(255,255,255,0.5)"
                     focusStyle={{
                       borderColor: "#1FC451",
-                      color: "#ffffff"
                     }}
+                    style={{ color: "#ffffff" }}
                   />
                 </YStack>
 
                 <YStack gap="$2">
-                  <Label color="#ffffff">Contraseña</Label>
+                  <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Contraseña</Label>
                   <YStack style={{ position: "relative", width: "100%", justifyContent: "center" }}>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       secureTextEntry={!showPassword}
@@ -286,9 +287,8 @@ export default function SignUpScreen() {
                       placeholderTextColor="rgba(255,255,255,0.5)"
                       focusStyle={{
                         borderColor: "#1FC451",
-                        color: "#ffffff"
                       }}
-                      style={{ paddingRight: 45 }}
+                      style={{ paddingRight: 45, color: "#ffffff" }}
                     />
                     <Button
                       style={{ position: "absolute", right: 4 }}
