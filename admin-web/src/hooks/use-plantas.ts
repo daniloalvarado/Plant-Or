@@ -66,7 +66,7 @@ export async function updatePlantaEstado(
       emailSent = await sendStatusEmail(
         doc.registrador_email,
         doc.registrador_nombre || 'Registrador',
-        doc.nombre_cientifico || doc.nombres_comunes || 'Tu planta',
+        doc.nombres_comunes || doc.nombre_cientifico || 'Tu planta',
         estado,
         motivo,
         docenteName,

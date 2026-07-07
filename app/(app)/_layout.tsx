@@ -31,9 +31,26 @@ export default function Layout() {
     }
   }, [isSignedIn, user]);
 
+  const [forceLoaded, setForceLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    // Si sabemos de inmediato que estamos offline (usando el ping 204), no esperamos a Clerk.
+    checkIsOffline().then(isOffline => {
+      if (isOffline) {
+        setForceLoaded(true);
+      }
+    });
+    
+    // Timeout máximo de 1.5s por si acaso (para no bloquear nunca la UI)
+    const timer = setTimeout(() => {
+      setForceLoaded(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   // LÓGICA CENTRAL:
-  const effectivelyLoaded = isLoaded;
-  const effectivelySignedIn = isSignedIn;
+  const effectivelyLoaded = isLoaded || forceLoaded;
+  const effectivelySignedIn = isLoaded ? isSignedIn : false;
 
   React.useEffect(() => {
     if (!effectivelyLoaded) return;

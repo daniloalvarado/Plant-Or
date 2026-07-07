@@ -8,7 +8,8 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets, SafeAreaView } from "react-native-safe-area-context";
 import { Text, Card, XStack, YStack, Button, Input } from "tamagui";
-import { useRouter, useFocusEffect } from "expo-router";
+import { useRouter, useFocusEffect, Redirect } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
 
 // Estilo oscuro simple para el mapa
 const darkMapStyle = [
@@ -24,6 +25,11 @@ export default function MapaScreen() {
   const theme = Colors[colorScheme];
   const router = useRouter();
   const mapRef = useRef<any>(null);
+
+  const { isSignedIn } = useAuth();
+  if (!isSignedIn) {
+    return <Redirect href="/sign-in" />;
+  }
 
   const [plantas, setPlantas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

@@ -2,14 +2,14 @@ import { PlantCard } from "@/components/PlantCard";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { client, urlFor } from "@/lib/sanity";
-import { useUser } from "@clerk/clerk-expo";
+import { useUser, useAuth } from "@clerk/clerk-expo";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from "react";
 import { Modal, Pressable, RefreshControl, ScrollView, StyleSheet, TextInput } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Avatar, Text, View } from "tamagui";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { useRouter, useFocusEffect, useLocalSearchParams, Redirect } from "expo-router";
 import { useCallback } from "react";
 import { checkIsOffline } from "@/lib/network";
 
@@ -18,6 +18,12 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme() ?? "dark";
   const theme = Colors[colorScheme];
+
+  const { isSignedIn } = useAuth();
+  
+  if (!isSignedIn) {
+    return <Redirect href="/sign-in" />;
+  }
 
   const [plantas, setPlantas] = useState<any[]>([]);
   const [misPlantas, setMisPlantas] = useState<any[]>([]);
@@ -60,6 +66,7 @@ export default function HomeScreen() {
         const misAportes = await client.fetch(`*[_type == "planta" && autor == $userId] | order(_createdAt desc) {
           _id,
           nombre_cientifico,
+          nombres_comunes,
           estado_revision
         }`, { userId: user.id });
         setMisPlantas(misAportes);

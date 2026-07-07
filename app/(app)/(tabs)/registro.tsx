@@ -863,7 +863,7 @@ export default function RegistroScreen() {
         if (!obj) return {};
         const result = { ...obj };
         for (let key in result) {
-          if (['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo', 'longitud_visible', 'cobertura', 'flor_tamano_largo', 'flor_tamano_ancho', 'fruto_tamano_largo', 'fruto_tamano_ancho', 'semilla_numero', 'semilla_tamano_largo', 'semilla_tamano_ancho', 'altura_inicio_ramificacion', 'altura_maxima', 'diametro_tallo', 'hoja_largo', 'hoja_ancho', 'peciolo_largo'].includes(key)) {
+          if (['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo', 'longitud_visible', 'cobertura', 'flor_tamano', 'flor_tamano_largo', 'flor_tamano_ancho', 'fruto_tamano', 'fruto_tamano_largo', 'fruto_tamano_ancho', 'semilla_numero', 'semilla_tamano', 'semilla_tamano_largo', 'semilla_tamano_ancho', 'altura_inicio_ramificacion', 'altura_maxima', 'diametro_tallo', 'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro'].includes(key)) {
             result[key] = Number(result[key]) || undefined;
           }
         }
@@ -984,8 +984,14 @@ export default function RegistroScreen() {
           hoja_compuesta_tipo: datosBotanicos.hojas?.hoja_compuesta_tipo,
           forma_hoja: datosBotanicos.hojas?.forma_hoja,
           disposicion_hoja: datosBotanicos.hojas?.disposicion_hoja,
+          textura_hoja: datosBotanicos.hojas?.textura_hoja,
           borde_hoja: datosBotanicos.hojas?.borde_hoja,
           color_hoja: datosBotanicos.hojas?.color_hoja,
+          tipo_tallo_liana: datosBotanicos.tallo?.tipo_tallo_liana,
+          espinas_tallo: datosBotanicos.tallo?.espinas_tallo,
+          exudado_presencia: datosBotanicos.exudado?.presencia,
+          exudado_tipo: datosBotanicos.exudado?.tipo,
+          exudado_color: datosBotanicos.exudado?.color,
         });
       }
 
@@ -999,6 +1005,7 @@ export default function RegistroScreen() {
           disposicion_hoja: datosBotanicos.hojas?.disposicion_hoja,
           borde_hoja: datosBotanicos.hojas?.borde_hoja,
           color_hoja: datosBotanicos.hojas?.color_hoja,
+          textura_hoja: datosBotanicos.hojas?.textura_hoja,
           olor_hoja: datosBotanicos.hojas?.olor_hoja,
           exudado_corte: datosBotanicos.hojas?.exudado_corte,
         });

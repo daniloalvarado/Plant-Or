@@ -167,18 +167,12 @@ export default function SyncScreen() {
                       <Text color="rgba(255,255,255,0.8)" fontSize={14} numberOfLines={1} fontStyle="italic">
                         {reg.data.nombre_cientifico || 'Sin nombre científico'}
                       </Text>
-                      <Text color="rgba(255,255,255,0.7)" fontSize={14}>
-                        Hábito: {reg.data.habito}
-                      </Text>
+
                       <Text color="rgba(255,255,255,0.5)" fontSize={12}>
                         Guardado el: {new Date(reg.timestamp).toLocaleString()}
                       </Text>
                       
-                      {reg.status === 'error' && reg.errorMsg && (
-                        <Text color="#ff4444" fontSize={12} mt="$2">
-                          Error: {reg.errorMsg}
-                        </Text>
-                      )}
+
                     </YStack>
                     <Button 
                       circular 

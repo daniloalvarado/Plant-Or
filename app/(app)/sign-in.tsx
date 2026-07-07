@@ -147,6 +147,7 @@ export default function Page() {
                     placeholderTextColor="rgba(255,255,255,0.5)"
                     focusStyle={{
                       borderColor: "#1FC451",
+                      color: "#ffffff"
                     }}
                   />
                 </YStack>
@@ -165,6 +166,7 @@ export default function Page() {
                     placeholderTextColor="rgba(255,255,255,0.5)"
                     focusStyle={{
                       borderColor: "#1FC451",
+                      color: "#ffffff"
                     }}
                     style={{ paddingRight: 45 }}
                   />
