@@ -14,6 +14,7 @@ import {
   XStack,
   Text,
 } from 'tamagui';
+import { useModal } from '@/contexts/ModalContext';
 import { useUser } from '@clerk/clerk-expo';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -42,6 +43,7 @@ export default function RegistroScreen() {
   const params = useLocalSearchParams();
   const editId = params.editId;
   const localEditId = params.localEditId as string | undefined;
+  const { showModal } = useModal();
   const [step, setStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
   const [hasPausedDraft, setHasPausedDraft] = useState(false);
@@ -326,11 +328,10 @@ export default function RegistroScreen() {
     }
   }, []);
 
-  const scrollToField = (key: string) => {
-    const el = fieldRefs.current[key];
-    const sv = scrollViewRef.current;
-    
-    if (el && sv) {
+  const scrollToField = (id: string) => {
+    const el = fieldRefs.current[id];
+    if (el && scrollViewRef.current) {
+      const sv = scrollViewRef.current;
       const scrollNode = (sv as any).getInnerViewNode ? (sv as any).getInnerViewNode() : findNodeHandle(sv);
       const elNode = findNodeHandle(el);
       
@@ -340,22 +341,9 @@ export default function RegistroScreen() {
           scrollNode,
           () => console.log('Failed to measure layout'),
           (x: number, y: number) => {
-            sv.scrollTo({ y: Math.max(0, y - 50), animated: true });
+            sv.scrollTo({ y: Math.max(0, y - 80), animated: true });
           }
         );
-      } else {
-        // Fallback
-        if (el.measureLayout) {
-          try {
-            el.measureLayout(
-              findNodeHandle(sv),
-              (x: number, y: number) => {
-                sv.scrollTo({ y: Math.max(0, y - 50), animated: true });
-              },
-              () => console.log('Failed fallback measure layout')
-            );
-          } catch (e) {}
-        }
       }
     }
     setShowMissingModal(false);
@@ -785,7 +773,11 @@ export default function RegistroScreen() {
 
   const handleFinalSubmit = async () => {
     if (!process.env.EXPO_PUBLIC_SANITY_TOKEN) {
-      alert("⚠️ Falta configurar EXPO_PUBLIC_SANITY_TOKEN en el archivo .env");
+      showModal({
+        type: "dialog",
+        title: "Atención",
+        description: "Falta configurar EXPO_PUBLIC_SANITY_TOKEN en el archivo .env"
+      });
       return;
     }
 
@@ -963,11 +955,11 @@ export default function RegistroScreen() {
           peciolo_largo: datosBotanicos.hojas?.peciolo_largo,
           peciolo_diametro: datosBotanicos.hojas?.peciolo_diametro,
           color_hoja: datosBotanicos.hojas?.color_hoja,
-          espinas_palmera: datosBotanicos.espinas?.presencia,
-          inflorescencia_presencia: datosBotanicos.inflorescencia?.presencia,
-          inflorescencia_posicion: datosBotanicos.inflorescencia?.posicion,
-          inflorescencia_forma: datosBotanicos.inflorescencia?.forma,
-          inflorescencia_espata: datosBotanicos.inflorescencia?.espata,
+          espinas_palmera: datosBotanicos.espinas?.espinas_palmera,
+          inflorescencia_presencia: datosBotanicos.inflorescencia?.inflorescencia_presencia,
+          inflorescencia_posicion: datosBotanicos.inflorescencia?.inflorescencia_posicion,
+          inflorescencia_forma: datosBotanicos.inflorescencia?.inflorescencia_forma,
+          inflorescencia_espata: datosBotanicos.inflorescencia?.inflorescencia_espata,
         });
       }
 
@@ -1083,7 +1075,11 @@ export default function RegistroScreen() {
       setShowSuccess(true);
     } catch (error) {
       console.error("Error al enviar a Sanity:", error);
-      alert("Hubo un error al enviar el registro. Intenta de nuevo.");
+      showModal({
+        type: "dialog",
+        title: "Error",
+        description: "Hubo un error al enviar el registro. Intenta de nuevo."
+      });
     } finally {
       setIsSubmitting(false);
     }

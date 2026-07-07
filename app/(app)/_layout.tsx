@@ -18,9 +18,6 @@ export default function Layout() {
   const router = useRouter();
   const segments = useSegments();
 
-  const [isOffline, setIsOffline] = React.useState(false);
-  const [networkChecked, setNetworkChecked] = React.useState(false);
-
   // Guardar sesión cuando estamos online
   React.useEffect(() => {
     if (isSignedIn && user) {
@@ -34,52 +31,17 @@ export default function Layout() {
     }
   }, [isSignedIn, user]);
 
-  // Verificar estado de red de forma síncrona y robusta
-  React.useEffect(() => {
-    let isMounted = true;
-
-    const checkNetwork = async () => {
-      const isCurrentlyOffline = await checkIsOffline();
-      if (isMounted) {
-        setIsOffline(isCurrentlyOffline);
-        setNetworkChecked(true);
-      }
-    };
-
-    // Primera comprobación inmediata
-    checkNetwork();
-
-    // En lugar de un intervalo (que gasta batería), escuchamos cuando la app vuelve a estar activa.
-    // Esto cubre el caso en el que el usuario baja la barra de notificaciones, cambia el Wi-Fi/Datos y vuelve a la app.
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if (nextAppState === 'active') {
-        checkNetwork();
-      }
-    });
-
-    return () => { 
-      isMounted = false; 
-      subscription.remove();
-    };
-  }, []);
-
   // LÓGICA CENTRAL:
-  // - effectivelyLoaded: necesitamos saber el estado de red ANTES de decidir algo.
-  //   Si estamos offline, no necesitamos que Clerk cargue.
-  //   Si estamos online, esperamos a que Clerk termine de cargar.
-  const effectivelyLoaded = networkChecked && (isOffline || isLoaded);
-
-  // - effectivelySignedIn: si estamos offline, SIEMPRE dejamos entrar (Guest Offline).
-  //   Si estamos online, respetamos lo que diga Clerk.
-  const effectivelySignedIn = isOffline || isSignedIn;
+  const effectivelyLoaded = isLoaded;
+  const effectivelySignedIn = isSignedIn;
 
   React.useEffect(() => {
     if (!effectivelyLoaded) return;
 
     const inAuthGroup = segments[1] === "sign-in" || segments[1] === "sign-up";
-    const onRegistroTab = segments[1] === "(tabs)" && segments[2] === "registro";
+    const isGuestTab = segments[1] === "(tabs)" && (segments[2] === "registro" || segments[2] === "sync" || segments[2] === "profile");
 
-    if (!effectivelySignedIn && !inAuthGroup && !onRegistroTab) {
+    if (!effectivelySignedIn && !inAuthGroup && !isGuestTab) {
       router.replace("/sign-in");
     } else if (effectivelySignedIn && inAuthGroup) {
       router.replace("/");

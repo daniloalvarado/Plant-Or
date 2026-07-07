@@ -534,10 +534,7 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     checkSection('general', datos.general, ['tipo']);
     checkSection('tallo', datos.tallo, ['caracteristicas']);
     checkSection('espinas', datos.espinas, ['espinas_palmera']);
-    checkSection('hojas', datos.hojas, ['tipo','hoja_largo','hoja_ancho','peciolo_largo','peciolo_diametro','color_hoja']);
-    if (datos.hojas?.tipo === 'Pinnada' || datos.hojas?.tipo === 'Bipinnada') {
-       if (!isFilled(datos.hojas?.segmentos)) missing.push({ id: 'hojas.segmentos', label: labelsMap['hojas.segmentos'] || 'Segmentos' });
-    }
+    checkSection('hojas', datos.hojas, ['tipo','segmentos','hoja_largo','hoja_ancho','peciolo_largo','peciolo_diametro','color_hoja']);
     
     if (!isFilled(datos.inflorescencia?.inflorescencia_presencia)) {
        missing.push({ id: 'inflorescencia.inflorescencia_presencia', label: labelsMap['inflorescencia.inflorescencia_presencia'] || 'Presencia de inflorescencia' });

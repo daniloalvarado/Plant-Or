@@ -76,7 +76,6 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Perfil",
-          href: !isSignedIn ? null : undefined,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons size={28} name="account" color={color} />
           ),

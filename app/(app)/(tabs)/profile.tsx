@@ -411,6 +411,28 @@ export default function Profile() {
     );
   }
 
+  if (!user) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.background, paddingTop: insets.top, justifyContent: 'center', alignItems: 'center', padding: 20 }]}>
+        <MaterialCommunityIcons name="account-circle-outline" size={80} color="rgba(255,255,255,0.2)" />
+        <H2 color="white" mt="$4" textAlign="center">Modo Invitado</H2>
+        <Paragraph color="rgba(255,255,255,0.7)" mt="$2" textAlign="center" mb="$6">
+          Actualmente estás explorando sin conexión o sin cuenta. Inicia sesión para subir tus registros a la base de datos, acceder al catálogo completo y obtener tu certificado.
+        </Paragraph>
+        <Button 
+          size="$4" 
+          bg="#1FC451" 
+          color="#08130D" 
+          pressStyle={{ bg: "#17993E" }} 
+          icon={<MaterialCommunityIcons name="login" size={20} color="#08130D" />}
+          onPress={() => router.push('/sign-in')}
+        >
+          Iniciar Sesión
+        </Button>
+      </View>
+    );
+  }
+
   const initials = getUserInitials(user);
   const displayName = getUserDisplayName(user);
 

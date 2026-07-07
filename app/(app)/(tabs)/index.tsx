@@ -139,7 +139,7 @@ export default function HomeScreen() {
         <View style={styles.header}>
           <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
             <Avatar circular size="$4">
-              <Avatar.Image src={user?.imageUrl || "https://i.pravatar.cc/150"} />
+              <Avatar.Image src={user?.imageUrl} />
               <Avatar.Fallback backgroundColor="#1FC451" />
             </Avatar>
             <View>

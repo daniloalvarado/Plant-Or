@@ -5,9 +5,10 @@ import { isClerkAPIResponseError, useSignIn } from "@clerk/clerk-expo";
 import { ClerkAPIResponseError } from "@clerk/types";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { checkIsOffline } from "@/lib/network";
 import {
   Button,
   Card,
@@ -28,6 +29,11 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOffline, setIsOffline] = useState(false);
+
+  useEffect(() => {
+    checkIsOffline().then(setIsOffline);
+  }, []);
 
   const { showModal } = useModal();
 
@@ -208,6 +214,25 @@ export default function Page() {
                 Regístrate
               </Button>
             </XStack>
+
+            {isOffline && (
+              <>
+                <Spacer size="$4" />
+                
+                <Button
+                  variant="outlined"
+                  size="$4"
+                  borderColor="rgba(255,255,255,0.2)"
+                  color="#ffffff"
+                  bg="rgba(255,255,255,0.05)"
+                  pressStyle={{ bg: "rgba(255,255,255,0.1)" }}
+                  icon={<Feather name="wifi-off" size={18} color="#ffffff" />}
+                  onPress={() => router.replace("/registro")}
+                >
+                  Entrar en Modo Offline (Solo Registro)
+                </Button>
+              </>
+            )}
           </YStack>
         </ScrollView>
       </KeyboardAvoidingView>

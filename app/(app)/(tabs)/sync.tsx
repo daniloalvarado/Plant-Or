@@ -8,6 +8,7 @@ import { checkIsOffline } from '@/lib/network';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useAuth, useUser } from '@clerk/clerk-expo';
 import { getRegistrosOffline, syncRegistro, OfflineRegistro, removeRegistroOffline } from '@/lib/offline-storage';
+import { useModal } from '@/contexts/ModalContext';
 
 export default function SyncScreen() {
   const [registros, setRegistros] = useState<OfflineRegistro[]>([]);
@@ -19,6 +20,7 @@ export default function SyncScreen() {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
   const router = useRouter();
+  const { showModal } = useModal();
 
   const loadData = async () => {
     const isOffline = await checkIsOffline();
@@ -41,13 +43,21 @@ export default function SyncScreen() {
 
   const handleSyncAll = async () => {
     if (!isOnline) {
-      alert("No tienes conexión a internet para sincronizar.");
+      showModal({
+        type: "dialog",
+        title: "Sin conexión",
+        description: "No tienes conexión a internet para sincronizar."
+      });
       return;
     }
 
     if (!isSignedIn || !user) {
-      alert("Para subir tus registros a la base de datos necesitamos asociarlos a tu cuenta. Por favor inicia sesión.");
-      router.push('/sign-in');
+      showModal({
+        type: "dialog",
+        title: "Inicio de sesión requerido",
+        description: "Para subir tus registros a la base de datos necesitamos asociarlos a tu cuenta. Por favor inicia sesión.",
+        onConfirm: () => router.push('/sign-in')
+      });
       return;
     }
     
@@ -84,9 +94,17 @@ export default function SyncScreen() {
     await loadData();
     
     if (successCount > 0) {
-      alert(`Se sincronizaron ${successCount} registros exitosamente.`);
+      showModal({
+        type: "dialog",
+        title: "Sincronización Exitosa",
+        description: `Se sincronizaron ${successCount} registros exitosamente.`
+      });
     } else if (registros.length > 0) {
-      alert("Ocurrió un error al sincronizar. Revisa tu conexión e intenta de nuevo.");
+      showModal({
+        type: "dialog",
+        title: "Error de Sincronización",
+        description: "Ocurrió un error al sincronizar. Revisa tu conexión e intenta de nuevo."
+      });
     }
   };
 
@@ -128,7 +146,7 @@ export default function SyncScreen() {
 
         <ScrollView 
           contentContainerStyle={{ gap: 16, paddingBottom: 20, flexGrow: 1 }}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#1FC451" />}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#1FC451" colors={['#1FC451']} />}
         >
           {registros.length === 0 ? (
             <YStack style={{ flex: 1, alignItems: "center", justifyContent: "center" }} gap="$4" mt="$10">
@@ -199,10 +217,10 @@ export default function SyncScreen() {
               </Paragraph>
             </View>
             <XStack gap="$3" mt="$4">
-              <Button flex={1} bg="rgba(255,255,255,0.1)" color="white" onPress={() => setItemToDelete(null)}>
+              <Button flex={1} bg="rgba(255,255,255,0.1)" color="white" pressStyle={{ bg: "rgba(255,255,255,0.2)", borderColor: "transparent" }} onPress={() => setItemToDelete(null)}>
                 Cancelar
               </Button>
-              <Button flex={1} bg="#ff4444" color="white" onPress={() => {
+              <Button flex={1} bg="#ff4444" color="white" pressStyle={{ bg: "#cc0000", borderColor: "transparent" }} onPress={() => {
                 if (itemToDelete) {
                   handleRemove(itemToDelete);
                   setItemToDelete(null);
