@@ -208,12 +208,12 @@ export default function RegistroScreen() {
           } else if (h === 'Palmera') {
             rehydratedBotanic.general = { tipo: source.tipo_palmera || '' };
             rehydratedBotanic.tallo = { caracteristicas: source.tallo || '' };
-            rehydratedBotanic.espinas = { presencia: source.espinas_palmera || '' };
+            rehydratedBotanic.espinas = { espinas_palmera: source.espinas_palmera || '' };
             rehydratedBotanic.inflorescencia = {
-              presencia: source.inflorescencia_presencia || '',
-              posicion: source.inflorescencia_posicion || '',
-              forma: source.inflorescencia_forma || '',
-              espata: source.inflorescencia_espata || '',
+              inflorescencia_presencia: source.inflorescencia_presencia || '',
+              inflorescencia_posicion: source.inflorescencia_posicion || '',
+              inflorescencia_forma: source.inflorescencia_forma || '',
+              inflorescencia_espata: source.inflorescencia_espata || '',
             };
           }
 

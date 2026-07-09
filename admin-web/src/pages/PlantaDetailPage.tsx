@@ -15,6 +15,73 @@ import { toast } from 'sonner'
 import { ValidacionModal } from '@/components/ValidacionModal'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 
+const LABEL_MAP: Record<string, string> = {
+  'cap': 'CAP (cm)',
+  'diametro_copa_paralelo': 'Diámetro de copa paralelo',
+  'diametro_copa_perpendicular': 'Diámetro de copa perpendicular',
+  'numero_tallos': 'Número de tallos',
+  'numero_troncos': 'Número de troncos',
+  'hoja_ancho': 'Ancho de hoja',
+  'hoja_largo': 'Largo de hoja',
+  'peciolo_largo': 'Largo de pecíolo',
+  'peciolo_diametro': 'Diámetro de pecíolo',
+  'longitud_peciolo': 'Longitud de pecíolo',
+  'diametro_peciolo': 'Diámetro de pecíolo',
+  'tipo_peciolo': 'Tipo de pecíolo',
+  'peciolo_pulvino': 'Pecíolo con pulvino',
+  'fruto_tamano_ancho': 'Ancho de fruto',
+  'fruto_tamano_largo': 'Largo de fruto',
+  'semilla_tamano_ancho': 'Ancho de semilla',
+  'semilla_tamano_largo': 'Largo de semilla',
+  'semilla_numero': 'Número de semillas',
+  'altura_total': 'Altura total',
+  'altura_inicio_copa': 'Altura inicio de copa',
+  'raices_visibles': 'Raíces visibles',
+  'espinas_palmera': 'Espinas de palmera',
+  'inflorescencia_forma': 'Forma de inflorescencia',
+  'inflorescencia_espata': 'Espata de inflorescencia',
+  'inflorescencia_presencia': 'Presencia de inflorescencia',
+  'inflorescencia_posicion': 'Posición de inflorescencia',
+  'fruto_color_maduro': 'Color de fruto maduro',
+  'fruto_presencia': 'Presencia de frutos',
+  'fruto_forma': 'Forma de fruto',
+  'fruto_superficie': 'Superficie de fruto',
+  'fruto_tipo': 'Tipo de fruto',
+  'tipo_hoja': 'Tipo de hoja',
+  'forma_tronco': 'Forma de tronco',
+  'corteza_externa': 'Corteza externa',
+  'color_corteza': 'Color de corteza',
+  'olor_corteza': 'Olor de corteza',
+  'espinas_tronco': 'Espinas en tronco',
+  'exudado_presencia': 'Presencia de exudado',
+  'exudado_tipo': 'Tipo de exudado',
+  'exudado_color': 'Color de exudado',
+  'tipo_ramificacion': 'Tipo de ramificación',
+  'forma_copa': 'Forma de copa',
+  'densidad_copa': 'Densidad de copa',
+  'disposicion_hoja': 'Disposición de hoja',
+  'forma_hoja': 'Forma de hoja',
+  'borde_hoja': 'Borde de hoja',
+  'textura_hoja': 'Textura de hoja',
+  'color_enves': 'Color del envés',
+  'pelos_hoja': 'Presencia de pelos',
+  'altura_inicio_ramificacion': 'Altura inicio de ramificación',
+  'densidad_follaje': 'Densidad de follaje',
+  'tipo_tallo': 'Tipo de tallo',
+  'presencia_espinas': 'Presencia de espinas',
+  'hoja_compuesta_tipo': 'Tipo de hoja compuesta',
+  'longitud_visible': 'Longitud visible',
+  'altura_maxima': 'Altura máxima',
+  'diametro_tallo': 'Diámetro del tallo',
+  'habito_crecimiento': 'Hábito de crecimiento',
+  'mecanismo_trepador': 'Mecanismo trepador'
+};
+
+const formatLabel = (key: string) => {
+  if (LABEL_MAP[key]) return LABEL_MAP[key];
+  return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+};
+
 export default function PlantaDetailPage() {
   const { user } = useUser()
   const { id } = useParams<{ id: string }>()
@@ -249,7 +316,7 @@ export default function PlantaDetailPage() {
             <Section title={`Datos de ${planta.habito}`}>
               <div className="grid grid-cols-2 gap-x-6">
                 {Object.entries(habitoDatos).map(([k, v]) => (
-                  <InfoRow key={k} label={k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} value={Array.isArray(v) ? v.join(', ') : String(v)} />
+                  <InfoRow key={k} label={formatLabel(k)} value={Array.isArray(v) ? v.join(', ') : String(v)} />
                 ))}
               </div>
             </Section>
@@ -260,7 +327,7 @@ export default function PlantaDetailPage() {
             <Section title="Datos Reproductivos">
               <div className="grid grid-cols-2 gap-x-6">
                 {Object.entries(planta.reproductivo).map(([k, v]) => (
-                  <InfoRow key={k} label={k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} value={Array.isArray(v) ? v.join(', ') : String(v)} />
+                  <InfoRow key={k} label={formatLabel(k)} value={Array.isArray(v) ? v.join(', ') : String(v)} />
                 ))}
               </div>
             </Section>
