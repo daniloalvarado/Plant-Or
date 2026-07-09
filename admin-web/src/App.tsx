@@ -58,7 +58,10 @@ function RoleCheck({ children }: { children: React.ReactNode }) {
           Tu cuenta "{user.primaryEmailAddress?.emailAddress}" no tiene permisos de administrador o profesor validador para acceder a este panel.
         </p>
         <button
-          onClick={() => signOut()}
+          onClick={async () => {
+            await signOut();
+            window.location.href = '/admin';
+          }}
           className="px-6 py-3 bg-[#1FC451] hover:bg-[#19a343] text-white font-bold rounded-lg transition-colors cursor-pointer"
         >
           Cerrar sesión y volver
@@ -116,6 +119,8 @@ function ClerkApp() {
   return (
     <ClerkProvider 
       publishableKey={clerkPubKey}
+      signInFallbackRedirectUrl="/admin"
+      signUpFallbackRedirectUrl="/admin"
       localization={{
         ...esES,
         signIn: {
