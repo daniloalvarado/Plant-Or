@@ -53,8 +53,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
               <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_tamano_largo', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo flor (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                  keyboardType="numeric" 
-                  placeholder="Ej. 5"
+                  placeholder="Ej. 5 cm"
                   value={getField('reproductivo', 'flor_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'flor_tamano_largo', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
@@ -63,8 +62,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
               <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_tamano_ancho', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho flor (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                  keyboardType="numeric" 
-                  placeholder="Ej. 5"
+                  placeholder="Ej. 5 cm"
                   value={getField('reproductivo', 'flor_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'flor_tamano_ancho', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
@@ -142,8 +140,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
               <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano_largo', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo fruto (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                  keyboardType="numeric" 
-                  placeholder="Ej. 10"
+                  placeholder="Ej. 10 cm"
                   value={getField('reproductivo', 'fruto_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_largo', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
@@ -152,8 +149,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
               <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano_ancho', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho fruto (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                  keyboardType="numeric" 
-                  placeholder="Ej. 8"
+                  placeholder="Ej. 8 cm"
                   value={getField('reproductivo', 'fruto_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_ancho', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
@@ -214,8 +210,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
               <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_largo', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo sem. (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                  keyboardType="numeric" 
-                  placeholder="Ej. 1"
+                  placeholder="Ej. 1 cm"
                   value={getField('reproductivo', 'semilla_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'semilla_tamano_largo', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
@@ -224,8 +219,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
               <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_ancho', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho sem. (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                  keyboardType="numeric" 
-                  placeholder="Ej. 0.5"
+                  placeholder="Ej. 0.5 cm"
                   value={getField('reproductivo', 'semilla_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'semilla_tamano_ancho', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}

@@ -16,7 +16,9 @@ export function FormArbusto({ data, updateData , registerRef, missingFields }: F
   };
 
   const getField = (section: string, field: string) => {
-    return data[section]?.[field] || '';
+    const val = data[section]?.[field];
+    if (typeof val === 'number') return String(val);
+    return val || '';
   };
 
   return (
@@ -219,7 +221,6 @@ export function FormArbusto({ data, updateData , registerRef, missingFields }: F
             <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_tamano', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño de flor (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                keyboardType="numeric" 
                 placeholder="Ej. 5"
                 value={getField('reproductivo', 'flor_tamano')}
                 onChangeText={(val) => setField('reproductivo', 'flor_tamano', val)}
@@ -239,7 +240,7 @@ export function FormArbusto({ data, updateData , registerRef, missingFields }: F
             <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_agrupacion', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Agrupación</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_agrupacion') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
-                options={['Solitaria', 'En racimos', 'En ramilletes', 'Otro']}
+                options={['Solitaria', 'En racimo', 'En racimos', 'En manojo', 'En ramillete', 'En ramilletes', 'En espiga', 'En cabezuela', 'Otro']}
                 value={getField('reproductivo', 'flor_agrupacion')}
                 onChange={(val) => setField('reproductivo', 'flor_agrupacion', val)}
               />
@@ -286,7 +287,6 @@ export function FormArbusto({ data, updateData , registerRef, missingFields }: F
             <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño del fruto (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                keyboardType="numeric" 
                 placeholder="Ej. 10"
                 value={getField('reproductivo', 'fruto_tamano')}
                 onChangeText={(val) => setField('reproductivo', 'fruto_tamano', val)}

@@ -16,7 +16,9 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
   };
 
   const getField = (section: string, field: string) => {
-    return data[section]?.[field] || '';
+    const val = data[section]?.[field];
+    if (typeof val === 'number') return String(val);
+    return val || '';
   };
 
   return (
@@ -233,7 +235,6 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
             <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_tamano', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño de flor (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                keyboardType="numeric" 
                 placeholder="Ej. 5"
                 value={getField('reproductivo', 'flor_tamano')}
                 onChangeText={(val) => setField('reproductivo', 'flor_tamano', val)}
@@ -291,7 +292,6 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
             <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño del fruto (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                keyboardType="numeric" 
                 placeholder="Ej. 10"
                 value={getField('reproductivo', 'fruto_tamano')}
                 onChangeText={(val) => setField('reproductivo', 'fruto_tamano', val)}
@@ -327,7 +327,6 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
         <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño de semilla (mm o cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-            keyboardType="numeric"
             placeholder="Ej. 1 cm"
             value={getField('reproductivo', 'semilla_tamano')}
             onChangeText={(val) => setField('reproductivo', 'semilla_tamano', val)}

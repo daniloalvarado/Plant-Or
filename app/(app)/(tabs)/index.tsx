@@ -5,7 +5,7 @@ import { client, urlFor } from "@/lib/sanity";
 import { useUser, useAuth } from "@clerk/clerk-expo";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from "react";
-import { Modal, Pressable, RefreshControl, ScrollView, StyleSheet, TextInput } from "react-native";
+import { Modal, Pressable, RefreshControl, ScrollView, StyleSheet, TextInput, Platform } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Avatar, Text, View } from "tamagui";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -208,7 +208,7 @@ export default function HomeScreen() {
       {/* Scrollable: Chips + Plants */}
       <ScrollView
         style={{ flex: 1, paddingHorizontal: 20 }}
-        contentContainerStyle={{ paddingBottom: insets.bottom + 100 }}
+        contentContainerStyle={{ paddingBottom: Platform.OS === 'ios' ? Math.max(40, insets.bottom + 20) : 20 }}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#1FC451" colors={['#1FC451']} />
@@ -277,7 +277,7 @@ export default function HomeScreen() {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Math.max(64, insets.bottom + 24) }]}>
+          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Platform.OS === 'ios' ? Math.max(64, insets.bottom + 24) : 24 }]}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
               <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.text }}>Filtros</Text>
               <Pressable onPress={() => setModalVisible(false)} style={styles.closeModalButton}>
@@ -381,7 +381,7 @@ export default function HomeScreen() {
         onRequestClose={() => setNotifVisible(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Math.max(64, insets.bottom + 24) }]}>
+          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Platform.OS === 'ios' ? Math.max(32, insets.bottom + 16) : 24 }]}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
               <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.text }}>Mis Aportes</Text>
               <Pressable onPress={() => setNotifVisible(false)} style={styles.closeModalButton}>

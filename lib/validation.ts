@@ -630,9 +630,6 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     }
 
     checkSection('hojas', datos.hojas, ['tipo_hoja','forma_hoja','disposicion_hoja','textura_hoja']);
-    if (datos.hojas?.tipo_hoja === 'Compuesta') {
-       if (!isFilled(datos.hojas?.hoja_compuesta_tipo)) missing.push({ id: 'hojas.hoja_compuesta_tipo', label: labelsMap['hojas.hoja_compuesta_tipo'] || 'Tipo si es compuesta' });
-    }
 
     const r = datos.reproductivo || {};
     const c = datos.compartido || {};

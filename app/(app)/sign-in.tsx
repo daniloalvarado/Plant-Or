@@ -230,7 +230,7 @@ export default function Page() {
                   icon={<Feather name="wifi-off" size={18} color="#ffffff" />}
                   onPress={() => router.replace("/registro")}
                 >
-                  Entrar en Modo Offline (Solo Registro)
+                  Entrar en Modo Offline
                 </Button>
               </>
             )}

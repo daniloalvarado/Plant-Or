@@ -36,6 +36,91 @@ import { saveRegistroOffline, persistImage, updateRegistroOffline, getRegistrosO
 import { checkIsOffline } from '@/lib/network';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const LABEL_MAP: Record<string, string> = {
+  'cap': 'CAP (cm)',
+  'diametro_copa_paralelo': 'Diámetro de copa paralelo',
+  'diametro_copa_perpendicular': 'Diámetro de copa perpendicular',
+  'numero_tallos': 'Número de tallos',
+  'numero_troncos': 'Número de troncos',
+  'hoja_ancho': 'Ancho de hoja',
+  'hoja_largo': 'Largo de hoja',
+  'peciolo_largo': 'Largo de pecíolo',
+  'peciolo_diametro': 'Diámetro de pecíolo',
+  'longitud_peciolo': 'Longitud de pecíolo',
+  'diametro_peciolo': 'Diámetro de pecíolo',
+  'tipo_peciolo': 'Tipo de pecíolo',
+  'peciolo_pulvino': 'Pecíolo con pulvino',
+  'fruto_tamano_ancho': 'Ancho de fruto',
+  'fruto_tamano_largo': 'Largo de fruto',
+  'semilla_tamano_ancho': 'Ancho de semilla',
+  'semilla_tamano_largo': 'Largo de semilla',
+  'semilla_numero': 'Número de semillas',
+  'altura_total': 'Altura total',
+  'altura_inicio_copa': 'Altura inicio de copa',
+  'raices_visibles': 'Raíces visibles',
+  'espinas_palmera': 'Espinas de palmera',
+  'inflorescencia_forma': 'Forma de inflorescencia',
+  'inflorescencia_espata': 'Espata de inflorescencia',
+  'inflorescencia_presencia': 'Presencia de inflorescencia',
+  'inflorescencia_posicion': 'Posición de inflorescencia',
+  'fruto_color_maduro': 'Color de fruto maduro',
+  'fruto_presencia': 'Presencia de frutos',
+  'fruto_forma': 'Forma de fruto',
+  'fruto_superficie': 'Superficie de fruto',
+  'fruto_tipo': 'Tipo de fruto',
+  'tipo_hoja': 'Tipo de hoja',
+  'forma_tronco': 'Forma de tronco',
+  'corteza_externa': 'Corteza externa',
+  'color_corteza': 'Color de corteza',
+  'olor_corteza': 'Olor de corteza',
+  'espinas_tronco': 'Espinas en tronco',
+  'exudado_presencia': 'Presencia de exudado',
+  'exudado_tipo': 'Tipo de exudado',
+  'exudado_color': 'Color de exudado',
+  'tipo_ramificacion': 'Tipo de ramificación',
+  'forma_copa': 'Forma de copa',
+  'densidad_copa': 'Densidad de copa',
+  'disposicion_hoja': 'Disposición de hoja',
+  'forma_hoja': 'Forma de hoja',
+  'borde_hoja': 'Borde de hoja',
+  'textura_hoja': 'Textura de hoja',
+  'color_enves': 'Color del envés',
+  'pelos_hoja': 'Presencia de pelos',
+  'altura_inicio_ramificacion': 'Altura inicio de ramificación',
+  'densidad_follaje': 'Densidad de follaje',
+  'tipo_tallo': 'Tipo de tallo',
+  'presencia_espinas': 'Presencia de espinas',
+  'hoja_compuesta_tipo': 'Tipo de hoja compuesta',
+  'longitud_visible': 'Longitud visible',
+  'altura_maxima': 'Altura máxima',
+  'diametro_tallo': 'Diámetro del tallo',
+  'habito_crecimiento': 'Hábito de crecimiento',
+  'mecanismo_trepador': 'Mecanismo trepador',
+  'flor_presencia': 'Presencia de flores',
+  'flor_color': 'Color de pétalos',
+  'flor_tamano': 'Tamaño de flor',
+  'flor_tamano_largo': 'Largo de flor',
+  'flor_tamano_ancho': 'Ancho de flor',
+  'flor_agrupacion': 'Agrupación de flores',
+  'flor_forma': 'Forma de flor',
+  'flor_olor': 'Olor de flor',
+  'fruto_textura': 'Textura de fruto',
+  'fruto_estado_madurar': 'Estado al madurar',
+  'fruto_tamano': 'Tamaño de fruto',
+  'semilla_presencia': 'Presencia de semillas',
+  'semilla_tamano': 'Tamaño de semilla',
+  'semilla_color': 'Color de cáscara',
+  'estado_fenologico': 'Estado fenológico',
+  'estado_individuo': 'Estado del individuo',
+  'valor_ornamental': 'Valor ornamental',
+  'impacto_urbano': 'Impacto urbano'
+};
+
+const formatLabel = (key: string) => {
+  if (LABEL_MAP[key]) return LABEL_MAP[key];
+  return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+};
+
 export default function RegistroScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useUser();
@@ -124,7 +209,19 @@ export default function RegistroScreen() {
           let rehydratedBotanic: any = {
             habito: h,
             tipoVida: data.tipo_vida,
-            reproductivo: data.reproductivo || {},
+            reproductivo: {
+              ...(data.reproductivo || {}),
+              flor_tamano: data.reproductivo?.flor_tamano?.toString(),
+              fruto_tamano: data.reproductivo?.fruto_tamano?.toString(),
+              semilla_numero: data.reproductivo?.semilla_numero?.toString(),
+              semilla_tamano: data.reproductivo?.semilla_tamano?.toString(),
+              flor_tamano_largo: data.reproductivo?.flor_tamano_largo?.toString(),
+              flor_tamano_ancho: data.reproductivo?.flor_tamano_ancho?.toString(),
+              fruto_tamano_largo: data.reproductivo?.fruto_tamano_largo?.toString(),
+              fruto_tamano_ancho: data.reproductivo?.fruto_tamano_ancho?.toString(),
+              semilla_tamano_largo: data.reproductivo?.semilla_tamano_largo?.toString(),
+              semilla_tamano_ancho: data.reproductivo?.semilla_tamano_ancho?.toString(),
+            },
             compartido: {
               estado_fenologico: data.estado_fenologico || [],
               estado_individuo: data.estado_individuo || [],
@@ -148,6 +245,7 @@ export default function RegistroScreen() {
 
           rehydratedBotanic.hojas = {
             tipo: source.tipo_hoja || '',
+            tipo_hoja: source.tipo_hoja || '',
             disposicion_hoja: source.disposicion_hoja || '',
             forma_hoja: source.forma_hoja || '',
             borde_hoja: source.borde_hoja || '',
@@ -394,11 +492,10 @@ export default function RegistroScreen() {
   const numericFields = [
     'altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular',
     'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo',
-    'fruto_tamano_largo', 'fruto_tamano_ancho', 'flor_tamano', 'flor_tamano_largo', 'flor_tamano_ancho',
-    'semilla_numero', 'semilla_tamano_largo', 'semilla_tamano_ancho', 'semilla_tamano',
+    'semilla_numero',
     'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro',
     'altura_inicio_ramificacion', 'longitud_visible', 'altura_maxima', 'diametro_tallo',
-    'cobertura', 'fruto_tamano'
+    'cobertura'
   ];
 
   const updateBotanic = (sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => {
@@ -556,7 +653,19 @@ export default function RegistroScreen() {
             estado_individuo: doc.estado_individuo,
             valor_ornamental: doc.valor_ornamental,
             impacto_urbano: doc.impacto_urbano,          },
-          reproductivo: doc.reproductivo || {},
+          reproductivo: {
+            ...(doc.reproductivo || {}),
+            flor_tamano: doc.reproductivo?.flor_tamano?.toString(),
+            fruto_tamano: doc.reproductivo?.fruto_tamano?.toString(),
+            semilla_numero: doc.reproductivo?.semilla_numero?.toString(),
+            semilla_tamano: doc.reproductivo?.semilla_tamano?.toString(),
+            flor_tamano_largo: doc.reproductivo?.flor_tamano_largo?.toString(),
+            flor_tamano_ancho: doc.reproductivo?.flor_tamano_ancho?.toString(),
+            fruto_tamano_largo: doc.reproductivo?.fruto_tamano_largo?.toString(),
+            fruto_tamano_ancho: doc.reproductivo?.fruto_tamano_ancho?.toString(),
+            semilla_tamano_largo: doc.reproductivo?.semilla_tamano_largo?.toString(),
+            semilla_tamano_ancho: doc.reproductivo?.semilla_tamano_ancho?.toString(),
+          },
           // Map back the flattened data based on habit
           ...(doc.habito === 'Árbol' && {
             dasometria: { altura_total: doc.arbol_datos?.altura_total?.toString(), cap: doc.arbol_datos?.cap?.toString(), diametro_copa_paralelo: doc.arbol_datos?.diametro_copa_paralelo?.toString(), diametro_copa_perpendicular: doc.arbol_datos?.diametro_copa_perpendicular?.toString(), altura_inicio_copa: doc.arbol_datos?.altura_inicio_copa?.toString(), raices_visibles: doc.arbol_datos?.raices_visibles },
@@ -570,23 +679,44 @@ export default function RegistroScreen() {
             general: { tipo: doc.palmera_datos?.tipo_palmera },
             tallo: { caracteristicas: doc.palmera_datos?.tallo },
             hojas: { tipo: doc.palmera_datos?.tipo_hoja, segmentos: doc.palmera_datos?.segmentos, hoja_largo: doc.palmera_datos?.hoja_largo?.toString(), hoja_ancho: doc.palmera_datos?.hoja_ancho?.toString(), peciolo_largo: doc.palmera_datos?.peciolo_largo?.toString(), peciolo_diametro: doc.palmera_datos?.peciolo_diametro?.toString(), color_hoja: doc.palmera_datos?.color_hoja },
-            espinas: { presencia: doc.palmera_datos?.espinas_palmera },
-            inflorescencia: { presencia: doc.palmera_datos?.inflorescencia_presencia, posicion: doc.palmera_datos?.inflorescencia_posicion, forma: doc.palmera_datos?.inflorescencia_forma, espata: doc.palmera_datos?.inflorescencia_espata }
+            espinas: { espinas_palmera: doc.palmera_datos?.espinas_palmera },
+            inflorescencia: { inflorescencia_presencia: doc.palmera_datos?.inflorescencia_presencia, inflorescencia_posicion: doc.palmera_datos?.inflorescencia_posicion, inflorescencia_forma: doc.palmera_datos?.inflorescencia_forma, inflorescencia_espata: doc.palmera_datos?.inflorescencia_espata }
           }),
           ...(doc.habito === 'Arbusto' && {
-            dasometria: { altura_total: doc.arbusto_datos?.altura_total?.toString(), diametro_copa_paralelo: doc.arbusto_datos?.diametro_copa_paralelo?.toString(), diametro_copa_perpendicular: doc.arbusto_datos?.diametro_copa_perpendicular?.toString(), altura_inicio_ramificacion: doc.arbusto_datos?.altura_inicio_ramificacion?.toString() },
-            tallo: { numero_tallos: doc.arbusto_datos?.numero_tallos, forma_general: doc.arbusto_datos?.forma_general, densidad_follaje: doc.arbusto_datos?.densidad_follaje, tipo_ramificacion: doc.arbusto_datos?.tipo_ramificacion, tipo_tallo: doc.arbusto_datos?.tipo_tallo, presencia_espinas: doc.arbusto_datos?.presencia_espinas },
-            hojas: { tipo: doc.arbusto_datos?.tipo_hoja, hoja_compuesta_tipo: doc.arbusto_datos?.hoja_compuesta_tipo, forma_hoja: doc.arbusto_datos?.forma_hoja, disposicion_hoja: doc.arbusto_datos?.disposicion_hoja, borde_hoja: doc.arbusto_datos?.borde_hoja, color_hoja: doc.arbusto_datos?.color_hoja }
+            dasometria: { 
+              altura_total: doc.arbusto_datos?.altura_total?.toString(), 
+              diametro_copa_paralelo: doc.arbusto_datos?.diametro_copa_paralelo?.toString(), 
+              diametro_copa_perpendicular: doc.arbusto_datos?.diametro_copa_perpendicular?.toString(), 
+              altura_inicio_ramificacion: doc.arbusto_datos?.altura_inicio_ramificacion?.toString(),
+              numero_tallos: doc.arbusto_datos?.numero_tallos,
+              forma_general: doc.arbusto_datos?.forma_general,
+              densidad_follaje: doc.arbusto_datos?.densidad_follaje
+            },
+            tallo: { 
+              tipo_ramificacion: doc.arbusto_datos?.tipo_ramificacion, 
+              tipo_tallo: doc.arbusto_datos?.tipo_tallo, 
+              presencia_espinas: doc.arbusto_datos?.presencia_espinas 
+            },
+            hojas: { 
+              tipo_hoja: doc.arbusto_datos?.tipo_hoja, 
+              hoja_compuesta_tipo: doc.arbusto_datos?.hoja_compuesta_tipo, 
+              forma_hoja: doc.arbusto_datos?.forma_hoja, 
+              disposicion_hoja: doc.arbusto_datos?.disposicion_hoja, 
+              borde_hoja: doc.arbusto_datos?.borde_hoja, 
+              color_hoja: doc.arbusto_datos?.color_hoja 
+            }
           }),
           ...(doc.habito === 'Liana' && {
             dasometria: { longitud_visible: doc.liana_datos?.longitud_visible?.toString(), altura_maxima: doc.liana_datos?.altura_maxima?.toString(), diametro_tallo: doc.liana_datos?.diametro_tallo?.toString(), numero_tallos: doc.liana_datos?.numero_tallos },
             crecimiento: { tipo_soporte: doc.liana_datos?.tipo_soporte, forma_crecimiento: doc.liana_datos?.forma_crecimiento, mecanismo_fijacion: doc.liana_datos?.mecanismo_fijacion, presencia_espinas: doc.liana_datos?.presencia_espinas },
-            hojas: { tipo: doc.liana_datos?.tipo_hoja, hoja_compuesta_tipo: doc.liana_datos?.hoja_compuesta_tipo, forma_hoja: doc.liana_datos?.forma_hoja, disposicion_hoja: doc.liana_datos?.disposicion_hoja, borde_hoja: doc.liana_datos?.borde_hoja, color_hoja: doc.liana_datos?.color_hoja }
+            tallo: { tipo_tallo_liana: doc.liana_datos?.tipo_tallo_liana, espinas_tallo: doc.liana_datos?.espinas_tallo },
+            exudado: { presencia: doc.liana_datos?.exudado_presencia, tipo: doc.liana_datos?.exudado_tipo, color: doc.liana_datos?.exudado_color },
+            hojas: { tipo_hoja: doc.liana_datos?.tipo_hoja, hoja_compuesta_tipo: doc.liana_datos?.hoja_compuesta_tipo, forma_hoja: doc.liana_datos?.forma_hoja, disposicion_hoja: doc.liana_datos?.disposicion_hoja, borde_hoja: doc.liana_datos?.borde_hoja, color_hoja: doc.liana_datos?.color_hoja, textura_hoja: doc.liana_datos?.textura_hoja }
           }),
           ...(doc.habito === 'Hierba' && {
             dasometria: { altura_total: doc.hierba_datos?.altura_total?.toString(), cobertura: doc.hierba_datos?.cobertura?.toString(), numero_tallos: doc.hierba_datos?.numero_tallos },
             crecimiento: { tipo_crecimiento: doc.hierba_datos?.tipo_crecimiento, tipo_tallo: doc.hierba_datos?.tipo_tallo },
-            hojas: { tipo: doc.hierba_datos?.tipo_hoja, hoja_compuesta_tipo: doc.hierba_datos?.hoja_compuesta_tipo, forma_hoja: doc.hierba_datos?.forma_hoja, disposicion_hoja: doc.hierba_datos?.disposicion_hoja, borde_hoja: doc.hierba_datos?.borde_hoja, color_hoja: doc.hierba_datos?.color_hoja, olor_hoja: doc.hierba_datos?.olor_hoja, exudado_corte: doc.hierba_datos?.exudado_corte }
+            hojas: { tipo_hoja: doc.hierba_datos?.tipo_hoja, hoja_compuesta_tipo: doc.hierba_datos?.hoja_compuesta_tipo, forma_hoja: doc.hierba_datos?.forma_hoja, disposicion_hoja: doc.hierba_datos?.disposicion_hoja, borde_hoja: doc.hierba_datos?.borde_hoja, color_hoja: doc.hierba_datos?.color_hoja, olor_hoja: doc.hierba_datos?.olor_hoja, exudado_corte: doc.hierba_datos?.exudado_corte, textura_hoja: doc.hierba_datos?.textura_hoja }
           })
         });
 
@@ -865,7 +995,7 @@ export default function RegistroScreen() {
         if (!obj) return {};
         const result = { ...obj };
         for (let key in result) {
-          if (['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo', 'longitud_visible', 'cobertura', 'flor_tamano', 'flor_tamano_largo', 'flor_tamano_ancho', 'fruto_tamano', 'fruto_tamano_largo', 'fruto_tamano_ancho', 'semilla_numero', 'semilla_tamano', 'semilla_tamano_largo', 'semilla_tamano_ancho', 'altura_inicio_ramificacion', 'altura_maxima', 'diametro_tallo', 'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro'].includes(key)) {
+          if (['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo', 'longitud_visible', 'cobertura', 'semilla_numero', 'altura_inicio_ramificacion', 'altura_maxima', 'diametro_tallo', 'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro'].includes(key)) {
             result[key] = Number(result[key]) || undefined;
           }
         }
@@ -909,11 +1039,11 @@ export default function RegistroScreen() {
         // Reproductivo
         reproductivo: parseNumbers(datosBotanicos.reproductivo || {}),
 
-        // Compartidos adicionales (Arrays)
-        estado_fenologico: datosBotanicos.compartido?.estado_fenologico || [],
-        estado_individuo: datosBotanicos.compartido?.estado_individuo || [],
-        valor_ornamental: datosBotanicos.compartido?.valor_ornamental || [],
-        impacto_urbano: datosBotanicos.compartido?.impacto_urbano || [],
+        // Compartidos adicionales (Arrays) - Solo aplican a Árbol, Arbusto, Palmera
+        estado_fenologico: ['Árbol', 'Arbusto', 'Palmera'].includes(datosBotanicos.habito) ? (datosBotanicos.compartido?.estado_fenologico || []) : [],
+        estado_individuo: ['Árbol', 'Arbusto', 'Palmera'].includes(datosBotanicos.habito) ? (datosBotanicos.compartido?.estado_individuo || []) : [],
+        valor_ornamental: ['Árbol', 'Arbusto', 'Palmera'].includes(datosBotanicos.habito) ? (datosBotanicos.compartido?.valor_ornamental || []) : [],
+        impacto_urbano: ['Árbol', 'Arbusto', 'Palmera'].includes(datosBotanicos.habito) ? (datosBotanicos.compartido?.impacto_urbano || []) : [],
       };
 
       // Bloques Específicos según el hábito
@@ -969,7 +1099,7 @@ export default function RegistroScreen() {
         nuevoRegistro.arbusto_datos = parseNumbers({
           ...datosBotanicos.dasometria,
           ...datosBotanicos.tallo,
-          tipo_hoja: datosBotanicos.hojas?.tipo,
+          tipo_hoja: datosBotanicos.hojas?.tipo_hoja,
           hoja_compuesta_tipo: datosBotanicos.hojas?.hoja_compuesta_tipo,
           forma_hoja: datosBotanicos.hojas?.forma_hoja,
           disposicion_hoja: datosBotanicos.hojas?.disposicion_hoja,
@@ -982,7 +1112,7 @@ export default function RegistroScreen() {
         nuevoRegistro.liana_datos = parseNumbers({
           ...datosBotanicos.dasometria,
           ...datosBotanicos.crecimiento,
-          tipo_hoja: datosBotanicos.hojas?.tipo,
+          tipo_hoja: datosBotanicos.hojas?.tipo_hoja,
           hoja_compuesta_tipo: datosBotanicos.hojas?.hoja_compuesta_tipo,
           forma_hoja: datosBotanicos.hojas?.forma_hoja,
           disposicion_hoja: datosBotanicos.hojas?.disposicion_hoja,
@@ -1001,7 +1131,7 @@ export default function RegistroScreen() {
         nuevoRegistro.hierba_datos = parseNumbers({
           ...datosBotanicos.dasometria,
           ...datosBotanicos.crecimiento,
-          tipo_hoja: datosBotanicos.hojas?.tipo,
+          tipo_hoja: datosBotanicos.hojas?.tipo_hoja,
           hoja_compuesta_tipo: datosBotanicos.hojas?.hoja_compuesta_tipo,
           forma_hoja: datosBotanicos.hojas?.forma_hoja,
           disposicion_hoja: datosBotanicos.hojas?.disposicion_hoja,
@@ -1153,12 +1283,13 @@ export default function RegistroScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#08130D' }} edges={['top']}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled={Platform.OS === 'ios'}
       >
         <ScrollView
           ref={scrollViewRef}
           style={{ flex: 1 }}
-          contentContainerStyle={{ padding: 20, paddingBottom: 100 }}
+          contentContainerStyle={{ padding: 20, paddingBottom: Platform.OS === 'ios' ? Math.max(40, insets.bottom + 20) : 20 }}
           keyboardShouldPersistTaps="handled"
         >
           <YStack gap="$4">
@@ -1830,8 +1961,8 @@ export default function RegistroScreen() {
                       <YStack mb="$2">
                         <Text color="#1FC451" fontWeight="bold" mt="$2">I. Datos dasométricos</Text>
                         {Object.entries(datosBotanicos.dasometria).map(([k, v]) => (
-                          <Text key={`daso-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{String(v)}</Text>
+                          <Text key={`daso-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                            • {formatLabel(k)}: <Text color="white" textTransform="none">{String(v)}</Text>
                           </Text>
                         ))}
                       </YStack>
@@ -1842,8 +1973,8 @@ export default function RegistroScreen() {
                       <YStack mb="$2">
                         <Text color="#1FC451" fontWeight="bold" mt="$2">II. Tronco y corteza / Tallo</Text>
                         {Object.entries(datosBotanicos.tallo || datosBotanicos.tronco || datosBotanicos.estipe || {}).map(([k, v]) => (
-                          <Text key={`tronco-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                          <Text key={`tronco-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                            • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
                           </Text>
                         ))}
                       </YStack>
@@ -1854,8 +1985,8 @@ export default function RegistroScreen() {
                       <YStack mb="$2">
                         <Text color="#1FC451" fontWeight="bold" mt="$2">III. Exudado</Text>
                         {Object.entries(datosBotanicos.exudado).map(([k, v]) => (
-                          <Text key={`exu-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{String(v)}</Text>
+                          <Text key={`exu-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                            • {formatLabel(k)}: <Text color="white" textTransform="none">{String(v)}</Text>
                           </Text>
                         ))}
                       </YStack>
@@ -1866,8 +1997,8 @@ export default function RegistroScreen() {
                       <YStack mb="$2">
                         <Text color="#1FC451" fontWeight="bold" mt="$2">IV. Ramificación / Copa / Crecimiento</Text>
                         {Object.entries(datosBotanicos.copa || datosBotanicos.crecimiento || datosBotanicos.inflorescencia || {}).map(([k, v]) => (
-                          <Text key={`copa-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{String(v)}</Text>
+                          <Text key={`copa-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                            • {formatLabel(k)}: <Text color="white" textTransform="none">{String(v)}</Text>
                           </Text>
                         ))}
                       </YStack>
@@ -1878,8 +2009,8 @@ export default function RegistroScreen() {
                       <YStack mb="$2">
                         <Text color="#1FC451" fontWeight="bold" mt="$2">V. Hojas</Text>
                         {Object.entries(datosBotanicos.hojas).map(([k, v]) => (
-                          <Text key={`hoja-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                            • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                          <Text key={`hoja-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                            • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
                           </Text>
                         ))}
                       </YStack>
@@ -1892,8 +2023,8 @@ export default function RegistroScreen() {
                           <YStack mb="$2">
                             <Text color="#1FC451" fontWeight="bold" mt="$2">VI. Flores</Text>
                             {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('flor_')).map(([k, v]) => (
-                               v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                                • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                               v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                                • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
                               </Text> : null
                             ))}
                           </YStack>
@@ -1902,8 +2033,8 @@ export default function RegistroScreen() {
                           <YStack mb="$2">
                             <Text color="#1FC451" fontWeight="bold" mt="$2">VII. Frutos</Text>
                             {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('fruto_')).map(([k, v]) => (
-                               v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                                • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                               v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                                • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
                               </Text> : null
                             ))}
                           </YStack>
@@ -1912,8 +2043,8 @@ export default function RegistroScreen() {
                           <YStack mb="$2">
                             <Text color="#1FC451" fontWeight="bold" mt="$2">VIII. Semillas</Text>
                             {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('semilla_')).map(([k, v]) => (
-                               v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                                • {k.replace(/_/g, ' ')}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
+                               v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                                • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
                               </Text> : null
                             ))}
                           </YStack>
@@ -1927,32 +2058,32 @@ export default function RegistroScreen() {
                         {datosBotanicos.compartido.estado_fenologico && (
                           <YStack mb="$2">
                             <Text color="#1FC451" fontWeight="bold" mt="$2">IX. Estado fenológico</Text>
-                            <Text color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                              • estado fenologico: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.estado_fenologico) ? datosBotanicos.compartido.estado_fenologico.join(', ') : String(datosBotanicos.compartido.estado_fenologico)}</Text>
+                            <Text color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                              • {formatLabel('estado_fenologico')}: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.estado_fenologico) ? datosBotanicos.compartido.estado_fenologico.join(', ') : String(datosBotanicos.compartido.estado_fenologico)}</Text>
                             </Text>
                           </YStack>
                         )}
                         {datosBotanicos.compartido.estado_individuo && (
                           <YStack mb="$2">
                             <Text color="#1FC451" fontWeight="bold" mt="$2">X. Estado del individuo</Text>
-                            <Text color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                              • estado individuo: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.estado_individuo) ? datosBotanicos.compartido.estado_individuo.join(', ') : String(datosBotanicos.compartido.estado_individuo)}</Text>
+                            <Text color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                              • {formatLabel('estado_individuo')}: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.estado_individuo) ? datosBotanicos.compartido.estado_individuo.join(', ') : String(datosBotanicos.compartido.estado_individuo)}</Text>
                             </Text>
                           </YStack>
                         )}
                         {datosBotanicos.compartido.valor_ornamental && (
                           <YStack mb="$2">
                             <Text color="#1FC451" fontWeight="bold" mt="$2">XI. Valor ornamental</Text>
-                            <Text color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                              • valor ornamental: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.valor_ornamental) ? datosBotanicos.compartido.valor_ornamental.join(', ') : String(datosBotanicos.compartido.valor_ornamental)}</Text>
+                            <Text color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                              • {formatLabel('valor_ornamental')}: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.valor_ornamental) ? datosBotanicos.compartido.valor_ornamental.join(', ') : String(datosBotanicos.compartido.valor_ornamental)}</Text>
                             </Text>
                           </YStack>
                         )}
                         {datosBotanicos.compartido.impacto_urbano && (
                           <YStack mb="$2">
                             <Text color="#1FC451" fontWeight="bold" mt="$2">XII. Impacto urbano</Text>
-                            <Text color="rgba(255,255,255,0.6)" fontSize={13} textTransform="capitalize" ml="$2">
-                              • impacto urbano: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.impacto_urbano) ? datosBotanicos.compartido.impacto_urbano.join(', ') : String(datosBotanicos.compartido.impacto_urbano)}</Text>
+                            <Text color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+                              • {formatLabel('impacto_urbano')}: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.impacto_urbano) ? datosBotanicos.compartido.impacto_urbano.join(', ') : String(datosBotanicos.compartido.impacto_urbano)}</Text>
                             </Text>
                           </YStack>
                         )}
@@ -2022,7 +2153,7 @@ export default function RegistroScreen() {
       {/* Modal de Validacion de Faltantes */}
       <Modal visible={showMissingModal} transparent animationType="slide">
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' }}>
-          <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderWidth: 1, borderColor: '#1FC451', maxHeight: '70%', paddingBottom: Math.max(64, insets.bottom + 24) }}>
+          <View style={{ backgroundColor: '#12221A', padding: 24, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderWidth: 1, borderColor: '#1FC451', maxHeight: '70%', paddingBottom: Platform.OS === 'ios' ? Math.max(24, insets.bottom + 12) : 24 }}>
             <XStack style={{ justifyContent: "space-between", alignItems: "center" }} mb="$4">
               <H4 color="#1FC451">Campos Obligatorios</H4>
               <Button size="$2" circular bg="white" pressStyle={{ bg: '#cccccc' }} onPress={() => setShowMissingModal(false)} icon={<MaterialCommunityIcons name="close" size={20} color="black" />} />

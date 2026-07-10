@@ -74,10 +74,45 @@ const LABEL_MAP: Record<string, string> = {
   'altura_maxima': 'Altura máxima',
   'diametro_tallo': 'Diámetro del tallo',
   'habito_crecimiento': 'Hábito de crecimiento',
-  'mecanismo_trepador': 'Mecanismo trepador'
+  'mecanismo_trepador': 'Mecanismo trepador',
+  // Reproductivo fields
+  'flor_presencia': 'Presencia de flores',
+  'flor_color': 'Color de pétalos',
+  'flor_tamano': 'Tamaño de flor',
+  'flor_tamano_largo': 'Largo de flor',
+  'flor_tamano_ancho': 'Ancho de flor',
+  'flor_agrupacion': 'Agrupación de flores',
+  'flor_forma': 'Forma de flor',
+  'flor_olor': 'Olor de flor',
+  'fruto_textura': 'Textura de fruto',
+  'fruto_estado_madurar': 'Estado al madurar',
+  'fruto_tamano': 'Tamaño de fruto',
+  'semilla_presencia': 'Presencia de semillas',
+  'semilla_tamano': 'Tamaño de semilla',
+  'semilla_color': 'Color de cáscara',
+  // Missing fields for completeness
+  'cobertura': 'Cobertura',
+  'segmentos': 'Segmentos de hoja',
+  'lenticelas': 'Lenticelas',
+  'forma_tallo': 'Forma de tallo',
+  'color_tallo': 'Color de tallo',
+  'espinas_tallo': 'Espinas en tallo',
+  'hospedero': 'Hospedero',
+  'tipo_palmera': 'Tipo de palmera',
+  'tallo': 'Características del tallo',
+  'color_hoja': 'Color de hoja',
+  'forma_general': 'Forma general',
+  'mecanismo_fijacion': 'Mecanismo de fijación',
+  'forma_crecimiento': 'Forma de crecimiento',
+  'tipo_soporte': 'Tipo de soporte',
+  'tipo_tallo_liana': 'Tipo de tallo de liana',
+  'exudado_corte': 'Exudado al corte',
+  'olor_hoja': 'Olor de hoja'
 };
 
 const formatLabel = (key: string) => {
+  const normalizedKey = key.toLowerCase();
+  if (LABEL_MAP[normalizedKey]) return LABEL_MAP[normalizedKey];
   if (LABEL_MAP[key]) return LABEL_MAP[key];
   return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 };
@@ -128,7 +163,7 @@ export default function PlantaDetailPage() {
     setActionLoading(false)
     setObservarOpen(false)
     setRechazarOpen(false)
-    
+
     if (emailSent === false) {
       toast.error('Error al enviar correo', {
         description: 'La acción fue exitosa, pero no se pudo enviar el correo al estudiante (Error de red o falta de créditos).',
@@ -180,9 +215,9 @@ export default function PlantaDetailPage() {
 
   const habitoDatos = planta.habito === 'Árbol' ? planta.arbol_datos
     : planta.habito === 'Palmera' ? planta.palmera_datos
-    : planta.habito === 'Arbusto' ? planta.arbusto_datos
-    : planta.habito === 'Liana' ? planta.liana_datos
-    : planta.habito === 'Hierba' ? planta.hierba_datos : null
+      : planta.habito === 'Arbusto' ? planta.arbusto_datos
+        : planta.habito === 'Liana' ? planta.liana_datos
+          : planta.habito === 'Hierba' ? planta.hierba_datos : null
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto cascade-container">
@@ -196,10 +231,10 @@ export default function PlantaDetailPage() {
             <ArrowLeft className="w-4 h-4" />
             Volver
           </button>
-            <h1 className="text-2xl font-bold text-foreground">
-              {planta.nombres_comunes || 'Nombre común no registrado'}
-            </h1>
-            {planta.nombre_cientifico && (<p className="text-muted-foreground italic">{planta.nombre_cientifico}</p>)}
+          <h1 className="text-2xl font-bold text-foreground">
+            {planta.nombres_comunes || 'Nombre común no registrado'}
+          </h1>
+          {planta.nombre_cientifico && (<p className="text-muted-foreground italic">{planta.nombre_cientifico}</p>)}
           <div className="mt-2 text-xs font-mono bg-white/5 border border-white/10 px-2 py-1 rounded inline-block text-zinc-400">
             Cód: {planta._id}
           </div>
@@ -403,10 +438,10 @@ export default function PlantaDetailPage() {
           className={`fixed inset-0 z-[110] bg-background/90 backdrop-blur-sm flex items-center justify-center p-4 ${isLightboxClosing ? 'animate-out fade-out duration-300' : 'animate-in fade-in duration-300'}`}
           onClick={() => setSelectedImg(null)}
         >
-          <img 
-            src={lightboxRendered} 
-            alt="Vista ampliada" 
-            className={`max-w-[95%] max-h-[95vh] rounded-2xl object-contain shadow-2xl ${isLightboxClosing ? 'animate-collapse-y' : 'animate-expand-y'}`} 
+          <img
+            src={lightboxRendered}
+            alt="Vista ampliada"
+            className={`max-w-[95%] max-h-[95vh] rounded-2xl object-contain shadow-2xl ${isLightboxClosing ? 'animate-collapse-y' : 'animate-expand-y'}`}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

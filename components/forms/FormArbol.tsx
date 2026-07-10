@@ -16,7 +16,9 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
   };
 
   const getField = (section: string, field: string) => {
-    return data[section]?.[field] || '';
+    const val = data[section]?.[field];
+    if (typeof val === 'number') return String(val);
+    return val || '';
   };
 
   return (

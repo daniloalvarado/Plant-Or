@@ -16,7 +16,9 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
   };
 
   const getField = (section: string, field: string) => {
-    return data[section]?.[field] || '';
+    const val = data[section]?.[field];
+    if (typeof val === 'number') return String(val);
+    return val || '';
   };
 
   return (
@@ -308,7 +310,6 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano_largo', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo: (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                  keyboardType="numeric" 
                   placeholder="Ej. 10"
                   value={getField('reproductivo', 'fruto_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_largo', val)}
@@ -318,7 +319,6 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano_ancho', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho: (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                  keyboardType="numeric" 
                   placeholder="Ej. 8"
                   value={getField('reproductivo', 'fruto_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_ancho', val)}
@@ -356,7 +356,6 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_largo', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo: (cm o mm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-              keyboardType="numeric"
               placeholder="Ej. 1 cm"
               value={getField('reproductivo', 'semilla_tamano_largo')}
               onChangeText={(val) => setField('reproductivo', 'semilla_tamano_largo', val)}
@@ -366,7 +365,6 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_ancho', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho: (cm o mm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-              keyboardType="numeric"
               placeholder="Ej. 5 mm"
               value={getField('reproductivo', 'semilla_tamano_ancho')}
               onChangeText={(val) => setField('reproductivo', 'semilla_tamano_ancho', val)}

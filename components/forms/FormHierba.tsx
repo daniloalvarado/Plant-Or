@@ -16,7 +16,9 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
   };
 
   const getField = (section: string, field: string) => {
-    return data[section]?.[field] || '';
+    const val = data[section]?.[field];
+    if (typeof val === 'number') return String(val);
+    return val || '';
   };
 
   return (
@@ -181,7 +183,6 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
             <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_tamano', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño de flor (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
-                keyboardType="numeric" 
                 placeholder="Ej. 5"
                 value={getField('reproductivo', 'flor_tamano')}
                 onChangeText={(val) => setField('reproductivo', 'flor_tamano', val)}
@@ -192,7 +193,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
             <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_agrupacion', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Agrupación</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_agrupacion') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
-                options={['Solitaria', 'En racimo', 'En ramillete', 'En espiga', 'En cabezuela', 'Otro']}
+                options={['Solitaria', 'En racimo', 'En racimos', 'En manojo', 'En ramillete', 'En ramilletes', 'En espiga', 'En cabezuela', 'Otro']}
                 value={getField('reproductivo', 'flor_agrupacion')}
                 onChange={(val) => setField('reproductivo', 'flor_agrupacion', val)}
               />

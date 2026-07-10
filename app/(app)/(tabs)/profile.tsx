@@ -7,7 +7,7 @@ import { useRouter, useFocusEffect } from "expo-router";
 import { useState, useCallback, useEffect } from "react";
 import { checkIsOffline } from "@/lib/network";
 import { client, urlFor } from "@/lib/sanity";
-import { Image, Pressable, StyleSheet, Modal, Alert } from "react-native";
+import { Image, Pressable, StyleSheet, Modal, Alert, Platform } from "react-native";
 import * as Sharing from "expo-sharing";
 import * as Print from "expo-print";
 import * as FileSystem from "expo-file-system/legacy";
@@ -715,7 +715,7 @@ export default function Profile() {
               </Pressable>
             </XStack>
 
-            <YStack gap="$3" pb={Math.max(64, insets.bottom + 24)}>
+            <YStack gap="$3" pb={Platform.OS === 'ios' ? Math.max(64, insets.bottom + 24) : 24}>
               <XStack gap="$3">
                 <YStack flex={1}>
                   <Text color="rgba(255,255,255,0.7)" fontSize={12} mb={4}>Nombres</Text>
@@ -822,7 +822,7 @@ export default function Profile() {
                 <Feather name="x" size={24} color="rgba(255,255,255,0.5)" />
               </Pressable>
             </XStack>
-            <YStack gap="$3" pb={Math.max(64, insets.bottom + 24)}>
+            <YStack gap="$3" pb={Platform.OS === 'ios' ? Math.max(64, insets.bottom + 24) : 24}>
               <Button bg="#1FC451" color="#08130D" onPress={() => { setPhotoOptionsVisible(false); pickProfilePhoto(); }}>
                 Cambiar foto
               </Button>
