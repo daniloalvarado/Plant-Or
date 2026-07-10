@@ -131,12 +131,12 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
       {/* IV. Hojas (carácter principal) */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">IV. Hojas (carácter principal)</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.tipo', el)}>
-          <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>{missingFields?.some(m => m.id === 'hojas.tipo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
+          <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>{missingFields?.some(m => m.id === 'hojas.tipo_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Pluma (pinnada)', 'Abanico (palmada)', 'Simple entera', 'Simple bífida', 'Otro']}
-            value={getField('hojas', 'tipo')}
-            onChange={(val) => setField('hojas', 'tipo', val)}
+            value={getField('hojas', 'tipo_hoja')}
+            onChange={(val) => setField('hojas', 'tipo_hoja', val)}
           />
         </YStack>
 
@@ -311,6 +311,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo: (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   placeholder="Ej. 10"
+                  keyboardType="numeric"
                   value={getField('reproductivo', 'fruto_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_largo', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
@@ -320,6 +321,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho: (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   placeholder="Ej. 8"
+                  keyboardType="numeric"
                   value={getField('reproductivo', 'fruto_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_ancho', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}

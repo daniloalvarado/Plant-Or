@@ -233,13 +233,13 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">V. Hojas</H4>
         
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.tipo', el)}>
-          <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>{missingFields?.some(m => m.id === 'hojas.tipo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
+          <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>{missingFields?.some(m => m.id === 'hojas.tipo_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Simple', 'Compuesta']}
             horizontal
-            value={getField('hojas', 'tipo')}
-            onChange={(val) => setField('hojas', 'tipo', val)}
+            value={getField('hojas', 'tipo_hoja')}
+            onChange={(val) => setField('hojas', 'tipo_hoja', val)}
           />
         </YStack>
 
@@ -270,21 +270,21 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.textura_hoja', el)}>
-          <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Textura</Label>{missingFields?.some(m => m.id === 'hojas.textura_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
-          <RadioSelect 
-            options={['Papirácea', 'Cartácea', 'Coriácea']}
-            value={getField('hojas', 'textura_hoja')}
-            onChange={(val) => setField('hojas', 'textura_hoja', val)}
-          />
-        </YStack>
-
         <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.color_enves', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color del envés</Label>{missingFields?.some(m => m.id === 'hojas.color_enves') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Verde claro', 'Verde oscuro', 'Grisáceo', 'Marrón', 'Blanquecino', 'Otro']}
             value={getField('hojas', 'color_enves')}
             onChange={(val) => setField('hojas', 'color_enves', val)}
+          />
+        </YStack>
+
+        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.textura_hoja', el)}>
+          <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Textura</Label>{missingFields?.some(m => m.id === 'hojas.textura_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+          <RadioSelect 
+            options={['Papirácea', 'Cartácea', 'Coriácea']}
+            value={getField('hojas', 'textura_hoja')}
+            onChange={(val) => setField('hojas', 'textura_hoja', val)}
           />
         </YStack>
 
@@ -307,8 +307,8 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
         </YStack>
 
         {getField('hojas', 'tipo_peciolo') !== 'Sésil' && (
-          <XStack gap="$3" ref={(el) => registerRef && registerRef('hojas.longitud_peciolo', el)}>
-            <YStack flex={1} gap="$2">
+          <YStack gap="$3">
+            <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.longitud_peciolo', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Longitud peciolo (cm)</Label>{missingFields?.some(m => m.id === 'hojas.longitud_peciolo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 keyboardType="numeric" 
@@ -318,7 +318,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
                 borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
               />
             </YStack>
-            <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('hojas.diametro_peciolo', el)}>
+            <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.diametro_peciolo', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø peciolo (mm)</Label>{missingFields?.some(m => m.id === 'hojas.diametro_peciolo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 keyboardType="numeric" 
@@ -328,7 +328,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
                 borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
               />
             </YStack>
-          </XStack>
+          </YStack>
         )}
 
         <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.peciolo_pulvino', el)}>

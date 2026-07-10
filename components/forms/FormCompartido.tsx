@@ -54,6 +54,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo flor (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   placeholder="Ej. 5 cm"
+                  keyboardType="numeric"
                   value={getField('reproductivo', 'flor_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'flor_tamano_largo', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
@@ -63,6 +64,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho flor (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   placeholder="Ej. 5 cm"
+                  keyboardType="numeric"
                   value={getField('reproductivo', 'flor_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'flor_tamano_ancho', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
@@ -141,6 +143,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo fruto (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   placeholder="Ej. 10 cm"
+                  keyboardType="numeric"
                   value={getField('reproductivo', 'fruto_tamano_largo')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_largo', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
@@ -150,6 +153,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho fruto (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   placeholder="Ej. 8 cm"
+                  keyboardType="numeric"
                   value={getField('reproductivo', 'fruto_tamano_ancho')}
                   onChangeText={(val) => setField('reproductivo', 'fruto_tamano_ancho', val)}
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}

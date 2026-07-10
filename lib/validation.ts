@@ -101,7 +101,7 @@ export const validateArbol = (datos: any) => {
       !isFilled(copa.densidad_copa)) return false;
 
   // Hojas
-  if (!isFilled(hojas.tipo) ||
+  if (!isFilled(hojas.tipo_hoja) ||
       !isFilled(hojas.disposicion_hoja) ||
       !isFilled(hojas.forma_hoja) ||
       !isFilled(hojas.borde_hoja) ||
@@ -140,14 +140,14 @@ export const validatePalmera = (datos: any) => {
   const espinas = datos.espinas || {};
   if (!isFilled(espinas.espinas_palmera)) return false;
 
-  if (!isFilled(hojas.tipo) ||
+  if (!isFilled(hojas.tipo_hoja) ||
       !isFilled(hojas.hoja_largo) ||
       !isFilled(hojas.hoja_ancho) ||
       !isFilled(hojas.peciolo_largo) ||
       !isFilled(hojas.peciolo_diametro) ||
       !isFilled(hojas.color_hoja)) return false;
 
-  if ((hojas.tipo === 'Pinnada' || hojas.tipo === 'Bipinnada') && !isFilled(hojas.segmentos)) return false;
+  if ((hojas.tipo_hoja === 'Pinnada' || hojas.tipo_hoja === 'Bipinnada') && !isFilled(hojas.segmentos)) return false;
 
   if (!isFilled(inflorescencia.inflorescencia_presencia)) return false;
   if (inflorescencia.inflorescencia_presencia === 'Con inflorescencia') {
@@ -386,7 +386,7 @@ const labelsMap: Record<string, string> = {
   "copa.tipo_ramificacion": "Tipo de ramificación",
   "copa.forma_copa": "Forma de copa",
   "copa.densidad_copa": "Densidad de copa",
-  "hojas.tipo": "Tipo de hoja",
+  "hojas.tipo_hoja": "Tipo de hoja",
   "hojas.disposicion_hoja": "Disposición",
   "hojas.forma_hoja": "Forma",
   "hojas.borde_hoja": "Borde",
@@ -523,7 +523,7 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     checkSection('copa', datos.copa, ['tipo_ramificacion','forma_copa','densidad_copa']);
     
     const h = datos.hojas || {};
-    checkSection('hojas', h, ['tipo','disposicion_hoja','forma_hoja','borde_hoja','textura_hoja','color_enves','pelos_hoja','tipo_peciolo','peciolo_pulvino']);
+    checkSection('hojas', h, ['tipo_hoja','disposicion_hoja','forma_hoja','borde_hoja','textura_hoja','color_enves','pelos_hoja','tipo_peciolo','peciolo_pulvino']);
     if (h.tipo_peciolo !== 'Sésil') {
       checkSection('hojas', h, ['longitud_peciolo','diametro_peciolo']);
     }
@@ -536,7 +536,7 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     checkSection('general', datos.general, ['tipo']);
     checkSection('tallo', datos.tallo, ['caracteristicas']);
     checkSection('espinas', datos.espinas, ['espinas_palmera']);
-    checkSection('hojas', datos.hojas, ['tipo','segmentos','hoja_largo','hoja_ancho','peciolo_largo','peciolo_diametro','color_hoja']);
+    checkSection('hojas', datos.hojas, ['tipo_hoja','segmentos','hoja_largo','hoja_ancho','peciolo_largo','peciolo_diametro','color_hoja']);
     
     if (!isFilled(datos.inflorescencia?.inflorescencia_presencia)) {
        missing.push({ id: 'inflorescencia.inflorescencia_presencia', label: labelsMap['inflorescencia.inflorescencia_presencia'] || 'Presencia de inflorescencia' });
