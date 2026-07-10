@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, View, Image, findNodeHandle, UIManager, Pressable } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -520,6 +520,28 @@ export default function RegistroScreen() {
       }
       // Actualización directa: key, value
       return { ...prev, [finalField]: finalValue };
+    });
+  };
+
+  const cleanupBotanicData = () => {
+    setDatosBotanicos((prev: any) => {
+      const allowedSections: Record<string, string[]> = {
+        'Árbol': ['habito', 'tipoVida', 'dasometria', 'tronco', 'exudado', 'copa', 'hojas', 'reproductivo', 'compartido'],
+        'Palmera': ['habito', 'tipoVida', 'dasometria', 'general', 'tallo', 'hojas', 'espinas', 'inflorescencia', 'reproductivo', 'compartido'],
+        'Arbusto': ['habito', 'tipoVida', 'dasometria', 'tallo', 'hojas', 'reproductivo', 'compartido'],
+        'Liana': ['habito', 'tipoVida', 'dasometria', 'crecimiento', 'hojas', 'reproductivo', 'compartido'],
+        'Hierba': ['habito', 'tipoVida', 'dasometria', 'hojas', 'reproductivo', 'compartido']
+      };
+      
+      const allowed = allowedSections[prev.habito] || ['habito', 'tipoVida'];
+      const cleaned: any = {};
+      
+      for (const key of Object.keys(prev)) {
+        if (allowed.includes(key)) {
+          cleaned[key] = prev[key];
+        }
+      }
+      return cleaned;
     });
   };
 
@@ -1773,7 +1795,7 @@ export default function RegistroScreen() {
                         color="white" 
                         onPress={() => {
                           if (!isStep4Valid) setShowStep3Error(true);
-                          else { setShowStep3Error(false); nextStep(); }
+                          else { setShowStep3Error(false); cleanupBotanicData(); nextStep(); }
                         }}
                         pressStyle={{ bg: '#15963c' }}
                       >
