@@ -16,7 +16,7 @@ export const RadioSelect = React.memo(function RadioSelect({ options, value, onC
       return (
         <Pressable
           key={opt}
-          onPress={() => onChange(opt)}
+          onPress={() => onChange(isSelected ? '' : opt)}
           style={({ pressed }) => ({
             backgroundColor: isSelected ? 'rgba(31,196,81,0.2)' : 'rgba(255,255,255,0.04)',
             borderColor: isSelected ? '#1FC451' : 'rgba(255,255,255,0.15)',
@@ -59,12 +59,12 @@ export const RadioSelect = React.memo(function RadioSelect({ options, value, onC
       {value?.toString().startsWith('Otro') && (
         <Input 
           placeholder="Especifique otro..." 
-          value={value === 'Otro' ? '' : value.substring(5)} 
-          onChangeText={(t) => onChange('Otro:' + t)}
+          value={value === 'Otro' ? '' : value.replace(/^Otro:?\s*/, '')} 
+          onChangeText={(t) => onChange('Otro: ' + t)}
           borderWidth={1} 
-          borderColor={(value === 'Otro' || value.substring(5).trim() === '') ? '#ff4444' : "#ffffff"} 
-          focusStyle={{ borderColor: (value === 'Otro' || value.substring(5).trim() === '') ? '#ff4444' : "#ffffff" }}
-          bg="rgba(255,255,255,0.05)" color="#ffffff"
+          borderColor={(value === 'Otro' || value.replace(/^Otro:?\s*/, '').trim() === '') ? '#ff4444' : "#ffffff"} 
+          focusStyle={{ borderColor: (value === 'Otro' || value.replace(/^Otro:?\s*/, '').trim() === '') ? '#ff4444' : "#ffffff" }}
+          cursorColor="#ffffff" selectionColor="#0D5E26" bg="rgba(255,255,255,0.05)" color="#ffffff"
         />
       )}
     </YStack>
@@ -134,16 +134,16 @@ export const MultiSelect = React.memo(function MultiSelect({ options, value, onC
       {(Array.isArray(value) ? value : []).some(v => v?.startsWith?.('Otro')) && (
         <Input 
           placeholder="Especifique otro..." 
-          value={(Array.isArray(value) ? value : []).find(v => v?.startsWith?.('Otro')) === 'Otro' ? '' : (Array.isArray(value) ? value : []).find(v => v?.startsWith?.('Otro'))?.substring(5) || ''} 
+          value={(Array.isArray(value) ? value : []).find(v => v?.startsWith?.('Otro')) === 'Otro' ? '' : (Array.isArray(value) ? value : []).find(v => v?.startsWith?.('Otro'))?.replace(/^Otro:?\s*/, '') || ''} 
           onChangeText={(t) => {
             const newValue = value.filter(v => !v.startsWith('Otro'));
-            newValue.push('Otro:' + t);
+            newValue.push('Otro: ' + t);
             onChange(newValue);
           }}
           borderWidth={1} 
-          borderColor={(Array.isArray(value) ? value : []).some(v => v === 'Otro' || (v?.startsWith('Otro:') && v.substring(5).trim() === '')) ? '#ff4444' : "#ffffff"} 
-          focusStyle={{ borderColor: (Array.isArray(value) ? value : []).some(v => v === 'Otro' || (v?.startsWith('Otro:') && v.substring(5).trim() === '')) ? '#ff4444' : "#ffffff" }}
-          bg="rgba(255,255,255,0.05)" color="#ffffff"
+          borderColor={(Array.isArray(value) ? value : []).some(v => v === 'Otro' || (v?.startsWith('Otro:') && v.replace(/^Otro:?\s*/, '').trim() === '')) ? '#ff4444' : "#ffffff"} 
+          focusStyle={{ borderColor: (Array.isArray(value) ? value : []).some(v => v === 'Otro' || (v?.startsWith('Otro:') && v.replace(/^Otro:?\s*/, '').trim() === '')) ? '#ff4444' : "#ffffff" }}
+          cursorColor="#ffffff" selectionColor="#0D5E26" bg="rgba(255,255,255,0.05)" color="#ffffff"
         />
       )}
     </YStack>

@@ -22,7 +22,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
   };
 
   return (
-    <YStack gap="$4" ref={(el) => registerRef && registerRef('dasometria.altura_total', el)}>
+    <YStack gap="$4" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.altura_total', el)}>
       {/* I. Datos dasométricos */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">I. Datos dasométricos</H4>
@@ -38,7 +38,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
-          <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('dasometria.cap', el)}>
+          <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.cap', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>CAP a 1.30m (cm)</Label>{missingFields?.some(m => m.id === 'dasometria.cap') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
@@ -50,7 +50,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           </YStack>
         </XStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.diametro_copa_paralelo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.diametro_copa_paralelo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Diámetro de copa paralelo (m)</Label>{missingFields?.some(m => m.id === 'dasometria.diametro_copa_paralelo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -61,7 +61,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.diametro_copa_perpendicular', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.diametro_copa_perpendicular', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Diámetro de copa perpendicular (m)</Label>{missingFields?.some(m => m.id === 'dasometria.diametro_copa_perpendicular') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -72,7 +72,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.altura_inicio_copa', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.altura_inicio_copa', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura de inicio de copa (m)</Label>{missingFields?.some(m => m.id === 'dasometria.altura_inicio_copa') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -83,7 +83,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.numero_tallos', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.numero_tallos', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de tallos</Label>{missingFields?.some(m => m.id === 'dasometria.numero_tallos') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Un solo tallo', 'Varios tallos', 'Otro']}
@@ -92,7 +92,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.raices_visibles', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.raices_visibles', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Raíces visibles</Label>{missingFields?.some(m => m.id === 'dasometria.raices_visibles') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Sin raíces visibles', 'Raíces superficiales', 'Raíces zancudas', 'Raíces de soporte', 'Raíces adventicias', 'Otro']}
@@ -105,7 +105,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
       {/* II. Tipo de palmera */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">II. Tipo de palmera</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('general.tipo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('general.tipo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de palmera</Label>{missingFields?.some(m => m.id === 'general.tipo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Arborescente', 'Arbustiva', 'Lianescente', 'Sin tallo visible', 'Otro']}
@@ -131,7 +131,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
       {/* IV. Hojas (carácter principal) */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">IV. Hojas (carácter principal)</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>{missingFields?.some(m => m.id === 'hojas.tipo_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Pluma (pinnada)', 'Abanico (palmada)', 'Simple entera', 'Simple bífida', 'Otro']}
@@ -140,7 +140,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.segmentos', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.segmentos', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Segmentos (Múltiple)</Label>{missingFields?.some(m => m.id === 'hojas.segmentos') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['En un solo plano', 'En varios planos', 'Rígidos', 'Colgantes', 'Otro']}
@@ -149,7 +149,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
 
-        <XStack gap="$3" ref={(el) => registerRef && registerRef('hojas.hoja_largo', el)}>
+        <XStack gap="$3" collapsable={false} ref={(el) => registerRef && registerRef('hojas.hoja_largo', el)}>
           <YStack flex={1} gap="$2">
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo hoja (m)</Label>{missingFields?.some(m => m.id === 'hojas.hoja_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
@@ -160,7 +160,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
-          <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('hojas.hoja_ancho', el)}>
+          <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.hoja_ancho', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho hoja (m)</Label>{missingFields?.some(m => m.id === 'hojas.hoja_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
@@ -172,7 +172,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           </YStack>
         </XStack>
 
-        <XStack gap="$3" ref={(el) => registerRef && registerRef('hojas.peciolo_largo', el)}>
+        <XStack gap="$3" collapsable={false} ref={(el) => registerRef && registerRef('hojas.peciolo_largo', el)}>
           <YStack flex={1} gap="$2">
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo peciolo (m)</Label>{missingFields?.some(m => m.id === 'hojas.peciolo_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
@@ -183,7 +183,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
-          <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('hojas.peciolo_diametro', el)}>
+          <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.peciolo_diametro', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø peciolo (cm)</Label>{missingFields?.some(m => m.id === 'hojas.peciolo_diametro') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
@@ -195,7 +195,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           </YStack>
         </XStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.color_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.color_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color</Label>{missingFields?.some(m => m.id === 'hojas.color_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Verde claro', 'Verde oscuro', 'Verde azulado', 'Amarillento', 'Otro']}
@@ -208,7 +208,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
       {/* V. Espinas */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">V. Espinas</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('espinas.espinas_palmera', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('espinas.espinas_palmera', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Espinas (Múltiple)</Label>{missingFields?.some(m => m.id === 'espinas.espinas_palmera') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Ausentes', 'En tallo', 'En pecíolo', 'En vaina', 'Otro']}
@@ -221,7 +221,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
       {/* VI. Inflorescencia */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">VI. Inflorescencia</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('inflorescencia.inflorescencia_presencia', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('inflorescencia.inflorescencia_presencia', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia</Label>{missingFields?.some(m => m.id === 'inflorescencia.inflorescencia_presencia') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Con inflorescencia', 'Sin inflorescencia visible']}
@@ -232,7 +232,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
 
         {getField('inflorescencia', 'inflorescencia_presencia') === 'Con inflorescencia' && (
           <>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('inflorescencia.inflorescencia_posicion', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('inflorescencia.inflorescencia_posicion', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Posición (Múltiple)</Label>{missingFields?.some(m => m.id === 'inflorescencia.inflorescencia_posicion') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <MultiSelect 
                 options={['Interfoliar (entre hojas)', 'Infrafoliar (debajo de hojas)', 'Axilar', 'Apical', 'Otro']}
@@ -241,7 +241,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               />
             </YStack>
             
-            <XStack gap="$3" ref={(el) => registerRef && registerRef('inflorescencia.inflorescencia_forma', el)}>
+            <XStack gap="$3" collapsable={false} ref={(el) => registerRef && registerRef('inflorescencia.inflorescencia_forma', el)}>
               <YStack flex={1} gap="$2">
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>{missingFields?.some(m => m.id === 'inflorescencia.inflorescencia_forma') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <RadioSelect 
@@ -250,7 +250,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
                   onChange={(val) => setField('inflorescencia', 'inflorescencia_forma', val)}
                 />
               </YStack>
-              <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('inflorescencia.inflorescencia_espata', el)}>
+              <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('inflorescencia.inflorescencia_espata', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia de espata</Label>{missingFields?.some(m => m.id === 'inflorescencia.inflorescencia_espata') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <RadioSelect 
                   options={['Sí', 'No']}
@@ -279,7 +279,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
 
         {getField('reproductivo', 'fruto_presencia') === 'Con frutos' && (
           <>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tipo', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_tipo', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tipo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Baya', 'Drupa', 'Otro']}
@@ -288,7 +288,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_forma', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_forma', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_forma') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Redondo', 'Ovalado', 'Alargado', 'Aplanado', 'Curvo', 'Irregular', 'Otro']}
@@ -297,7 +297,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_superficie', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_superficie', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Superficie</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_superficie') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Lisa', 'Brillante', 'Opaca', 'Rugosa', 'Con estrías', 'Con surcos', 'Escamosa', 'Fibrosa', 'Espinosa', 'Aguijonosa', 'Verrugosa', 'Otro']}
@@ -307,7 +307,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
             </YStack>
 
             <XStack gap="$3">
-              <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano_largo', el)}>
+              <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano_largo', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo: (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   placeholder="Ej. 10"
@@ -317,7 +317,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
                   borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
                 />
               </YStack>
-              <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano_ancho', el)}>
+              <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano_ancho', el)}>
                 <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho: (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                   placeholder="Ej. 8"
@@ -329,7 +329,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               </YStack>
             </XStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_color_maduro', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_color_maduro', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color del fruto maduro</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_color_maduro') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Verde', 'Amarillo', 'Rojo', 'Anaranjado', 'Morado', 'Negro', 'Marrón', 'Otro']}
@@ -344,7 +344,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
       {/* VIII. Semillas */}
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">VIII. Semillas</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_numero', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_numero', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de semillas por fruto</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_numero') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -355,7 +355,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
         <XStack gap="$3">
-          <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_largo', el)}>
+          <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_largo', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Largo: (cm o mm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano_largo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               placeholder="Ej. 1 cm"
@@ -364,7 +364,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
               borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
-          <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_ancho', el)}>
+          <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano_ancho', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ancho: (cm o mm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano_ancho') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               placeholder="Ej. 5 mm"
@@ -380,7 +380,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">IX - XII. Estado e Impacto</H4>
         
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.estado_fenologico', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.estado_fenologico', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>IX. Estado Fenológico (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.estado_fenologico') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Solo hojas', 'Con flores', 'Con frutos']}
@@ -389,7 +389,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.estado_individuo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.estado_individuo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>X. Estado del individuo (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.estado_individuo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Bueno', 'Regular', 'Malo', 'Con plagas', 'Con daño', 'Hojas secas abundantes']}
@@ -398,7 +398,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.valor_ornamental', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.valor_ornamental', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>XI. Valor Ornamental (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.valor_ornamental') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Genera sombra', 'Tiene flores vistosas', 'Tiene frutos vistosos', 'Tiene hojas vistosas', 'Forma de copa atractiva', 'Mejora el microclima', 'Atrae fauna', 'Valor cultural', 'Valor alimenticio', 'Valor medicinal', 'Otro']}
@@ -407,7 +407,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.impacto_urbano', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.impacto_urbano', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>XII. Impacto Urbano (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.impacto_urbano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Frutos resbalosos', 'Raíces levantan vereda', 'Raíces afectan cimientos', 'Levanta pavimento', 'Interfiere con cableado', 'Interfiere con luminarias', 'Riesgo de caída de hojas', 'Tronco inclinado (riesgo)', 'Otro']}

@@ -22,7 +22,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
   };
 
   return (
-    <YStack gap="$4" ref={(el) => registerRef && registerRef('dasometria.altura_total', el)}>
+    <YStack gap="$4" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.altura_total', el)}>
       {/* I. Datos dasométricos */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">I. Datos dasométricos</H4>
@@ -38,7 +38,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
               borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
-          <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('dasometria.cap', el)}>
+          <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.cap', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>CAP (cm)</Label>{missingFields?.some(m => m.id === 'dasometria.cap') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
@@ -50,7 +50,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           </YStack>
         </XStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.diametro_copa_paralelo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.diametro_copa_paralelo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Diámetro de copa paralelo a la calle (m)</Label>{missingFields?.some(m => m.id === 'dasometria.diametro_copa_paralelo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -61,7 +61,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.diametro_copa_perpendicular', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.diametro_copa_perpendicular', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Diámetro de copa perpendicular a la calle (m)</Label>{missingFields?.some(m => m.id === 'dasometria.diametro_copa_perpendicular') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -72,7 +72,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.altura_inicio_copa', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.altura_inicio_copa', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura de inicio de copa (m)</Label>{missingFields?.some(m => m.id === 'dasometria.altura_inicio_copa') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -83,7 +83,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.raices_visibles', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.raices_visibles', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Raíces visibles</Label>{missingFields?.some(m => m.id === 'dasometria.raices_visibles') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Sin raíces visibles', 'Raíces tablares', 'Raíces zancudas', 'Raíces superficiales', 'Raíces adventicias', 'Otro']}
@@ -97,7 +97,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">II. Tronco y corteza</H4>
         
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('tronco.numero_troncos', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tronco.numero_troncos', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de troncos desde la base</Label>{missingFields?.some(m => m.id === 'tronco.numero_troncos') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -108,7 +108,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('tronco.forma', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tronco.forma', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma del tronco</Label>{missingFields?.some(m => m.id === 'tronco.forma') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Recto', 'Inclinado (izq/der/calle/casa)', 'Torcido', 'Otro']}
@@ -117,7 +117,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('tronco.corteza_externa', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tronco.corteza_externa', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Corteza externa</Label>{missingFields?.some(m => m.id === 'tronco.corteza_externa') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Lisa', 'Rugosa', 'Áspera', 'Agrietada', 'Estriada', 'Escamosa', 'Con placas', 'Laminar', 'Otro']}
@@ -126,7 +126,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('tronco.color_corteza', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tronco.color_corteza', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color de corteza (Múltiple)</Label>{missingFields?.some(m => m.id === 'tronco.color_corteza') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Gris', 'Marrón', 'Verde', 'Rojiza', 'Negruzca', 'Otro']}
@@ -135,7 +135,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('tronco.lenticelas', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tronco.lenticelas', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Lenticelas</Label>{missingFields?.some(m => m.id === 'tronco.lenticelas') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Con lenticelas', 'Sin lenticelas']}
@@ -144,7 +144,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('tronco.espinas_tronco', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tronco.espinas_tronco', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Espinas</Label>{missingFields?.some(m => m.id === 'tronco.espinas_tronco') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Con espinas', 'Sin espinas']}
@@ -153,7 +153,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('tronco.olor_corteza', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tronco.olor_corteza', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Olor de corteza</Label>{missingFields?.some(m => m.id === 'tronco.olor_corteza') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Sin olor', 'Aromático', 'Cítrico', 'Resinoso', 'Desagradable', 'Otro']}
@@ -166,7 +166,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
       {/* III. Exudado */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">III. Exudado</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('exudado.presencia', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('exudado.presencia', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia</Label>{missingFields?.some(m => m.id === 'exudado.presencia') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Sí', 'No']}
@@ -178,7 +178,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
         
         {getField('exudado', 'presencia') === 'Sí' && (
           <>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('exudado.tipo', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('exudado.tipo', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo</Label>{missingFields?.some(m => m.id === 'exudado.tipo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Savia', 'Látex', 'Resina', 'Goma']}
@@ -186,7 +186,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
                 onChange={(val) => setField('exudado', 'tipo', val)}
               />
             </YStack>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('exudado.color', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('exudado.color', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color al corte</Label>{missingFields?.some(m => m.id === 'exudado.color') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Incoloro', 'Blanco', 'Amarillo', 'Rojizo', 'Marrón', 'Otro']}
@@ -201,7 +201,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
       {/* IV. Ramificación y copa */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">IV. Ramificación y copa</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('copa.tipo_ramificacion', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('copa.tipo_ramificacion', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de ramificación</Label>{missingFields?.some(m => m.id === 'copa.tipo_ramificacion') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Ramas hacia arriba', 'Ramas como hélice de helicóptero', 'Ramas colgantes', 'Ramas irregulares', 'Otro']}
@@ -210,7 +210,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('copa.forma_copa', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('copa.forma_copa', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma de copa</Label>{missingFields?.some(m => m.id === 'copa.forma_copa') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Redondeada', 'Alargada', 'Extendida', 'Tipo paraguas', 'Irregular', 'Otro']}
@@ -219,7 +219,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('copa.densidad_copa', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('copa.densidad_copa', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Densidad de copa</Label>{missingFields?.some(m => m.id === 'copa.densidad_copa') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Densa', 'Media', 'Rala']}
@@ -233,7 +233,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">V. Hojas</H4>
         
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>{missingFields?.some(m => m.id === 'hojas.tipo_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Simple', 'Compuesta']}
@@ -243,7 +243,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.disposicion_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.disposicion_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Disposición (Múltiple)</Label>{missingFields?.some(m => m.id === 'hojas.disposicion_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Alternas – dísticas', 'Alternas - espiraladas', 'Opuestas – dísticas', 'Opuestas - decusadas', 'Agrupadas al final de las ramas', 'No agrupadas al final de las ramas']}
@@ -252,7 +252,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.forma_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.forma_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>{missingFields?.some(m => m.id === 'hojas.forma_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Ovalada', 'Alargada', 'Redonda', 'Acorazonada', 'Palmada', 'Otro']}
@@ -261,7 +261,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.borde_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.borde_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Borde</Label>{missingFields?.some(m => m.id === 'hojas.borde_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Entero', 'Dentado', 'Ondulado', 'Otro']}
@@ -270,7 +270,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.color_enves', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.color_enves', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color del envés</Label>{missingFields?.some(m => m.id === 'hojas.color_enves') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Verde claro', 'Verde oscuro', 'Grisáceo', 'Marrón', 'Blanquecino', 'Otro']}
@@ -279,7 +279,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.textura_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.textura_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Textura</Label>{missingFields?.some(m => m.id === 'hojas.textura_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Papirácea', 'Cartácea', 'Coriácea']}
@@ -288,7 +288,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.pelos_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.pelos_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Presencia de pelos (Múltiple)</Label>{missingFields?.some(m => m.id === 'hojas.pelos_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Sin pelos (haz)', 'Con pelos (haz)', 'Sin pelos (envés)', 'Con pelos (envés)']}
@@ -297,7 +297,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.tipo_peciolo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.tipo_peciolo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de peciolo</Label>{missingFields?.some(m => m.id === 'hojas.tipo_peciolo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Circular', 'Plano', 'Sésil']}
@@ -307,8 +307,8 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
         </YStack>
 
         {getField('hojas', 'tipo_peciolo') !== 'Sésil' && (
-          <YStack gap="$3">
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.longitud_peciolo', el)}>
+          <XStack gap="$3">
+            <YStack gap="$2" flex={1} collapsable={false} ref={(el) => registerRef && registerRef('hojas.longitud_peciolo', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Longitud peciolo (cm)</Label>{missingFields?.some(m => m.id === 'hojas.longitud_peciolo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 keyboardType="numeric" 
@@ -318,7 +318,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
                 borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
               />
             </YStack>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.diametro_peciolo', el)}>
+            <YStack gap="$2" flex={1} collapsable={false} ref={(el) => registerRef && registerRef('hojas.diametro_peciolo', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Ø peciolo (mm)</Label>{missingFields?.some(m => m.id === 'hojas.diametro_peciolo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 keyboardType="numeric" 
@@ -328,10 +328,10 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
                 borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
               />
             </YStack>
-          </YStack>
+          </XStack>
         )}
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.peciolo_pulvino', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.peciolo_pulvino', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Peciolo con pulvino</Label>{missingFields?.some(m => m.id === 'hojas.peciolo_pulvino') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Sí', 'No']}
@@ -342,7 +342,6 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
         </YStack>
       </Card>
 
-    </YStack>
+      </YStack>
   );
 }
-

@@ -92,7 +92,7 @@ export const validateArbol = (datos: any) => {
   // Exudado
   if (!isFilled(exudado.presencia)) return false;
   if (exudado.presencia === 'Sí') {
-    if (!isFilled(exudado.tipo) || !isFilled(exudado.color)) return false;
+    if (!isFilled(exudado.color)) return false;
   }
 
   // Copa
@@ -264,7 +264,7 @@ export const validateLiana = (datos: any) => {
 
   if (!isFilled(exudado.presencia)) return false;
   if (exudado.presencia === 'Presente') {
-    if (!isFilled(exudado.tipo) || !isFilled(exudado.color)) return false;
+    if (!isFilled(exudado.color)) return false;
   }
 
   if (!isFilled(hojas.tipo_hoja) ||
@@ -415,7 +415,6 @@ const labelsMap: Record<string, string> = {
   "tallo.tipo_ramificacion": "Tipo de ramificación",
   "tallo.tipo_tallo": "Tipo de tallo",
   "tallo.presencia_espinas": "Presencia de espinas",
-  "hojas.tipo_hoja": "Tipo de hoja",
   "hojas.hoja_compuesta_tipo": "Si es compuesta",
   "dasometria.longitud_visible": "Longitud visible (m)",
   "dasometria.altura_maxima": "Altura máxima (m)",
@@ -517,7 +516,7 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     if (!isFilled(datos.exudado?.presencia)) {
       missing.push({ id: 'exudado.presencia', label: labelsMap['exudado.presencia'] || 'Presencia de exudado' });
     } else if (datos.exudado?.presencia === 'Sí') {
-      checkSection('exudado', datos.exudado, ['tipo','color']);
+      checkSection('exudado', datos.exudado, ['color']);
     }
     
     checkSection('copa', datos.copa, ['tipo_ramificacion','forma_copa','densidad_copa']);
@@ -626,7 +625,7 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     if (!isFilled(datos.exudado?.presencia)) {
       missing.push({ id: 'exudado.presencia', label: labelsMap['exudado.presencia'] || 'Presencia de exudado' });
     } else if (datos.exudado?.presencia === 'Presente') {
-      checkSection('exudado', datos.exudado, ['tipo','color']);
+      checkSection('exudado', datos.exudado, ['color']);
     }
 
     checkSection('hojas', datos.hojas, ['tipo_hoja','forma_hoja','disposicion_hoja','textura_hoja']);

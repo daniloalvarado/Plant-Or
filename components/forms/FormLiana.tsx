@@ -22,7 +22,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
   };
 
   return (
-    <YStack gap="$4" ref={(el) => registerRef && registerRef('dasometria.longitud_visible', el)}>
+    <YStack gap="$4" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.longitud_visible', el)}>
       {/* I. Datos dasométricos */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">I. Datos dasométricos</H4>
@@ -38,7 +38,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
               borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
-          <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('dasometria.altura_maxima', el)}>
+          <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.altura_maxima', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Altura máxima (m)</Label>{missingFields?.some(m => m.id === 'dasometria.altura_maxima') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
@@ -50,7 +50,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           </YStack>
         </XStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.diametro_tallo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.diametro_tallo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Diámetro tallo principal (cm)</Label>{missingFields?.some(m => m.id === 'dasometria.diametro_tallo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -61,7 +61,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.numero_tallos', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.numero_tallos', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de tallos</Label>{missingFields?.some(m => m.id === 'dasometria.numero_tallos') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Un tallo principal', 'Varios tallos', 'Otro']}
@@ -74,7 +74,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
       {/* II. Tipo de soporte */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">II. Tipo de soporte</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('crecimiento.tipo_soporte', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('crecimiento.tipo_soporte', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de soporte</Label>{missingFields?.some(m => m.id === 'crecimiento.tipo_soporte') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Árbol', 'Arbusto', 'Cerca / estructura artificial', 'Suelo (rastrera)', 'Múltiples soportes', 'Otro']}
@@ -87,7 +87,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
       {/* III. Forma de crecimiento */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">III. Forma de crecimiento</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('crecimiento.forma_crecimiento', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('crecimiento.forma_crecimiento', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma de crecimiento</Label>{missingFields?.some(m => m.id === 'crecimiento.forma_crecimiento') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Trepadora (sube activamente)', 'Enredadera (se enrolla)', 'Colgante', 'Rastrera', 'Escandente (se apoya sin enrollarse)', 'Otro']}
@@ -100,7 +100,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
       {/* IV. Mecanismo de fijación */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">IV. Mecanismo de fijación</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('crecimiento.mecanismo_fijacion', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('crecimiento.mecanismo_fijacion', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Mecanismo de fijación (Múltiple)</Label>{missingFields?.some(m => m.id === 'crecimiento.mecanismo_fijacion') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Con zarcillos', 'Con raíces adherentes', 'Con espinas o ganchos', 'Por enrollamiento del tallo', 'No visible', 'Otro']}
@@ -113,7 +113,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
       {/* V. Tallo */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">V. Tallo</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('tallo.tipo_tallo_liana', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tallo.tipo_tallo_liana', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de tallo</Label>{missingFields?.some(m => m.id === 'tallo.tipo_tallo_liana') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Leñoso', 'Semileñoso', 'Flexible', 'Otro']}
@@ -122,7 +122,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('tallo.espinas_tallo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tallo.espinas_tallo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Espinas</Label>{missingFields?.some(m => m.id === 'tallo.espinas_tallo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Con espinas', 'Sin espinas']}
@@ -131,7 +131,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('exudado.presencia', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('exudado.presencia', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Exudado</Label>{missingFields?.some(m => m.id === 'exudado.presencia') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Presente', 'Ausente']}
@@ -143,7 +143,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
 
         {getField('exudado', 'presencia') === 'Presente' && (
           <>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('exudado.tipo', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('exudado.tipo', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de exudado</Label>{missingFields?.some(m => m.id === 'exudado.tipo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Látex', 'Savia', 'Goma', 'Resina']}
@@ -152,7 +152,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('exudado.color', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('exudado.color', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color del exudado</Label>{missingFields?.some(m => m.id === 'exudado.color') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 placeholder="Ej. Blanco"
@@ -169,7 +169,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">VI. Hojas</H4>
         
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>{missingFields?.some(m => m.id === 'hojas.tipo_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Simple', 'Compuesta', 'Otro']}
@@ -178,7 +178,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.forma_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.forma_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>{missingFields?.some(m => m.id === 'hojas.forma_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Ovalada', 'Alargada', 'Acorazonada', 'Lobulada', 'Otro']}
@@ -187,7 +187,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.disposicion_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.disposicion_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Disposición</Label>{missingFields?.some(m => m.id === 'hojas.disposicion_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Alterna dística', 'Alterna espiralada', 'Opuesta dística', 'Opuesta decusada', 'Otro']}
@@ -196,7 +196,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.textura_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.textura_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Textura</Label>{missingFields?.some(m => m.id === 'hojas.textura_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Papirácea', 'Cartácea', 'Coriácea', 'Otro']}
@@ -223,7 +223,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
 
         {getField('reproductivo', 'flor_presencia') === 'Con flores' && (
           <>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_color', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.flor_color', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color de pétalos</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_color') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Blanco', 'Amarillo', 'Rojo', 'Rosado', 'Morado', 'Anaranjado', 'Otro']}
@@ -232,7 +232,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_tamano', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.flor_tamano', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño de flor (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 placeholder="Ej. 5"
@@ -242,7 +242,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_agrupacion', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.flor_agrupacion', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de agrupación</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_agrupacion') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Solitaria', 'En racimos', 'En ramilletes', 'Otro']}
@@ -271,7 +271,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
 
         {getField('reproductivo', 'fruto_presencia') === 'Con frutos' && (
           <>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_textura', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_textura', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Textura</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_textura') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Carnoso', 'Seco', 'Otro']}
@@ -280,7 +280,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_forma', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_forma', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_forma') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Redondo', 'Ovalado', 'Alargado', 'Aplanado', 'Otro']}
@@ -289,7 +289,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_tamano', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño del fruto (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 placeholder="Ej. 10"
@@ -299,7 +299,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_color_maduro', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_color_maduro', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color del fruto maduro</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_color_maduro') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Verde', 'Amarillo', 'Rojo', 'Morado', 'Negro', 'Otro']}
@@ -314,7 +314,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
       {/* IX. Semillas */}
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">IX. Semillas</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_numero', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_numero', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de semillas</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_numero') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             keyboardType="numeric" 
@@ -324,7 +324,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
             borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
           />
         </YStack>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño de semilla (mm o cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
             placeholder="Ej. 1 cm"
@@ -339,7 +339,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">X - XIII. Estado e Impacto</H4>
         
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.estado_fenologico', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.estado_fenologico', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>X. Estado Fenológico (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.estado_fenologico') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Vegetativo', 'Con flores', 'Con frutos']}
@@ -348,7 +348,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.estado_individuo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.estado_individuo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>XI. Estado del individuo (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.estado_individuo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Bueno', 'Regular', 'Malo', 'Con plagas', 'Con daño']}
@@ -357,7 +357,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.valor_ornamental', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.valor_ornamental', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>XII. Valor Ornamental (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.valor_ornamental') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Genera sombra', 'Flores vistosas', 'Frutos vistosos', 'Hojas vistosas', 'Cubre estructuras', 'Atrae fauna', 'Valor cultural', 'Valor alimenticio', 'Valor medicinal', 'Otro']}
@@ -366,7 +366,7 @@ export function FormLiana({ data, updateData , registerRef, missingFields }: For
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.impacto_urbano', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.impacto_urbano', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>XIII. Impacto Urbano (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.impacto_urbano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['No genera daño', 'Cubre infraestructura', 'Interfiere con cableado', 'Invade estructuras', 'Dificulta mantenimiento', 'Genera humedad en paredes', 'Otro']}

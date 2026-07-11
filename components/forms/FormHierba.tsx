@@ -22,7 +22,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
   };
 
   return (
-    <YStack gap="$4" ref={(el) => registerRef && registerRef('dasometria.altura_total', el)}>
+    <YStack gap="$4" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.altura_total', el)}>
       {/* I. Datos dasométricos */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">I. Datos dasométricos</H4>
@@ -38,7 +38,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
               borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
             />
           </YStack>
-          <YStack flex={1} gap="$2" ref={(el) => registerRef && registerRef('dasometria.cobertura', el)}>
+          <YStack flex={1} gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.cobertura', el)}>
             <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Cobertura Ø (cm)</Label>{missingFields?.some(m => m.id === 'dasometria.cobertura') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
             <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
               keyboardType="numeric" 
@@ -50,7 +50,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           </YStack>
         </XStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('dasometria.numero_tallos', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('dasometria.numero_tallos', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de tallos visibles</Label>{missingFields?.some(m => m.id === 'dasometria.numero_tallos') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Uno', 'Varios', 'Muchos', 'Sin tallo visible', 'Otro']}
@@ -63,7 +63,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
       {/* II. Tipo de crecimiento */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">II. Tipo de crecimiento</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('crecimiento.tipo_crecimiento', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('crecimiento.tipo_crecimiento', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo crecimiento</Label>{missingFields?.some(m => m.id === 'crecimiento.tipo_crecimiento') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Erecta', 'Rastrera', 'Colgante', 'En roseta', 'Formando mata', 'Otro']}
@@ -76,7 +76,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
       {/* III. Tipo de tallo */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">III. Tipo de tallo</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('crecimiento.tipo_tallo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('crecimiento.tipo_tallo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo tallo</Label>{missingFields?.some(m => m.id === 'crecimiento.tipo_tallo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Herbáceo', 'Carnoso', 'Hueco', 'Rastrero', 'Trepador', 'Sin tallo visible', 'Otro']}
@@ -90,7 +90,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">IV. Hojas</H4>
         
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>{missingFields?.some(m => m.id === 'hojas.tipo_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Simple', 'Compuesta', 'Otro']}
@@ -99,7 +99,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.disposicion_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.disposicion_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Disposición</Label>{missingFields?.some(m => m.id === 'hojas.disposicion_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Alternas dísticas', 'Alternas espiraladas', 'Opuestas dísticas', 'Opuestas decusadas', 'En roseta basal', 'Agrupadas', 'Otro']}
@@ -108,7 +108,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.forma_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.forma_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>{missingFields?.some(m => m.id === 'hojas.forma_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Ovalada', 'Alargada', 'Redonda', 'Acorazonada', 'Lanceolada', 'Otro']}
@@ -117,7 +117,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.color_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.color_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color</Label>{missingFields?.some(m => m.id === 'hojas.color_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Verde claro', 'Verde oscuro', 'Rojizo', 'Morado', 'Variegado', 'Otro']}
@@ -126,7 +126,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.textura_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.textura_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Textura</Label>{missingFields?.some(m => m.id === 'hojas.textura_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Delgada', 'Carnosa', 'Áspera', 'Suave', 'Otro']}
@@ -135,7 +135,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.olor_hoja', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.olor_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Olor al estrujar</Label>{missingFields?.some(m => m.id === 'hojas.olor_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Sin olor', 'Aromático', 'Cítrico', 'Desagradable', 'Otro']}
@@ -144,7 +144,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('hojas.exudado_corte', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.exudado_corte', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Exudado al corte</Label>{missingFields?.some(m => m.id === 'hojas.exudado_corte') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Sí', 'No']}
@@ -171,7 +171,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
 
         {getField('reproductivo', 'flor_presencia') === 'Con flores' && (
           <>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_color', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.flor_color', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color de pétalos</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_color') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Blanco', 'Amarillo', 'Rojo', 'Rosado', 'Morado', 'Anaranjado', 'Verde', 'Otro']}
@@ -180,7 +180,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_tamano', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.flor_tamano', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño de flor (cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 placeholder="Ej. 5"
@@ -190,7 +190,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.flor_agrupacion', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.flor_agrupacion', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Agrupación</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_agrupacion') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Solitaria', 'En racimo', 'En racimos', 'En manojo', 'En ramillete', 'En ramilletes', 'En espiga', 'En cabezuela', 'Otro']}
@@ -219,7 +219,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
 
         {getField('reproductivo', 'fruto_presencia') === 'Con frutos' && (
           <>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_textura', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_textura', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Textura</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_textura') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Carnoso', 'Seco', 'Otro']}
@@ -228,7 +228,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_forma', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_forma', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_forma') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Redondo', 'Ovalado', 'Alargado', 'Aplanado', 'Irregular', 'Otro']}
@@ -237,7 +237,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
               />
             </YStack>
 
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.fruto_color_maduro', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.fruto_color_maduro', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color del fruto maduro</Label>{missingFields?.some(m => m.id === 'reproductivo.fruto_color_maduro') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
                 options={['Verde', 'Amarillo', 'Rojo', 'Morado', 'Negro', 'Marrón', 'Otro']}
@@ -252,7 +252,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
       {/* VII. Semillas */}
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">VII. Semillas</H4>
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_presencia', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_presencia', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Visibles</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_presencia') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
             options={['Sí', 'No']}
@@ -263,7 +263,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
         </YStack>
         {getField('reproductivo', 'semilla_presencia') === 'Sí' && (
           <>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_numero', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_numero', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de semillas</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_numero') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 keyboardType="numeric" 
@@ -273,7 +273,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
                 borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
               />
             </YStack>
-            <YStack gap="$2" ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano', el)}>
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_tamano', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tamaño de semilla (mm o cm)</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_tamano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" 
                 placeholder="Ej. 1 cm"
@@ -290,7 +290,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
       <Card padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">VIII - XI. Estado e Impacto</H4>
         
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.estado_fenologico', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.estado_fenologico', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>VIII. Estado Fenológico (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.estado_fenologico') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Solo hojas', 'Con flores', 'Con frutos', 'Con flores y frutos', 'Secándose']}
@@ -299,7 +299,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.estado_individuo', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.estado_individuo', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>IX. Estado del individuo (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.estado_individuo') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Bueno', 'Regular', 'Malo', 'Con plagas', 'Con daño']}
@@ -308,7 +308,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.valor_ornamental', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.valor_ornamental', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>X. Valor Ornamental (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.valor_ornamental') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Flores vistosas', 'Hojas vistosas', 'Frutos vistosos', 'Cubre suelo', 'Forma bordes o jardines', 'Atrae fauna', 'Valor cultural', 'Valor alimenticio', 'Valor medicinal', 'Mejora el microclima', 'Otro']} 
@@ -317,7 +317,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" ref={(el) => registerRef && registerRef('compartido.impacto_urbano', el)}>
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('compartido.impacto_urbano', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>XI. Impacto Urbano (Múltiple)</Label>{missingFields?.some(m => m.id === 'compartido.impacto_urbano') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['No genera daño', 'Invade jardines', 'Invade veredas', 'Cubre drenajes', 'Dificulta mantenimiento', 'Puede ser resbalosa', 'Puede atraer plagas', 'Otro']} 
