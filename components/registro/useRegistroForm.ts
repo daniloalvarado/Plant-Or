@@ -393,30 +393,9 @@ export function useRegistroForm() {
     'cobertura'
   ];
 
-  const updateBotanic = (sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => {
-    let finalValue = nestedValue !== undefined ? nestedValue : fieldOrValue;
-    const finalField = nestedValue !== undefined ? fieldOrValue : sectionOrKey;
-
-    // Sanitización para campos numéricos: solo dejar números y puntos
-    if (typeof finalValue === 'string' && numericFields.includes(finalField)) {
-      finalValue = finalValue.replace(/[^0-9.]/g, '');
-    }
-
-    setDatosBotanicos((prev: any) => {
-      if (nestedValue !== undefined) {
-        // Es una actualización anidada: section, field, value
-        return {
-          ...prev,
-          [sectionOrKey]: {
-            ...(prev[sectionOrKey] || {}),
-            [finalField]: finalValue
-          }
-        };
-      }
-      // Actualización directa: key, value
-      return { ...prev, [finalField]: finalValue };
-    });
-  };
+  const updateBotanic = useCallback((sectionOrKey: string, fieldOrValue: any, nestedValue?: any) => {
+    setDatosBotanicos((prev: any) => updateNamespacedBotanic(prev, sectionOrKey, fieldOrValue, nestedValue, numericFields));
+  }, []);
 
   const cleanupBotanicData = () => {
     setDatosBotanicos((prev: any) => {
@@ -1001,15 +980,19 @@ export function useRegistroForm() {
     setFotos({ planta_completa: null, hoja: null, flor: null, fruto: null, semilla: null });
     setFotosExtra([]);
     setDatosBotanicos({ habito: '', tipoVida: '' });
+    
+    setTimeout(() => {
+      scrollViewRef.current?.scrollTo({ y: 0, animated: false });
+    }, 100);
   };
 
   const resetFormAndGoHome = () => {
     const wasOffline = isOfflineSaved;
     resetFormState();
     if (wasOffline) {
-      router.replace('/sync');
+      router.navigate('/sync');
     } else {
-      router.replace('/');
+      router.navigate('/');
     }
   };
 
