@@ -118,7 +118,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
       {/* III. Tallo (estípite) */}
       <Card  padding="$4" gap="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
         <H4 color="#1FC451">III. Tallo (estípite)</H4>
-        <YStack gap="$2">
+        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tallo.caracteristicas', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Características (Múltiple)</Label>{missingFields?.some(m => m.id === 'tallo.caracteristicas') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
             options={['Liso', 'Con anillos visibles', 'Con fibras', 'Con restos de hojas', 'Con espinas', 'Sin espinas', 'Otro']}

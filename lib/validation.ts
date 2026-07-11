@@ -1,24 +1,32 @@
 // src/lib/validation.ts (or app/lib/validation.ts)
 
-const isFilled = (value: any) => {
+export const isFilled = (value: any) => {
   if (value === undefined || value === null) return false;
+  if (typeof value === 'boolean') return true;
+  if (typeof value === 'number') return true;
   if (typeof value === 'string') {
     if (value.trim() === '') return false;
     if (value === 'Otro') return false;
     if (value.startsWith('Otro:') && value.substring(5).trim() === '') return false;
+    return true;
   }
   if (Array.isArray(value)) {
     if (value.length === 0) return false;
+    let hasValidItem = false;
     for (const v of value) {
+      if (v === undefined || v === null) continue;
       if (typeof v === 'string') {
-        if (v.trim() === '') return false;
-        if (v === 'Otro') return false;
-        if (v.startsWith('Otro:') && v.substring(5).trim() === '') return false;
+        if (v.trim() === '') continue;
+        if (v === 'Otro') continue;
+        if (v.startsWith('Otro:') && v.substring(5).trim() === '') continue;
+        hasValidItem = true;
+      } else if (typeof v === 'number' || typeof v === 'boolean') {
+        hasValidItem = true;
       }
     }
-    return true;
+    return hasValidItem;
   };
-  return true;
+  return false;
 };
 
 export const validateCompartido = (datos: any) => {
@@ -466,9 +474,61 @@ const labelsMap: Record<string, string> = {
 
 export const getMissingSections = (habito: string, datos: any): { id: string, label: string }[] => {
   const missing: { id: string, label: string }[] = [];
+
+  // Opciones válidas de estado_individuo por hábito
+  const estadoIndividuoOptions: Record<string, string[]> = {
+    'Árbol': ['Bueno', 'Regular', 'Malo', 'Podado', 'Enfermo', 'Con plagas visibles', 'Con daño mecánico'],
+    'Palmera': ['Bueno', 'Regular', 'Malo', 'Con plagas', 'Con daño', 'Hojas secas abundantes'],
+    'Arbusto': ['Bueno', 'Regular', 'Malo', 'Podado', 'Con plagas', 'Con daño'],
+    'Liana': ['Bueno', 'Regular', 'Malo', 'Con plagas', 'Con daño'],
+    'Hierba': ['Bueno', 'Regular', 'Malo', 'Con plagas', 'Con daño'],
+  };
+
+  // Opciones válidas de impacto_urbano por hábito
+  const impactoUrbanoOptions: Record<string, string[]> = {
+    'Árbol': ['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Raíces rompen el piso', 'Raíces afectan veredas', 'Raíces afectan cimientos', 'Levanta pavimento', 'Interfiere con cableado', 'Interfiere con luminarias', 'Riesgo de caída de ramas', 'Tronco inclinado (riesgo)', 'Otro'],
+    'Palmera': ['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Frutos resbalosos', 'Raíces levantan vereda', 'Raíces afectan cimientos', 'Levanta pavimento', 'Interfiere con cableado', 'Interfiere con luminarias', 'Riesgo de caída de hojas', 'Tronco inclinado (riesgo)', 'Otro'],
+    'Arbusto': ['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Raíces afectan vereda', 'Interfiere con infraestructura', 'Dificulta mantenimiento', 'Otro'],
+    'Liana': ['No genera daño', 'Cubre infraestructura', 'Interfiere con cableado', 'Invade estructuras', 'Dificulta mantenimiento', 'Genera humedad en paredes', 'Otro'],
+    'Hierba': ['No genera daño', 'Invade jardines', 'Invade veredas', 'Cubre drenajes', 'Dificulta mantenimiento', 'Puede ser resbalosa', 'Puede atraer plagas', 'Otro'],
+  };
+
+  // Verifica que un array tenga al menos un valor que sea una opción válida del hábito actual
+  const isFilledWithValidOptions = (value: any, validOptions: string[]): boolean => {
+    if (!Array.isArray(value) || value.length === 0) return false;
+    for (const v of value) {
+      if (typeof v !== 'string' || v.trim() === '') continue;
+      if (v.startsWith('Otro')) return true; // "Otro" o "Otro: texto" siempre es válido
+      if (validOptions.includes(v)) return true;
+    }
+    return false;
+  };
   
   const checkField = (sectionName: string, sectionObj: any, fieldName: string) => {
-    if (!isFilled(sectionObj?.[fieldName])) {
+    const val = sectionObj?.[fieldName];
+
+    // Para estado_individuo e impacto_urbano, verificar contra opciones válidas del hábito
+    if (fieldName === 'estado_individuo') {
+      const validOpts = estadoIndividuoOptions[habito] || [];
+      if (!isFilledWithValidOptions(val, validOpts)) {
+        const id = `${sectionName}.${fieldName}`;
+        missing.push({ id, label: labelsMap[id] || fieldName });
+        return true;
+      }
+      return false;
+    }
+    if (fieldName === 'impacto_urbano') {
+      const validOpts = impactoUrbanoOptions[habito] || [];
+      if (!isFilledWithValidOptions(val, validOpts)) {
+        const id = `${sectionName}.${fieldName}`;
+        missing.push({ id, label: labelsMap[id] || fieldName });
+        return true;
+      }
+      return false;
+    }
+
+    const filled = isFilled(val);
+    if (!filled) {
       const id = `${sectionName}.${fieldName}`;
       missing.push({ id, label: labelsMap[id] || fieldName });
       return true;
@@ -522,10 +582,11 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     checkSection('copa', datos.copa, ['tipo_ramificacion','forma_copa','densidad_copa']);
     
     const h = datos.hojas || {};
-    checkSection('hojas', h, ['tipo_hoja','disposicion_hoja','forma_hoja','borde_hoja','textura_hoja','color_enves','pelos_hoja','tipo_peciolo','peciolo_pulvino']);
+    checkSection('hojas', h, ['tipo_hoja','disposicion_hoja','forma_hoja','borde_hoja','color_enves','textura_hoja','pelos_hoja','tipo_peciolo']);
     if (h.tipo_peciolo !== 'Sésil') {
       checkSection('hojas', h, ['longitud_peciolo','diametro_peciolo']);
     }
+    checkSection('hojas', h, ['peciolo_pulvino']);
     
     checkCompartido();
   }
@@ -534,8 +595,8 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     checkSection('dasometria', datos.dasometria, ['altura_total','cap','diametro_copa_paralelo','diametro_copa_perpendicular','altura_inicio_copa','numero_tallos','raices_visibles']);
     checkSection('general', datos.general, ['tipo']);
     checkSection('tallo', datos.tallo, ['caracteristicas']);
-    checkSection('espinas', datos.espinas, ['espinas_palmera']);
     checkSection('hojas', datos.hojas, ['tipo_hoja','segmentos','hoja_largo','hoja_ancho','peciolo_largo','peciolo_diametro','color_hoja']);
+    checkSection('espinas', datos.espinas, ['espinas_palmera']);
     
     if (!isFilled(datos.inflorescencia?.inflorescencia_presencia)) {
        missing.push({ id: 'inflorescencia.inflorescencia_presencia', label: labelsMap['inflorescencia.inflorescencia_presencia'] || 'Presencia de inflorescencia' });
@@ -559,10 +620,11 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
   if (habito === 'Arbusto') {
     checkSection('dasometria', datos.dasometria, ['altura_total','diametro_copa_paralelo','diametro_copa_perpendicular','altura_inicio_ramificacion','numero_tallos','forma_general','densidad_follaje']);
     checkSection('tallo', datos.tallo, ['tipo_ramificacion','tipo_tallo','presencia_espinas']);
-    checkSection('hojas', datos.hojas, ['tipo_hoja','forma_hoja','disposicion_hoja','borde_hoja','color_hoja']);
+    checkSection('hojas', datos.hojas, ['tipo_hoja']);
     if (datos.hojas?.tipo_hoja === 'Compuesta') {
        if (!isFilled(datos.hojas?.hoja_compuesta_tipo)) missing.push({ id: 'hojas.hoja_compuesta_tipo', label: labelsMap['hojas.hoja_compuesta_tipo'] || 'Tipo si es compuesta' });
     }
+    checkSection('hojas', datos.hojas, ['forma_hoja','disposicion_hoja','borde_hoja','color_hoja']);
 
     const r = datos.reproductivo || {};
     const c = datos.compartido || {};
@@ -650,5 +712,30 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
     checkSection('compartido', c, ['estado_fenologico','estado_individuo','valor_ornamental','impacto_urbano']);
   }
   
+  if (!['Árbol', 'Palmera', 'Arbusto', 'Hierba', 'Liana'].includes(habito) && habito !== '') {
+    const r = datos.reproductivo || {};
+    const c = datos.compartido || {};
+    
+    if (!isFilled(r.flor_presencia)) {
+      missing.push({ id: 'reproductivo.flor_presencia', label: labelsMap['reproductivo.flor_presencia'] || 'Presencia de flores' });
+    } else if (r.flor_presencia === 'Con flores') {
+      checkSection('reproductivo', r, ['flor_color','flor_tamano_largo','flor_tamano_ancho','flor_agrupacion','flor_olor']);
+    }
+    
+    if (!isFilled(r.fruto_presencia)) {
+      missing.push({ id: 'reproductivo.fruto_presencia', label: labelsMap['reproductivo.fruto_presencia'] || 'Presencia de frutos' });
+    } else if (r.fruto_presencia === 'Con frutos') {
+      checkSection('reproductivo', r, ['fruto_textura','fruto_estado_madurar','fruto_forma','fruto_tamano_largo','fruto_tamano_ancho','fruto_color_maduro','fruto_superficie']);
+    }
+    
+    if (!isFilled(r.semilla_presencia)) {
+       missing.push({ id: 'reproductivo.semilla_presencia', label: labelsMap['reproductivo.semilla_presencia'] || 'Visibles' });
+    } else if (r.semilla_presencia === 'Sí') {
+       checkSection('reproductivo', r, ['semilla_numero','semilla_tamano_largo','semilla_tamano_ancho','semilla_color']);
+    }
+    
+    checkSection('compartido', c, ['estado_fenologico','estado_individuo','valor_ornamental','impacto_urbano']);
+  }
+
   return missing;
 };

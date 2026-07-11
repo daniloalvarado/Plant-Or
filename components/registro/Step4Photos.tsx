@@ -108,7 +108,7 @@ export function Step4({ form }: { form: any }) {
                       Si lo deseas, puedes agregar fotos extra (tronco, raíces, entorno, etc).
                     </Paragraph>
                     
-                    {fotosExtra.map((uri, idx) => (
+                    {fotosExtra.map((uri: string, idx: number) => (
                       <YStack key={`extra-${idx}`} style={{ backgroundColor: "rgba(255,255,255,0.02)", padding: 12, borderRadius: 8 }} gap="$2">
                         <XStack style={{ alignItems: "center" }} gap="$3">
                           <Pressable onPress={() => setSelectedPhoto(uri)}>

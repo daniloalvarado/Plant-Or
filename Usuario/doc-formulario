@@ -1,4 +1,765 @@
-6.5. Hierba
+1. Árbol
+I. Datos dasométricos (obligatorio – primer bloque)
+•	Altura total aproximada: ___ m 
+•	Circunferencia a la altura del pecho (CAP): ___ cm 
+•	Diámetro de copa paralelo a la calle: ___ m 
+•	Diámetro de copa perpendicular a la calle: ___ m 
+•	Altura de inicio de copa: ___ m 
+Raíces visibles (solo una alternativa)
+•	Sin raíces visibles 
+•	Raíces tablares 
+•	Raíces zancudas 
+•	Raíces superficiales 
+•	Raíces adventicias
+•	Otro: ___ 
+
+II. Tronco y corteza
+Número de troncos desde la base:
+Forma del tronco (solo una)
+•	Recto 
+•	Inclinado (a la izquierda, a la derecha, hacia la calle, hacia la casa) 
+•	Torcido 
+•	Otro: ___ 
+Corteza externa (solo una)
+•	Lisa 
+•	Rugosa
+•	Aspera 
+•	Agrietada
+•	Estriada 
+•	Escamosa 
+•	Con placas
+•	Laminar 
+•	Otro: ___ 
+Lenticelas (solo una)
+•	Con lenticelas 
+•	Sin lenticelas 
+Color de corteza (Mútiple)
+•	Gris 
+•	Marrón 
+•	Verde 
+•	Rojiza 
+•	Negruzca 
+•	Otro: ___ 
+Olor de corteza (solo una)
+•	Sin olor 
+•	Aromático 
+•	Cítrico 
+•	Resinoso 
+•	Desagradable 
+•	Otro: ___ 
+Espinas (solo una)
+•	Con espinas 
+•	Sin espinas 
+
+III. Exudado
+Presencia (solo una)
+•	Sí 
+•	No 
+Tipo (solo una, si aplica)
+•	Savia 
+•	Látex 
+•	Resina 
+•	Goma 
+Color al corte (solo una)
+•	Incoloro 
+•	Blanco 
+•	Amarillo 
+•	Rojizo 
+•	Marrón 
+•	Otro: ___ 
+
+
+IV. Ramificación y copa
+Tipo de ramificación (solo una)
+•	Ramas hacia arriba 
+•	Ramas como hélice de helicóptero 
+•	Ramas colgantes 
+•	Ramas irregulares 
+•	Otro: ___ 
+Forma de copa (solo una)
+•	Redondeada 
+•	Alargada 
+•	Extendida 
+•	Tipo paraguas 
+•	Irregular 
+•	Otro: ___ 
+Densidad de copa (solo una)
+•	Densa 
+•	Media 
+•	Rala 
+
+V. Hojas
+Tipo de hoja (solo una)
+•	Simple 
+•	Compuesta 
+Disposición (Múltiple)
+•	Alternas – dísticas
+•	Alternas - espiraladas
+•	Opuestas – dísticas
+•	Opuestas - decusadas
+•	Agrupadas al final de las ramas 
+•	No agrupadas al final de las ramas 
+
+Forma (solo una)
+•	Ovalada 
+•	Alargada 
+•	Redonda 
+•	Acorazonada 
+•	Palmada 
+•	Otro: ___ 
+Borde (solo una)
+•	Entero 
+•	Dentado 
+•	Ondulado 
+•	Otro: ___ 
+Textura (solo una)
+•	Papirácea 
+•	Cartácea 
+•	Coriácea 
+Color del envés (solo una)
+•	Verde claro 
+•	Verde oscuro 
+•	Grisáceo 
+•	Marrón 
+•	Blanquecino 
+•	Otro: ___ 
+Presencia de pelos (puede marcar varias)
+•	Sin pelos (haz) 
+•	Con pelos (haz) 
+•	Sin pelos (envés) 
+•	Con pelos (envés) 
+Tipo de peciolo
+•	Circular
+•	Plano
+•	Sésil
+Longitud del peciolo cm
+Diámetro del peciolo mm
+Peciolo con pulvino
+•	Sí
+•	No
+
+VI. Flores
+Presencia (solo una)
+•	Con flores 
+•	Sin flores visibles 
+Color de pétalos (solo una)
+•	Blanco 
+•	Amarillo 
+•	Rojo 
+•	Rosado 
+•	Morado 
+•	Anaranjado 
+•	Verde 
+•	Crema 
+•	Otro: ___ 
+Tamaño de flor
+Largo___ cm
+Ancho___ cm
+
+Agrupación (solo una)
+•	Solitaria 
+•	En racimo 
+•	En manojo 
+•	En espiga 
+•	En cabezuela 
+•	Otro: ___ 
+Olor (solo una)
+•	Sin olor 
+•	Aromático 
+•	Dulce 
+•	Desagradable 
+•	Otro: ___ 
+
+VII. Frutos
+Presencia (solo una)
+•	Con frutos 
+•	Sin frutos visibles 
+Textura (solo una)
+•	Carnoso 
+•	Seco 
+Estado al madurar (solo una)
+•	Entero 
+•	Se abre (partido) 
+Forma (solo una)
+•	Redondo 
+•	Ovalado 
+•	Alargado 
+•	Aplanado 
+•	Irregular 
+•	Otro: ___ 
+Tamaño del fruto
+Largo___ cm
+Ancho___ cm
+
+Color del fruto maduro (solo una)
+•	Verde 
+•	Amarillo 
+•	Rojo 
+•	Morado 
+•	Negro 
+•	Marrón 
+•	Crema 
+•	Otro: ___ 
+Superficie (solo una)
+•	Lisa 
+•	Rugosa 
+•	Espinosa 
+•	Con costillas 
+•	Otro: ___ 
+
+VIII. Semillas
+Presencia visible (solo una)
+•	Sí 
+•	No 
+Número de semillas
+Tamaño de semilla
+Largo___ cm
+Ancho___ cm
+Color de cáscara (solo una)
+•	Blanco 
+•	Crema 
+•	Marrón 
+•	Negro 
+•	Rojizo 
+•	Otro: ___ 
+
+
+IX. Estado fenológico (puede marcar varias)
+•	Solo hojas 
+•	Con flores 
+•	Con frutos 
+•	Sin hojas 
+
+X. Estado del individuo (puede marcar varias)
+•	Bueno 
+•	Regular 
+•	Malo 
+•	Podado 
+•	Enfermo 
+•	Con plagas visibles 
+•	Con daño mecánico 
+
+XI. Valor ornamental (puede marcar varias)
+•	Da sombra 
+•	Tiene flores vistosas 
+•	Tiene frutos vistosos 
+•	Tiene copa atractiva 
+•	Atrae fauna 
+•	Valor cultural 
+•	Valor alimenticio 
+•	Valor medicinal 
+•	Mejora el microclima 
+•	Otro: ___ 
+
+XII. Impacto urbano (puede marcar varias)
+•	No genera daño 
+•	Frutos ensucian la vía 
+•	Frutos obstruyen desagüe 
+•	Raíces rompen el piso 
+•	Raíces afectan veredas 
+•	Raíces afectan cimientos 
+•	Levanta pavimento 
+•	Interfiere con cableado 
+•	Interfiere con luminarias 
+•	Riesgo de caída de ramas 
+•	Tronco inclinado (riesgo) 
+•	Otro: ___
+
+2. Palmera
+I. Datos dasométricos (obligatorio – primer bloque)
+•	Altura total aproximada: ___ m 
+•	Circunferencia del tallo a 1.30 m (CAP): ___ cm 
+•	Diámetro de copa paralelo: ___ m 
+•	Diámetro de copa perpendicular: ___ m 
+•	Altura de inicio de copa: ___ m 
+Número de tallos (solo una alternativa)
+•	Un solo tallo 
+•	Varios tallos 
+•	Otro: ___ 
+Raíces visibles (solo una alternativa)
+•	Sin raíces visibles 
+•	Raíces superficiales 
+•	Raíces zancudas 
+•	Raíces de soporte
+•	Raíces adventicias
+•	Otro: ___ 
+
+II. Tipo de palmera (solo una alternativa)
+•	Arborescente 
+•	Arbustiva 
+•	Lianescente 
+•	Sin tallo visible 
+•	Otro: ___ 
+
+III. Tallo (estípite) (puede marcar varias)
+•	Liso 
+•	Con anillos visibles 
+•	Con fibras 
+•	Con restos de hojas 
+•	Con espinas 
+•	Sin espinas 
+•	Otro: ___ 
+
+IV. Hojas (carácter principal)
+Tipo de hoja (solo una alternativa)
+•	Tipo pluma (pinnada) 
+•	Tipo abanico (palmada) 
+•	Simple entera 
+•	Simple bífida 
+•	Otro: ___ 
+Segmentos (puede marcar varias)
+•	En un plano 
+•	En varios planos 
+•	Rígidos 
+•	Colgantes 
+•	Otro: ___ 
+Tamaño de hoja (incluye peciolo)
+•	Largo: ___ m 
+•	Ancho: ___ m 
+Tamaño de peciolo
+•	Largo: ___ m 
+•	Diámetro: ___ cm 
+
+Color (solo una alternativa)
+•	Verde claro 
+•	Verde oscuro 
+•	Verde azulado 
+•	Amarillento 
+•	Otro: ___ 
+
+V. Espinas (puede marcar varias)
+•	Ausentes 
+•	En tallo 
+•	En pecíolo 
+•	En vaina 
+•	Otro: ___ 
+
+VI. Inflorescencia
+Presencia (solo una alternativa)
+•	Con inflorescencia 
+•	Sin inflorescencia visible 
+Posición (puede marcar varias)
+•	Interfoliar (entre hojas) 
+•	Infrafoliar (debajo de hojas) 
+•	Axilar
+•	Apical
+•	Otro: ___ 
+Forma (solo una alternativa)
+•	Erecta 
+•	Colgante 
+•	Otro: ___ 
+Presencia de espata (solo una alternativa)
+•	Sí 
+•	No 
+
+VII. Frutos
+Presencia (solo una alternativa)
+•	Con frutos 
+•	Sin frutos visibles 
+Tipo (solo una alternativa)
+•	Baya 
+•	Drupa 
+•	Otro: ___ 
+Forma (solo una alternativa)
+•	Redondo 
+•	Ovalado 
+•	Alargado 
+•	Aplanado 
+•	Curvo 
+•	Irregular 
+•	Otro: ___ 
+Superficie (solo una alternativa)
+•	Lisa 
+•	Brillante 
+•	Opaca 
+•	Rugosa 
+•	Con estrías 
+•	Con surcos 
+•	Escamosa 
+•	Fibrosa 
+•	Espinosa 
+•	Aguijonosa
+•	Verrugosa 
+•	Otro: ___ 
+Tamaño del fruto
+•	Largo: ___ cm 
+•	Ancho: ___ cm 
+Color del fruto maduro (solo una alternativa)
+•	Verde 
+•	Amarillo 
+•	Rojo 
+•	Anaranjado 
+•	Morado 
+•	Negro 
+•	Marrón 
+•	Otro: ___ 
+
+VIII. Semillas
+Número de semillas por fruto
+
+Tamaño de semilla
+•	Largo: ___ mm o cm 
+•	Ancho: ___ mm o cm 
+
+IX. Estado fenológico (puede marcar varias)
+•	Solo hojas 
+•	Con flores 
+•	Con frutos 
+
+X. Estado del individuo (puede marcar varias)
+•	Bueno 
+•	Regular 
+•	Malo 
+•	Con plagas 
+•	Con daño 
+•	Hojas secas abundantes 
+
+XI. Valor ornamental (puede marcar varias)
+•	Genera sombra 
+•	Tiene flores vistosas 
+•	Tiene frutos vistosos 
+•	Tiene hojas vistosas 
+•	Forma de copa atractiva 
+•	Mejora el microclima 
+•	Atrae fauna 
+•	Valor cultural 
+•	Valor alimenticio 
+•	Valor medicinal 
+•	Otro: ___ 
+
+XII. Impacto urbano (puede marcar varias)
+•	No genera daño 
+•	Frutos ensucian la vía 
+•	Frutos obstruyen desagüe 
+•	Frutos resbalosos 
+•	Raíces levantan vereda 
+•	Raíces afectan cimientos 
+•	Levanta pavimento 
+•	Interfiere con cableado 
+•	Interfiere con luminarias 
+•	Riesgo de caída de hojas 
+•	Tronco inclinado (riesgo) 
+•	Otro: ___
+
+3. Arbusto
+I. Datos dasométricos (obligatorio – primer bloque)
+•	Altura total aproximada: ___ m 
+•	Diámetro de copa paralelo: ___ m 
+•	Diámetro de copa perpendicular: ___ m 
+•	Altura de inicio de ramificación: ___ m 
+Número de tallos (solo una alternativa)
+•	Un tallo principal 
+•	Varios tallos desde la base 
+•	Otro: ___ 
+Forma general del arbusto (solo una alternativa)
+•	Redondeado 
+•	Compacto 
+•	Extendido 
+•	Irregular 
+•	Colgante 
+•	Otro: ___ 
+Densidad del follaje (solo una alternativa)
+•	Denso 
+•	Medio 
+•	Ralo 
+
+II. Tallo y ramificación
+Tipo de ramificación (solo una alternativa)
+•	Erecta 
+•	Abierta 
+•	Colgante 
+•	Irregular 
+•	Otro: ___ 
+Tipo de tallo (solo una alternativa)
+•	Leñoso 
+•	Semileñoso 
+•	Flexible 
+•	Otro: ___ 
+Presencia de espinas (solo una alternativa)
+•	Con espinas 
+•	Sin espinas 
+
+III. Hojas
+Tipo de hoja (solo una alternativa)
+•	Simple 
+•	Compuesta 
+•	Otro: ___ 
+Si es compuesta (solo una alternativa)
+•	Bifoliada
+•	Trifoliada
+•	Palmada
+•	Pinnada
+•	Bipinnada
+
+Forma (solo una alternativa)
+•	Ovalada 
+•	Alargada 
+•	Redonda 
+•	Lanceolada 
+•	Acorazonada 
+•	Otro: ___ 
+Disposición (solo una alternativa)
+•	Alternas 
+•	Opuestas 
+•	Otro: ___ 
+Borde (solo una alternativa)
+•	Entero 
+•	Dentado 
+•	Ondulado 
+•	Otro: ___ 
+Color (solo una alternativa)
+•	Verde claro 
+•	Verde oscuro 
+•	Variegado 
+•	Rojizo 
+•	Otro: ___ 
+
+IV. Flores (clave ornamental)
+Presencia (solo una alternativa)
+•	Con flores 
+•	Sin flores visibles 
+Color de pétalos (solo una alternativa)
+•	Blanco 
+•	Amarillo 
+•	Rojo 
+•	Rosado 
+•	Morado 
+•	Anaranjado 
+•	Otro: ___ 
+Tamaño de flor ___ cm
+Forma (solo una alternativa)
+•	Tubular 
+•	Abierta 
+•	Estrellada 
+•	Campanulada 
+•	Otro: ___ 
+Agrupación (solo una alternativa)
+•	Solitaria 
+•	En racimos 
+•	En ramilletes 
+•	Otro: ___ 
+
+V. Frutos
+Presencia (solo una alternativa)
+•	Con frutos 
+•	Sin frutos visibles 
+Textura (solo una alternativa)
+•	Carnoso 
+•	Seco 
+•	Otro: ___ 
+Forma (solo una alternativa)
+•	Redondo 
+•	Ovalado 
+•	Alargado 
+•	Aplanado 
+•	Otro: ___ 
+Tamaño del fruto ___ cm
+Color del fruto maduro (solo una alternativa)
+•	Verde 
+•	Amarillo 
+•	Rojo 
+•	Morado 
+•	Negro 
+•	Otro: ___ 
+
+VI. Semillas
+Número de semillas
+Tamaño de semilla ___ mm o cm
+
+VII. Estado fenológico (puede marcar varias)
+•	Vegetativo 
+•	Con flores 
+•	Con frutos 
+
+VIII. Estado del individuo (puede marcar varias)
+•	Bueno 
+•	Regular 
+•	Malo 
+•	Podado 
+•	Con plagas 
+•	Con daño 
+
+IX. Valor ornamental (puede marcar varias)
+•	Genera sombra 
+•	Tiene flores vistosas 
+•	Tiene frutos vistosos 
+•	Tiene hojas vistosas 
+•	Forma atractiva 
+•	Mejora el microclima 
+•	Atrae fauna 
+•	Valor cultural 
+•	Valor alimenticio 
+•	Valor medicinal 
+•	Otro: ___ 
+
+
+X. Impacto urbano (puede marcar varias)
+•	No genera daño 
+•	Frutos ensucian la vía 
+•	Frutos obstruyen desagüe 
+•	Raíces afectan vereda 
+•	Interfiere con infraestructura 
+•	Dificulta mantenimiento 
+•	Otro: ___
+
+4. Liana
+I. Datos dasométricos (obligatorio – primer bloque)
+•	Longitud visible aproximada: ___ m 
+•	Altura máxima alcanzada en el soporte: ___ m 
+•	Diámetro del tallo principal: ___ cm 
+Número de tallos (solo una alternativa)
+•	Un tallo principal 
+•	Varios tallos 
+•	Otro: ___ 
+
+II. Tipo de soporte (solo una alternativa)
+•	Árbol 
+•	Arbusto 
+•	Cerca / estructura artificial 
+•	Suelo (rastrera) 
+•	Múltiples soportes 
+•	Otro: ___ 
+
+III. Forma de crecimiento (solo una alternativa)
+•	Trepadora (sube activamente) 
+•	Enredadera (se enrolla) 
+•	Colgante 
+•	Rastrera 
+•	Escandente (se apoya sin enrollarse) 
+•	Otro: ___ 
+
+IV. Mecanismo de fijación (puede marcar varias)
+•	Con zarcillos 
+•	Con raíces adherentes 
+•	Con espinas o ganchos 
+•	Por enrollamiento del tallo 
+•	No visible 
+•	Otro: ___ 
+
+V. Tallo
+Tipo de tallo (solo una alternativa)
+•	Leñoso 
+•	Semileñoso 
+•	Flexible 
+•	Otro: ___ 
+Espinas (solo una alternativa)
+•	Con espinas 
+•	Sin espinas 
+Exudado (solo una alternativa)
+•	Presente 
+•	Ausente 
+Tipo de exudado
+•	Látex
+•	Savia
+•	Goma
+•	Resina
+
+
+Color del exudado
+
+VI. Hojas
+Tipo de hoja (solo una alternativa)
+•	Simple 
+•	Compuesta 
+•	Otro: ___ 
+Forma (solo una alternativa)
+•	Ovalada 
+•	Alargada 
+•	Acorazonada 
+•	Lobulada 
+•	Otro: ___ 
+Disposición (solo una alternativa)
+•	Alterna dística
+•	Alterna espiralada
+•	Opuesta dística
+•	Opuesta decusada
+•	Otro: ___ 
+Textura (solo una alternativa)
+•	Papirácea
+•	Cartácea 
+•	Coriácea 
+•	Otro: ___ 
+
+VII. Flores
+Presencia (solo una alternativa)
+•	Con flores 
+•	Sin flores visibles 
+Color de pétalos (solo una alternativa)
+•	Blanco 
+•	Amarillo 
+•	Rojo 
+•	Rosado 
+•	Morado 
+•	Anaranjado 
+•	Otro: ___ 
+Tamaño de flor ___ cm
+Tipo de agrupación (solo una alternativa)
+•	Solitaria 
+•	En racimos 
+•	En ramilletes 
+•	Otro: ___ 
+
+VIII. Frutos
+Presencia (solo una alternativa)
+•	Con frutos 
+•	Sin frutos visibles 
+Textura (solo una alternativa)
+•	Carnoso 
+•	Seco 
+•	Otro: ___ 
+Forma (solo una alternativa)
+•	Redondo 
+•	Ovalado 
+•	Alargado 
+•	Aplanado 
+•	Otro: ___ 
+Tamaño del fruto ___ cm
+Color del fruto maduro (solo una alternativa)
+•	Verde 
+•	Amarillo 
+•	Rojo 
+•	Morado 
+•	Negro 
+•	Otro: ___ 
+
+IX. Semillas
+Número de semillas
+Tamaño de semilla ___ mm o cm
+
+X. Estado fenológico (puede marcar varias)
+•	Vegetativo 
+•	Con flores 
+•	Con frutos 
+
+XI. Estado del individuo (puede marcar varias)
+•	Bueno 
+•	Regular 
+•	Malo 
+•	Con plagas 
+•	Con daño 
+
+XII. Valor ornamental (puede marcar varias)
+•	Genera sombra 
+•	Flores vistosas 
+•	Frutos vistosos 
+•	Hojas vistosas 
+•	Cubre estructuras 
+•	Atrae fauna 
+•	Valor cultural 
+•	Valor alimenticio 
+•	Valor medicinal 
+•	Otro: ___ 
+
+XIII. Impacto urbano (puede marcar varias)
+•	No genera daño 
+•	Cubre infraestructura 
+•	Interfiere con cableado 
+•	Invade estructuras 
+•	Dificulta mantenimiento 
+•	Genera humedad en paredes 
+•	Otro: ___
+
+5. Hierba
 I. Datos dasométricos (obligatorio – primer bloque)
 •	Altura total aproximada: ___ cm 
 •	Cobertura aproximada de la planta (diámetro): ___ cm 
@@ -16,6 +777,7 @@ II. Tipo de crecimiento (solo una alternativa)
 •	En roseta 
 •	Formando mata 
 •	Otro: ___ 
+
 
 III. Tipo de tallo (solo una alternativa)
 •	Herbáceo 
@@ -46,6 +808,8 @@ Forma (solo una alternativa)
 •	Acorazonada 
 •	Lanceolada 
 •	Otro: ___ 
+
+
 Color (solo una alternativa)
 •	Verde claro 
 •	Verde oscuro 
@@ -105,6 +869,8 @@ Color del fruto maduro (solo una alternativa)
 •	Negro 
 •	Marrón 
 •	Otro: ___ 
+
+
 
 VII. Semillas
 Visibles (solo una alternativa)

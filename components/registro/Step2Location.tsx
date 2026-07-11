@@ -39,11 +39,11 @@ export function Step2({ form }: { form: any }) {
                     <View style={{ height: 300, borderRadius: 10, overflow: 'hidden', position: 'relative' }}>
                       <MapView
                         style={{ flex: 1 }}
-                        initialRegion={{
+                        region={{
                           latitude: location.latitude,
                           longitude: location.longitude,
-                          latitudeDelta: 0.005,
-                          longitudeDelta: 0.005,
+                          latitudeDelta: 0.00345,
+                          longitudeDelta: 0.00015,
                         }}
                         onPress={(e) => setLocation(e.nativeEvent.coordinate)}
                       >

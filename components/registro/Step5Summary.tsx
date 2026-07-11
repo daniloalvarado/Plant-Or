@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image, Pressable, ScrollView } from 'react-native';
 import { Text, YStack, XStack, H4, Card, Button, Paragraph, H2 } from 'tamagui';
 import MapView, { Marker } from 'react-native-maps';
+import { getActiveBotanicData } from '@/lib/botanicState';
 
 const ARBOL_SCHEMA = [
   { title: 'I. Datos dasométricos', dataObj: 'dasometria', keys: [ { key: 'altura_total', label: 'Altura total aproximada', unit: 'm' }, { key: 'cap', label: 'Circunferencia a la altura del pecho (CAP)', unit: 'cm' }, { key: 'diametro_copa_paralelo', label: 'Diámetro de copa paralelo a la calle', unit: 'm' }, { key: 'diametro_copa_perpendicular', label: 'Diámetro de copa perpendicular a la calle', unit: 'm' }, { key: 'altura_inicio_copa', label: 'Altura de inicio de copa', unit: 'm' }, { key: 'raices_visibles', label: 'Raíces visibles' } ] },
@@ -16,6 +17,65 @@ const ARBOL_SCHEMA = [
   { title: 'X. Estado del individuo', dataObj: 'compartido', keys: [ { key: 'estado_individuo', label: 'Estado del individuo' } ] },
   { title: 'XI. Valor ornamental', dataObj: 'compartido', keys: [ { key: 'valor_ornamental', label: 'Valor ornamental' } ] },
   { title: 'XII. Impacto urbano', dataObj: 'compartido', keys: [ { key: 'impacto_urbano', label: 'Impacto urbano' } ] }
+];
+
+const PALMERA_SCHEMA = [
+  { title: 'I. Datos dasométricos', dataObj: 'dasometria', keys: [ { key: 'altura_total', label: 'Altura total aproximada', unit: 'm' }, { key: 'cap', label: 'Circunferencia del tallo a 1.30 m (CAP)', unit: 'cm' }, { key: 'diametro_copa_paralelo', label: 'Diámetro de copa paralelo', unit: 'm' }, { key: 'diametro_copa_perpendicular', label: 'Diámetro de copa perpendicular', unit: 'm' }, { key: 'altura_inicio_copa', label: 'Altura de inicio de copa', unit: 'm' }, { key: 'numero_tallos', label: 'Número de tallos' }, { key: 'raices_visibles', label: 'Raíces visibles' } ] },
+  { title: 'II. Tipo de palmera', dataObj: 'general', keys: [ { key: 'tipo', label: 'Tipo de palmera' } ] },
+  { title: 'III. Tallo (estípite)', dataObj: 'tallo', keys: [ { key: 'caracteristicas', label: 'Tallo (estípite)' } ] },
+  { title: 'IV. Hojas', dataObj: 'hojas', keys: [ { key: 'tipo', label: 'Tipo de hoja' }, { key: 'segmentos', label: 'Segmentos' }, { key: 'hoja_largo', label: 'Tamaño de hoja (Largo)', unit: 'm' }, { key: 'hoja_ancho', label: 'Tamaño de hoja (Ancho)', unit: 'm' }, { key: 'peciolo_largo', label: 'Tamaño de peciolo (Largo)', unit: 'm' }, { key: 'peciolo_diametro', label: 'Tamaño de peciolo (Diámetro)', unit: 'cm' }, { key: 'color_hoja', label: 'Color' } ] },
+  { title: 'V. Espinas', dataObj: 'espinas', keys: [ { key: 'espinas_palmera', label: 'Espinas' } ] },
+  { title: 'VI. Inflorescencia', dataObj: 'inflorescencia', keys: [ { key: 'inflorescencia_presencia', label: 'Presencia' }, { key: 'inflorescencia_posicion', label: 'Posición' }, { key: 'inflorescencia_forma', label: 'Forma' }, { key: 'inflorescencia_espata', label: 'Presencia de espata' } ] },
+  { title: 'VII. Frutos', dataObj: 'reproductivo', keys: [ { key: 'fruto_presencia', label: 'Presencia' }, { key: 'fruto_tipo', label: 'Tipo' }, { key: 'fruto_forma', label: 'Forma' }, { key: 'fruto_superficie', label: 'Superficie' }, { key: 'fruto_tamano_largo', label: 'Tamaño del fruto (Largo)', unit: 'cm' }, { key: 'fruto_tamano_ancho', label: 'Tamaño del fruto (Ancho)', unit: 'cm' }, { key: 'fruto_color_maduro', label: 'Color del fruto maduro' } ] },
+  { title: 'VIII. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_numero', label: 'Número de semillas por fruto' }, { key: 'semilla_tamano_largo', label: 'Tamaño de semilla (Largo)', unit: 'cm' }, { key: 'semilla_tamano_ancho', label: 'Tamaño de semilla (Ancho)', unit: 'cm' } ] },
+  { title: 'IX. Estado fenológico', dataObj: 'compartido', keys: [ { key: 'estado_fenologico', label: 'Estado fenológico' } ] },
+  { title: 'X. Estado del individuo', dataObj: 'compartido', keys: [ { key: 'estado_individuo', label: 'Estado del individuo' } ] },
+  { title: 'XI. Valor ornamental', dataObj: 'compartido', keys: [ { key: 'valor_ornamental', label: 'Valor ornamental' } ] },
+  { title: 'XII. Impacto urbano', dataObj: 'compartido', keys: [ { key: 'impacto_urbano', label: 'Impacto urbano' } ] }
+];
+
+const ARBUSTO_SCHEMA = [
+  { title: 'I. Datos dasométricos', dataObj: 'dasometria', keys: [ { key: 'altura_total', label: 'Altura total aproximada', unit: 'm' }, { key: 'diametro_copa_paralelo', label: 'Diámetro de copa paralelo', unit: 'm' }, { key: 'diametro_copa_perpendicular', label: 'Diámetro de copa perpendicular', unit: 'm' }, { key: 'altura_inicio_copa', label: 'Altura de inicio de ramificación', unit: 'm' }, { key: 'numero_tallos', label: 'Número de tallos' }, { key: 'forma_general', label: 'Forma general del arbusto' }, { key: 'densidad_follaje', label: 'Densidad del follaje' } ] },
+  { title: 'II. Tallo y ramificación', dataObj: 'tallo', keys: [ { key: 'tipo_ramificacion', label: 'Tipo de ramificación' }, { key: 'tipo_tallo', label: 'Tipo de tallo' }, { key: 'presencia_espinas', label: 'Presencia de espinas' } ] },
+  { title: 'III. Hojas', dataObj: 'hojas', keys: [ { key: 'tipo_hoja', label: 'Tipo de hoja' }, { key: 'hoja_compuesta_tipo', label: 'Si es compuesta' }, { key: 'forma_hoja', label: 'Forma' }, { key: 'disposicion_hoja', label: 'Disposición' }, { key: 'borde_hoja', label: 'Borde' }, { key: 'color_hoja', label: 'Color' } ] },
+  { title: 'IV. Flores', dataObj: 'reproductivo', keys: [ { key: 'flor_presencia', label: 'Presencia' }, { key: 'flor_color', label: 'Color de pétalos' }, { key: 'flor_tamano', label: 'Tamaño de flor', unit: 'cm' }, { key: 'flor_forma', label: 'Forma' }, { key: 'flor_agrupacion', label: 'Agrupación' } ] },
+  { title: 'V. Frutos', dataObj: 'reproductivo', keys: [ { key: 'fruto_presencia', label: 'Presencia' }, { key: 'fruto_textura', label: 'Textura' }, { key: 'fruto_forma', label: 'Forma' }, { key: 'fruto_tamano', label: 'Tamaño del fruto', unit: 'cm' }, { key: 'fruto_color_maduro', label: 'Color del fruto maduro' } ] },
+  { title: 'VI. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_numero', label: 'Número de semillas' }, { key: 'semilla_tamano', label: 'Tamaño de semilla', unit: 'cm' } ] },
+  { title: 'VII. Estado fenológico', dataObj: 'compartido', keys: [ { key: 'estado_fenologico', label: 'Estado fenológico' } ] },
+  { title: 'VIII. Estado del individuo', dataObj: 'compartido', keys: [ { key: 'estado_individuo', label: 'Estado del individuo' } ] },
+  { title: 'IX. Valor ornamental', dataObj: 'compartido', keys: [ { key: 'valor_ornamental', label: 'Valor ornamental' } ] },
+  { title: 'X. Impacto urbano', dataObj: 'compartido', keys: [ { key: 'impacto_urbano', label: 'Impacto urbano' } ] }
+];
+
+const LIANA_SCHEMA = [
+  { title: 'I. Datos dasométricos', dataObj: 'dasometria', keys: [ { key: 'longitud_visible', label: 'Longitud visible aproximada', unit: 'm' }, { key: 'altura_maxima', label: 'Altura máxima alcanzada', unit: 'm' }, { key: 'diametro_tallo', label: 'Diámetro del tallo principal', unit: 'cm' }, { key: 'numero_tallos', label: 'Número de tallos' } ] },
+  { title: 'II. Tipo de soporte', dataObj: 'crecimiento', keys: [ { key: 'tipo_soporte', label: 'Tipo de soporte' } ] },
+  { title: 'III. Forma de crecimiento', dataObj: 'crecimiento', keys: [ { key: 'forma_crecimiento', label: 'Forma de crecimiento' } ] },
+  { title: 'IV. Mecanismo de fijación', dataObj: 'crecimiento', keys: [ { key: 'mecanismo_fijacion', label: 'Mecanismo de fijación' } ] },
+  { title: 'V. Tallo', dataObj: 'tallo', keys: [ { key: 'tipo_tallo_liana', label: 'Tipo de tallo' }, { key: 'espinas_tallo', label: 'Espinas' } ] },
+  { title: 'VI. Exudado', dataObj: 'exudado', keys: [ { key: 'presencia', label: 'Presencia' }, { key: 'tipo', label: 'Tipo' }, { key: 'color', label: 'Color' } ] },
+  { title: 'VII. Hojas', dataObj: 'hojas', keys: [ { key: 'tipo_hoja', label: 'Tipo de hoja' }, { key: 'forma_hoja', label: 'Forma' }, { key: 'disposicion_hoja', label: 'Disposición' }, { key: 'textura_hoja', label: 'Textura' } ] },
+  { title: 'VIII. Flores', dataObj: 'reproductivo', keys: [ { key: 'flor_presencia', label: 'Presencia' }, { key: 'flor_color', label: 'Color de pétalos' }, { key: 'flor_tamano', label: 'Tamaño de flor', unit: 'cm' }, { key: 'flor_agrupacion', label: 'Tipo de agrupación' } ] },
+  { title: 'IX. Frutos', dataObj: 'reproductivo', keys: [ { key: 'fruto_presencia', label: 'Presencia' }, { key: 'fruto_textura', label: 'Textura' }, { key: 'fruto_forma', label: 'Forma' }, { key: 'fruto_tamano', label: 'Tamaño del fruto', unit: 'cm' }, { key: 'fruto_color_maduro', label: 'Color del fruto maduro' } ] },
+  { title: 'X. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_numero', label: 'Número de semillas' }, { key: 'semilla_tamano', label: 'Tamaño de semilla', unit: 'cm' } ] },
+  { title: 'XI. Estado fenológico', dataObj: 'compartido', keys: [ { key: 'estado_fenologico', label: 'Estado fenológico' } ] },
+  { title: 'XII. Estado del individuo', dataObj: 'compartido', keys: [ { key: 'estado_individuo', label: 'Estado del individuo' } ] },
+  { title: 'XIII. Valor ornamental', dataObj: 'compartido', keys: [ { key: 'valor_ornamental', label: 'Valor ornamental' } ] },
+  { title: 'XIV. Impacto urbano', dataObj: 'compartido', keys: [ { key: 'impacto_urbano', label: 'Impacto urbano' } ] }
+];
+
+const HIERBA_SCHEMA = [
+  { title: 'I. Datos dasométricos', dataObj: 'dasometria', keys: [ { key: 'altura_total', label: 'Altura total aproximada', unit: 'cm' }, { key: 'cobertura', label: 'Cobertura aproximada de la planta', unit: 'cm' }, { key: 'numero_tallos', label: 'Número de tallos' } ] },
+  { title: 'II. Forma de crecimiento', dataObj: 'crecimiento', keys: [ { key: 'tipo_crecimiento', label: 'Forma de crecimiento' } ] },
+  { title: 'III. Tipo de tallo', dataObj: 'tallo', keys: [ { key: 'tipo_tallo', label: 'Tipo de tallo' } ] },
+  { title: 'IV. Hojas', dataObj: 'hojas', keys: [ { key: 'tipo_hoja', label: 'Tipo de hoja' }, { key: 'hoja_compuesta_tipo', label: 'Si es compuesta' }, { key: 'forma_hoja', label: 'Forma' }, { key: 'disposicion_hoja', label: 'Disposición' }, { key: 'borde_hoja', label: 'Borde' }, { key: 'color_hoja', label: 'Color' }, { key: 'textura_hoja', label: 'Textura' }, { key: 'olor_hoja', label: 'Olor al estrujar' }, { key: 'exudado_corte', label: 'Exudado al corte' } ] },
+  { title: 'V. Flores', dataObj: 'reproductivo', keys: [ { key: 'flor_presencia', label: 'Presencia' }, { key: 'flor_color', label: 'Color de pétalos' }, { key: 'flor_tamano', label: 'Tamaño de flor', unit: 'cm' }, { key: 'flor_agrupacion', label: 'Tipo de agrupación' } ] },
+  { title: 'VI. Frutos', dataObj: 'reproductivo', keys: [ { key: 'fruto_presencia', label: 'Presencia' }, { key: 'fruto_textura', label: 'Textura' }, { key: 'fruto_forma', label: 'Forma' }, { key: 'fruto_tamano', label: 'Tamaño del fruto', unit: 'cm' }, { key: 'fruto_color_maduro', label: 'Color del fruto maduro' } ] },
+  { title: 'VII. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_presencia', label: 'Visibles' }, { key: 'semilla_tamano', label: 'Tamaño de semilla', unit: 'cm' } ] },
+  { title: 'VIII. Estado fenológico', dataObj: 'compartido', keys: [ { key: 'estado_fenologico', label: 'Estado fenológico' } ] },
+  { title: 'IX. Estado del individuo', dataObj: 'compartido', keys: [ { key: 'estado_individuo', label: 'Estado del individuo' } ] },
+  { title: 'X. Valor ornamental', dataObj: 'compartido', keys: [ { key: 'valor_ornamental', label: 'Valor ornamental' } ] },
+  { title: 'XI. Impacto urbano', dataObj: 'compartido', keys: [ { key: 'impacto_urbano', label: 'Impacto urbano' } ] }
 ];
 
 export function Step5Summary({ form }: { form: any }) {
@@ -45,15 +105,36 @@ export function Step5Summary({ form }: { form: any }) {
       return validImpactos.some(v => v === opt || v.replace(/[^a-zA-Z ]/g, '') === opt.replace(/[^a-zA-Z ]/g, ''));
     }).join(', ');
   };
-  const { 
-    datosBotanicos, fotos, location, nombresComunes, nombreCientifico,
-    formatLabel, setSelectedPhoto, handleFinalSubmit, isSubmitting, 
-    editId, prevStep, nombre, email, dni, rolRegistro,
-    distrito, direccion, tipoUbicacion, tipoUbicacion2, numeroCasa, sustratoPlanta,
-    curso, facultad, escuela, diaClase
+  const {
+    datosBotanicos,
+    nombre,
+    email,
+    rolRegistro,
+    dni,
+    curso,
+    facultad,
+    escuela,
+    diaClase,
+    distrito,
+    direccion,
+    numeroCasa,
+    tipoUbicacion,
+    tipoUbicacion2,
+    sustratoPlanta,
+    location,
+    nombresComunes,
+    nombreCientifico,
+    fotos,
+    setSelectedPhoto,
+    handleFinalSubmit,
+    isSubmitting,
+    editId,
+    prevStep,
   } = form;
 
-  const renderArbolSection = (section: any, idx: number) => {
+  const activeData = getActiveBotanicData(datosBotanicos);
+
+  const renderSchemaSection = (section: any, idx: number) => {
     const parentObj = datosBotanicos?.[section.dataObj];
     if (!parentObj) return null;
     
@@ -61,14 +142,21 @@ export function Step5Summary({ form }: { form: any }) {
     if (activeKeys.length === 0) return null;
     
     return (
-      <YStack mb="$2" key={'arbol_sec_' + idx}>
+      <YStack mb="$2" key={'sec_' + idx}>
         <Text color="#1FC451" fontWeight="bold" mt="$2">{section.title}</Text>
         {activeKeys.map((k: any, k_idx: number) => {
           const v = parentObj[k.key];
           const stringVal = Array.isArray(v) ? v.join(', ') : String(v);
+          
+          // Lógica especial para limpiar Impacto Urbano
+          let finalVal = stringVal;
+          if (k.key === 'impacto_urbano') {
+            finalVal = getFilteredImpacto(v, activeData?.habito);
+          }
+
           return (
-            <Text key={'arbol_key_' + k_idx} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-              • {k.label}: <Text color="white" textTransform="none">{stringVal} {k.unit || ''}</Text>
+            <Text key={'key_' + k_idx} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
+              • {k.label}: <Text color="white" textTransform="none">{finalVal} {k.unit || ''}</Text>
             </Text>
           );
         })}
@@ -114,7 +202,7 @@ export function Step5Summary({ form }: { form: any }) {
           <View style={{ height: 150, borderRadius: 8, overflow: 'hidden', marginTop: 8 }}>
             <MapView
               style={{ flex: 1 }}
-              initialRegion={{ latitude: location.latitude, longitude: location.longitude, latitudeDelta: 0.0003, longitudeDelta: 0.0003 }}
+              region={{ latitude: location.latitude, longitude: location.longitude, latitudeDelta: 0.00245, longitudeDelta: 0.00145 }}
               scrollEnabled={false}
               zoomEnabled={false}
             >
@@ -128,146 +216,20 @@ export function Step5Summary({ form }: { form: any }) {
         <H4 color="white">3. Botánica y Características</H4>
         <Text color="rgba(255,255,255,0.7)">Nombre Común: <Text color="white" fontWeight="bold">{nombresComunes || 'No especificado'}</Text></Text>
         <Text color="rgba(255,255,255,0.7)">Nombre Científico: <Text color="white" fontWeight="bold">{nombreCientifico || 'No especificado'}</Text></Text>
-        <Text color="rgba(255,255,255,0.7)">Hábito: <Text color="white" fontWeight="bold">{datosBotanicos?.habito}</Text></Text>
-        {datosBotanicos?.tipoVida ? <Text color="rgba(255,255,255,0.7)">Tipo de Vida: <Text color="white" fontWeight="bold">{datosBotanicos?.tipoVida}</Text></Text> : null}
+        <Text color="rgba(255,255,255,0.7)">Hábito: <Text color="white" fontWeight="bold">{activeData?.habito}</Text></Text>
+        {activeData?.tipoVida ? <Text color="rgba(255,255,255,0.7)">Tipo de Vida: <Text color="white" fontWeight="bold">{activeData?.tipoVida}</Text></Text> : null}
         
         <View style={{ marginTop: 10, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.1)', paddingTop: 10 }}>
           <Text color="#1FC451" fontWeight="bold" mb="$2">Detalle Completo (Bloques):</Text>
           
-          {datosBotanicos?.habito === 'Árbol' ? (
-            ARBOL_SCHEMA.map(renderArbolSection)
-          ) : (
-            <>
-              {['Palmera', 'Arbusto', 'Liana', 'Hierba'].includes(datosBotanicos?.habito) && datosBotanicos?.dasometria && Object.keys(datosBotanicos.dasometria).length > 0 && (
-                <YStack mb="$2">
-                  <Text color="#1FC451" fontWeight="bold" mt="$2">I. Datos dasométricos</Text>
-                  {Object.entries(datosBotanicos.dasometria).map(([k, v]) => (
-                    <Text key={`daso-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                      • {formatLabel(k)}: <Text color="white" textTransform="none">{String(v)}</Text>
-                    </Text>
-                  ))}
-                </YStack>
-              )}
-
-              {(['Palmera', 'Arbusto', 'Liana'].includes(datosBotanicos?.habito) && datosBotanicos?.tallo) && Object.keys(datosBotanicos?.tallo || {}).length > 0 && (
-                <YStack mb="$2">
-                  <Text color="#1FC451" fontWeight="bold" mt="$2">II. Tallo / Estipe</Text>
-                  {Object.entries(datosBotanicos?.tallo || {}).map(([k, v]) => (
-                    <Text key={`tronco-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                      • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
-                    </Text>
-                  ))}
-                </YStack>
-              )}
-
-              {['Liana'].includes(datosBotanicos?.habito) && datosBotanicos?.exudado && Object.keys(datosBotanicos.exudado).length > 0 && (
-                <YStack mb="$2">
-                  <Text color="#1FC451" fontWeight="bold" mt="$2">III. Exudado</Text>
-                  {Object.entries(datosBotanicos.exudado).map(([k, v]) => (
-                    <Text key={`exu-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                      • {formatLabel(k)}: <Text color="white" textTransform="none">{String(v)}</Text>
-                    </Text>
-                  ))}
-                </YStack>
-              )}
-
-              {((['Liana', 'Hierba'].includes(datosBotanicos?.habito) && datosBotanicos?.crecimiento) || (['Palmera'].includes(datosBotanicos?.habito) && datosBotanicos?.inflorescencia)) && Object.keys((['Liana', 'Hierba'].includes(datosBotanicos?.habito) ? datosBotanicos?.crecimiento : datosBotanicos?.inflorescencia) || {}).length > 0 && (
-                <YStack mb="$2">
-                  <Text color="#1FC451" fontWeight="bold" mt="$2">IV. Ramificación / Copa / Crecimiento</Text>
-                  {Object.entries((['Liana', 'Hierba'].includes(datosBotanicos?.habito) ? datosBotanicos?.crecimiento : datosBotanicos?.inflorescencia) || {}).map(([k, v]) => (
-                    <Text key={`copa-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                      • {formatLabel(k)}: <Text color="white" textTransform="none">{String(v)}</Text>
-                    </Text>
-                  ))}
-                </YStack>
-              )}
-
-              {['Palmera', 'Arbusto', 'Liana', 'Hierba'].includes(datosBotanicos?.habito) && datosBotanicos?.hojas && Object.keys(datosBotanicos.hojas).length > 0 && (
-                <YStack mb="$2">
-                  <Text color="#1FC451" fontWeight="bold" mt="$2">V. Hojas</Text>
-                  {Object.entries(datosBotanicos.hojas).map(([k, v]) => (
-                    <Text key={`hoja-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                      • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
-                    </Text>
-                  ))}
-                </YStack>
-              )}
-
-              {datosBotanicos?.reproductivo && (
-                <YStack mb="$2">
-                  {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('flor_')).length > 0 && (
-                    <YStack mb="$2">
-                      <Text color="#1FC451" fontWeight="bold" mt="$2">VI. Flores</Text>
-                      {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('flor_')).map(([k, v]) => (
-                        v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                          • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
-                        </Text> : null
-                      ))}
-                    </YStack>
-                  )}
-                  {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('fruto_')).length > 0 && (
-                    <YStack mb="$2">
-                      <Text color="#1FC451" fontWeight="bold" mt="$2">VII. Frutos</Text>
-                      {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('fruto_')).map(([k, v]) => (
-                        v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                          • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
-                        </Text> : null
-                      ))}
-                    </YStack>
-                  )}
-                  {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('semilla_')).length > 0 && (
-                    <YStack mb="$2">
-                      <Text color="#1FC451" fontWeight="bold" mt="$2">VIII. Semillas</Text>
-                      {Object.entries(datosBotanicos.reproductivo).filter(([k]) => k.startsWith('semilla_')).map(([k, v]) => (
-                        v ? <Text key={`repro-${k}`} color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                          • {formatLabel(k)}: <Text color="white" textTransform="none">{Array.isArray(v) ? v.join(', ') : String(v)}</Text>
-                        </Text> : null
-                      ))}
-                    </YStack>
-                  )}
-                </YStack>
-              )}
-
-              {['Arbusto', 'Palmera', 'Liana', 'Hierba'].includes(datosBotanicos?.habito) && datosBotanicos?.compartido && (
-                <YStack mb="$2">
-                  {datosBotanicos.compartido.estado_fenologico && (
-                    <YStack mb="$2">
-                      <Text color="#1FC451" fontWeight="bold" mt="$2">IX. Estado fenológico</Text>
-                      <Text color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                        • {formatLabel('estado_fenologico')}: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.estado_fenologico) ? datosBotanicos.compartido.estado_fenologico.join(', ') : String(datosBotanicos.compartido.estado_fenologico)}</Text>
-                      </Text>
-                    </YStack>
-                  )}
-                  {datosBotanicos.compartido.estado_individuo && (
-                    <YStack mb="$2">
-                      <Text color="#1FC451" fontWeight="bold" mt="$2">X. Estado del individuo</Text>
-                      <Text color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                        • {formatLabel('estado_individuo')}: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.estado_individuo) ? datosBotanicos.compartido.estado_individuo.join(', ') : String(datosBotanicos.compartido.estado_individuo)}</Text>
-                      </Text>
-                    </YStack>
-                  )}
-                  {datosBotanicos.compartido.valor_ornamental && (
-                    <YStack mb="$2">
-                      <Text color="#1FC451" fontWeight="bold" mt="$2">XI. Valor ornamental</Text>
-                      <Text color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                        • {formatLabel('valor_ornamental')}: <Text color="white" textTransform="none">{Array.isArray(datosBotanicos.compartido.valor_ornamental) ? datosBotanicos.compartido.valor_ornamental.join(', ') : String(datosBotanicos.compartido.valor_ornamental)}</Text>
-                      </Text>
-                    </YStack>
-                  )}
-                  {datosBotanicos.compartido.impacto_urbano && (
-                    <YStack mb="$2">
-                      <Text color="#1FC451" fontWeight="bold" mt="$2">XII. Impacto urbano</Text>
-                      <Text color="rgba(255,255,255,0.6)" fontSize={13} ml="$2">
-                        • {formatLabel('impacto_urbano')}: <Text color="white" textTransform="none">{getFilteredImpacto(datosBotanicos.compartido.impacto_urbano, datosBotanicos?.habito)}</Text>
-                      </Text>
-                    </YStack>
-                  )}
-                </YStack>
-              )}
-            </>
-          )}
+          {activeData?.habito === 'Árbol' && ARBOL_SCHEMA.map(renderSchemaSection)}
+          {activeData?.habito === 'Palmera' && PALMERA_SCHEMA.map(renderSchemaSection)}
+          {activeData?.habito === 'Arbusto' && ARBUSTO_SCHEMA.map(renderSchemaSection)}
+          {activeData?.habito === 'Liana' && LIANA_SCHEMA.map(renderSchemaSection)}
+          {activeData?.habito === 'Hierba' && HIERBA_SCHEMA.map(renderSchemaSection)}
         </View>
       </Card>
+
 
       <Card padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0} gap="$3">
         <H4 color="white">4. Fotografías (5)</H4>

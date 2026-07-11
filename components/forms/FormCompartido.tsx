@@ -32,9 +32,9 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
         </YStack>
         {getField('reproductivo', 'flor_presencia') === 'Con flores' && (
           <YStack gap="$3">
-            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.flor_color_petalos', el)}>
-              <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color de pétalos</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_color_petalos') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
-              <RadioSelect options={['Blanco', 'Amarillo', 'Rojo', 'Rosado', 'Morado', 'Anaranjado', 'Verde', 'Crema', 'Otro']} value={getField('reproductivo', 'flor_color_petalos')} onChange={(val) => setField('reproductivo', 'flor_color_petalos', val)} />
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.flor_color', el)}>
+              <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color de pétalos</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_color') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+              <RadioSelect options={['Blanco', 'Amarillo', 'Rojo', 'Rosado', 'Morado', 'Anaranjado', 'Verde', 'Crema', 'Otro']} value={getField('reproductivo', 'flor_color')} onChange={(val) => setField('reproductivo', 'flor_color', val)} />
             </YStack>
             
             <XStack gap="$3">
@@ -128,9 +128,9 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
                 <Input cursorColor="#ffffff" selectionColor="#0D5E26" keyboardType="numeric" placeholder="Ej. 0.5" value={getField('reproductivo', 'semilla_tamano_ancho')} onChangeText={(val) => setField('reproductivo', 'semilla_tamano_ancho', val)} borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }} />
               </YStack>
             </XStack>
-            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_color_cascara', el)}>
-              <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color de cáscara</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_color_cascara') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
-              <RadioSelect options={['Blanco', 'Crema', 'Marrón', 'Negro', 'Rojizo', 'Otro']} value={getField('reproductivo', 'semilla_color_cascara')} onChange={(val) => setField('reproductivo', 'semilla_color_cascara', val)} />
+            <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_color', el)}>
+              <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Color de cáscara</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_color') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+              <RadioSelect options={['Blanco', 'Crema', 'Marrón', 'Negro', 'Rojizo', 'Otro']} value={getField('reproductivo', 'semilla_color')} onChange={(val) => setField('reproductivo', 'semilla_color', val)} />
             </YStack>
             
           </YStack>

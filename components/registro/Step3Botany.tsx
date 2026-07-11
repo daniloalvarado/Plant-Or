@@ -10,23 +10,27 @@ import { FormArbusto } from '@/components/forms/FormArbusto';
 import { FormLiana } from '@/components/forms/FormLiana';
 import { FormHierba } from '@/components/forms/FormHierba';
 import { FormCompartido } from '@/components/forms/FormCompartido';
+import { getActiveBotanicData } from '@/lib/botanicState';
 
 export function Step3({ form }: { form: any }) {
   const {
-    nombre, setNombre, email, setEmail, dni, setDni, facultad, setFacultad,
-    escuela, setEscuela, curso, setCurso, diaClase, setDiaClase, rolRegistro,
-    setRolRegistro, nextStep, prevStep, isStep1Valid, isStep2Valid, isStep3Valid,
-    isStep4Valid, errorMsg, location, setLocation, fetchLocation, distrito,
-    setDistrito, direccion, setDireccion, tipoUbicacion, setTipoUbicacion,
-    tipoUbicacion2, setTipoUbicacion2, numeroCasa, setNumeroCasa, sustratoPlanta,
-    setSustratoPlanta, fotos, setFotos, fotosExtra, setFotosExtra, takePhoto,
-    pickFromGallery, takeExtraPhoto, pickExtraFromGallery, removeExtraPhoto,
-    setSelectedPhoto, showStep3Error, setShowStep3Error, handleFinalSubmit,
-    isSubmitting, editId, numeroPlantaAutogenerado, nombresComunes,
-    setNombresComunes, nombreCientifico, setNombreCientifico, familia, setFamilia,
-    datosBotanicos, updateBotanic, registerFieldRef, showHelperButton,
-    missingSections, handleContinuarBloque3, formatLabel, derivedRole
+    registerFieldRef,
+    datosBotanicos,
+    missingSections,
+    showHelperButton,
+    updateBotanic,
+    numeroPlantaAutogenerado,
+    nombresComunes,
+    setNombresComunes,
+    nombreCientifico,
+    setNombreCientifico,
+    familia,
+    setFamilia,
+    handleContinuarBloque3,
+    prevStep
   } = form;
+
+  const activeData = getActiveBotanicData(datosBotanicos);
 
   return (
     <>
@@ -40,7 +44,7 @@ export function Step3({ form }: { form: any }) {
 
                   {/* Identificación botánica */}
                   <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('nombresComunes', el)}>
-                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre local / común *</Label>{(showHelperButton && missingSections.some(m => m.id === 'nombresComunes')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre local / común *</Label>{(showHelperButton && missingSections.some((m: any) => m.id === 'nombresComunes')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={nombresComunes}
                       onChangeText={setNombresComunes}
@@ -53,7 +57,7 @@ export function Step3({ form }: { form: any }) {
                   </YStack>
 
                   <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('nombreCientifico', el)}>
-                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre científico *</Label>{(showHelperButton && missingSections.some(m => m.id === 'nombreCientifico')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Nombre científico *</Label>{(showHelperButton && missingSections.some((m: any) => m.id === 'nombreCientifico')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={nombreCientifico}
                       onChangeText={setNombreCientifico}
@@ -67,7 +71,7 @@ export function Step3({ form }: { form: any }) {
                   </YStack>
 
                   <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('familia', el)}>
-                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Familia botánica *</Label>{(showHelperButton && missingSections.some(m => m.id === 'familia')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Familia botánica *</Label>{(showHelperButton && missingSections.some((m: any) => m.id === 'familia')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={familia}
                       onChangeText={setFamilia}
@@ -81,7 +85,7 @@ export function Step3({ form }: { form: any }) {
                   </YStack>
 
                   <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('habito', el)}>
-                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>1. Hábito de la planta *</Label>{(showHelperButton && missingSections.some(m => m.id === 'habito')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>1. Hábito de la planta *</Label>{(showHelperButton && missingSections.some((m: any) => m.id === 'habito')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <RadioSelect 
                       options={['Árbol', 'Palmera', 'Arbusto', 'Liana', 'Hierba']}
                       value={datosBotanicos.habito}
@@ -90,7 +94,7 @@ export function Step3({ form }: { form: any }) {
                   </YStack>
 
                   <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('tipoVida', el)}>
-                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>2. Tipo de vida *</Label>{(showHelperButton && missingSections.some(m => m.id === 'tipoVida')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>2. Tipo de vida *</Label>{(showHelperButton && missingSections.some((m: any) => m.id === 'tipoVida')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
                     <RadioSelect 
                       options={['Terrestre', 'Epífita', 'Parásita']}
                       value={datosBotanicos.tipoVida}
@@ -100,24 +104,24 @@ export function Step3({ form }: { form: any }) {
                 </Card>
 
                 {datosBotanicos.habito === 'Árbol' && (
-                  <FormArbol data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
+                  <FormArbol data={activeData} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 {datosBotanicos.habito === 'Palmera' && (
-                  <FormPalmera data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
+                  <FormPalmera data={activeData} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 {datosBotanicos.habito === 'Arbusto' && (
-                  <FormArbusto data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
+                  <FormArbusto data={activeData} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 {datosBotanicos.habito === 'Liana' && (
-                  <FormLiana data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
+                  <FormLiana data={activeData} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 {datosBotanicos.habito === 'Hierba' && (
-                  <FormHierba data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
+                  <FormHierba data={activeData} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
 
                 {/* Variables compartidas por todas las plantas (solo se muestra si se eligió un hábito y NO es Palmera/Arbusto/Liana/Hierba, ya que tienen sus propios campos) */}
                 {datosBotanicos.habito !== '' && datosBotanicos.habito !== 'Palmera' && datosBotanicos.habito !== 'Arbusto' && datosBotanicos.habito !== 'Liana' && datosBotanicos.habito !== 'Hierba' && (
-                  <FormCompartido data={datosBotanicos} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
+                  <FormCompartido data={activeData} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
                 
                 <Card padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
