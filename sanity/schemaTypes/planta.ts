@@ -63,6 +63,8 @@ export const planta = {
 
     // 3. IDENTIFICACIÓN
     { name: 'nombre_cientifico', title: 'Nombre Científico', type: 'string', fieldset: 'identificacion' },
+    { name: 'origen', title: 'Origen', type: 'string', fieldset: 'identificacion', options: { list: ['Nativa', 'Introducida'] } },
+    { name: 'pais_origen', title: 'País de origen', type: 'string', fieldset: 'identificacion', hidden: ({ document }: any) => document?.origen !== 'Introducida' },
     { name: 'nombres_comunes', title: 'Nombre Local / Común', type: 'string', fieldset: 'identificacion' },
     { name: 'familia', title: 'Familia', type: 'string', fieldset: 'identificacion' },
     { name: 'numero_planta', title: 'Número de planta', type: 'string', fieldset: 'identificacion' },

@@ -194,6 +194,8 @@ export function useRegistroForm() {
           
           setNombreCientifico(data.nombre_cientifico || '');
           setNombresComunes(data.nombres_comunes || '');
+          setOrigen(data.origen || '');
+          setPaisOrigen(data.pais_origen || '');
           setFamilia(data.familia || '');
           setEstadoRevision(data.estado_revision || '');
           
@@ -266,6 +268,8 @@ export function useRegistroForm() {
 
   // Form State: Bloque 3 - Identificación botánica
   const [nombreCientifico, setNombreCientifico] = useState('');
+  const [origen, setOrigen] = useState('');
+  const [paisOrigen, setPaisOrigen] = useState('');
   const [nombresComunes, setNombresComunes] = useState('');
   const [familia, setFamilia] = useState('');
 
@@ -348,6 +352,8 @@ export function useRegistroForm() {
     const identMissing: { id: string; label: string }[] = [];
     if (!nombresComunes.trim()) identMissing.push({ id: 'nombresComunes', label: 'Nombre local / común' });
     if (!nombreCientifico.trim()) identMissing.push({ id: 'nombreCientifico', label: 'Nombre científico' });
+    if (!origen.trim()) identMissing.push({ id: 'origen', label: 'Origen' });
+    if (origen === 'Introducida' && !paisOrigen.trim()) identMissing.push({ id: 'paisOrigen', label: 'País de origen' });
     if (!familia.trim()) identMissing.push({ id: 'familia', label: 'Familia botánica' });
     if (!datosBotanicos.habito) identMissing.push({ id: 'habito', label: 'Hábito de la planta' });
     if (!datosBotanicos.tipoVida) identMissing.push({ id: 'tipoVida', label: 'Tipo de vida' });
@@ -830,6 +836,8 @@ export function useRegistroForm() {
         _type: 'planta',
         autor: effectiveUser?.id,
         nombre_cientifico: nombreCientifico || 'Por identificar',
+        origen: origen || '',
+        pais_origen: origen === 'Introducida' ? paisOrigen : '',
         nombres_comunes: nombresComunes || '',
         familia: familia || '',
         estado_revision: 'En revisión',
@@ -976,6 +984,8 @@ export function useRegistroForm() {
     setSustratoPlanta('');
     setNombresComunes('');
     setNombreCientifico('');
+    setOrigen('');
+    setPaisOrigen('');
     setFamilia('');
     setFotos({ planta_completa: null, hoja: null, flor: null, fruto: null, semilla: null });
     setFotosExtra([]);
@@ -1050,6 +1060,10 @@ export function useRegistroForm() {
     setNombresComunes,
     familia,
     setFamilia,
+    origen,
+    setOrigen,
+    paisOrigen,
+    setPaisOrigen,
     estadoRevision,
     setEstadoRevision,
     motivoObservacion,

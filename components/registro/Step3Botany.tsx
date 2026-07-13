@@ -24,6 +24,10 @@ export function Step3({ form }: { form: any }) {
     setNombresComunes,
     nombreCientifico,
     setNombreCientifico,
+    origen,
+    setOrigen,
+    paisOrigen,
+    setPaisOrigen,
     familia,
     setFamilia,
     handleContinuarBloque3,
@@ -69,6 +73,31 @@ export function Step3({ form }: { form: any }) {
                       autoCapitalize="words"
                     />
                   </YStack>
+
+                  <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('origen', el)}>
+                    <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Origen *</Label>{(showHelperButton && missingSections.some((m: any) => m.id === 'origen')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+                    <RadioSelect 
+                      options={['Nativa', 'Introducida']}
+                      value={origen}
+                      onChange={setOrigen}
+                    />
+                  </YStack>
+
+                  {origen === 'Introducida' && (
+                    <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('paisOrigen', el)}>
+                      <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>País de origen *</Label>{(showHelperButton && missingSections.some((m: any) => m.id === 'paisOrigen')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+                      <Input cursorColor="#ffffff" selectionColor="#0D5E26"
+                        value={paisOrigen}
+                        onChangeText={setPaisOrigen}
+                        placeholder="Ej. Madagascar, India..."
+                        borderWidth={0}
+                        bg="rgba(255,255,255,0.05)"
+                        color="#ffffff"
+                        placeholderTextColor="rgba(255,255,255,0.3)" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }}
+                        autoCapitalize="words"
+                      />
+                    </YStack>
+                  )}
 
                   <YStack gap="$2" ref={(el) => registerFieldRef && registerFieldRef('familia', el)}>
                     <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Familia botánica *</Label>{(showHelperButton && missingSections.some((m: any) => m.id === 'familia')) && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>

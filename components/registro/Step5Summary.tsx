@@ -124,6 +124,8 @@ export function Step5Summary({ form }: { form: any }) {
     location,
     nombresComunes,
     nombreCientifico,
+    origen,
+    paisOrigen,
     fotos,
     setSelectedPhoto,
     handleFinalSubmit,
@@ -200,7 +202,7 @@ export function Step5Summary({ form }: { form: any }) {
 
         {location && (
           <View style={{ height: 150, borderRadius: 8, overflow: 'hidden', marginTop: 8 }}>
-            <MapView mapType="satellite"
+            <MapView mapType="hybrid"
               style={{ flex: 1 }}
               region={{ latitude: location.latitude, longitude: location.longitude, latitudeDelta: 0.00245, longitudeDelta: 0.00145 }}
               scrollEnabled={false}
@@ -216,6 +218,8 @@ export function Step5Summary({ form }: { form: any }) {
         <H4 color="white">3. Botánica y Características</H4>
         <Text color="rgba(255,255,255,0.7)">Nombre Común: <Text color="white" fontWeight="bold">{nombresComunes || 'No especificado'}</Text></Text>
         <Text color="rgba(255,255,255,0.7)">Nombre Científico: <Text color="white" fontWeight="bold">{nombreCientifico || 'No especificado'}</Text></Text>
+        <Text color="rgba(255,255,255,0.7)">Origen: <Text color="white" fontWeight="bold">{origen || 'No especificado'}</Text></Text>
+        {origen === 'Introducida' && <Text color="rgba(255,255,255,0.7)">País de origen: <Text color="white" fontWeight="bold">{paisOrigen || 'No especificado'}</Text></Text>}
         <Text color="rgba(255,255,255,0.7)">Hábito: <Text color="white" fontWeight="bold">{activeData?.habito}</Text></Text>
         {activeData?.tipoVida ? <Text color="rgba(255,255,255,0.7)">Tipo de Vida: <Text color="white" fontWeight="bold">{activeData?.tipoVida}</Text></Text> : null}
         
