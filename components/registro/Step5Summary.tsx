@@ -12,7 +12,7 @@ const ARBOL_SCHEMA = [
   { title: 'V. Hojas', dataObj: 'hojas', keys: [ { key: 'tipo_hoja', label: 'Tipo de hoja' }, { key: 'disposicion_hoja', label: 'Disposición' }, { key: 'forma_hoja', label: 'Forma' }, { key: 'borde_hoja', label: 'Borde' }, { key: 'textura_hoja', label: 'Textura' }, { key: 'color_enves', label: 'Color del envés' }, { key: 'pelos_hoja', label: 'Presencia de pelos' }, { key: 'tipo_peciolo', label: 'Tipo de peciolo' }, { key: 'longitud_peciolo', label: 'Longitud del peciolo', unit: 'cm' }, { key: 'diametro_peciolo', label: 'Diámetro del peciolo', unit: 'mm' }, { key: 'peciolo_pulvino', label: 'Peciolo con pulvino' } ] },
   { title: 'VI. Flores', dataObj: 'reproductivo', keys: [ { key: 'flor_presencia', label: 'Presencia' }, { key: 'flor_color_petalos', label: 'Color de pétalos' }, { key: 'flor_tamano_largo', label: 'Tamaño de flor (Largo)', unit: 'cm' }, { key: 'flor_tamano_ancho', label: 'Tamaño de flor (Ancho)', unit: 'cm' }, { key: 'flor_agrupacion', label: 'Agrupación' }, { key: 'flor_olor', label: 'Olor' } ] },
   { title: 'VII. Frutos', dataObj: 'reproductivo', keys: [ { key: 'fruto_presencia', label: 'Presencia' }, { key: 'fruto_textura', label: 'Textura' }, { key: 'fruto_estado_madurar', label: 'Estado al madurar' }, { key: 'fruto_forma', label: 'Forma' }, { key: 'fruto_tamano_largo', label: 'Tamaño del fruto (Largo)', unit: 'cm' }, { key: 'fruto_tamano_ancho', label: 'Tamaño del fruto (Ancho)', unit: 'cm' }, { key: 'fruto_color_maduro', label: 'Color del fruto maduro' }, { key: 'fruto_superficie', label: 'Superficie' } ] },
-  { title: 'VIII. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_presencia', label: 'Presencia visible' }, { key: 'semilla_numero', label: 'Número de semillas' }, { key: 'semilla_tamano_largo', label: 'Tamaño de semilla (Largo)', unit: 'cm' }, { key: 'semilla_tamano_ancho', label: 'Tamaño de semilla (Ancho)', unit: 'cm' }, { key: 'semilla_color_cascara', label: 'Color de cáscara' } ] },
+  { title: 'VIII. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_presencia', label: 'Presencia visible' }, { key: 'semilla_numero', label: 'Número de semillas por fruto' }, { key: 'semilla_tamano_largo', label: 'Tamaño de semilla (Largo)', unit: 'cm' }, { key: 'semilla_tamano_ancho', label: 'Tamaño de semilla (Ancho)', unit: 'cm' }, { key: 'semilla_color_cascara', label: 'Color de cáscara' } ] },
   { title: 'IX. Estado fenológico', dataObj: 'compartido', keys: [ { key: 'estado_fenologico', label: 'Estado fenológico' } ] },
   { title: 'X. Estado del individuo', dataObj: 'compartido', keys: [ { key: 'estado_individuo', label: 'Estado del individuo' } ] },
   { title: 'XI. Valor ornamental', dataObj: 'compartido', keys: [ { key: 'valor_ornamental', label: 'Valor ornamental' } ] },
@@ -40,7 +40,7 @@ const ARBUSTO_SCHEMA = [
   { title: 'III. Hojas', dataObj: 'hojas', keys: [ { key: 'tipo_hoja', label: 'Tipo de hoja' }, { key: 'hoja_compuesta_tipo', label: 'Si es compuesta' }, { key: 'forma_hoja', label: 'Forma' }, { key: 'disposicion_hoja', label: 'Disposición' }, { key: 'borde_hoja', label: 'Borde' }, { key: 'color_hoja', label: 'Color' } ] },
   { title: 'IV. Flores', dataObj: 'reproductivo', keys: [ { key: 'flor_presencia', label: 'Presencia' }, { key: 'flor_color', label: 'Color de pétalos' }, { key: 'flor_tamano', label: 'Tamaño de flor', unit: 'cm' }, { key: 'flor_forma', label: 'Forma' }, { key: 'flor_agrupacion', label: 'Agrupación' } ] },
   { title: 'V. Frutos', dataObj: 'reproductivo', keys: [ { key: 'fruto_presencia', label: 'Presencia' }, { key: 'fruto_textura', label: 'Textura' }, { key: 'fruto_forma', label: 'Forma' }, { key: 'fruto_tamano', label: 'Tamaño del fruto', unit: 'cm' }, { key: 'fruto_color_maduro', label: 'Color del fruto maduro' } ] },
-  { title: 'VI. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_numero', label: 'Número de semillas' }, { key: 'semilla_tamano', label: 'Tamaño de semilla', unit: 'cm' } ] },
+  { title: 'VI. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_numero', label: 'Número de semillas por fruto' }, { key: 'semilla_tamano', label: 'Tamaño de semilla', unit: 'cm' } ] },
   { title: 'VII. Estado fenológico', dataObj: 'compartido', keys: [ { key: 'estado_fenologico', label: 'Estado fenológico' } ] },
   { title: 'VIII. Estado del individuo', dataObj: 'compartido', keys: [ { key: 'estado_individuo', label: 'Estado del individuo' } ] },
   { title: 'IX. Valor ornamental', dataObj: 'compartido', keys: [ { key: 'valor_ornamental', label: 'Valor ornamental' } ] },
@@ -57,7 +57,7 @@ const LIANA_SCHEMA = [
   { title: 'VII. Hojas', dataObj: 'hojas', keys: [ { key: 'tipo_hoja', label: 'Tipo de hoja' }, { key: 'forma_hoja', label: 'Forma' }, { key: 'disposicion_hoja', label: 'Disposición' }, { key: 'textura_hoja', label: 'Textura' } ] },
   { title: 'VIII. Flores', dataObj: 'reproductivo', keys: [ { key: 'flor_presencia', label: 'Presencia' }, { key: 'flor_color', label: 'Color de pétalos' }, { key: 'flor_tamano', label: 'Tamaño de flor', unit: 'cm' }, { key: 'flor_agrupacion', label: 'Tipo de agrupación' } ] },
   { title: 'IX. Frutos', dataObj: 'reproductivo', keys: [ { key: 'fruto_presencia', label: 'Presencia' }, { key: 'fruto_textura', label: 'Textura' }, { key: 'fruto_forma', label: 'Forma' }, { key: 'fruto_tamano', label: 'Tamaño del fruto', unit: 'cm' }, { key: 'fruto_color_maduro', label: 'Color del fruto maduro' } ] },
-  { title: 'X. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_numero', label: 'Número de semillas' }, { key: 'semilla_tamano', label: 'Tamaño de semilla', unit: 'cm' } ] },
+  { title: 'X. Semillas', dataObj: 'reproductivo', keys: [ { key: 'semilla_numero', label: 'Número de semillas por fruto' }, { key: 'semilla_tamano', label: 'Tamaño de semilla', unit: 'cm' } ] },
   { title: 'XI. Estado fenológico', dataObj: 'compartido', keys: [ { key: 'estado_fenologico', label: 'Estado fenológico' } ] },
   { title: 'XII. Estado del individuo', dataObj: 'compartido', keys: [ { key: 'estado_individuo', label: 'Estado del individuo' } ] },
   { title: 'XIII. Valor ornamental', dataObj: 'compartido', keys: [ { key: 'valor_ornamental', label: 'Valor ornamental' } ] },
@@ -200,7 +200,7 @@ export function Step5Summary({ form }: { form: any }) {
 
         {location && (
           <View style={{ height: 150, borderRadius: 8, overflow: 'hidden', marginTop: 8 }}>
-            <MapView
+            <MapView mapType="satellite"
               style={{ flex: 1 }}
               region={{ latitude: location.latitude, longitude: location.longitude, latitudeDelta: 0.00245, longitudeDelta: 0.00145 }}
               scrollEnabled={false}

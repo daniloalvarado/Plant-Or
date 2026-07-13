@@ -491,7 +491,19 @@
                   },
                   {
                     "type": "string",
-                    "value": "Inclinado (izq/der/calle/casa)"
+                    "value": "Inclinado a la izquierda"
+                  },
+                  {
+                    "type": "string",
+                    "value": "Inclinado a la derecha"
+                  },
+                  {
+                    "type": "string",
+                    "value": "Inclinado hacia la calle"
+                  },
+                  {
+                    "type": "string",
+                    "value": "Inclinado hacia la casa"
                   },
                   {
                     "type": "string",

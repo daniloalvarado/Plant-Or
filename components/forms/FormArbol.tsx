@@ -111,7 +111,7 @@ export function FormArbol({ data, updateData , registerRef, missingFields }: For
         <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('tronco.forma', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Forma del tronco</Label>{missingFields?.some(m => m.id === 'tronco.forma') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
-            options={['Recto', 'Inclinado (izq/der/calle/casa)', 'Torcido', 'Otro']}
+            options={['Recto', 'Inclinado a la izquierda', 'Inclinado a la derecha', 'Inclinado hacia la calle', 'Inclinado hacia la casa', 'Torcido', 'Otro']}
             value={getField('tronco', 'forma')}
             onChange={(val) => setField('tronco', 'forma', val)}
           />

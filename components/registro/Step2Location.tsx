@@ -37,7 +37,7 @@ export function Step2({ form }: { form: any }) {
                     <Paragraph color="#ff4444">{errorMsg}</Paragraph>
                   ) : location ? (
                     <View style={{ height: 300, borderRadius: 10, overflow: 'hidden', position: 'relative' }}>
-                      <MapView
+                      <MapView mapType="satellite"
                         style={{ flex: 1 }}
                         region={{
                           latitude: location.latitude,

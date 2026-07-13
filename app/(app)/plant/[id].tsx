@@ -316,7 +316,7 @@ export default function PlantDetailScreen() {
                 {planta?.ubicacion_planta && <MorphInfo icon="layers-outline" label="Sustrato" value={planta.ubicacion_planta} />}
               </View>
               <View style={{ height: 200, borderRadius: 12, overflow: 'hidden', marginBottom: 24, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)' }}>
-                <MapView
+                <MapView mapType="satellite"
                   style={{ flex: 1 }}
                   scrollEnabled={false}
                   zoomEnabled={false}

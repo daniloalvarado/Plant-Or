@@ -119,7 +119,7 @@ export default function MapaScreen() {
         </View>
       ) : null}
 
-      <MapView
+      <MapView mapType="satellite"
         ref={mapRef}
         style={styles.map}
         provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}

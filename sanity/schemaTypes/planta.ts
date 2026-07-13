@@ -99,7 +99,7 @@ export const planta = {
         { name: 'altura_inicio_copa', title: 'Altura inicio copa (m)', type: 'number' },
         { name: 'raices_visibles', title: 'Raíces visibles', type: 'string', options: { list: ['Sin raíces visibles', 'Raíces tablares', 'Raíces zancudas', 'Raíces superficiales', 'Raíces adventicias', 'Otro'] } },
         { name: 'numero_troncos', title: 'Número de troncos desde la base', type: 'number' },
-        { name: 'forma_tronco', title: 'Forma del tronco', type: 'string', options: { list: ['Recto', 'Inclinado (izq/der/calle/casa)', 'Torcido', 'Otro'] } },
+        { name: 'forma_tronco', title: 'Forma del tronco', type: 'string', options: { list: ['Recto', 'Inclinado a la izquierda', 'Inclinado a la derecha', 'Inclinado hacia la calle', 'Inclinado hacia la casa', 'Torcido', 'Otro'] } },
         { name: 'corteza_externa', title: 'Corteza externa', type: 'string', options: { list: ['Lisa', 'Rugosa', 'Áspera', 'Agrietada', 'Estriada', 'Escamosa', 'Con placas', 'Laminar', 'Otro'] } },
         { name: 'lenticelas', title: 'Lenticelas', type: 'string', options: { list: ['Con lenticelas', 'Sin lenticelas'] } },
         { name: 'color_corteza', title: 'Color de corteza', type: 'array', of: [{type: 'string'}], options: { list: ['Gris', 'Marrón', 'Verde', 'Rojiza', 'Negruzca', 'Otro'] } },

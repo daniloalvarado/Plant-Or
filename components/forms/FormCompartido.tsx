@@ -115,7 +115,7 @@ export function FormCompartido({ data, updateData, romanStartIndex = 0, register
         {getField('reproductivo', 'semilla_presencia') === 'Sí' && (
           <YStack gap="$3">
             <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.semilla_numero', el)}>
-              <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de semillas</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_numero') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
+              <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Número de semillas por fruto</Label>{missingFields?.some(m => m.id === 'reproductivo.semilla_numero') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <Input cursorColor="#ffffff" selectionColor="#0D5E26" keyboardType="numeric" placeholder="Ej. 10" value={getField('reproductivo', 'semilla_numero')} onChangeText={(val) => setField('reproductivo', 'semilla_numero', val)} borderWidth={0} bg="rgba(255,255,255,0.05)" color="#ffffff" focusStyle={{ color: "#ffffff", bg: "rgba(255,255,255,0.08)" }} />
             </YStack>
             <XStack gap="$3">

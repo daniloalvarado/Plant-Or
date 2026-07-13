@@ -442,7 +442,7 @@ export default function HomeScreen() {
                                     'rgba(255,255,255,0.1)', 
                     paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 
                   }}>
-                    <Text style={{ 
+                    <Text numberOfLines={1} style={{ 
                       color: planta.estado_revision === 'Validado' ? '#1FC451' : 
                              planta.estado_revision === 'Observado' ? '#FFA500' : 
                              planta.estado_revision === 'Rechazado' ? '#FF4444' : 
