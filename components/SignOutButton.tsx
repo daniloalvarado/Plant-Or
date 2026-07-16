@@ -6,7 +6,7 @@ import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useRouter } from "expo-router";
 
-export const SignOutButton = () => {
+export const SignOutButton = ({ onSignOutStart }: { onSignOutStart?: () => void }) => {
   const { signOut } = useClerk();
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
@@ -15,14 +15,20 @@ export const SignOutButton = () => {
 
   const handleConfirmSignOut = async () => {
     setModalVisible(false);
-    await signOut();
-    router.replace("/sign-in");
+    if (onSignOutStart) onSignOutStart();
+    try {
+      await signOut();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      router.replace("/sign-in");
+    }
   };
 
   return (
     <>
       <Button theme="red" borderColor="$borderColor" onPress={() => setModalVisible(true)}>
-        <Text style={{color: '#ff4d4f', fontWeight: 'bold'}}>Cerrar Sesión</Text>
+        <Text style={{ color: '#ff4d4f', fontWeight: 'bold' }}>Cerrar Sesión</Text>
       </Button>
 
       <Modal
@@ -35,18 +41,18 @@ export const SignOutButton = () => {
           <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#ffffff' }]}>
             <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.text, marginBottom: 12 }}>Cerrar Sesión</Text>
             <Text style={{ fontSize: 15, color: theme.icon, marginBottom: 24, lineHeight: 22 }}>
-              ¿Estás seguro de que deseas cerrar tu sesión en el Catálogo de Flora?
+              ¿Estás seguro de que deseas cerrar tu sesión en Plant-Or?
             </Text>
-            
+
             <View style={{ flexDirection: 'row', gap: 12 }}>
-              <Pressable 
+              <Pressable
                 onPress={() => setModalVisible(false)}
                 style={[styles.button, { flex: 1, backgroundColor: "rgba(255,255,255,0.05)" }]}
               >
                 <Text style={{ color: theme.text, textAlign: 'center', fontWeight: 'bold' }}>Cancelar</Text>
               </Pressable>
-              
-              <Pressable 
+
+              <Pressable
                 onPress={handleConfirmSignOut}
                 style={[styles.button, { flex: 1, backgroundColor: "#ff4d4f" }]}
               >

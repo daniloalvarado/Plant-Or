@@ -68,6 +68,7 @@ export default function Profile() {
 
   const [isGeneratingCert, setIsGeneratingCert] = useState(false);
   const [photoOptionsVisible, setPhotoOptionsVisible] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const generateCertificateHTML = (
     name: string,
@@ -417,6 +418,14 @@ export default function Profile() {
     );
   }
 
+  if (isLoggingOut) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <Spinner size="large" color="#1FC451" />
+      </View>
+    );
+  }
+
   if (!user || isOffline) {
     return (
       <View style={[styles.container, { backgroundColor: theme.background, paddingTop: insets.top, justifyContent: 'center', alignItems: 'center', padding: 20 }]}>
@@ -425,11 +434,11 @@ export default function Profile() {
         <Paragraph color="rgba(255,255,255,0.7)" mt="$2" mb="$6" style={{ textAlign: "center" }}>
           Actualmente estás explorando sin conexión o sin cuenta. Inicia sesión para subir tus registros a la base de datos, acceder al catálogo completo y obtener tu certificado.
         </Paragraph>
-        <Button 
-          size="$4" 
-          bg="#1FC451" 
-          color="#08130D" 
-          pressStyle={{ bg: "#17993E" }} 
+        <Button
+          size="$4"
+          bg="#1FC451"
+          color="#08130D"
+          pressStyle={{ bg: "#17993E" }}
           icon={<MaterialCommunityIcons name="login" size={20} color="#08130D" />}
           onPress={() => router.push('/sign-in')}
         >
@@ -698,7 +707,7 @@ export default function Profile() {
                   Administrar la configuración de tu cuenta
                 </Text>
               </YStack>
-              <SignOutButton />
+              <SignOutButton onSignOutStart={() => setIsLoggingOut(true)} />
             </YStack>
           </Card>
         </YStack>

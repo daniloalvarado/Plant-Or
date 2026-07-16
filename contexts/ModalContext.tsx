@@ -96,7 +96,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
             <XStack pb="$4" gap="$3" style={{ justifyContent: "center" }}>
               <Dialog.Close displayWhenAdapted asChild>
                 <Button onPress={handleCancel} flex={1}>
-                  {modalConfig.cancelText || "Cancelar"}
+                  {modalConfig.cancelText || "Cerrar"}
                 </Button>
               </Dialog.Close>
 

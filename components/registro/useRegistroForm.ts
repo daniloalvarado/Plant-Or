@@ -191,14 +191,14 @@ export function useRegistroForm() {
           setFacultad(data.registrador_facultad || '');
           setEscuela(data.registrador_escuela || '');
           setDiaClase(data.registrador_dia_clase || '');
-          
+
           setNombreCientifico(data.nombre_cientifico || '');
           setNombresComunes(data.nombres_comunes || '');
           setOrigen(data.origen || '');
           setPaisOrigen(data.pais_origen || '');
           setFamilia(data.familia || '');
           setEstadoRevision(data.estado_revision || '');
-          
+
           if (data.latitud && data.longitud) setLocation({ latitude: data.latitud, longitude: data.longitud });
           setDistrito(data.distrito || '');
           setDireccion(data.direccion || '');
@@ -206,13 +206,13 @@ export function useRegistroForm() {
           setTipoUbicacion2(data.tipo_ubicacion_2 || '');
           setNumeroCasa(data.numero_casa || '');
           setSustratoPlanta(data.ubicacion_planta || '');
-          
+
           const h = data.habito;
           const source = data.arbol_datos || data.arbusto_datos || data.liana_datos || data.hierba_datos || data.palmera_datos || {};
-          
+
           setDatosBotanicos(hydrateBotanicData(data));
-          
-          
+
+
           setFotos({
             planta_completa: photos.planta_completa || null,
             hoja: photos.hoja || null,
@@ -239,7 +239,7 @@ export function useRegistroForm() {
         if (data) {
           const parsedUser = JSON.parse(data);
           setOfflineUserCache(parsedUser);
-          
+
           // Si estamos offline (user de clerk no cargó), rellenamos con el caché
           if (!user && !editId) {
             setNombre(parsedUser.fullName || '');
@@ -332,7 +332,7 @@ export function useRegistroForm() {
       const sv = scrollViewRef.current;
       const scrollNode = (sv as any).getInnerViewNode ? (sv as any).getInnerViewNode() : findNodeHandle(sv);
       const elNode = findNodeHandle(el);
-      
+
       if (elNode && scrollNode) {
         UIManager.measureLayout(
           elNode,
@@ -412,10 +412,10 @@ export function useRegistroForm() {
         'Liana': ['habito', 'tipoVida', 'dasometria', 'crecimiento', 'hojas', 'reproductivo', 'compartido'],
         'Hierba': ['habito', 'tipoVida', 'dasometria', 'hojas', 'reproductivo', 'compartido']
       };
-      
+
       const allowed = allowedSections[prev.habito] || ['habito', 'tipoVida'];
       const cleaned: any = {};
-      
+
       for (const key of Object.keys(prev)) {
         if (allowed.includes(key)) {
           cleaned[key] = prev[key];
@@ -517,34 +517,34 @@ export function useRegistroForm() {
         setFacultad(doc.registrador_facultad || (user?.unsafeMetadata?.facultad as string) || '');
         setEscuela(doc.registrador_escuela || (user?.unsafeMetadata?.escuela as string) || '');
         setDiaClase(doc.registrador_dia_clase || (user?.unsafeMetadata?.dia_clase as string) || '');
-        
+
         if (doc.latitud && doc.longitud) {
           setLocation({ latitude: doc.latitud, longitude: doc.longitud });
         }
         setDistrito(doc.distrito || '');
         setDireccion(doc.direccion || '');
-        
+
         // Handle "Otro" options correctly when loading
         if (['Jirón', 'Avenida', 'Calle', 'Pasaje', 'Parque'].includes(doc.tipo_ubicacion_1)) {
           setTipoUbicacion(doc.tipo_ubicacion_1 || '');
         } else if (doc.tipo_ubicacion_1) {
           setTipoUbicacion('Otro:' + doc.tipo_ubicacion_1);
         } else { setTipoUbicacion(''); }
-        
+
         if (['Vereda', 'Berma central', 'Dentro del domicilio'].includes(doc.tipo_ubicacion_2)) {
           setTipoUbicacion2(doc.tipo_ubicacion_2 || '');
         } else if (doc.tipo_ubicacion_2) {
           setTipoUbicacion2('Otro:' + doc.tipo_ubicacion_2);
         } else { setTipoUbicacion2(''); }
-        
+
         setNumeroCasa(doc.numero_casa || '');
-        
+
         if (['En tierra', 'En macetero'].includes(doc.ubicacion_planta)) {
           setSustratoPlanta(doc.ubicacion_planta || '');
         } else if (doc.ubicacion_planta) {
           setSustratoPlanta('Otro:' + doc.ubicacion_planta);
         } else { setSustratoPlanta(''); }
-        
+
         if (doc.numero_planta) setNumeroPlantaAutogenerado(Number(doc.numero_planta));
 
         setDatosBotanicos(hydrateBotanicData(doc));
@@ -685,7 +685,7 @@ export function useRegistroForm() {
         console.error("Auto-save profile error:", e);
       }
     }
-    
+
     if (step === 2 && rolRegistro === 'ciudadano') {
       await saveDraft(4);
       setStep(4);
@@ -694,7 +694,7 @@ export function useRegistroForm() {
       setStep(step + 1);
     }
   };
-  
+
   const prevStep = async () => {
     if (step === 4 && rolRegistro === 'ciudadano') {
       await saveDraft(2);
@@ -706,15 +706,15 @@ export function useRegistroForm() {
   };
 
   // Validaciones estrictas
-  const isStep1Valid = rolRegistro === 'estudiante' 
+  const isStep1Valid = rolRegistro === 'estudiante'
     ? (nombre.trim() !== '' && dni.length === 8 && email.trim() !== '' && facultad.trim() !== '' && escuela.trim() !== '')
     : (nombre.trim() !== '' && email.trim() !== ''); // Ciudadano solo necesita nombre y email
   const isValidSelector = (val: string) => val.trim() !== '' && val !== 'Otro' && !(val.startsWith('Otro:') && val.substring(5).trim() === '');
-  const isStep2Valid = location !== null && 
-    distrito.trim() !== '' && 
-    direccion.trim() !== '' && 
-    isValidSelector(tipoUbicacion) && 
-    (tipoUbicacion2 === '' || isValidSelector(tipoUbicacion2)) && 
+  const isStep2Valid = location !== null &&
+    distrito.trim() !== '' &&
+    direccion.trim() !== '' &&
+    isValidSelector(tipoUbicacion) &&
+    (tipoUbicacion2 === '' || isValidSelector(tipoUbicacion2)) &&
     isValidSelector(sustratoPlanta);
   // isStep3Valid es ahora la validación de Botánica
   let isStep3Valid = false;
@@ -760,16 +760,16 @@ export function useRegistroForm() {
         // o la omitiremos si es la misma URL (requeriría mantener el _ref original en el state, lo cual
         // simplificamos subiéndola como blob o ignorándola).
         if (uri.startsWith('http')) {
-           // En este caso simplificado, si el usuario no cambia la foto, no la resubimos y esperamos
-           // que Sanity preserve el array original si no lo modificamos por completo.
-           // Pero Sanity requiere referencias completas. Para solucionarlo rápido, requerimos que el
-           // usuario tome la foto de nuevo si la va a editar, o necesitamos extraer el _ref del URL.
-           // Extraeremos el _id (esto es una aproximación, no ideal, pero funciona para URLs de Sanity):
-           const match = uri.match(/images\/[^\/]+\/[^\/]+\/([a-z0-9]+-[0-9]+x[0-9]+-[a-z]+)/);
-           if (match && match[1]) {
-             return { _type: 'image', asset: { _type: 'reference', _ref: `image-${match[1]}` } };
-           }
-           return null;
+          // En este caso simplificado, si el usuario no cambia la foto, no la resubimos y esperamos
+          // que Sanity preserve el array original si no lo modificamos por completo.
+          // Pero Sanity requiere referencias completas. Para solucionarlo rápido, requerimos que el
+          // usuario tome la foto de nuevo si la va a editar, o necesitamos extraer el _ref del URL.
+          // Extraeremos el _id (esto es una aproximación, no ideal, pero funciona para URLs de Sanity):
+          const match = uri.match(/images\/[^\/]+\/[^\/]+\/([a-z0-9]+-[0-9]+x[0-9]+-[a-z]+)/);
+          if (match && match[1]) {
+            return { _type: 'image', asset: { _type: 'reference', _ref: `image-${match[1]}` } };
+          }
+          return null;
         }
 
         const token = process.env.EXPO_PUBLIC_SANITY_TOKEN?.trim();
@@ -799,7 +799,7 @@ export function useRegistroForm() {
 
             const data = await uploadResponse.json();
             const assetId = data.document?._id;
-            
+
             if (!assetId) {
               throw new Error('No asset ID in response');
             }
@@ -843,7 +843,7 @@ export function useRegistroForm() {
         estado_revision: 'En revisión',
         habito: datosBotanicos.habito,
         tipo_vida: datosBotanicos.tipoVida,
-        
+
         // Datos Personales
         registrador_nombre: nombre,
         registrador_dni: dni,
@@ -863,7 +863,7 @@ export function useRegistroForm() {
         numero_casa: numeroCasa,
         ubicacion_planta: sustratoPlanta.startsWith('Otro:') ? sustratoPlanta.substring(5).trim() : sustratoPlanta,
         numero_planta: numeroPlantaAutogenerado.toString(),
-        
+
         // Fotos principales en la galería (Se poblarán luego si es online)
         galeria: [],
       };
@@ -875,7 +875,7 @@ export function useRegistroForm() {
       nuevoRegistro.estado_individuo = formattedSubmitData.compartido.estado_individuo;
       nuevoRegistro.valor_ornamental = formattedSubmitData.compartido.valor_ornamental;
       nuevoRegistro.impacto_urbano = formattedSubmitData.compartido.impacto_urbano;
-      
+
       Object.assign(nuevoRegistro, formattedSubmitData.specificData);
 
       if (isOffline) {
@@ -918,7 +918,7 @@ export function useRegistroForm() {
         const florRef = await uploadFoto(fotos.flor);
         const frutoRef = await uploadFoto(fotos.fruto);
         const semillaRef = await uploadFoto(fotos.semilla);
-        
+
         const extrasRefs = [];
         for (const extraUri of fotosExtra) {
           const ref = await uploadFoto(extraUri);
@@ -932,12 +932,12 @@ export function useRegistroForm() {
         } else {
           await writeClient.create(nuevoRegistro);
         }
-        
+
         if (localEditId) {
           await removeRegistroOffline(localEditId);
         }
       }
-      
+
       // Guardar el rol de forma permanente si es la primera vez que registra
       if (user && user.unsafeMetadata?.role !== rolRegistro) {
         try {
@@ -990,7 +990,7 @@ export function useRegistroForm() {
     setFotos({ planta_completa: null, hoja: null, flor: null, fruto: null, semilla: null });
     setFotosExtra([]);
     setDatosBotanicos({ habito: '', tipoVida: '' });
-    
+
     setTimeout(() => {
       scrollViewRef.current?.scrollTo({ y: 0, animated: false });
     }, 100);
@@ -1021,7 +1021,7 @@ export function useRegistroForm() {
   const isStudentByMetadata = !!(effectiveUser?.unsafeMetadata?.dni || effectiveUser?.unsafeMetadata?.facultad || effectiveUser?.unsafeMetadata?.escuela);
   const derivedRole = effectiveUser?.unsafeMetadata?.role || (isStudentByMetadata ? 'estudiante' : (numeroPlantaAutogenerado > 0 ? 'ciudadano' : null));
 
-  
+
   return {
     formatLabel,
     step,

@@ -4,8 +4,8 @@ import { isClerkAPIResponseError, useSignUp } from "@clerk/clerk-expo";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import * as React from "react";
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Button,
   Card,
@@ -21,6 +21,7 @@ import {
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -63,12 +64,18 @@ export default function SignUpScreen() {
 
       if (errorCode === "form_identifier_exists" || originalMessage.includes("taken") || originalMessage.includes("already exists")) {
         errorMessage = "Este correo electrónico ya está registrado.";
+      } else if (originalMessage.includes("data breach") || errorCode === "form_password_pwned") {
+        errorMessage = "Por seguridad, no puedes usar esta contraseña porque ha sido expuesta en filtraciones de datos de internet. Por favor, elige una contraseña diferente y más segura.";
       } else if (errorCode === "form_password_validation_failed" || originalMessage.includes("password")) {
         errorMessage = "La contraseña debe tener al menos 8 caracteres.";
       } else if (errorCode === "form_identifier_invalid" || originalMessage.includes("identifier is invalid")) {
         errorMessage = "El correo electrónico no es válido. Ejemplo: usuario@correo.com";
       } else if (errorCode === "form_param_nil" || originalMessage.includes("enter email address")) {
         errorMessage = "Por favor, ingresa tu correo electrónico.";
+      } else if (originalMessage.includes("monthly limit for email messages")) {
+        errorMessage = "Se ha alcanzado el límite mensual de correos. Contacta al administrador.";
+      } else if (errorCode === "user_quota_exceeded" || originalMessage.includes("limit of 100 users")) {
+        errorMessage = "Límite de 100 usuarios en modo de prueba alcanzado. No es posible crear más cuentas hasta pasar a Producción.";
       } else if (clerkError?.errors[0]) {
         errorMessage = clerkError.errors[0].longMessage || clerkError.errors[0].message;
       }
@@ -99,7 +106,6 @@ export default function SignUpScreen() {
       // and redirect the user
       if (signUpAttempt.status === "complete") {
         await setActive({ session: signUpAttempt.createdSessionId });
-        router.replace("/");
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.
@@ -109,10 +115,22 @@ export default function SignUpScreen() {
       // También mejoramos el error aquí por si acaso
       console.log(JSON.stringify(err, null, 2));
 
+      const clerkError = isClerkAPIResponseError(err) ? err : null;
+      const errorCode = clerkError?.errors[0]?.code;
+      const originalMessage = (clerkError?.errors[0]?.longMessage || clerkError?.errors[0]?.message || "").toLowerCase();
+
       let errorMessage = "El código de verificación es incorrecto";
 
       if (isClerkAPIResponseError(err)) {
         errorMessage = err.errors[0]?.longMessage || err.errors[0]?.message || errorMessage;
+      }
+      
+      if (errorCode === "session_exists" || originalMessage.includes("already signed in")) {
+        errorMessage = "Ya tienes una sesión iniciada. Por favor, cierra sesión primero.";
+      } else if (originalMessage.includes("data breach") || errorCode === "form_password_pwned") {
+        errorMessage = "Por seguridad, no puedes usar esta contraseña porque ha sido expuesta en filtraciones de datos de internet. Por favor, elige una contraseña diferente y más segura.";
+      } else if (clerkError?.errors[0]) {
+        errorMessage = originalMessage;
       }
 
       showModal({
@@ -127,11 +145,10 @@ export default function SignUpScreen() {
 
   if (pendingVerification) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#08130D" }}>
+      <View style={{ flex: 1, backgroundColor: "#08130D", paddingTop: insets.top, paddingBottom: insets.bottom }}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS === "android" ? 30 : 0}
+          behavior="padding"
         >
           <ScrollView
             style={{ flex: 1, backgroundColor: "#08130D" }}
@@ -161,7 +178,7 @@ export default function SignUpScreen() {
               <Card padding="$4" gap="$2" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
                 <YStack gap="$2">
                   <YStack gap="$2">
-                    <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Código de verificación</Label>
+                    <Label color="#ffffff" hoverStyle={{ color: "#ffffff" }} pressStyle={{ color: "#ffffff" }}>Código de verificación</Label>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       value={code}
                       placeholder="Ingresa el código"
@@ -216,16 +233,16 @@ export default function SignUpScreen() {
             </YStack>
           </ScrollView>
         </KeyboardAvoidingView>
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#08130D" }}>
+    <View style={{ flex: 1, backgroundColor: "#08130D", paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "android" ? 30 : 0}
+        behavior="padding"
+        
       >
         <ScrollView
           style={{ flex: 1, backgroundColor: "#08130D" }}
@@ -255,7 +272,7 @@ export default function SignUpScreen() {
             <Card padding="$4" gap="$2" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
               <YStack gap="$2">
                 <YStack gap="$2">
-                  <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Correo electrónico</Label>
+                  <Label color="#ffffff" hoverStyle={{ color: "#ffffff" }} pressStyle={{ color: "#ffffff" }}>Correo electrónico</Label>
                   <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                     autoCapitalize="none"
                     keyboardType="email-address"
@@ -274,7 +291,7 @@ export default function SignUpScreen() {
                 </YStack>
 
                 <YStack gap="$2">
-                  <Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Contraseña</Label>
+                  <Label color="#ffffff" hoverStyle={{ color: "#ffffff" }} pressStyle={{ color: "#ffffff" }}>Contraseña</Label>
                   <YStack style={{ position: "relative", width: "100%", justifyContent: "center" }}>
                     <Input cursorColor="#ffffff" selectionColor="#0D5E26"
                       secureTextEntry={!showPassword}
@@ -290,13 +307,13 @@ export default function SignUpScreen() {
                       }}
                       style={{ paddingRight: 45, color: "#ffffff" }}
                     />
-                    <Button
-                      style={{ position: "absolute", right: 4 }}
-                      size="$3"
-                      chromeless
+                    <TouchableOpacity
+                      style={{ position: "absolute", right: 8, padding: 8, justifyContent: "center", height: "100%" }}
+                      activeOpacity={0.6}
                       onPress={() => setShowPassword(!showPassword)}
-                      icon={<Feather name={showPassword ? "eye" : "eye-off"} size={20} color="rgba(255,255,255,0.5)" />}
-                    />
+                    >
+                      <Feather name={showPassword ? "eye" : "eye-off"} size={20} color="rgba(255,255,255,0.5)" />
+                    </TouchableOpacity>
                   </YStack>
                 </YStack>
 
@@ -344,6 +361,6 @@ export default function SignUpScreen() {
           </YStack>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

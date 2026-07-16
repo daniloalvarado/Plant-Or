@@ -27,9 +27,7 @@ export default function MapaScreen() {
   const mapRef = useRef<any>(null);
 
   const { isSignedIn } = useAuth();
-  if (!isSignedIn) {
-    return <Redirect href="/sign-in" />;
-  }
+
 
   const [plantas, setPlantas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

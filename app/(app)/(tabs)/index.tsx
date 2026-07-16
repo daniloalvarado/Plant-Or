@@ -20,10 +20,6 @@ export default function HomeScreen() {
   const theme = Colors[colorScheme];
 
   const { isSignedIn } = useAuth();
-  
-  if (!isSignedIn) {
-    return <Redirect href="/sign-in" />;
-  }
 
   const [plantas, setPlantas] = useState<any[]>([]);
   const [misPlantas, setMisPlantas] = useState<any[]>([]);
@@ -42,7 +38,7 @@ export default function HomeScreen() {
   const [filterFruit, setFilterFruit] = useState("");
   const [filterSemilla, setFilterSemilla] = useState("");
   const [filterInflorescencia, setFilterInflorescencia] = useState("");
-  
+
   // Dynamic Filters
   const [filtrosDinamicos, setFiltrosDinamicos] = useState<any[]>([]);
   const [selectedFiltros, setSelectedFiltros] = useState<string[]>([]);
@@ -75,7 +71,7 @@ export default function HomeScreen() {
         const storedSignature = await AsyncStorage.getItem(`notifs_sig_${user.id}`);
         // Create a signature representing the current state of all records
         const currentSignature = JSON.stringify(misAportes.map((p: any) => p._id + p.estado_revision));
-        
+
         if (storedSignature !== currentSignature && misAportes.length > 0) {
           setHasUnread(true);
         }
@@ -161,7 +157,7 @@ export default function HomeScreen() {
               <Text style={[styles.subtitle, { color: theme.icon }]}>¡Descubre la flora amazónica hoy!</Text>
             </View>
           </View>
-          <Pressable 
+          <Pressable
             onPress={async () => {
               setNotifVisible(true);
               setHasUnread(false);
@@ -169,7 +165,7 @@ export default function HomeScreen() {
                 const currentSignature = JSON.stringify(misPlantas.map((p: any) => p._id + p.estado_revision));
                 await AsyncStorage.setItem(`notifs_sig_${user.id}`, currentSignature);
               }
-            }} 
+            }}
             style={[styles.bellContainer, { backgroundColor: "rgba(255,255,255,0.05)" }]}
           >
             <MaterialCommunityIcons name="bell" size={20} color={theme.text} />
@@ -222,8 +218,8 @@ export default function HomeScreen() {
               onPress={() => setActiveHabit(habit)}
               style={[
                 styles.categoryBadge,
-                activeHabit === habit 
-                  ? { backgroundColor: 'rgba(31,196,81,0.2)', borderColor: '#1FC451' } 
+                activeHabit === habit
+                  ? { backgroundColor: 'rgba(31,196,81,0.2)', borderColor: '#1FC451' }
                   : { backgroundColor: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.15)' }
               ]}
             >
@@ -260,8 +256,8 @@ export default function HomeScreen() {
             <View style={{ width: '100%', padding: 40, alignItems: 'center', justifyContent: 'center' }}>
               <MaterialCommunityIcons name={isOffline ? "wifi-off" : "leaf-off"} size={48} color={theme.icon} style={{ opacity: 0.5, marginBottom: 16 }} />
               <Text style={{ color: theme.text, opacity: 0.7, textAlign: 'center', fontSize: 16 }}>
-                {isOffline 
-                  ? "Estás en Modo Offline. Conéctate a internet para ver la galería de especies amazónicas." 
+                {isOffline
+                  ? "Estás en Modo Offline. Conéctate a internet para ver la galería de especies amazónicas."
                   : "No se encontraron especies con los filtros o parámetros de búsqueda actuales."}
               </Text>
             </View>
@@ -301,22 +297,22 @@ export default function HomeScreen() {
                                 if (isActive) {
                                   return prev.filter(f => f !== filtro.dato_tecnico);
                                 }
-                                
+
                                 let newSelected = [...prev];
-                                
+
                                 // Respetar "Selección única"
                                 if (filtro.tipo_seleccion === 'Selección única') {
                                   // Remover cualquier otro filtro seleccionado de esta misma categoría
                                   const categoryFilters = groupedFiltros[categoria].map((f: any) => f.dato_tecnico);
                                   newSelected = newSelected.filter(f => !categoryFilters.includes(f));
                                 }
-                                
+
                                 // Límite de máximo 3 filtros en total
                                 if (newSelected.length >= 3) {
                                   // Eliminamos el más antiguo para hacer espacio al nuevo
                                   newSelected.shift();
                                 }
-                                
+
                                 return [...newSelected, filtro.dato_tecnico];
                               });
                             }}
@@ -327,10 +323,10 @@ export default function HomeScreen() {
                           >
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                               {filtro.icono && (
-                                <MaterialCommunityIcons 
-                                  name={filtro.icono as any} 
-                                  size={16} 
-                                  color={isActive ? "#08130D" : theme.icon} 
+                                <MaterialCommunityIcons
+                                  name={filtro.icono as any}
+                                  size={16}
+                                  color={isActive ? "#08130D" : theme.icon}
                                 />
                               )}
                               <Text style={{ color: isActive ? "#08130D" : theme.text, fontWeight: isActive ? "bold" : "normal" }}>
@@ -391,8 +387,8 @@ export default function HomeScreen() {
 
             <ScrollView showsVerticalScrollIndicator={false} style={{ maxHeight: 400 }}>
               {misPlantas.length > 0 ? misPlantas.map(planta => (
-                <Pressable 
-                  key={planta._id} 
+                <Pressable
+                  key={planta._id}
                   onPress={() => {
                     if (planta.estado_revision === 'Observado') {
                       setNotifVisible(false);
@@ -403,9 +399,9 @@ export default function HomeScreen() {
                     }
                   }}
                   style={({ pressed }) => [
-                    { 
-                      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', 
-                      backgroundColor: 'rgba(255,255,255,0.05)', padding: 16, borderRadius: 12, marginBottom: 12 
+                    {
+                      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+                      backgroundColor: 'rgba(255,255,255,0.05)', padding: 16, borderRadius: 12, marginBottom: 12
                     },
                     pressed && (planta.estado_revision === 'Observado' || planta.estado_revision === 'Validado') ? { opacity: 0.7 } : {}
                   ]}
@@ -416,38 +412,38 @@ export default function HomeScreen() {
                       Cód: {planta._id}
                     </Text>
                     {planta.estado_revision === 'Observado' ? (
-                       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 4 }}>
-                         <Text style={{ color: "#FFA500", fontSize: 12, fontWeight: 'bold' }}>
-                           ¡Toca para corregir!
-                         </Text>
-                         <MaterialCommunityIcons name="pencil" size={14} color="#FFA500" />
-                       </View>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 4 }}>
+                        <Text style={{ color: "#FFA500", fontSize: 12, fontWeight: 'bold' }}>
+                          ¡Toca para corregir!
+                        </Text>
+                        <MaterialCommunityIcons name="pencil" size={14} color="#FFA500" />
+                      </View>
                     ) : planta.estado_revision === 'Validado' ? (
-                       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 4 }}>
-                         <Text style={{ color: "#1FC451", fontSize: 12, fontWeight: 'bold' }}>
-                           ¡Ver ficha técnica!
-                         </Text>
-                         <MaterialCommunityIcons name="eye" size={14} color="#1FC451" />
-                       </View>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 4 }}>
+                        <Text style={{ color: "#1FC451", fontSize: 12, fontWeight: 'bold' }}>
+                          ¡Ver ficha técnica!
+                        </Text>
+                        <MaterialCommunityIcons name="eye" size={14} color="#1FC451" />
+                      </View>
                     ) : (
-                       <Text style={{ color: theme.icon, fontSize: 12, marginTop: 4 }}>
-                         Estado actual
-                       </Text>
+                      <Text style={{ color: theme.icon, fontSize: 12, marginTop: 4 }}>
+                        Estado actual
+                      </Text>
                     )}
                   </View>
-                  <View style={{ 
-                    backgroundColor: planta.estado_revision === 'Validado' ? 'rgba(31,196,81,0.2)' : 
-                                    planta.estado_revision === 'Observado' ? 'rgba(255,165,0,0.2)' : 
-                                    planta.estado_revision === 'Rechazado' ? 'rgba(255,68,68,0.2)' : 
-                                    'rgba(255,255,255,0.1)', 
-                    paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 
+                  <View style={{
+                    backgroundColor: planta.estado_revision === 'Validado' ? 'rgba(31,196,81,0.2)' :
+                      planta.estado_revision === 'Observado' ? 'rgba(255,165,0,0.2)' :
+                        planta.estado_revision === 'Rechazado' ? 'rgba(255,68,68,0.2)' :
+                          'rgba(255,255,255,0.1)',
+                    paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20
                   }}>
-                    <Text numberOfLines={1} style={{ 
-                      color: planta.estado_revision === 'Validado' ? '#1FC451' : 
-                             planta.estado_revision === 'Observado' ? '#FFA500' : 
-                             planta.estado_revision === 'Rechazado' ? '#FF4444' : 
-                             '#ffffff', 
-                      fontSize: 12, fontWeight: 'bold' 
+                    <Text numberOfLines={1} style={{
+                      color: planta.estado_revision === 'Validado' ? '#1FC451' :
+                        planta.estado_revision === 'Observado' ? '#FFA500' :
+                          planta.estado_revision === 'Rechazado' ? '#FF4444' :
+                            '#ffffff',
+                      fontSize: 12, fontWeight: 'bold'
                     }}>
                       {planta.estado_revision === 'en_revision' ? 'En revisión' : planta.estado_revision || 'En revisión'}
                     </Text>

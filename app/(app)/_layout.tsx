@@ -60,7 +60,7 @@ export default function Layout() {
     );
   }
 
-  const inAuthGroup = segments[1] === "sign-in" || segments[1] === "sign-up";
+  const inAuthGroup = segments[1] === "sign-in" || segments[1] === "sign-up" || segments[1] === "reset-password";
   const isGuestTab = segments[1] === "(tabs)" && (segments[2] === "registro" || segments[2] === "sync" || segments[2] === "profile");
 
   if (!effectivelySignedIn && !inAuthGroup && !isGuestTab) {
@@ -90,6 +90,7 @@ export default function Layout() {
       {/* Vistas de Autenticación */}
       <JsStack.Screen name="sign-in" options={{ headerShown: false, gestureEnabled: false }} />
       <JsStack.Screen name="sign-up" options={{ headerShown: false, gestureEnabled: false }} />
+      <JsStack.Screen name="reset-password" options={{ headerShown: false, gestureEnabled: true }} />
       <JsStack.Screen name="about" options={{ headerShown: false, gestureEnabled: false }} />
       <JsStack.Screen
         name="alert-modal"

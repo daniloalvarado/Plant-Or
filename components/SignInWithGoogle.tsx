@@ -9,6 +9,7 @@ import { Button, Spinner, Text, View } from "tamagui";
 import { Modal, StyleSheet } from "react-native";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { useModal } from "@/contexts/ModalContext";
 
 // Preloads the browser for Android devices to reduce authentication load time
 // See: https://docs.expo.dev/guides/authentication/#improving-user-experience
@@ -30,6 +31,8 @@ export default function SignInWithGoogle() {
   useWarmUpBrowser();
   const router = useRouter();
   const [isFinalizing, setIsFinalizing] = useState(false);
+
+  const { showModal } = useModal();
 
   // Use the `useSSO()` hook to access the `startSSOFlow()` method
   const { startSSOFlow } = useSSO();
@@ -66,13 +69,28 @@ export default function SignInWithGoogle() {
         // there are missing requirements, such as MFA
         // See https://clerk.com/docs/guides/development/custom-flows/authentication/oauth-connections#handle-missing-requirements
       }
-    } catch (err) {
-      // See https://clerk.com/docs/guides/development/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
+    } catch (err: any) {
+      console.log(JSON.stringify(err, null, 2));
       setIsFinalizing(false);
+      
+      let errorMessage = "Ocurrió un error al iniciar sesión con Google.";
+      
+      const errorCode = err?.errors?.[0]?.code;
+      if (errorCode === "user_quota_exceeded") {
+         errorMessage = "Límite de 100 usuarios en modo de prueba alcanzado. No es posible crear más cuentas hasta pasar a Producción.";
+      } else if (err?.errors?.[0]?.longMessage) {
+         errorMessage = err.errors[0].longMessage;
+      } else if (err?.errors?.[0]?.message) {
+         errorMessage = err.errors[0].message;
+      }
+
+      showModal({
+        type: "dialog",
+        title: "Atención",
+        description: errorMessage,
+      });
     }
-  }, [router, startSSOFlow]);
+  }, [router, startSSOFlow, showModal]);
 
   return (
     <>
