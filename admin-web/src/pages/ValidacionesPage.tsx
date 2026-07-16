@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { usePlantas, updatePlantaEstado } from '@/hooks/use-plantas'
+import { usePlantas, updatePlantaEstado, deletePlanta } from '@/hooks/use-plantas'
 import { EstadoBadge } from '@/components/EstadoBadge'
-import { Leaf, Search, Eye, CheckCircle, AlertCircle, XCircle, ChevronDown, ChevronUp, ChevronsUpDown, Filter } from 'lucide-react'
+import { Leaf, Search, Eye, CheckCircle, AlertCircle, XCircle, ChevronDown, ChevronUp, ChevronsUpDown, Filter, Trash2 } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useNavigate } from 'react-router-dom'
@@ -10,6 +10,7 @@ import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { useUser } from '@clerk/clerk-react'
 import type { Planta } from '@/types/planta'
 import { ValidacionModal } from '@/components/ValidacionModal'
+import { DeleteModal } from '@/components/DeleteModal'
 import { cn } from '@/lib/utils'
 
 interface ValidacionesPageProps {
@@ -18,6 +19,7 @@ interface ValidacionesPageProps {
 
 export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps) {
   const { user } = useUser()
+  const role = user?.publicMetadata?.role as string | undefined
   const docenteName = user?.fullName || user?.primaryEmailAddress?.emailAddress || 'Docente'
   const { plantas, loading, refetch } = usePlantas()
   const navigate = useNavigate()
@@ -28,6 +30,7 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
   const [observarId, setObservarId] = useState<string | null>(null)
   const [rechazarId, setRechazarId] = useState<string | null>(null)
+  const [eliminarId, setEliminarId] = useState<string | null>(null)
   const [loadingAction, setLoadingAction] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -65,6 +68,21 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
     return sortDir === 'asc'
       ? <ChevronUp className="w-3 h-3 text-muted-foreground ml-1" />
       : <ChevronDown className="w-3 h-3 text-muted-foreground ml-1" />
+  }
+
+  const confirmarEliminar = async () => {
+    if (!eliminarId) return;
+    try {
+      setLoadingAction(eliminarId + '-eliminar')
+      await deletePlanta(eliminarId)
+      refetch()
+    } catch (error) {
+      console.error(error)
+      alert('Error al eliminar el registro')
+    } finally {
+      setLoadingAction(null)
+      setEliminarId(null)
+    }
   }
 
   const handleAprobar = async (id: string) => {
@@ -275,6 +293,21 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
                             </span>
                           </div>
                         )}
+                        
+                        {role === 'admin' && (
+                          <div className="relative group/tooltip">
+                            <button
+                              onClick={() => setEliminarId(p._id)}
+                              disabled={loadingAction === p._id + '-eliminar'}
+                              className="p-1.5 rounded-lg hover:bg-red-500/20 text-muted-foreground hover:text-red-500 transition-colors disabled:opacity-50 cursor-pointer"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-red-500 text-xs font-bold rounded border border-red-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                              Eliminar
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -334,8 +367,12 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
           if (rechazarId) handleRechazar(motivo);
         }}
       />
+      <DeleteModal
+        isOpen={!!eliminarId}
+        loading={!!loadingAction}
+        onClose={() => setEliminarId(null)}
+        onConfirm={confirmarEliminar}
+      />
     </div>
   )
 }
-
-

@@ -79,3 +79,7 @@ export async function updatePlantaEstado(
   
   return { result, emailSent }
 }
+
+export async function deletePlanta(id: string) {
+  return await client.delete(id)
+}
