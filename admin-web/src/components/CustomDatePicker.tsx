@@ -14,6 +14,7 @@ interface CustomDatePickerProps {
 
 export function CustomDatePicker({ value, onChange, type = 'date', className = '', placeholder = 'dd/mm/aaaa', maxDate }: CustomDatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [view, setView] = useState<'date' | 'time'>('date');
   const containerRef = useRef<HTMLDivElement>(null);
   
   const parseValue = () => {
@@ -62,6 +63,7 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
       const h = String(newDate.getHours()).padStart(2, '0');
       const m = String(newDate.getMinutes()).padStart(2, '0');
       onChange(`${year}-${month}-${d}T${h}:${m}`);
+      setView('time');
     } else {
       onChange(`${year}-${month}-${d}`);
       setIsOpen(false); 
@@ -168,7 +170,10 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
     <div className={`relative ${className}`} ref={containerRef}>
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (!isOpen) setView('date');
+          setIsOpen(!isOpen);
+        }}
         className={`flex items-center justify-between w-full px-4 py-3 bg-secondary/50 border rounded-xl text-sm text-foreground hover:bg-secondary focus:outline-none transition-all cursor-pointer ${isOpen ? 'border-primary ring-1 ring-primary/50' : 'border-border'}`}
       >
         <span className={displayValue ? 'text-foreground font-medium' : 'text-muted-foreground'}>
@@ -178,23 +183,82 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 mt-2 p-4 bg-card border border-border rounded-xl shadow-2xl w-[280px] left-0 origin-top animate-in fade-in slide-in-from-top-2 duration-200">
-          {renderHeader()}
-          {renderDays()}
-          {renderCells()}
-          
-          {type === 'datetime-local' && (
-            <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
-              <div className="flex items-center gap-2 text-foreground text-sm font-medium">
-                <Clock className="w-4 h-4 text-muted-foreground" />
-                <span>Hora:</span>
+        <div className="absolute z-50 mt-2 p-4 bg-card border border-border rounded-xl shadow-2xl w-[300px] left-0 origin-top animate-in fade-in slide-in-from-top-2 duration-200">
+          {view === 'date' ? (
+            <div className="animate-in fade-in slide-in-from-left-4 duration-300">
+              {renderHeader()}
+              {renderDays()}
+              {renderCells()}
+            </div>
+          ) : (
+            <div className="flex flex-col animate-in fade-in slide-in-from-right-4 duration-300">
+              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
+                <button type="button" onClick={() => setView('date')} className="p-1.5 hover:bg-secondary rounded-full transition-colors">
+                  <ChevronLeft className="w-5 h-5 text-muted-foreground" />
+                </button>
+                <span className="font-bold text-foreground">Seleccionar Hora</span>
               </div>
-              <input
-                type="time"
-                value={value ? format(parseValue(), 'HH:mm') : '00:00'}
-                onChange={handleTimeChange}
-                className="bg-secondary/50 border border-border rounded-lg px-2 py-1.5 text-sm font-medium text-foreground focus:outline-none focus:ring-1 focus:ring-primary dark:[color-scheme:dark] cursor-pointer"
-              />
+              
+              <div className="flex gap-4 justify-center h-48 mb-5">
+                <div className="flex-1 flex flex-col items-center">
+                  <span className="text-xs text-muted-foreground font-semibold mb-2 uppercase tracking-wider">Hora</span>
+                  <div className="w-full overflow-y-auto custom-scrollbar flex flex-col gap-1 pr-1" style={{ maxHeight: '160px' }}>
+                    {Array.from({ length: 24 }).map((_, i) => (
+                      <button
+                        key={`h-${i}`}
+                        type="button"
+                        onClick={() => {
+                          let d = parseValue();
+                          d = setHours(d, i);
+                          const y = d.getFullYear();
+                          const m = String(d.getMonth() + 1).padStart(2, '0');
+                          const d_num = String(d.getDate()).padStart(2, '0');
+                          const h = String(d.getHours()).padStart(2, '0');
+                          const min = String(d.getMinutes()).padStart(2, '0');
+                          onChange(`${y}-${m}-${d_num}T${h}:${min}`);
+                        }}
+                        className={`py-2 rounded-xl text-sm font-bold transition-all ${getHours(parseValue()) === i ? 'bg-primary text-primary-foreground shadow-md scale-105' : 'hover:bg-secondary text-foreground'}`}
+                      >
+                        {String(i).padStart(2, '0')}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="flex-1 flex flex-col items-center">
+                  <span className="text-xs text-muted-foreground font-semibold mb-2 uppercase tracking-wider">Minutos</span>
+                  <div className="w-full overflow-y-auto custom-scrollbar flex flex-col gap-1 pr-1" style={{ maxHeight: '160px' }}>
+                    {Array.from({ length: 60 }).map((_, i) => (
+                      <button
+                        key={`m-${i}`}
+                        type="button"
+                        onClick={() => {
+                          let d = parseValue();
+                          d = setMinutes(d, i);
+                          const y = d.getFullYear();
+                          const m = String(d.getMonth() + 1).padStart(2, '0');
+                          const d_num = String(d.getDate()).padStart(2, '0');
+                          const h = String(d.getHours()).padStart(2, '0');
+                          const min = String(d.getMinutes()).padStart(2, '0');
+                          onChange(`${y}-${m}-${d_num}T${h}:${min}`);
+                        }}
+                        className={`py-2 rounded-xl text-sm font-bold transition-all ${getMinutes(parseValue()) === i ? 'bg-primary text-primary-foreground shadow-md scale-105' : 'hover:bg-secondary text-foreground'}`}
+                      >
+                        {String(i).padStart(2, '0')}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2"
+              >
+                <Clock className="w-5 h-5" />
+                Confirmar Hora
+              </button>
             </div>
           )}
         </div>
