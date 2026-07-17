@@ -132,7 +132,7 @@ export function ConfiguracionCierreModal({ isOpen, onClose }: ConfiguracionCierr
 
   return (
     <div className={`fixed inset-0 z-[100] overflow-y-auto bg-background/80 backdrop-blur-sm ${isAnimatingOut ? 'animate-out fade-out duration-300' : 'animate-in fade-in duration-300'}`}>
-      <div className="flex min-h-full items-center justify-center p-4 pt-10 pb-24">
+      <div className="flex min-h-full items-start justify-center p-4 pt-[10vh] pb-[35vh]">
         <div className={`bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}>
           <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-foreground flex items-center gap-2">

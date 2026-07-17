@@ -194,11 +194,11 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
 
       {isOpen && (view === 'time' || view === 'minute') && (
         <div 
-          className="fixed inset-0 z-[110] flex items-center justify-center bg-background/80 backdrop-blur-sm animate-in fade-in duration-300"
+          className="fixed inset-0 z-[110] flex p-4 overflow-y-auto bg-background/80 backdrop-blur-sm animate-in fade-in duration-300"
           onClick={() => { setIsOpen(false); setView('date'); }}
         >
           <div 
-            className="bg-card border border-border rounded-3xl p-6 w-[320px] shadow-2xl flex flex-col items-center animate-in zoom-in-95 duration-200"
+            className="m-auto bg-card border border-border rounded-3xl p-6 w-[320px] shadow-2xl flex flex-col items-center animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-full flex items-center justify-between mb-2">
