@@ -135,6 +135,19 @@ export async function syncRegistro(registro: OfflineRegistro, user?: any) {
       doc.registrador_nombre = user.fullName || doc.registrador_nombre;
       doc.registrador_email = user.primaryEmailAddress?.emailAddress || doc.registrador_email;
     }
+    
+    // Recalcular el numero_planta exacto justo antes de subir para evitar ceros y duplicados
+    try {
+      const currentEmail = doc.registrador_email || '';
+      const currentAutor = doc.autor || '';
+      const count = await client.fetch(`count(*[_type == "planta" && (autor == $userId || registrador_email == $userEmail)])`, { 
+        userId: currentAutor, 
+        userEmail: currentEmail 
+      });
+      doc.numero_planta = String(count + 1);
+    } catch (err) {
+      console.error("No se pudo autogenerar el numero de planta en sync, usando el offline fallback", err);
+    }
 
     doc.galeria = []; // Preparar array de galería
 
