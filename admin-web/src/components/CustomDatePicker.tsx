@@ -194,14 +194,14 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
 
       {isOpen && (view === 'time' || view === 'minute') && (
         <div 
-          className="fixed inset-0 z-[110] flex p-4 overflow-y-auto bg-background/80 backdrop-blur-sm animate-in fade-in duration-300"
+          className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300"
           onClick={() => { setIsOpen(false); setView('date'); }}
         >
           <div 
-            className="m-auto bg-card border border-border rounded-3xl p-6 w-[320px] shadow-2xl flex flex-col items-center animate-in zoom-in-95 duration-200"
+            className="bg-card border border-border rounded-3xl p-5 w-[280px] shadow-2xl flex flex-col items-center animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-full flex items-center justify-between mb-2">
+            <div className="w-full flex items-center justify-between mb-1">
               <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
                 <Clock className="w-5 h-5 text-primary" />
                 Seleccionar Hora
@@ -234,7 +234,7 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
                 </button>
               </div>
               
-              <div className="relative w-56 h-56 rounded-full bg-secondary/50 flex items-center justify-center shadow-inner">
+              <div className="relative w-48 h-48 rounded-full bg-secondary/50 flex items-center justify-center shadow-inner">
                 {/* Center Dot */}
                 <div className="absolute w-3 h-3 rounded-full bg-primary z-10 shadow-sm" />
                 
@@ -255,7 +255,7 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
                   const num = view === 'time' ? (i === 0 ? 12 : i) : (i * 5 === 0 ? '00' : i * 5);
                   const angle = i * 30;
                   const radian = (angle - 90) * (Math.PI / 180);
-                  const radius = 90;
+                  const radius = 75;
                   const x = Math.cos(radian) * radius;
                   const y = Math.sin(radian) * radius;
                   
@@ -292,7 +292,7 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
               
               {/* AM/PM Toggle */}
               {view === 'time' && (
-                <div className="flex gap-2 mt-6 bg-secondary/50 p-1.5 rounded-xl">
+                <div className="flex gap-2 mt-4 bg-secondary/50 p-1.5 rounded-xl">
                   <button 
                     type="button"
                     onClick={() => {
@@ -332,7 +332,7 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
             <button
               type="button"
               onClick={() => { setIsOpen(false); setView('date'); }}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3.5 rounded-xl font-bold transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 text-base"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 text-sm"
             >
               <Clock className="w-5 h-5" />
               Confirmar Hora
