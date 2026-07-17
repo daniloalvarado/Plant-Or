@@ -94,7 +94,7 @@ export function ConfiguracionCierreModal({ isOpen, onClose }: ConfiguracionCierr
   return (
     <div className={`fixed inset-0 z-[100] overflow-y-auto bg-background/80 backdrop-blur-sm ${isAnimatingOut ? 'animate-out fade-out duration-300' : 'animate-in fade-in duration-300'}`}>
       <div className="flex min-h-full items-center justify-center p-4 pt-10 pb-48">
-        <div className={`bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}>
+        <div className={`bg-card border border-border rounded-2xl p-6 w-full max-w-xl shadow-2xl ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}>
           <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Clock className="w-5 h-5 text-primary" />
@@ -110,48 +110,50 @@ export function ConfiguracionCierreModal({ isOpen, onClose }: ConfiguracionCierr
               Define la fecha y hora límite para aceptar registros. Pasada esta hora (en hora local de Perú), la app móvil bloqueará nuevos envíos automáticamente.
             </p>
 
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-foreground">Cierre para Estudiantes</label>
-              <div className="flex items-center gap-2">
-                <CustomDatePicker
-                  type="datetime-local"
-                  value={cierreEstudiantes}
-                  onChange={setCierreEstudiantes}
-                  className="flex-1"
-                />
-                <div className="relative group/tooltip flex-shrink-0">
-                  <button 
-                    onClick={() => setCierreEstudiantes('')}
-                    className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
-                  >
-                    <RotateCcw className="w-5 h-5" />
-                  </button>
-                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-red-500 text-xs font-bold rounded border border-red-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
-                    Restablecer (sin límite)
-                  </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-foreground">Cierre para Estudiantes</label>
+                <div className="flex items-center gap-2">
+                  <CustomDatePicker
+                    type="datetime-local"
+                    value={cierreEstudiantes}
+                    onChange={setCierreEstudiantes}
+                    className="flex-1"
+                  />
+                  <div className="relative group/tooltip flex-shrink-0">
+                    <button 
+                      onClick={() => setCierreEstudiantes('')}
+                      className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
+                    >
+                      <RotateCcw className="w-5 h-5" />
+                    </button>
+                    <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-red-500 text-xs font-bold rounded border border-red-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                      Restablecer (sin límite)
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="space-y-3">
-              <label className="block text-sm font-medium text-foreground">Cierre para Ciudadanos</label>
-              <div className="flex items-center gap-2">
-                <CustomDatePicker
-                  type="datetime-local"
-                  value={cierreCiudadanos}
-                  onChange={setCierreCiudadanos}
-                  className="flex-1"
-                />
-                <div className="relative group/tooltip flex-shrink-0">
-                  <button 
-                    onClick={() => setCierreCiudadanos('')}
-                    className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
-                  >
-                    <RotateCcw className="w-5 h-5" />
-                  </button>
-                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-red-500 text-xs font-bold rounded border border-red-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
-                    Restablecer (sin límite)
-                  </span>
+  
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-foreground">Cierre para Ciudadanos</label>
+                <div className="flex items-center gap-2">
+                  <CustomDatePicker
+                    type="datetime-local"
+                    value={cierreCiudadanos}
+                    onChange={setCierreCiudadanos}
+                    className="flex-1"
+                  />
+                  <div className="relative group/tooltip flex-shrink-0">
+                    <button 
+                      onClick={() => setCierreCiudadanos('')}
+                      className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
+                    >
+                      <RotateCcw className="w-5 h-5" />
+                    </button>
+                    <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-red-500 text-xs font-bold rounded border border-red-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                      Restablecer (sin límite)
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
