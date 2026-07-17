@@ -439,8 +439,8 @@ export function useRegistroForm() {
         if (user.unsafeMetadata?.role) setRolRegistro(user.unsafeMetadata.role as 'estudiante' | 'ciudadano');
 
         // Consultar el número de plantas actual para autogenerar
-        client.fetch(`count(*[_type == "planta" && autor == $userId])`, { userId: user.id })
-          .then(count => setNumeroPlantaAutogenerado(count))
+        client.fetch(`count(*[_type == "planta" && (autor == $userId || registrador_email == $userEmail)])`, { userId: user.id, userEmail: user.primaryEmailAddress?.emailAddress })
+          .then(count => setNumeroPlantaAutogenerado(count + 1))
           .catch(err => console.error("Error fetching count", err));
       }
     }, [user, editId])
