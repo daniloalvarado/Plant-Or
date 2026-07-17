@@ -104,12 +104,7 @@ export function ConfiguracionCierreModal({ isOpen, onClose }: ConfiguracionCierr
           </button>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          </div>
-        ) : (
-          <div className="space-y-6">
+        <div className="space-y-6">
             <p className="text-sm text-muted-foreground">
               Define la fecha y hora límite para aceptar registros. Pasada esta hora (en hora local de Perú), la app móvil bloqueará nuevos envíos automáticamente.
             </p>
@@ -123,13 +118,17 @@ export function ConfiguracionCierreModal({ isOpen, onClose }: ConfiguracionCierr
                   onChange={setCierreEstudiantes}
                   className="flex-1"
                 />
-                <button 
-                  onClick={() => setCierreEstudiantes('')}
-                  title="Restablecer (Sin límite)"
-                  className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors flex-shrink-0"
-                >
-                  <RotateCcw className="w-5 h-5" />
-                </button>
+                <div className="relative group/tooltip flex-shrink-0">
+                  <button 
+                    onClick={() => setCierreEstudiantes('')}
+                    className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
+                  >
+                    <RotateCcw className="w-5 h-5" />
+                  </button>
+                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-red-500 text-xs font-bold rounded border border-red-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                    Restablecer (sin límite)
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -142,13 +141,17 @@ export function ConfiguracionCierreModal({ isOpen, onClose }: ConfiguracionCierr
                   onChange={setCierreCiudadanos}
                   className="flex-1"
                 />
-                <button 
-                  onClick={() => setCierreCiudadanos('')}
-                  title="Restablecer (Sin límite)"
-                  className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors flex-shrink-0"
-                >
-                  <RotateCcw className="w-5 h-5" />
-                </button>
+                <div className="relative group/tooltip flex-shrink-0">
+                  <button 
+                    onClick={() => setCierreCiudadanos('')}
+                    className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
+                  >
+                    <RotateCcw className="w-5 h-5" />
+                  </button>
+                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-red-500 text-xs font-bold rounded border border-red-500/30 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                    Restablecer (sin límite)
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -170,7 +173,6 @@ export function ConfiguracionCierreModal({ isOpen, onClose }: ConfiguracionCierr
               </button>
             </div>
           </div>
-        )}
       </div>
     </div>
   );

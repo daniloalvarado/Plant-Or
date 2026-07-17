@@ -15,6 +15,7 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
   const [rol, setRol] = useState<'Todos' | 'Estudiante' | 'Ciudadano'>('Todos');
+  const [estado, setEstado] = useState<'Todos' | 'En revisión' | 'Validado' | 'Observado' | 'Rechazado'>('Todos');
   const [isRendered, setIsRendered] = useState(isOpen);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -45,14 +46,17 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
         
         let matchRol = true;
         if (rol !== 'Todos') {
-          // Asumimos que podemos distinguir por rol. Si no hay rol guardado explicitamente,
-          // dependemos de la data. Usualmente si tiene facultad/curso es estudiante.
           const isEstudiante = !!p.registrador_curso || !!p.registrador_facultad;
           if (rol === 'Estudiante' && !isEstudiante) matchRol = false;
           if (rol === 'Ciudadano' && isEstudiante) matchRol = false;
         }
 
-        return matchFecha && matchRol;
+        let matchEstado = true;
+        if (estado !== 'Todos' && p.estado_revision !== estado) {
+          matchEstado = false;
+        }
+
+        return matchFecha && matchRol && matchEstado;
       });
 
       // 2. Agrupar por persona (email o dni)
@@ -87,7 +91,7 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
         "DNI": usuario.dni,
         "Curso": usuario.curso,
         "Tipo de Usuario": usuario.rol,
-        "Total de Registros Validados": usuario.total
+        "Total de Registros": usuario.total
       }));
 
       // Si no hay datos
@@ -168,6 +172,22 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
                 { value: 'Todos', label: 'Ambos (Estudiantes y Ciudadanos)' },
                 { value: 'Estudiante', label: 'Solo Estudiantes' },
                 { value: 'Ciudadano', label: 'Solo Ciudadanos' }
+              ]}
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-foreground">Filtrar por Estado</label>
+            <CustomSelect
+              value={estado}
+              onChange={(val) => setEstado(val as any)}
+              options={[
+                { value: 'Todos', label: 'Todos los estados' },
+                { value: 'En revisión', label: 'En revisión' },
+                { value: 'Validado', label: 'Validado' },
+                { value: 'Observado', label: 'Observado' },
+                { value: 'Rechazado', label: 'Rechazado' }
               ]}
               className="w-full"
             />
