@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, X } from 'lucide-react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isSameMonth, isSameDay, addDays, getHours, getMinutes, setHours, setMinutes } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -192,7 +193,7 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
         </div>
       )}
 
-      {isOpen && (view === 'time' || view === 'minute') && (
+      {isOpen && (view === 'time' || view === 'minute') && typeof document !== 'undefined' && createPortal(
         <div 
           className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300"
           onClick={() => { setIsOpen(false); setView('date'); }}
@@ -338,7 +339,8 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
               Confirmar Hora
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
