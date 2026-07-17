@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@axelixlabs/react-timepicker": "^3.0.0",
     "@clerk/clerk-react": "^5.61.7",
     "@clerk/localizations": "^4.6.8",
     "@clerk/themes": "^2.4.57",

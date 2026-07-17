@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isSameMonth, isSameDay, addDays, getHours, getMinutes, setHours, setMinutes } from 'date-fns';
 import { es } from 'date-fns/locale';
+import TimeKeeper from '@axelixlabs/react-timepicker';
 
 interface CustomDatePickerProps {
   value: string;
@@ -199,56 +200,22 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
                 <span className="font-bold text-foreground">Seleccionar Hora</span>
               </div>
               
-              <div className="flex gap-4 justify-center h-48 mb-5">
-                <div className="flex-1 flex flex-col items-center">
-                  <span className="text-xs text-muted-foreground font-semibold mb-2 uppercase tracking-wider">Hora</span>
-                  <div className="w-full overflow-y-auto custom-scrollbar flex flex-col gap-1 pr-1" style={{ maxHeight: '160px' }}>
-                    {Array.from({ length: 24 }).map((_, i) => (
-                      <button
-                        key={`h-${i}`}
-                        type="button"
-                        onClick={() => {
-                          let d = parseValue();
-                          d = setHours(d, i);
-                          const y = d.getFullYear();
-                          const m = String(d.getMonth() + 1).padStart(2, '0');
-                          const d_num = String(d.getDate()).padStart(2, '0');
-                          const h = String(d.getHours()).padStart(2, '0');
-                          const min = String(d.getMinutes()).padStart(2, '0');
-                          onChange(`${y}-${m}-${d_num}T${h}:${min}`);
-                        }}
-                        className={`py-2 rounded-xl text-sm font-bold transition-all ${getHours(parseValue()) === i ? 'bg-primary text-primary-foreground shadow-md scale-105' : 'hover:bg-secondary text-foreground'}`}
-                      >
-                        {String(i).padStart(2, '0')}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="flex-1 flex flex-col items-center">
-                  <span className="text-xs text-muted-foreground font-semibold mb-2 uppercase tracking-wider">Minutos</span>
-                  <div className="w-full overflow-y-auto custom-scrollbar flex flex-col gap-1 pr-1" style={{ maxHeight: '160px' }}>
-                    {Array.from({ length: 60 }).map((_, i) => (
-                      <button
-                        key={`m-${i}`}
-                        type="button"
-                        onClick={() => {
-                          let d = parseValue();
-                          d = setMinutes(d, i);
-                          const y = d.getFullYear();
-                          const m = String(d.getMonth() + 1).padStart(2, '0');
-                          const d_num = String(d.getDate()).padStart(2, '0');
-                          const h = String(d.getHours()).padStart(2, '0');
-                          const min = String(d.getMinutes()).padStart(2, '0');
-                          onChange(`${y}-${m}-${d_num}T${h}:${min}`);
-                        }}
-                        className={`py-2 rounded-xl text-sm font-bold transition-all ${getMinutes(parseValue()) === i ? 'bg-primary text-primary-foreground shadow-md scale-105' : 'hover:bg-secondary text-foreground'}`}
-                      >
-                        {String(i).padStart(2, '0')}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+              <div className="flex justify-center mb-5 scale-90 sm:scale-100 origin-top">
+                <TimeKeeper
+                  time={format(parseValue(), 'HH:mm')}
+                  onChange={(newTime: any) => {
+                    let d = parseValue();
+                    d = setHours(d, newTime.hour);
+                    d = setMinutes(d, newTime.minute);
+                    const y = d.getFullYear();
+                    const m = String(d.getMonth() + 1).padStart(2, '0');
+                    const d_num = String(d.getDate()).padStart(2, '0');
+                    const h = String(d.getHours()).padStart(2, '0');
+                    const min = String(d.getMinutes()).padStart(2, '0');
+                    onChange(`${y}-${m}-${d_num}T${h}:${min}`);
+                  }}
+                  switchToMinuteOnHourSelect
+                />
               </div>
               
               <button
