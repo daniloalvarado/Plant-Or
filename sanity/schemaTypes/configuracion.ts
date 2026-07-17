@@ -17,6 +17,18 @@ export const configuracion = {
       initialValue: '🌿 PLANT-OR'
     },
     {
+      name: 'cierre_estudiantes',
+      title: 'Fecha de Cierre para Estudiantes',
+      type: 'datetime',
+      description: 'Fecha y hora a partir de la cual los Estudiantes ya no podrán registrar nuevas plantas.'
+    },
+    {
+      name: 'cierre_ciudadanos',
+      title: 'Fecha de Cierre para Ciudadanos',
+      type: 'datetime',
+      description: 'Fecha y hora a partir de la cual los Ciudadanos ya no podrán registrar nuevas plantas.'
+    },
+    {
       name: 'responsable_1_nombre',
       title: 'Nombre del Responsable 1',
       type: 'string',

@@ -16,7 +16,7 @@ export default function RegistroScreen() {
   const {
     step, scrollViewRef, insets, showMissingModal, setShowMissingModal, missingSections,
     scrollToField, showHelperButton, showSuccess, isOfflineSaved, editId, resetFormAndGoHome,
-    selectedPhoto, setSelectedPhoto
+    selectedPhoto, setSelectedPhoto, isClosed, closureMessage
   } = form;
 
   return (
@@ -138,6 +138,32 @@ export default function RegistroScreen() {
           {selectedPhoto && (
             <Image source={{ uri: selectedPhoto }} style={{ width: '100%', height: '80%', resizeMode: 'contain' }} />
           )}
+        </View>
+      </Modal>
+
+      {/* Modal de Cierre de Registros */}
+      <Modal visible={isClosed} transparent animationType="fade">
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 24 }}>
+          <View style={{ backgroundColor: '#12221A', borderWidth: 1, borderColor: '#ff4444', borderRadius: 20, padding: 32, width: '100%', alignItems: 'center', gap: 16 }}>
+            <MaterialCommunityIcons name="clock-alert-outline" size={70} color="#ff4444" />
+            <H2 mt="$2" color="#ff4444" style={{ textAlign: 'center' }}>
+              Registros Cerrados
+            </H2>
+            <Paragraph style={{ textAlign: 'center', color: 'rgba(255,255,255,0.7)', fontSize: 15, lineHeight: 22 }}>
+              {closureMessage || "El periodo de registro ha finalizado. Ya no se aceptan nuevos envíos."}
+            </Paragraph>
+            <Button
+              mt="$4"
+              bg="#ff4444"
+              color="white"
+              onPress={resetFormAndGoHome}
+              icon={<MaterialCommunityIcons name="home" size={20} color="white" />}
+              style={{ width: '100%' }}
+              pressStyle={{ bg: '#cc0000' }}
+            >
+              Volver al Inicio
+            </Button>
+          </View>
         </View>
       </Modal>
 

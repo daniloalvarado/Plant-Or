@@ -11,7 +11,10 @@ import { useUser } from '@clerk/clerk-react'
 import type { Planta } from '@/types/planta'
 import { ValidacionModal } from '@/components/ValidacionModal'
 import { DeleteModal } from '@/components/DeleteModal'
+import { ConfiguracionCierreModal } from '@/components/ConfiguracionCierreModal'
+import { ExportarExcelModal } from '@/components/ExportarExcelModal'
 import { cn } from '@/lib/utils'
+import { Settings, Download } from 'lucide-react'
 
 interface ValidacionesPageProps {
   filtroEstado?: string
@@ -34,6 +37,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
   const [loadingAction, setLoadingAction] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+  const [showCierreModal, setShowCierreModal] = useState(false)
+  const [showExportModal, setShowExportModal] = useState(false)
 
   useEffect(() => {
     setCurrentPage(1)
@@ -131,8 +136,8 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
 
       {/* Search & Filters */}
       <div className="space-y-4 cascade-container">
-        <div className="flex gap-3 cascade-container">
-          <div className="relative flex-1 cascade-item delay-2">
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="relative flex-1 w-full sm:max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
@@ -142,13 +147,35 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
               className="w-full pl-9 pr-4 py-2 bg-input border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 bg-secondary border border-border rounded-lg text-sm text-foreground hover:bg-accent transition-colors cursor-pointer cascade-item delay-3"
-          >
-            <Filter className="w-4 h-4" />
-            <span className="hidden sm:inline">Filtros</span>
-          </button>
+          
+          <div className="flex gap-2">
+            {!filtroEstado && (role === 'admin' || role === 'profesor_validador') && (
+              <>
+                <button
+                  onClick={() => setShowExportModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-secondary text-foreground rounded-lg hover:bg-accent transition-colors text-sm cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">Exportar</span>
+                </button>
+                <button
+                  onClick={() => setShowCierreModal(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-secondary text-foreground rounded-lg hover:bg-accent transition-colors text-sm cursor-pointer"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span className="hidden sm:inline">Cierre</span>
+                </button>
+              </>
+            )}
+            
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 px-4 py-2 bg-secondary border border-border rounded-lg text-sm text-foreground hover:bg-accent transition-colors cursor-pointer cascade-item delay-3"
+            >
+              <Filter className="w-4 h-4" />
+              <span className="hidden sm:inline">Filtros</span>
+            </button>
+          </div>
         </div>
 
         <div 
@@ -372,6 +399,17 @@ export default function ValidacionesPage({ filtroEstado }: ValidacionesPageProps
         loading={!!loadingAction}
         onClose={() => setEliminarId(null)}
         onConfirm={confirmarEliminar}
+      />
+
+      <ConfiguracionCierreModal 
+        isOpen={showCierreModal}
+        onClose={() => setShowCierreModal(false)}
+      />
+
+      <ExportarExcelModal 
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        plantas={plantas.filter(p => p.estado_revision === 'Validado')}
       />
     </div>
   )

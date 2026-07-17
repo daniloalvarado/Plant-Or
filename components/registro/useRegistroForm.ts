@@ -231,6 +231,42 @@ export function useRegistroForm() {
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
   const [rolRegistro, setRolRegistro] = useState<'estudiante' | 'ciudadano'>('estudiante');
   const [offlineUserCache, setOfflineUserCache] = useState<any>(null);
+  
+  // Estados para validación de cierre
+  const [isClosed, setIsClosed] = useState(false);
+  const [closureMessage, setClosureMessage] = useState('');
+
+  const checkClosure = async (currentRole?: string) => {
+    try {
+      const config = await client.fetch(`*[_type == "configuracion"][0]`);
+      if (!config) return false;
+
+      const rol = currentRole || rolRegistro;
+      const now = new Date().getTime();
+
+      if (rol === 'estudiante' && config.cierre_estudiantes) {
+        const limite = new Date(config.cierre_estudiantes).getTime();
+        if (now > limite) {
+          setIsClosed(true);
+          setClosureMessage('El periodo de registro para Estudiantes ha finalizado. Ya no se aceptan nuevos envíos.');
+          return true;
+        }
+      }
+
+      if (rol === 'ciudadano' && config.cierre_ciudadanos) {
+        const limite = new Date(config.cierre_ciudadanos).getTime();
+        if (now > limite) {
+          setIsClosed(true);
+          setClosureMessage('El periodo de registro para Ciudadanos ha finalizado. Ya no se aceptan nuevos envíos.');
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      console.error('Error verificando cierre:', e);
+      return false; // Permite continuar si falla la red (por ejemplo modo offline)
+    }
+  };
 
   // Intentar cargar la sesión offline
   useEffect(() => {
@@ -436,7 +472,12 @@ export function useRegistroForm() {
         if (user.unsafeMetadata?.facultad) setFacultad(user.unsafeMetadata.facultad as string);
         if (user.unsafeMetadata?.escuela) setEscuela(user.unsafeMetadata.escuela as string);
         if (user.unsafeMetadata?.dia_clase) setDiaClase(user.unsafeMetadata.dia_clase as string);
-        if (user.unsafeMetadata?.role) setRolRegistro(user.unsafeMetadata.role as 'estudiante' | 'ciudadano');
+        
+        const r = (user.unsafeMetadata?.role as string) || 'estudiante';
+        setRolRegistro(r as 'estudiante' | 'ciudadano');
+        
+        // Verificamos cierre inicial al cargar la pestaña
+        checkClosure(r);
 
         // Consultar el número de plantas actual para autogenerar
         client.fetch(`count(*[_type == "planta" && (autor == $userId || registrador_email == $userEmail)])`, { userId: user.id, userEmail: user.primaryEmailAddress?.emailAddress })
@@ -742,222 +783,232 @@ export function useRegistroForm() {
       return;
     }
 
-    setIsSubmitting(true);
+    const onSubmit = async () => {
+      setIsSubmitting(true);
 
-    try {
-      const isOffline = await checkIsOffline();
+      // Validación secreta final antes de enviar (por si expiró mientras llenaban)
+      const isNowClosed = await checkClosure();
+      if (isNowClosed) {
+        setIsSubmitting(false);
+        return; // El modal se mostrará gracias al cambio de estado en checkClosure
+      }
 
-      const writeClient = client.withConfig({
-        token: process.env.EXPO_PUBLIC_SANITY_TOKEN,
-      });
+      try {
+        const isOffline = await checkIsOffline();
 
-      // Función auxiliar para subir imágenes a Sanity
-      const uploadFoto = async (uri: string | null): Promise<any> => {
-        if (!uri) return null;
-        // Si la uri empieza con http, significa que es una imagen que ya estaba en Sanity (modo edición)
-        // Por simplicidad, retornaremos null temporalmente o saltaremos la resubida. 
-        // Lo ideal sería mantener el asset original, pero para el prototipo subiremos de nuevo si cambió,
-        // o la omitiremos si es la misma URL (requeriría mantener el _ref original en el state, lo cual
-        // simplificamos subiéndola como blob o ignorándola).
-        if (uri.startsWith('http')) {
-          // En este caso simplificado, si el usuario no cambia la foto, no la resubimos y esperamos
-          // que Sanity preserve el array original si no lo modificamos por completo.
-          // Pero Sanity requiere referencias completas. Para solucionarlo rápido, requerimos que el
-          // usuario tome la foto de nuevo si la va a editar, o necesitamos extraer el _ref del URL.
-          // Extraeremos el _id (esto es una aproximación, no ideal, pero funciona para URLs de Sanity):
-          const match = uri.match(/images\/[^\/]+\/[^\/]+\/([a-z0-9]+-[0-9]+x[0-9]+-[a-z]+)/);
-          if (match && match[1]) {
-            return { _type: 'image', asset: { _type: 'reference', _ref: `image-${match[1]}` } };
-          }
-          return null;
-        }
-
-        const token = process.env.EXPO_PUBLIC_SANITY_TOKEN?.trim();
-        const projectId = process.env.EXPO_PUBLIC_SANITY_PROJECT_ID || '9m09a5ng';
-        const dataset = process.env.EXPO_PUBLIC_SANITY_DATASET || 'production';
-
-        return new Promise(async (resolve, reject) => {
-          try {
-            // Convertir URI a Blob
-            const fetchResponse = await fetch(uri);
-            const blob = await fetchResponse.blob();
-
-            // Subir blob a Sanity
-            const uploadResponse = await fetch(`https://${projectId}.api.sanity.io/v2024-03-28/assets/images/${dataset}`, {
-              method: 'POST',
-              headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'image/jpeg',
-              },
-              body: blob,
-            });
-
-            if (!uploadResponse.ok) {
-              const text = await uploadResponse.text();
-              throw new Error(`Upload failed (${uploadResponse.status}): ${text}`);
-            }
-
-            const data = await uploadResponse.json();
-            const assetId = data.document?._id;
-
-            if (!assetId) {
-              throw new Error('No asset ID in response');
-            }
-
-            resolve({
-              _key: Math.random().toString(36).substring(7),
-              _type: 'image',
-              asset: { _type: 'reference', _ref: assetId }
-            });
-
-          } catch (err: any) {
-            reject(new Error(`Fetch error during upload: ${err.message}`));
-          }
+        const writeClient = client.withConfig({
+          token: process.env.EXPO_PUBLIC_SANITY_TOKEN,
         });
-      };
 
-      // Omitir subir fotos de inmediato, las subiremos solo si es online
-
-
-      // Parsear números
-      const parseNumbers = (obj: any) => {
-        if (!obj) return {};
-        const result = { ...obj };
-        for (let key in result) {
-          if (['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo', 'longitud_visible', 'cobertura', 'semilla_numero', 'altura_inicio_ramificacion', 'altura_maxima', 'diametro_tallo', 'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro'].includes(key)) {
-            result[key] = Number(result[key]) || undefined;
+        // Función auxiliar para subir imágenes a Sanity
+        const uploadFoto = async (uri: string | null): Promise<any> => {
+          if (!uri) return null;
+          // Si la uri empieza con http, significa que es una imagen que ya estaba en Sanity (modo edición)
+          // Por simplicidad, retornaremos null temporalmente o saltaremos la resubida. 
+          // Lo ideal sería mantener el asset original, pero para el prototipo subiremos de nuevo si cambió,
+          // o la omitiremos si es la misma URL (requeriría mantener el _ref original en el state, lo cual
+          // simplificamos subiéndola como blob o ignorándola).
+          if (uri.startsWith('http')) {
+            // En este caso simplificado, si el usuario no cambia la foto, no la resubimos y esperamos
+            // que Sanity preserve el array original si no lo modificamos por completo.
+            // Pero Sanity requiere referencias completas. Para solucionarlo rápido, requerimos que el
+            // usuario tome la foto de nuevo si la va a editar, o necesitamos extraer el _ref del URL.
+            // Extraeremos el _id (esto es una aproximación, no ideal, pero funciona para URLs de Sanity):
+            const match = uri.match(/images\/[^\/]+\/[^\/]+\/([a-z0-9]+-[0-9]+x[0-9]+-[a-z]+)/);
+            if (match && match[1]) {
+              return { _type: 'image', asset: { _type: 'reference', _ref: `image-${match[1]}` } };
+            }
+            return null;
           }
-        }
-        return result;
-      };
 
-      // Crear el documento de la planta
-      const nuevoRegistro: any = {
-        _type: 'planta',
-        autor: effectiveUser?.id,
-        nombre_cientifico: nombreCientifico || 'Por identificar',
-        origen: origen || '',
-        pais_origen: origen === 'Introducida' ? paisOrigen : '',
-        nombres_comunes: nombresComunes || '',
-        familia: familia || '',
-        estado_revision: 'En revisión',
-        habito: datosBotanicos.habito,
-        tipo_vida: datosBotanicos.tipoVida,
+          const token = process.env.EXPO_PUBLIC_SANITY_TOKEN?.trim();
+          const projectId = process.env.EXPO_PUBLIC_SANITY_PROJECT_ID || '9m09a5ng';
+          const dataset = process.env.EXPO_PUBLIC_SANITY_DATASET || 'production';
 
-        // Datos Personales
-        registrador_nombre: nombre,
-        registrador_dni: dni,
-        registrador_email: email,
-        registrador_curso: curso,
-        registrador_facultad: facultad,
-        registrador_escuela: escuela,
-        registrador_dia_clase: diaClase,
+          return new Promise(async (resolve, reject) => {
+            try {
+              // Convertir URI a Blob
+              const fetchResponse = await fetch(uri);
+              const blob = await fetchResponse.blob();
 
-        // Ubicación
-        latitud: location?.latitude,
-        longitud: location?.longitude,
-        distrito: distrito,
-        direccion: direccion,
-        tipo_ubicacion_1: tipoUbicacion.startsWith('Otro:') ? tipoUbicacion.substring(5).trim() : tipoUbicacion,
-        tipo_ubicacion_2: tipoUbicacion2.startsWith('Otro:') ? tipoUbicacion2.substring(5).trim() : tipoUbicacion2,
-        numero_casa: numeroCasa,
-        ubicacion_planta: sustratoPlanta.startsWith('Otro:') ? sustratoPlanta.substring(5).trim() : sustratoPlanta,
-        numero_planta: numeroPlantaAutogenerado.toString(),
+              // Subir blob a Sanity
+              const uploadResponse = await fetch(`https://${projectId}.api.sanity.io/v2024-03-28/assets/images/${dataset}`, {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'image/jpeg',
+                },
+                body: blob,
+              });
 
-        // Fotos principales en la galería (Se poblarán luego si es online)
-        galeria: [],
-      };
+              if (!uploadResponse.ok) {
+                const text = await uploadResponse.text();
+                throw new Error(`Upload failed (${uploadResponse.status}): ${text}`);
+              }
 
-      // Formateo centralizado usando el nuevo helper de Namespacing
-      const formattedSubmitData = formatBotanicSubmitData(datosBotanicos);
-      nuevoRegistro.reproductivo = formattedSubmitData.reproductivo;
-      nuevoRegistro.estado_fenologico = formattedSubmitData.compartido.estado_fenologico;
-      nuevoRegistro.estado_individuo = formattedSubmitData.compartido.estado_individuo;
-      nuevoRegistro.valor_ornamental = formattedSubmitData.compartido.valor_ornamental;
-      nuevoRegistro.impacto_urbano = formattedSubmitData.compartido.impacto_urbano;
+              const data = await uploadResponse.json();
+              const assetId = data.document?._id;
 
-      Object.assign(nuevoRegistro, formattedSubmitData.specificData);
+              if (!assetId) {
+                throw new Error('No asset ID in response');
+              }
 
-      if (isOffline) {
-        const localPlanta = await persistImage(fotos.planta_completa || '');
-        const localHoja = await persistImage(fotos.hoja || '');
-        const localFlor = await persistImage(fotos.flor || '');
-        const localFruto = await persistImage(fotos.fruto || '');
-        const localSemilla = await persistImage(fotos.semilla || '');
-        const localExtras = [];
-        for (const extraUri of fotosExtra) {
-          const localUri = await persistImage(extraUri);
-          if (localUri) localExtras.push(localUri);
-        }
+              resolve({
+                _key: Math.random().toString(36).substring(7),
+                _type: 'image',
+                asset: { _type: 'reference', _ref: assetId }
+              });
 
-        const offlineReg = {
-          id: localEditId || (Math.random().toString(36).substring(7) + Date.now().toString()),
-          timestamp: Date.now(),
-          data: nuevoRegistro,
-          photos: {
-            planta_completa: localPlanta || (localEditId ? fotos.planta_completa : null),
-            hoja: localHoja || (localEditId ? fotos.hoja : null),
-            flor: localFlor || (localEditId ? fotos.flor : null),
-            fruto: localFruto || (localEditId ? fotos.fruto : null),
-            semilla: localSemilla || (localEditId ? fotos.semilla : null),
-            extras: localExtras.length > 0 ? localExtras : (localEditId ? fotosExtra : [])
-          },
-          status: 'pending' as const
+            } catch (err: any) {
+              reject(new Error(`Fetch error during upload: ${err.message}`));
+            }
+          });
         };
 
-        if (localEditId) {
-          await updateRegistroOffline(offlineReg);
+        // Omitir subir fotos de inmediato, las subiremos solo si es online
+
+
+        // Parsear números
+        const parseNumbers = (obj: any) => {
+          if (!obj) return {};
+          const result = { ...obj };
+          for (let key in result) {
+            if (['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo', 'longitud_visible', 'cobertura', 'semilla_numero', 'altura_inicio_ramificacion', 'altura_maxima', 'diametro_tallo', 'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro'].includes(key)) {
+              result[key] = Number(result[key]) || undefined;
+            }
+          }
+          return result;
+        };
+
+        // Crear el documento de la planta
+        const nuevoRegistro: any = {
+          _type: 'planta',
+          autor: effectiveUser?.id,
+          nombre_cientifico: nombreCientifico || 'Por identificar',
+          origen: origen || '',
+          pais_origen: origen === 'Introducida' ? paisOrigen : '',
+          nombres_comunes: nombresComunes || '',
+          familia: familia || '',
+          estado_revision: 'En revisión',
+          habito: datosBotanicos.habito,
+          tipo_vida: datosBotanicos.tipoVida,
+
+          // Datos Personales
+          registrador_nombre: nombre,
+          registrador_dni: dni,
+          registrador_email: email,
+          registrador_curso: curso,
+          registrador_facultad: facultad,
+          registrador_escuela: escuela,
+          registrador_dia_clase: diaClase,
+
+          // Ubicación
+          latitud: location?.latitude,
+          longitud: location?.longitude,
+          distrito: distrito,
+          direccion: direccion,
+          tipo_ubicacion_1: tipoUbicacion.startsWith('Otro:') ? tipoUbicacion.substring(5).trim() : tipoUbicacion,
+          tipo_ubicacion_2: tipoUbicacion2.startsWith('Otro:') ? tipoUbicacion2.substring(5).trim() : tipoUbicacion2,
+          numero_casa: numeroCasa,
+          ubicacion_planta: sustratoPlanta.startsWith('Otro:') ? sustratoPlanta.substring(5).trim() : sustratoPlanta,
+          numero_planta: numeroPlantaAutogenerado.toString(),
+
+          // Fotos principales en la galería (Se poblarán luego si es online)
+          galeria: [],
+        };
+
+        // Formateo centralizado usando el nuevo helper de Namespacing
+        const formattedSubmitData = formatBotanicSubmitData(datosBotanicos);
+        nuevoRegistro.reproductivo = formattedSubmitData.reproductivo;
+        nuevoRegistro.estado_fenologico = formattedSubmitData.compartido.estado_fenologico;
+        nuevoRegistro.estado_individuo = formattedSubmitData.compartido.estado_individuo;
+        nuevoRegistro.valor_ornamental = formattedSubmitData.compartido.valor_ornamental;
+        nuevoRegistro.impacto_urbano = formattedSubmitData.compartido.impacto_urbano;
+
+        Object.assign(nuevoRegistro, formattedSubmitData.specificData);
+
+        if (isOffline) {
+          const localPlanta = await persistImage(fotos.planta_completa || '');
+          const localHoja = await persistImage(fotos.hoja || '');
+          const localFlor = await persistImage(fotos.flor || '');
+          const localFruto = await persistImage(fotos.fruto || '');
+          const localSemilla = await persistImage(fotos.semilla || '');
+          const localExtras = [];
+          for (const extraUri of fotosExtra) {
+            const localUri = await persistImage(extraUri);
+            if (localUri) localExtras.push(localUri);
+          }
+
+          const offlineReg = {
+            id: localEditId || (Math.random().toString(36).substring(7) + Date.now().toString()),
+            timestamp: Date.now(),
+            data: nuevoRegistro,
+            photos: {
+              planta_completa: localPlanta || (localEditId ? fotos.planta_completa : null),
+              hoja: localHoja || (localEditId ? fotos.hoja : null),
+              flor: localFlor || (localEditId ? fotos.flor : null),
+              fruto: localFruto || (localEditId ? fotos.fruto : null),
+              semilla: localSemilla || (localEditId ? fotos.semilla : null),
+              extras: localExtras.length > 0 ? localExtras : (localEditId ? fotosExtra : [])
+            },
+            status: 'pending' as const
+          };
+
+          if (localEditId) {
+            await updateRegistroOffline(offlineReg);
+          } else {
+            await saveRegistroOffline(offlineReg);
+          }
+
+          setIsOfflineSaved(true);
         } else {
-          await saveRegistroOffline(offlineReg);
+          const plantaRef = await uploadFoto(fotos.planta_completa);
+          const hojaRef = await uploadFoto(fotos.hoja);
+          const florRef = await uploadFoto(fotos.flor);
+          const frutoRef = await uploadFoto(fotos.fruto);
+          const semillaRef = await uploadFoto(fotos.semilla);
+
+          const extrasRefs = [];
+          for (const extraUri of fotosExtra) {
+            const ref = await uploadFoto(extraUri);
+            if (ref) extrasRefs.push(ref);
+          }
+
+          nuevoRegistro.galeria = [plantaRef, hojaRef, florRef, frutoRef, semillaRef, ...extrasRefs].filter(Boolean);
+
+          if (editId) {
+            await writeClient.patch(editId as string).set(nuevoRegistro).commit();
+          } else {
+            await writeClient.create(nuevoRegistro);
+          }
+
+          if (localEditId) {
+            await removeRegistroOffline(localEditId);
+          }
         }
 
-        setIsOfflineSaved(true);
-      } else {
-        const plantaRef = await uploadFoto(fotos.planta_completa);
-        const hojaRef = await uploadFoto(fotos.hoja);
-        const florRef = await uploadFoto(fotos.flor);
-        const frutoRef = await uploadFoto(fotos.fruto);
-        const semillaRef = await uploadFoto(fotos.semilla);
-
-        const extrasRefs = [];
-        for (const extraUri of fotosExtra) {
-          const ref = await uploadFoto(extraUri);
-          if (ref) extrasRefs.push(ref);
+        // Guardar el rol de forma permanente si es la primera vez que registra
+        if (user && user.unsafeMetadata?.role !== rolRegistro) {
+          try {
+            await user.update({ unsafeMetadata: { ...user.unsafeMetadata, role: rolRegistro } });
+          } catch (e) {
+            console.error("Error al fijar rol:", e);
+          }
         }
 
-        nuevoRegistro.galeria = [plantaRef, hojaRef, florRef, frutoRef, semillaRef, ...extrasRefs].filter(Boolean);
-
-        if (editId) {
-          await writeClient.patch(editId as string).set(nuevoRegistro).commit();
-        } else {
-          await writeClient.create(nuevoRegistro);
-        }
-
-        if (localEditId) {
-          await removeRegistroOffline(localEditId);
-        }
+        setShowSuccess(true);
+      } catch (error) {
+        console.error("Error al enviar a Sanity:", error);
+        showModal({
+          type: "dialog",
+          title: "Error",
+          description: "Hubo un error al enviar el registro. Intenta de nuevo."
+        });
+      } finally {
+        setIsSubmitting(false);
       }
-
-      // Guardar el rol de forma permanente si es la primera vez que registra
-      if (user && user.unsafeMetadata?.role !== rolRegistro) {
-        try {
-          await user.update({ unsafeMetadata: { ...user.unsafeMetadata, role: rolRegistro } });
-        } catch (e) {
-          console.error("Error al fijar rol:", e);
-        }
-      }
-
-      setShowSuccess(true);
-    } catch (error) {
-      console.error("Error al enviar a Sanity:", error);
-      showModal({
-        type: "dialog",
-        title: "Error",
-        description: "Hubo un error al enviar el registro. Intenta de nuevo."
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    };
+    await onSubmit();
   };
 
   const resetFormState = (keepDraft: boolean = false) => {
@@ -1102,6 +1153,9 @@ export function useRegistroForm() {
     setShowStep3Error,
     selectedPhoto,
     setSelectedPhoto,
+    isClosed,
+    closureMessage,
+    setIsClosed,
     restoreDraftFromStorage,
     scrollToField,
     checkStep3Valid,
