@@ -392,13 +392,13 @@ export default function Profile() {
     useCallback(() => {
       if (user?.id) {
         client.fetch(`{
-          "total": count(*[_type == "planta" && autor == $userId]),
-          "validados": count(*[_type == "planta" && autor == $userId && estado_revision == "Validado"]),
-          "observados": count(*[_type == "planta" && autor == $userId && estado_revision == "Observado"]),
-          "rechazados": count(*[_type == "planta" && autor == $userId && estado_revision == "Rechazado"]),
-          "primerValidado": *[_type == "planta" && autor == $userId && estado_revision == "Validado"] | order(_createdAt asc)[0]._createdAt,
-          "ultimoValidado": *[_type == "planta" && autor == $userId && estado_revision == "Validado"] | order(_createdAt desc)[0]._createdAt
-        }`, { userId: user.id })
+          "total": count(*[_type == "planta" && (autor == $userId || registrador_email == $userEmail)]),
+          "validados": count(*[_type == "planta" && (autor == $userId || registrador_email == $userEmail) && estado_revision == "Validado"]),
+          "observados": count(*[_type == "planta" && (autor == $userId || registrador_email == $userEmail) && estado_revision == "Observado"]),
+          "rechazados": count(*[_type == "planta" && (autor == $userId || registrador_email == $userEmail) && estado_revision == "Rechazado"]),
+          "primerValidado": *[_type == "planta" && (autor == $userId || registrador_email == $userEmail) && estado_revision == "Validado"] | order(_createdAt asc)[0]._createdAt,
+          "ultimoValidado": *[_type == "planta" && (autor == $userId || registrador_email == $userEmail) && estado_revision == "Validado"] | order(_createdAt desc)[0]._createdAt
+        }`, { userId: user.id, userEmail: user.primaryEmailAddress?.emailAddress })
           .then(data => {
             setStats(data);
             setValidatedCount(data.validados);

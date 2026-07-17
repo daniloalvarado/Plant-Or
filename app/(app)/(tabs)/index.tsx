@@ -59,12 +59,12 @@ export default function HomeScreen() {
 
     if (user?.id) {
       try {
-        const misAportes = await client.fetch(`*[_type == "planta" && autor == $userId] | order(_createdAt desc) {
+        const misAportes = await client.fetch(`*[_type == "planta" && (autor == $userId || registrador_email == $userEmail)] | order(_createdAt desc) {
           _id,
           nombre_cientifico,
           nombres_comunes,
           estado_revision
-        }`, { userId: user.id });
+        }`, { userId: user.id, userEmail: user.primaryEmailAddress?.emailAddress });
         setMisPlantas(misAportes);
 
         // Check if there are new updates
