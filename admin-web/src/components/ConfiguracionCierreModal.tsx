@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { X, Calendar as CalendarIcon, Clock, Save, Loader2 } from 'lucide-react';
+import { X, Calendar as CalendarIcon, Clock, Save, Loader2, RotateCcw } from 'lucide-react';
 import { client } from '@/lib/sanity';
+import { CustomDatePicker } from '@/components/CustomDatePicker';
 
 interface ConfiguracionCierreModalProps {
   isOpen: boolean;
@@ -115,34 +116,40 @@ export function ConfiguracionCierreModal({ isOpen, onClose }: ConfiguracionCierr
 
             <div className="space-y-3">
               <label className="block text-sm font-medium text-foreground">Cierre para Estudiantes</label>
-              <input
-                type="datetime-local"
-                value={cierreEstudiantes}
-                onChange={(e) => setCierreEstudiantes(e.target.value)}
-                className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-              <button 
-                onClick={() => setCierreEstudiantes('')}
-                className="text-xs text-red-500 hover:text-red-400 mt-1"
-              >
-                Quitar límite a estudiantes
-              </button>
+              <div className="flex items-center gap-2">
+                <CustomDatePicker
+                  type="datetime-local"
+                  value={cierreEstudiantes}
+                  onChange={setCierreEstudiantes}
+                  className="flex-1"
+                />
+                <button 
+                  onClick={() => setCierreEstudiantes('')}
+                  title="Restablecer (Sin límite)"
+                  className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors flex-shrink-0"
+                >
+                  <RotateCcw className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             <div className="space-y-3">
               <label className="block text-sm font-medium text-foreground">Cierre para Ciudadanos</label>
-              <input
-                type="datetime-local"
-                value={cierreCiudadanos}
-                onChange={(e) => setCierreCiudadanos(e.target.value)}
-                className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-              <button 
-                onClick={() => setCierreCiudadanos('')}
-                className="text-xs text-red-500 hover:text-red-400 mt-1"
-              >
-                Quitar límite a ciudadanos
-              </button>
+              <div className="flex items-center gap-2">
+                <CustomDatePicker
+                  type="datetime-local"
+                  value={cierreCiudadanos}
+                  onChange={setCierreCiudadanos}
+                  className="flex-1"
+                />
+                <button 
+                  onClick={() => setCierreCiudadanos('')}
+                  title="Restablecer (Sin límite)"
+                  className="p-3 text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors flex-shrink-0"
+                >
+                  <RotateCcw className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             <div className="flex justify-end pt-4 gap-3">

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Calendar as CalendarIcon, Download, Loader2 } from 'lucide-react';
+import { CustomSelect } from '@/components/CustomSelect';
+import { CustomDatePicker } from '@/components/CustomDatePicker';
 import * as XLSX from 'xlsx';
 import type { Planta } from '@/types/planta';
 
@@ -141,35 +143,34 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
         <div className="space-y-5">
           <div className="space-y-2">
             <label className="block text-sm font-medium text-foreground">Fecha de Inicio (Desde)</label>
-            <input
-              type="date"
+            <CustomDatePicker
               value={fechaInicio}
-              onChange={(e) => setFechaInicio(e.target.value)}
-              className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              onChange={setFechaInicio}
+              className="w-full"
             />
           </div>
 
           <div className="space-y-2">
             <label className="block text-sm font-medium text-foreground">Fecha de Fin (Hasta)</label>
-            <input
-              type="date"
+            <CustomDatePicker
               value={fechaFin}
-              onChange={(e) => setFechaFin(e.target.value)}
-              className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              onChange={setFechaFin}
+              className="w-full"
             />
           </div>
 
           <div className="space-y-2">
             <label className="block text-sm font-medium text-foreground">Filtrar por Rol</label>
-            <select
+            <CustomSelect
               value={rol}
-              onChange={(e: any) => setRol(e.target.value)}
-              className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
-            >
-              <option value="Todos">Ambos (Estudiantes y Ciudadanos)</option>
-              <option value="Estudiante">Solo Estudiantes</option>
-              <option value="Ciudadano">Solo Ciudadanos</option>
-            </select>
+              onChange={(val) => setRol(val as any)}
+              options={[
+                { value: 'Todos', label: 'Ambos (Estudiantes y Ciudadanos)' },
+                { value: 'Estudiante', label: 'Solo Estudiantes' },
+                { value: 'Ciudadano', label: 'Solo Ciudadanos' }
+              ]}
+              className="w-full"
+            />
           </div>
 
           <div className="flex justify-end pt-4 gap-3">
