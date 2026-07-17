@@ -74,8 +74,12 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
         
         if (!agrupado[key]) {
           const isEstudiante = !!p.registrador_curso || !!p.registrador_facultad;
+          
+          // Fallback a email si no hay nombre o dni
+          const nombreDisplay = p.registrador_nombre ? p.registrador_nombre : (p.registrador_email || '—');
+          
           agrupado[key] = {
-            nombres: p.registrador_nombre || '—',
+            nombres: nombreDisplay,
             dni: p.registrador_dni || '—',
             curso: p.registrador_curso || '—',
             rol: isEstudiante ? 'Estudiante' : 'Ciudadano',
@@ -132,9 +136,10 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
   if (!isRendered) return null;
 
   return (
-    <div className={`fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm p-4 ${isAnimatingOut ? 'animate-out fade-out duration-300' : 'animate-in fade-in duration-300'}`}>
-      <div className={`bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}>
-        <div className="flex justify-between items-center mb-6">
+    <div className={`fixed inset-0 z-[100] overflow-y-auto bg-background/80 backdrop-blur-sm ${isAnimatingOut ? 'animate-out fade-out duration-300' : 'animate-in fade-in duration-300'}`}>
+      <div className="flex min-h-full items-center justify-center p-4 py-10">
+        <div className={`bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl ${isAnimatingOut ? 'animate-collapse-y' : 'animate-expand-y'}`}>
+          <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
             <Download className="w-5 h-5 text-primary" />
             Exportar Reporte Excel
@@ -151,6 +156,7 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
               value={fechaInicio}
               onChange={setFechaInicio}
               className="w-full"
+              maxDate={new Date()}
             />
           </div>
 
@@ -160,6 +166,7 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
               value={fechaFin}
               onChange={setFechaFin}
               className="w-full"
+              maxDate={new Date()}
             />
           </div>
 
@@ -209,6 +216,7 @@ export function ExportarExcelModal({ isOpen, onClose, plantas }: ExportarExcelMo
               {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
               Descargar Excel
             </button>
+          </div>
           </div>
         </div>
       </div>

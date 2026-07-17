@@ -9,9 +9,10 @@ interface CustomDatePickerProps {
   type?: 'date' | 'datetime-local';
   className?: string;
   placeholder?: string;
+  maxDate?: Date;
 }
 
-export function CustomDatePicker({ value, onChange, type = 'date', className = '', placeholder = 'dd/mm/aaaa' }: CustomDatePickerProps) {
+export function CustomDatePicker({ value, onChange, type = 'date', className = '', placeholder = 'dd/mm/aaaa', maxDate }: CustomDatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -40,6 +41,8 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
   }, [value]);
 
   const handleDateClick = (day: Date) => {
+    if (maxDate && day > maxDate) return;
+
     let newDate = day;
     if (value && type === 'datetime-local') {
       const existingDate = parseValue();
@@ -131,16 +134,18 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
         const isSelected = selectedDate ? isSameDay(day, selectedDate) : false;
         const isCurrentMonth = isSameMonth(day, monthStart);
         const isToday = isSameDay(day, new Date());
+        const isDisabled = maxDate && day > maxDate && !isSameDay(day, maxDate);
 
         days.push(
           <div
             key={day.toString()}
-            onClick={() => handleDateClick(cloneDay)}
-            className={`p-1 flex justify-center items-center cursor-pointer text-sm w-8 h-8 mx-auto rounded-full transition-all
-              ${!isCurrentMonth ? 'text-muted-foreground/30 hover:text-foreground' : 
-                isSelected ? 'bg-primary text-primary-foreground font-bold shadow-md scale-110' : 
-                isToday ? 'bg-secondary text-foreground font-semibold border border-border' : 
-                'text-foreground hover:bg-secondary'}`}
+            onClick={() => !isDisabled && handleDateClick(cloneDay)}
+            className={`p-1 flex justify-center items-center text-sm w-8 h-8 mx-auto rounded-full transition-all
+              ${isDisabled ? 'text-muted-foreground/20 cursor-not-allowed' : 
+                !isCurrentMonth ? 'text-muted-foreground/30 hover:text-foreground cursor-pointer' : 
+                isSelected ? 'bg-primary text-primary-foreground font-bold shadow-md scale-110 cursor-pointer' : 
+                isToday ? 'bg-secondary text-foreground font-semibold border border-border cursor-pointer' : 
+                'text-foreground hover:bg-secondary cursor-pointer'}`}
           >
             <span>{formattedDate}</span>
           </div>
