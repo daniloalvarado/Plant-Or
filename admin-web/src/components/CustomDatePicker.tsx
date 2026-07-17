@@ -49,9 +49,9 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
       newDate = setHours(newDate, getHours(existingDate));
       newDate = setMinutes(newDate, getMinutes(existingDate));
     } else if (!value && type === 'datetime-local') {
-      // Default to current time if no time set yet
-      newDate = setHours(newDate, new Date().getHours());
-      newDate = setMinutes(newDate, new Date().getMinutes());
+      // Default to 00:00
+      newDate = setHours(newDate, 0);
+      newDate = setMinutes(newDate, 0);
     }
     
     const year = newDate.getFullYear();
