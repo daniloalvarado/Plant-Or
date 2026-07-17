@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, X } from 'lucide-react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isSameMonth, isSameDay, addDays, getHours, getMinutes, setHours, setMinutes } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -182,144 +182,162 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
         <CalendarIcon className={`w-5 h-5 transition-colors flex-shrink-0 ${isOpen ? 'text-primary' : 'text-muted-foreground'}`} />
       </button>
 
-      {isOpen && (
+      {isOpen && view === 'date' && (
         <div className="absolute z-50 mt-2 p-4 bg-card border border-border rounded-xl shadow-2xl w-[300px] left-0 origin-top animate-in fade-in slide-in-from-top-2 duration-200">
-          {view === 'date' ? (
-            <div className="animate-in fade-in slide-in-from-left-4 duration-300">
-              {renderHeader()}
-              {renderDays()}
-              {renderCells()}
-            </div>
-          ) : (
-            <div className="flex flex-col animate-in fade-in slide-in-from-right-4 duration-300">
-              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
-                <button type="button" onClick={() => setView('date')} className="p-1.5 hover:bg-secondary rounded-full transition-colors">
-                  <ChevronLeft className="w-5 h-5 text-muted-foreground" />
-                </button>
-                <span className="font-bold text-foreground">Seleccionar Hora</span>
-              </div>
-              
-              <div className="flex flex-col items-center mb-6 mt-2 relative">
-                <div className="flex gap-2 text-3xl font-bold text-foreground mb-6">
-                  <button 
-                    onClick={() => setView('time')}
-                    className={`px-2 py-1 rounded-lg ${view === 'time' ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`}
-                  >
-                    {format(parseValue(), 'HH')}
-                  </button>
-                  <span className="text-muted-foreground py-1">:</span>
-                  <button 
-                    onClick={() => setView('minute')}
-                    className={`px-2 py-1 rounded-lg ${view === 'minute' ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`}
-                  >
-                    {format(parseValue(), 'mm')}
-                  </button>
-                </div>
-                
-                <div className="relative w-56 h-56 rounded-full bg-secondary/50 flex items-center justify-center">
-                  {/* Center Dot */}
-                  <div className="absolute w-2 h-2 rounded-full bg-primary z-10" />
-                  
-                  {/* Clock Hand */}
-                  <div 
-                    className="absolute w-0.5 bg-primary origin-bottom z-0 transition-transform duration-300"
-                    style={{ 
-                      height: '40%', 
-                      bottom: '50%',
-                      transform: `rotate(${view === 'time' ? getHours(parseValue()) * 30 : getMinutes(parseValue()) * 6}deg)`
-                    }}
-                  >
-                    <div className="absolute -top-3 -left-3 w-6 h-6 rounded-full bg-primary/30" />
-                  </div>
-                  
-                  {/* Numbers */}
-                  {Array.from({ length: 12 }).map((_, i) => {
-                    const num = view === 'time' ? (i === 0 ? 12 : i) : (i * 5 === 0 ? '00' : i * 5);
-                    const angle = i * 30;
-                    const radian = (angle - 90) * (Math.PI / 180);
-                    const radius = 90;
-                    const x = Math.cos(radian) * radius;
-                    const y = Math.sin(radian) * radius;
-                    
-                    return (
-                      <button
-                        key={i}
-                        onClick={() => {
-                          let d = parseValue();
-                          if (view === 'time') {
-                            const newHour = i === 0 ? 12 : i;
-                            // Simplificación: solo maneja 1-12 AM por defecto. 
-                            // Si quisieras 24h sería más complejo, pero esto sirve visualmente.
-                            d = setHours(d, getHours(d) >= 12 ? (newHour === 12 ? 12 : newHour + 12) : (newHour === 12 ? 0 : newHour));
-                            setView('minute');
-                          } else {
-                            d = setMinutes(d, i * 5);
-                          }
-                          const y_str = d.getFullYear();
-                          const m_str = String(d.getMonth() + 1).padStart(2, '0');
-                          const d_str = String(d.getDate()).padStart(2, '0');
-                          const h_str = String(d.getHours()).padStart(2, '0');
-                          const min_str = String(d.getMinutes()).padStart(2, '0');
-                          onChange(`${y_str}-${m_str}-${d_str}T${h_str}:${min_str}`);
-                        }}
-                        className={`absolute w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors hover:bg-primary/20 hover:text-primary z-20`}
-                        style={{ 
-                          transform: `translate(${x}px, ${y}px)` 
-                        }}
-                      >
-                        {num}
-                      </button>
-                    )
-                  })}
-                </div>
-                
-                {/* AM/PM Toggle */}
-                {view === 'time' && (
-                  <div className="flex gap-2 mt-6 bg-secondary/30 p-1 rounded-lg">
-                    <button 
-                      onClick={() => {
-                        let d = parseValue();
-                        if (getHours(d) >= 12) d = setHours(d, getHours(d) - 12);
-                        const y_str = d.getFullYear();
-                        const m_str = String(d.getMonth() + 1).padStart(2, '0');
-                        const d_str = String(d.getDate()).padStart(2, '0');
-                        const h_str = String(d.getHours()).padStart(2, '0');
-                        const min_str = String(d.getMinutes()).padStart(2, '0');
-                        onChange(`${y_str}-${m_str}-${d_str}T${h_str}:${min_str}`);
-                      }}
-                      className={`px-3 py-1 text-xs font-bold rounded-md ${getHours(parseValue()) < 12 ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}
-                    >
-                      AM
-                    </button>
-                    <button 
-                      onClick={() => {
-                        let d = parseValue();
-                        if (getHours(d) < 12) d = setHours(d, getHours(d) + 12);
-                        const y_str = d.getFullYear();
-                        const m_str = String(d.getMonth() + 1).padStart(2, '0');
-                        const d_str = String(d.getDate()).padStart(2, '0');
-                        const h_str = String(d.getHours()).padStart(2, '0');
-                        const min_str = String(d.getMinutes()).padStart(2, '0');
-                        onChange(`${y_str}-${m_str}-${d_str}T${h_str}:${min_str}`);
-                      }}
-                      className={`px-3 py-1 text-xs font-bold rounded-md ${getHours(parseValue()) >= 12 ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}
-                    >
-                      PM
-                    </button>
-                  </div>
-                )}
-              </div>
-              
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-xl font-bold transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2"
+          <div className="animate-in fade-in slide-in-from-left-4 duration-300">
+            {renderHeader()}
+            {renderDays()}
+            {renderCells()}
+          </div>
+        </div>
+      )}
+
+      {isOpen && (view === 'time' || view === 'minute') && (
+        <div 
+          className="fixed inset-0 z-[110] flex items-center justify-center bg-background/80 backdrop-blur-sm animate-in fade-in duration-300"
+          onClick={() => { setIsOpen(false); setView('date'); }}
+        >
+          <div 
+            className="bg-card border border-border rounded-3xl p-6 w-[320px] shadow-2xl flex flex-col items-center animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-full flex items-center justify-between mb-2">
+              <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
+                <Clock className="w-5 h-5 text-primary" />
+                Seleccionar Hora
+              </h3>
+              <button 
+                type="button" 
+                onClick={() => { setIsOpen(false); setView('date'); }} 
+                className="p-1.5 hover:bg-secondary rounded-full transition-colors text-muted-foreground"
               >
-                <Clock className="w-5 h-5" />
-                Confirmar Hora
+                <X className="w-5 h-5" />
               </button>
             </div>
-          )}
+            
+            <div className="flex flex-col items-center mb-6 mt-2 relative w-full">
+              <div className="flex gap-2 text-3xl font-bold text-foreground mb-6">
+                <button 
+                  type="button"
+                  onClick={() => setView('time')}
+                  className={`px-3 py-1.5 rounded-xl transition-colors ${view === 'time' ? 'bg-primary/20 text-primary scale-105' : 'text-muted-foreground hover:bg-secondary'}`}
+                >
+                  {format(parseValue(), 'HH')}
+                </button>
+                <span className="text-muted-foreground py-1.5">:</span>
+                <button 
+                  type="button"
+                  onClick={() => setView('minute')}
+                  className={`px-3 py-1.5 rounded-xl transition-colors ${view === 'minute' ? 'bg-primary/20 text-primary scale-105' : 'text-muted-foreground hover:bg-secondary'}`}
+                >
+                  {format(parseValue(), 'mm')}
+                </button>
+              </div>
+              
+              <div className="relative w-56 h-56 rounded-full bg-secondary/50 flex items-center justify-center shadow-inner">
+                {/* Center Dot */}
+                <div className="absolute w-3 h-3 rounded-full bg-primary z-10 shadow-sm" />
+                
+                {/* Clock Hand */}
+                <div 
+                  className="absolute w-1 bg-primary origin-bottom z-0 transition-all duration-300 ease-out"
+                  style={{ 
+                    height: '40%', 
+                    bottom: '50%',
+                    transform: `rotate(${view === 'time' ? getHours(parseValue()) * 30 : getMinutes(parseValue()) * 6}deg)`
+                  }}
+                >
+                  <div className="absolute -top-3 -left-2.5 w-6 h-6 rounded-full bg-primary" />
+                </div>
+                
+                {/* Numbers */}
+                {Array.from({ length: 12 }).map((_, i) => {
+                  const num = view === 'time' ? (i === 0 ? 12 : i) : (i * 5 === 0 ? '00' : i * 5);
+                  const angle = i * 30;
+                  const radian = (angle - 90) * (Math.PI / 180);
+                  const radius = 90;
+                  const x = Math.cos(radian) * radius;
+                  const y = Math.sin(radian) * radius;
+                  
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => {
+                        let d = parseValue();
+                        if (view === 'time') {
+                          const newHour = i === 0 ? 12 : i;
+                          d = setHours(d, getHours(d) >= 12 ? (newHour === 12 ? 12 : newHour + 12) : (newHour === 12 ? 0 : newHour));
+                          setView('minute');
+                        } else {
+                          d = setMinutes(d, i * 5);
+                        }
+                        const y_str = d.getFullYear();
+                        const m_str = String(d.getMonth() + 1).padStart(2, '0');
+                        const d_str = String(d.getDate()).padStart(2, '0');
+                        const h_str = String(d.getHours()).padStart(2, '0');
+                        const min_str = String(d.getMinutes()).padStart(2, '0');
+                        onChange(`${y_str}-${m_str}-${d_str}T${h_str}:${min_str}`);
+                      }}
+                      className={`absolute w-8 h-8 flex items-center justify-center rounded-full text-sm font-semibold transition-all hover:bg-primary/20 hover:text-primary z-20 focus:outline-none`}
+                      style={{ 
+                        transform: `translate(${x}px, ${y}px)` 
+                      }}
+                    >
+                      <span className={((view === 'time' && (i===0 ? 12 : i) === (getHours(parseValue()) % 12 || 12)) || (view === 'minute' && i*5 === getMinutes(parseValue()))) ? 'text-primary-foreground relative z-30' : ''}>{num}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              
+              {/* AM/PM Toggle */}
+              {view === 'time' && (
+                <div className="flex gap-2 mt-6 bg-secondary/50 p-1.5 rounded-xl">
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      let d = parseValue();
+                      if (getHours(d) >= 12) d = setHours(d, getHours(d) - 12);
+                      const y_str = d.getFullYear();
+                      const m_str = String(d.getMonth() + 1).padStart(2, '0');
+                      const d_str = String(d.getDate()).padStart(2, '0');
+                      const h_str = String(d.getHours()).padStart(2, '0');
+                      const min_str = String(d.getMinutes()).padStart(2, '0');
+                      onChange(`${y_str}-${m_str}-${d_str}T${h_str}:${min_str}`);
+                    }}
+                    className={`px-4 py-1.5 text-sm font-bold rounded-lg transition-colors ${getHours(parseValue()) < 12 ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                  >
+                    AM
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      let d = parseValue();
+                      if (getHours(d) < 12) d = setHours(d, getHours(d) + 12);
+                      const y_str = d.getFullYear();
+                      const m_str = String(d.getMonth() + 1).padStart(2, '0');
+                      const d_str = String(d.getDate()).padStart(2, '0');
+                      const h_str = String(d.getHours()).padStart(2, '0');
+                      const min_str = String(d.getMinutes()).padStart(2, '0');
+                      onChange(`${y_str}-${m_str}-${d_str}T${h_str}:${min_str}`);
+                    }}
+                    className={`px-4 py-1.5 text-sm font-bold rounded-lg transition-colors ${getHours(parseValue()) >= 12 ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                  >
+                    PM
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            <button
+              type="button"
+              onClick={() => { setIsOpen(false); setView('date'); }}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3.5 rounded-xl font-bold transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 text-base"
+            >
+              <Clock className="w-5 h-5" />
+              Confirmar Hora
+            </button>
+          </div>
         </div>
       )}
     </div>
