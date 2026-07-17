@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isSameMonth, isSameDay, addDays, getHours, getMinutes, setHours, setMinutes } from 'date-fns';
 import { es } from 'date-fns/locale';
-import TimeKeeper from '@axelixlabs/react-timepicker';
 
 interface CustomDatePickerProps {
   value: string;
@@ -15,7 +14,7 @@ interface CustomDatePickerProps {
 
 export function CustomDatePicker({ value, onChange, type = 'date', className = '', placeholder = 'dd/mm/aaaa', maxDate }: CustomDatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [view, setView] = useState<'date' | 'time'>('date');
+  const [view, setView] = useState<'date' | 'time' | 'minute'>('date');
   const containerRef = useRef<HTMLDivElement>(null);
   
   const parseValue = () => {
@@ -200,22 +199,115 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
                 <span className="font-bold text-foreground">Seleccionar Hora</span>
               </div>
               
-              <div className="flex justify-center mb-5 scale-90 sm:scale-100 origin-top">
-                <TimeKeeper
-                  time={format(parseValue(), 'HH:mm')}
-                  onChange={(newTime: any) => {
-                    let d = parseValue();
-                    d = setHours(d, newTime.hour);
-                    d = setMinutes(d, newTime.minute);
-                    const y = d.getFullYear();
-                    const m = String(d.getMonth() + 1).padStart(2, '0');
-                    const d_num = String(d.getDate()).padStart(2, '0');
-                    const h = String(d.getHours()).padStart(2, '0');
-                    const min = String(d.getMinutes()).padStart(2, '0');
-                    onChange(`${y}-${m}-${d_num}T${h}:${min}`);
-                  }}
-                  switchToMinuteOnHourSelect
-                />
+              <div className="flex flex-col items-center mb-6 mt-2 relative">
+                <div className="flex gap-2 text-3xl font-bold text-foreground mb-6">
+                  <button 
+                    onClick={() => setView('time')}
+                    className={`px-2 py-1 rounded-lg ${view === 'time' ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`}
+                  >
+                    {format(parseValue(), 'HH')}
+                  </button>
+                  <span className="text-muted-foreground py-1">:</span>
+                  <button 
+                    onClick={() => setView('minute')}
+                    className={`px-2 py-1 rounded-lg ${view === 'minute' ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`}
+                  >
+                    {format(parseValue(), 'mm')}
+                  </button>
+                </div>
+                
+                <div className="relative w-56 h-56 rounded-full bg-secondary/50 flex items-center justify-center">
+                  {/* Center Dot */}
+                  <div className="absolute w-2 h-2 rounded-full bg-primary z-10" />
+                  
+                  {/* Clock Hand */}
+                  <div 
+                    className="absolute w-0.5 bg-primary origin-bottom z-0 transition-transform duration-300"
+                    style={{ 
+                      height: '40%', 
+                      bottom: '50%',
+                      transform: `rotate(${view === 'time' ? getHours(parseValue()) * 30 : getMinutes(parseValue()) * 6}deg)`
+                    }}
+                  >
+                    <div className="absolute -top-3 -left-3 w-6 h-6 rounded-full bg-primary/30" />
+                  </div>
+                  
+                  {/* Numbers */}
+                  {Array.from({ length: 12 }).map((_, i) => {
+                    const num = view === 'time' ? (i === 0 ? 12 : i) : (i * 5 === 0 ? '00' : i * 5);
+                    const angle = i * 30;
+                    const radian = (angle - 90) * (Math.PI / 180);
+                    const radius = 90;
+                    const x = Math.cos(radian) * radius;
+                    const y = Math.sin(radian) * radius;
+                    
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          let d = parseValue();
+                          if (view === 'time') {
+                            const newHour = i === 0 ? 12 : i;
+                            // Simplificación: solo maneja 1-12 AM por defecto. 
+                            // Si quisieras 24h sería más complejo, pero esto sirve visualmente.
+                            d = setHours(d, getHours(d) >= 12 ? (newHour === 12 ? 12 : newHour + 12) : (newHour === 12 ? 0 : newHour));
+                            setView('minute');
+                          } else {
+                            d = setMinutes(d, i * 5);
+                          }
+                          const y_str = d.getFullYear();
+                          const m_str = String(d.getMonth() + 1).padStart(2, '0');
+                          const d_str = String(d.getDate()).padStart(2, '0');
+                          const h_str = String(d.getHours()).padStart(2, '0');
+                          const min_str = String(d.getMinutes()).padStart(2, '0');
+                          onChange(`${y_str}-${m_str}-${d_str}T${h_str}:${min_str}`);
+                        }}
+                        className={`absolute w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors hover:bg-primary/20 hover:text-primary z-20`}
+                        style={{ 
+                          transform: `translate(${x}px, ${y}px)` 
+                        }}
+                      >
+                        {num}
+                      </button>
+                    )
+                  })}
+                </div>
+                
+                {/* AM/PM Toggle */}
+                {view === 'time' && (
+                  <div className="flex gap-2 mt-6 bg-secondary/30 p-1 rounded-lg">
+                    <button 
+                      onClick={() => {
+                        let d = parseValue();
+                        if (getHours(d) >= 12) d = setHours(d, getHours(d) - 12);
+                        const y_str = d.getFullYear();
+                        const m_str = String(d.getMonth() + 1).padStart(2, '0');
+                        const d_str = String(d.getDate()).padStart(2, '0');
+                        const h_str = String(d.getHours()).padStart(2, '0');
+                        const min_str = String(d.getMinutes()).padStart(2, '0');
+                        onChange(`${y_str}-${m_str}-${d_str}T${h_str}:${min_str}`);
+                      }}
+                      className={`px-3 py-1 text-xs font-bold rounded-md ${getHours(parseValue()) < 12 ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}
+                    >
+                      AM
+                    </button>
+                    <button 
+                      onClick={() => {
+                        let d = parseValue();
+                        if (getHours(d) < 12) d = setHours(d, getHours(d) + 12);
+                        const y_str = d.getFullYear();
+                        const m_str = String(d.getMonth() + 1).padStart(2, '0');
+                        const d_str = String(d.getDate()).padStart(2, '0');
+                        const h_str = String(d.getHours()).padStart(2, '0');
+                        const min_str = String(d.getMinutes()).padStart(2, '0');
+                        onChange(`${y_str}-${m_str}-${d_str}T${h_str}:${min_str}`);
+                      }}
+                      className={`px-3 py-1 text-xs font-bold rounded-md ${getHours(parseValue()) >= 12 ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}
+                    >
+                      PM
+                    </button>
+                  </div>
+                )}
               </div>
               
               <button

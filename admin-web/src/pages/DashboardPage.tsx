@@ -22,9 +22,11 @@ export default function DashboardPage() {
   // Unique students
   const estudiantesMap = new Map<string, { nombre: string; count: number; aprobados: number }>()
   plantas.forEach(p => {
-    const key = p.registrador_dni || p.autor || 'unknown'
+    // Para identificar univocamente a un usuario, usamos su correo. Si no hay correo, usamos el nombre, luego dni.
+    const key = p.registrador_email?.toLowerCase() || p.registrador_nombre?.toLowerCase() || p.registrador_dni || 'unknown'
     if (!estudiantesMap.has(key)) {
-      estudiantesMap.set(key, { nombre: p.registrador_nombre || 'Sin nombre', count: 0, aprobados: 0 })
+      const nombreDisplay = p.registrador_nombre ? p.registrador_nombre : (p.registrador_email || 'Sin nombre');
+      estudiantesMap.set(key, { nombre: nombreDisplay, count: 0, aprobados: 0 })
     }
     const entry = estudiantesMap.get(key)!
     entry.count++
