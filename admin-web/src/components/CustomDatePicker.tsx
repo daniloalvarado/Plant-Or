@@ -169,7 +169,7 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
     return <div>{rows}</div>;
   };
 
-  const displayValue = value ? (type === 'datetime-local' ? format(parseValue(), 'dd/MM/yyyy HH:mm') : format(parseValue(), 'dd/MM/yyyy')) : '';
+  const displayValue = value ? (type === 'datetime-local' ? format(parseValue(), 'dd/MM/yyyy hh:mm a') : format(parseValue(), 'dd/MM/yyyy')) : '';
 
   return (
     <div className={`relative ${className}`} ref={containerRef}>
@@ -253,7 +253,7 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
                     transform: `rotate(${view === 'time' ? getHours(parseValue()) * 30 : getMinutes(parseValue()) * 6}deg)`
                   }}
                 >
-                  <div className="absolute -top-5 -left-[18px] w-10 h-10 rounded-full bg-primary" />
+                  <div className="absolute -top-4 -left-[14px] w-8 h-8 rounded-full bg-primary" />
                 </div>
                 
                 {/* Numbers */}
