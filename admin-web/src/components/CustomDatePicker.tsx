@@ -28,7 +28,11 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current && 
+        !containerRef.current.contains(event.target as Node) &&
+        !(event.target as Element).closest('#clock-portal-modal')
+      ) {
         setIsOpen(false);
       }
     };
@@ -195,6 +199,7 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
 
       {isOpen && (view === 'time' || view === 'minute') && typeof document !== 'undefined' && createPortal(
         <div 
+          id="clock-portal-modal"
           className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300"
           onClick={() => { setIsOpen(false); setView('date'); }}
         >
@@ -243,12 +248,12 @@ export function CustomDatePicker({ value, onChange, type = 'date', className = '
                 <div 
                   className="absolute w-1 bg-primary origin-bottom z-0 transition-all duration-300 ease-out"
                   style={{ 
-                    height: '40%', 
+                    height: '75px', 
                     bottom: '50%',
                     transform: `rotate(${view === 'time' ? getHours(parseValue()) * 30 : getMinutes(parseValue()) * 6}deg)`
                   }}
                 >
-                  <div className="absolute -top-3 -left-2.5 w-6 h-6 rounded-full bg-primary" />
+                  <div className="absolute -top-5 -left-[18px] w-10 h-10 rounded-full bg-primary" />
                 </div>
                 
                 {/* Numbers */}
