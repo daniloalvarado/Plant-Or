@@ -341,6 +341,11 @@ export default function Profile() {
     setErrorMsg('');
     if (!user) return;
 
+    if (!firstName.trim() || !lastName.trim()) {
+      setErrorMsg("Los nombres y apellidos son obligatorios y no pueden estar vacíos.");
+      return;
+    }
+
     const isStudentFieldsFilled = showStudentFields && (dni || facultad || escuela || curso || diaClase);
 
     if (isStudentFieldsFilled) {
@@ -527,11 +532,12 @@ export default function Profile() {
               </Pressable>
 
               {/* Plan Badge */}
-              <View style={styles.proPlanBadge}>
+              <XStack style={[styles.proPlanBadge, { alignItems: 'center' }]} gap="$2">
+                <MaterialCommunityIcons name="sprout" size={16} color="#1FC451" />
                 <Text fontSize={13} fontWeight="700" color="#1FC451">
-                  🌱 Plant-Or
+                  Plant-Or
                 </Text>
-              </View>
+              </XStack>
             </YStack>
           </Card>
 

@@ -377,7 +377,7 @@ export default function HomeScreen() {
         onRequestClose={() => setNotifVisible(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Platform.OS === 'ios' ? Math.max(32, insets.bottom + 16) : 24 }]}>
+          <View style={[styles.modalContent, { backgroundColor: colorScheme === 'dark' ? '#12221A' : '#fff', paddingBottom: Math.max(insets.bottom + 24, 32) }]}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
               <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.text }}>Mis Aportes</Text>
               <Pressable onPress={() => setNotifVisible(false)} style={styles.closeModalButton}>
