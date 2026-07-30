@@ -64,7 +64,8 @@ export const parseNumbers = (obj: any) => {
   const numericKeys = ['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'numero_troncos', 'longitud_peciolo', 'diametro_peciolo', 'longitud_visible', 'cobertura', 'semilla_numero', 'altura_inicio_ramificacion', 'altura_maxima', 'diametro_tallo', 'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro'];
   for (let key in result) {
     if (numericKeys.includes(key)) {
-      result[key] = Number(result[key]) || undefined;
+      const parsed = Number(result[key]);
+      result[key] = !isNaN(parsed) && result[key] !== '' && result[key] !== null && result[key] !== undefined ? parsed : undefined;
     }
   }
   return result;

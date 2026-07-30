@@ -1,39 +1,39 @@
 export const GROUPS_ARBOL: Record<string, string[]> = {
-  'I. Datos Dasométricos': ['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'raices_visibles'],
-  'II. Tronco y Corteza': ['numero_troncos', 'forma_tronco', 'corteza_externa', 'lenticelas', 'color_corteza', 'olor_corteza', 'espinas_tronco'],
-  'III. Exudado': ['exudado_presencia', 'exudado_tipo', 'exudado_color'],
-  'IV. Ramificación y Copa': ['tipo_ramificacion', 'forma_copa', 'densidad_copa'],
-  'V. Hojas': ['tipo_hoja', 'disposicion_hoja', 'forma_hoja', 'borde_hoja', 'textura_hoja', 'color_enves', 'pelos_hoja', 'tipo_peciolo', 'longitud_peciolo', 'diametro_peciolo', 'peciolo_pulvino']
+  'Datos Dasométricos': ['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'raices_visibles'],
+  'Tronco y Corteza': ['numero_troncos', 'forma_tronco', 'corteza_externa', 'lenticelas', 'color_corteza', 'olor_corteza', 'espinas_tronco'],
+  'Exudado': ['exudado_presencia', 'exudado_tipo', 'exudado_color'],
+  'Ramificación y Copa': ['tipo_ramificacion', 'forma_copa', 'densidad_copa'],
+  'Hojas': ['tipo_hoja', 'disposicion_hoja', 'forma_hoja', 'borde_hoja', 'textura_hoja', 'color_enves', 'pelos_hoja', 'tipo_peciolo', 'longitud_peciolo', 'diametro_peciolo', 'peciolo_pulvino']
 };
 
 export const GROUPS_PALMERA: Record<string, string[]> = {
-  'I. Datos Dasométricos': ['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'numero_tallos', 'raices_visibles'],
-  'II. Tipo de Palmera': ['tipo_palmera'],
-  'III. Tallo (estípite)': ['tallo'],
-  'IV. Hojas': ['tipo_hoja', 'segmentos', 'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro', 'color_hoja'],
-  'V. Espinas': ['espinas_palmera'],
+  'Datos Dasométricos': ['altura_total', 'cap', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_copa', 'numero_tallos', 'raices_visibles'],
+  'Tipo de Palmera': ['tipo_palmera'],
+  'Tallo (estípite)': ['tallo'],
+  'Hojas': ['tipo_hoja', 'segmentos', 'hoja_largo', 'hoja_ancho', 'peciolo_largo', 'peciolo_diametro', 'color_hoja'],
+  'Espinas': ['espinas_palmera'],
 };
 
 export const GROUPS_ARBUSTO: Record<string, string[]> = {
-  'I. Datos Dasométricos': ['altura_total', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_ramificacion', 'numero_tallos', 'forma_general', 'densidad_follaje'],
-  'II. Tallo y Ramificación': ['tipo_ramificacion', 'tipo_tallo', 'presencia_espinas'],
-  'III. Hojas': ['tipo_hoja', 'hoja_compuesta_tipo', 'forma_hoja', 'disposicion_hoja', 'borde_hoja', 'color_hoja']
+  'Datos Dasométricos': ['altura_total', 'diametro_copa_paralelo', 'diametro_copa_perpendicular', 'altura_inicio_ramificacion', 'numero_tallos', 'forma_general', 'densidad_follaje'],
+  'Tallo y Ramificación': ['tipo_ramificacion', 'tipo_tallo', 'presencia_espinas'],
+  'Hojas': ['tipo_hoja', 'hoja_compuesta_tipo', 'forma_hoja', 'disposicion_hoja', 'borde_hoja', 'color_hoja']
 };
 
 export const GROUPS_LIANA: Record<string, string[]> = {
-  'I. Datos Dasométricos': ['longitud_visible', 'altura_maxima', 'diametro_tallo', 'numero_tallos'],
-  'II. Tipo de Soporte': ['tipo_soporte'],
-  'III. Forma de Crecimiento': ['forma_crecimiento'],
-  'IV. Mecanismo de Fijación': ['mecanismo_fijacion'],
-  'V. Tallo y Exudado': ['tipo_tallo_liana', 'espinas_tallo', 'exudado_presencia', 'exudado_tipo', 'exudado_color'],
-  'VI. Hojas': ['tipo_hoja', 'forma_hoja', 'disposicion_hoja', 'textura_hoja']
+  'Datos Dasométricos': ['longitud_visible', 'altura_maxima', 'diametro_tallo', 'numero_tallos'],
+  'Tipo de Soporte': ['tipo_soporte'],
+  'Forma de Crecimiento': ['forma_crecimiento'],
+  'Mecanismo de Fijación': ['mecanismo_fijacion'],
+  'Tallo y Exudado': ['tipo_tallo_liana', 'espinas_tallo', 'exudado_presencia', 'exudado_tipo', 'exudado_color'],
+  'Hojas': ['tipo_hoja', 'forma_hoja', 'disposicion_hoja', 'textura_hoja']
 };
 
 export const GROUPS_HIERBA: Record<string, string[]> = {
-  'I. Datos Dasométricos': ['altura_total', 'cobertura', 'numero_tallos'],
-  'II. Tipo de Crecimiento': ['tipo_crecimiento'],
-  'III. Tipo de Tallo': ['tipo_tallo'],
-  'IV. Hojas': ['tipo_hoja', 'disposicion_hoja', 'forma_hoja', 'color_hoja', 'textura_hoja']
+  'Datos Dasométricos': ['altura_total', 'cobertura', 'numero_tallos'],
+  'Tipo de Crecimiento': ['tipo_crecimiento'],
+  'Tipo de Tallo': ['tipo_tallo'],
+  'Hojas': ['tipo_hoja', 'disposicion_hoja', 'forma_hoja', 'color_hoja', 'textura_hoja']
 };
 
 export const HABIT_GROUP_DICTIONARY: Record<string, Record<string, string[]>> = {

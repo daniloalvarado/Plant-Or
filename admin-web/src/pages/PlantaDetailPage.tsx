@@ -95,6 +95,13 @@ export default function PlantaDetailPage() {
     )
   }
 
+  const toRoman = (num: number) => {
+    const roman = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"];
+    return roman[num] || num.toString();
+  };
+
+  let sectionCounter = 1;
+
   const images = planta.galeria || []
 
   const InfoRow = ({ label, value }: { label: string; value?: string | number | null }) => (
@@ -252,7 +259,9 @@ export default function PlantaDetailPage() {
               <div className="space-y-6">
                 {Object.entries(groupData(habitoDatos, HABIT_GROUP_DICTIONARY[planta.habito || ''] || {})).map(([groupName, groupFields]) => (
                   <div key={groupName}>
-                    <h4 className="text-sm font-semibold text-primary/80 uppercase tracking-wide mb-3 border-b pb-1">{groupName}</h4>
+                    <h4 className="text-sm font-semibold text-primary/80 uppercase tracking-wide mb-3 border-b pb-1">
+                      {toRoman(sectionCounter++)}. {groupName}
+                    </h4>
                     <div className="grid grid-cols-2 gap-x-6 gap-y-1">
                       {Object.entries(groupFields).map(([k, v]) => (
                         <InfoRow key={k} label={formatLabel(k, planta.habito)} value={Array.isArray(v) ? v.join(', ') : String(v)} />
@@ -270,7 +279,9 @@ export default function PlantaDetailPage() {
               <div className="space-y-6">
                 {Object.entries(groupData(planta.reproductivo, REPRODUCTIVO_GROUPS)).map(([groupName, groupFields]) => (
                   <div key={groupName}>
-                    <h4 className="text-sm font-semibold text-primary/80 uppercase tracking-wide mb-3 border-b pb-1">{groupName}</h4>
+                    <h4 className="text-sm font-semibold text-primary/80 uppercase tracking-wide mb-3 border-b pb-1">
+                      {toRoman(sectionCounter++)}. {groupName}
+                    </h4>
                     <div className="grid grid-cols-2 gap-x-6 gap-y-1">
                       {Object.entries(groupFields).map(([k, v]) => (
                         <InfoRow key={k} label={formatLabel(k, planta.habito)} value={Array.isArray(v) ? v.join(', ') : String(v)} />
@@ -284,7 +295,7 @@ export default function PlantaDetailPage() {
 
           {/* Base Categories (Evaluación e Impacto) */}
           {(planta.estado_fenologico || planta.estado_individuo || planta.valor_ornamental || planta.impacto_urbano) && (
-            <Section title="Evaluación e Impacto">
+            <Section title={`${toRoman(sectionCounter++)}. Evaluación e Impacto`}>
               <div className="grid grid-cols-1 gap-y-4">
                 {planta.estado_fenologico && planta.estado_fenologico.length > 0 && (
                   <InfoRow label={formatLabel('estado_fenologico', planta.habito)} value={planta.estado_fenologico.join(', ')} />
