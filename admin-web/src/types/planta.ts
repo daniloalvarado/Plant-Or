@@ -6,6 +6,8 @@ export interface Planta {
   nombre_cientifico?: string
   nombres_comunes?: string
   familia?: string
+  origen?: string
+  pais_origen?: string
   habito?: string
   tipo_vida?: string
   estado_revision?: PlantaEstado
