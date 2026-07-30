@@ -231,7 +231,6 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
       <div className="flex flex-col items-center justify-center h-[calc(100dvh-70px)] text-muted-foreground">
         <Leaf className="w-16 h-16 mb-4 opacity-20" />
         <p className="text-xl font-medium text-foreground">No se encontraron plantas</p>
-        <p className="text-sm">Prueba ajustando los filtros de búsqueda</p>
       </div>
     )
   }
