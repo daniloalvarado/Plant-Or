@@ -15,7 +15,7 @@ import { toast } from 'sonner'
 import { ValidacionModal } from '@/components/ValidacionModal'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { formatLabel } from '@/lib/labels'
-import { HABITO_GROUPS, REPRODUCTIVO_GROUPS, groupData } from '@/lib/grouping'
+import { HABIT_GROUP_DICTIONARY, REPRODUCTIVO_GROUPS, groupData } from '@/lib/grouping'
 
 export default function PlantaDetailPage() {
   const { user } = useUser()
@@ -250,7 +250,7 @@ export default function PlantaDetailPage() {
           {habitoDatos && (
             <Section title={`Datos de ${planta.habito}`}>
               <div className="space-y-6">
-                {Object.entries(groupData(habitoDatos, HABITO_GROUPS)).map(([groupName, groupFields]) => (
+                {Object.entries(groupData(habitoDatos, HABIT_GROUP_DICTIONARY[planta.habito || ''] || {})).map(([groupName, groupFields]) => (
                   <div key={groupName}>
                     <h4 className="text-sm font-semibold text-primary/80 uppercase tracking-wide mb-3 border-b pb-1">{groupName}</h4>
                     <div className="grid grid-cols-2 gap-x-6 gap-y-1">
