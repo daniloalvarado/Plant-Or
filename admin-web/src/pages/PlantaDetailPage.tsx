@@ -216,8 +216,8 @@ export default function PlantaDetailPage() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 cascade-item">
-        {/* Left Column */}
-        <div className="lg:col-span-2 space-y-5">
+        {/* Left Column (Now visually on the right) */}
+        <div className="lg:col-span-2 space-y-5 order-2 lg:order-2">
           {/* Photos */}
           {images.length > 0 && (
             <Section title="Fotografías">
@@ -314,8 +314,8 @@ export default function PlantaDetailPage() {
           )}
         </div>
 
-        {/* Right Column */}
-        <div className="space-y-5">
+        {/* Right Column (Now visually on the left) */}
+        <div className="space-y-5 order-1 lg:order-1">
           {/* Personal Data */}
           <Section title="Datos del Estudiante">
             <div className="flex items-center gap-3 mb-3">
