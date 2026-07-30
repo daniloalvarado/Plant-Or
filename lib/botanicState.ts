@@ -168,7 +168,7 @@ export const formatBotanicSubmitData = (datosBotanicos: any) => {
       borde_hoja: activeData.hojas?.borde_hoja,
       color_hoja: activeData.hojas?.color_hoja,
       textura_hoja: activeData.hojas?.textura_hoja,
-      olor_hoja: activeData.hojas?.olor_hoja,
+      
       exudado_corte: activeData.hojas?.exudado_corte,
     });
   }
@@ -233,7 +233,7 @@ export const hydrateBotanicData = (data: any) => {
   } else if (h === 'Hierba') {
     activeData.dasometria = { altura_total: source.altura_total?.toString(), cobertura: source.cobertura?.toString(), numero_tallos: source.numero_tallos };
     activeData.crecimiento = { tipo_crecimiento: source.tipo_crecimiento, tipo_tallo: source.tipo_tallo };
-    activeData.hojas = { tipo_hoja: source.tipo_hoja, hoja_compuesta_tipo: source.hoja_compuesta_tipo, forma_hoja: source.forma_hoja, disposicion_hoja: source.disposicion_hoja, borde_hoja: source.borde_hoja, color_hoja: source.color_hoja, olor_hoja: source.olor_hoja, exudado_corte: source.exudado_corte, textura_hoja: source.textura_hoja };
+    activeData.hojas = { tipo_hoja: source.tipo_hoja, hoja_compuesta_tipo: source.hoja_compuesta_tipo, forma_hoja: source.forma_hoja, disposicion_hoja: source.disposicion_hoja, borde_hoja: source.borde_hoja, color_hoja: source.color_hoja, textura_hoja: source.textura_hoja };
   }
 
   rehydratedBotanic[`data_${h}`] = activeData;

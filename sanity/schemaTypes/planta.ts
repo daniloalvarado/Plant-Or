@@ -241,7 +241,6 @@ export const planta = {
         { name: 'borde_hoja', title: 'Borde', type: 'string', options: { list: ['Entero', 'Dentado', 'Ondulado', 'Otro'] } },
         { name: 'color_hoja', title: 'Color', type: 'string', options: { list: ['Verde claro', 'Verde oscuro', 'Rojizo', 'Morado', 'Variegado', 'Otro'] } },
         { name: 'olor_hoja', title: 'Olor al estrujar', type: 'string', options: { list: ['Sin olor', 'Aromático', 'Cítrico', 'Desagradable', 'Otro'] } },
-        { name: 'exudado_corte', title: 'Exudado al corte', type: 'string', options: { list: ['Sí', 'No'] } },
       ]
     },
 

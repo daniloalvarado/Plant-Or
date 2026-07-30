@@ -9,7 +9,6 @@ import { FormPalmera } from '@/components/forms/FormPalmera';
 import { FormArbusto } from '@/components/forms/FormArbusto';
 import { FormLiana } from '@/components/forms/FormLiana';
 import { FormHierba } from '@/components/forms/FormHierba';
-import { FormCompartido } from '@/components/forms/FormCompartido';
 
 export function Step4({ form }: { form: any }) {
   const {

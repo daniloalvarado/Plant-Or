@@ -53,41 +53,41 @@ def get_indent_level(para):
     return 0
 
 def process_table(table):
-    """Convert a table element to markdown table format."""
+    """Convert a table element to HTML table format."""
     rows = table.findall('w:tr', NS)
     if not rows:
         return ''
     
-    md_rows = []
-    for row in rows:
+    html_lines = ['<table>']
+    
+    for row_idx, row in enumerate(rows):
+        html_lines.append('  <tr>')
         cells = row.findall('w:tc', NS)
-        cell_texts = []
         for cell in cells:
-            # Get all paragraphs in the cell
+            tcPr = cell.find('w:tcPr', NS)
+            colspan = ''
+            
+            # Check for colspan
+            if tcPr is not None:
+                gridSpan = tcPr.find('w:gridSpan', NS)
+                if gridSpan is not None:
+                    span_val = gridSpan.get(f'{{{NS["w"]}}}val')
+                    if span_val:
+                        colspan = f' colspan="{span_val}"'
+            
             paras = cell.findall('w:p', NS)
-            cell_text = ' '.join([get_paragraph_text(p).strip() for p in paras]).strip()
-            cell_text = cell_text.replace('|', '\\|')  # Escape pipes
-            cell_texts.append(cell_text)
-        md_rows.append(cell_texts)
-    
-    if not md_rows:
-        return ''
-    
-    # Normalize column count
-    max_cols = max(len(r) for r in md_rows)
-    for r in md_rows:
-        while len(r) < max_cols:
-            r.append('')
-    
-    lines = []
-    # Header row
-    lines.append('| ' + ' | '.join(md_rows[0]) + ' |')
-    lines.append('| ' + ' | '.join(['---'] * max_cols) + ' |')
-    # Data rows
-    for row in md_rows[1:]:
-        lines.append('| ' + ' | '.join(row) + ' |')
-    
-    return '\n'.join(lines)
+            cell_text = '<br>'.join([get_paragraph_text(p).strip() for p in paras if get_paragraph_text(p).strip()])
+            
+            # Escape basic HTML chars except our <br>
+            cell_text = cell_text.replace('&', '&amp;').replace('<br>', '[[BR]]').replace('<', '&lt;').replace('>', '&gt;').replace('[[BR]]', '<br>')
+            
+            tag = 'th' if row_idx == 0 else 'td'
+            html_lines.append(f'    <{tag}{colspan}>{cell_text}</{tag}>')
+            
+        html_lines.append('  </tr>')
+        
+    html_lines.append('</table>')
+    return '\n'.join(html_lines)
 
 def convert_docx_to_md(docx_path):
     """Main conversion function."""
@@ -108,10 +108,19 @@ def convert_docx_to_md(docx_path):
             text = get_paragraph_text(element).strip()
             style = get_paragraph_style(element)
             
-            if not text:
+            # Check for images
+            has_image = False
+            if element.find('.//w:drawing', NS) is not None or element.find('.//w:pict', NS) is not None:
+                has_image = True
+                
+            if not text and not has_image:
                 # Empty paragraph - add spacing
                 md_lines.append('')
                 continue
+                
+            if has_image:
+                image_marker = '\n> 🖼️ **[IMAGEN REFERENCIAL AQUÍ]**\n'
+                text = (text + image_marker).strip() if text else image_marker.strip()
             
             # Map heading styles
             style_lower = style.lower()

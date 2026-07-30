@@ -331,9 +331,7 @@ export const validateHierba = (datos: any) => {
       !isFilled(hojas.disposicion_hoja) ||
       !isFilled(hojas.forma_hoja) ||
       !isFilled(hojas.color_hoja) ||
-      !isFilled(hojas.textura_hoja) ||
-      !isFilled(hojas.olor_hoja) ||
-      !isFilled(hojas.exudado_corte)) return false;
+      !isFilled(hojas.textura_hoja)) return false;
 
   const reproductivo = datos.reproductivo || {};
   const compartido = datos.compartido || {};
@@ -434,8 +432,6 @@ const labelsMap: Record<string, string> = {
   "dasometria.cobertura": "Cobertura Ø (cm)",
   "crecimiento.tipo_crecimiento": "Tipo crecimiento",
   "crecimiento.tipo_tallo": "Tipo tallo",
-  "hojas.exudado_corte": "Exudado al corte",
-  "hojas.olor_hoja": "Olor al estrujar",
   "reproductivo.flor_presencia": "Presencia de flores",
   "reproductivo.flor_color": "Color de pétalos",
   "reproductivo.flor_tamano": "Tamaño de flor (cm)",
@@ -653,7 +649,7 @@ export const getMissingSections = (habito: string, datos: any): { id: string, la
   if (habito === 'Hierba') {
     checkSection('dasometria', datos.dasometria, ['altura_total','cobertura','numero_tallos']);
     checkSection('crecimiento', datos.crecimiento, ['tipo_crecimiento','tipo_tallo']);
-    checkSection('hojas', datos.hojas, ['tipo_hoja','disposicion_hoja','forma_hoja','color_hoja','textura_hoja','olor_hoja','exudado_corte']);
+    checkSection('hojas', datos.hojas, ['tipo_hoja','disposicion_hoja','forma_hoja','color_hoja','textura_hoja']);
     
     const r = datos.reproductivo || {};
     const c = datos.compartido || {};

@@ -26,7 +26,6 @@ import { FormPalmera } from '@/components/forms/FormPalmera';
 import { FormArbusto } from '@/components/forms/FormArbusto';
 import { FormLiana } from '@/components/forms/FormLiana';
 import { FormHierba } from '@/components/forms/FormHierba';
-import { FormCompartido } from '@/components/forms/FormCompartido';
 import { validateArbol, validatePalmera, validateArbusto, validateLiana, validateHierba, getMissingSections } from '@/lib/validation';
 import { Modal } from 'react-native';
 import { useRouter, useLocalSearchParams, useFocusEffect } from 'expo-router';
@@ -70,14 +69,14 @@ const LABEL_MAP: Record<string, string> = {
   'fruto_superficie': 'Superficie de fruto',
   'fruto_tipo': 'Tipo de fruto',
   'tipo_hoja': 'Tipo de hoja',
-  'forma_tronco': 'Forma de tronco',
+  'forma': 'Forma de tronco',
   'corteza_externa': 'Corteza externa',
   'color_corteza': 'Color de corteza',
   'olor_corteza': 'Olor de corteza',
   'espinas_tronco': 'Espinas en tronco',
-  'exudado_presencia': 'Presencia de exudado',
-  'exudado_tipo': 'Tipo de exudado',
-  'exudado_color': 'Color de exudado',
+  'presencia': 'Presencia de exudado',
+  'tipo': 'Tipo de exudado',
+  'color': 'Color de exudado',
   'tipo_ramificacion': 'Tipo de ramificación',
   'forma_copa': 'Forma de copa',
   'densidad_copa': 'Densidad de copa',
@@ -96,7 +95,7 @@ const LABEL_MAP: Record<string, string> = {
   'altura_maxima': 'Altura máxima',
   'diametro_tallo': 'Diámetro del tallo',
   'habito_crecimiento': 'Hábito de crecimiento',
-  'mecanismo_trepador': 'Mecanismo trepador',
+  'mecanismo_fijacion': 'Mecanismo de fijación',
   'flor_presencia': 'Presencia de flores',
   'flor_color': 'Color de pétalos',
   'flor_tamano': 'Tamaño de flor',

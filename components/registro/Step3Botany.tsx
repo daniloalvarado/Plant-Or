@@ -9,7 +9,6 @@ import { FormPalmera } from '@/components/forms/FormPalmera';
 import { FormArbusto } from '@/components/forms/FormArbusto';
 import { FormLiana } from '@/components/forms/FormLiana';
 import { FormHierba } from '@/components/forms/FormHierba';
-import { FormCompartido } from '@/components/forms/FormCompartido';
 import { getActiveBotanicData } from '@/lib/botanicState';
 
 export function Step3({ form }: { form: any }) {
@@ -148,11 +147,7 @@ export function Step3({ form }: { form: any }) {
                   <FormHierba data={activeData} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
                 )}
 
-                {/* Variables compartidas por todas las plantas (solo se muestra si se eligió un hábito y NO es Palmera/Arbusto/Liana/Hierba, ya que tienen sus propios campos) */}
-                {datosBotanicos.habito !== '' && datosBotanicos.habito !== 'Palmera' && datosBotanicos.habito !== 'Arbusto' && datosBotanicos.habito !== 'Liana' && datosBotanicos.habito !== 'Hierba' && (
-                  <FormCompartido data={activeData} updateData={updateBotanic} registerRef={registerFieldRef} missingFields={missingSections} />
-                )}
-                
+                                
                 <Card padding="$4" backgroundColor="rgba(255,255,255,0.05)" borderWidth={0}>
                   <YStack gap="$2">
                     <Button 

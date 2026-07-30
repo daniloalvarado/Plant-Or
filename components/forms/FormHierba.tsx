@@ -135,23 +135,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
           />
         </YStack>
 
-        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.olor_hoja', el)}>
-          <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Olor al estrujar</Label>{missingFields?.some(m => m.id === 'hojas.olor_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
-          <RadioSelect 
-            options={['Sin olor', 'Aromático', 'Cítrico', 'Desagradable', 'Otro']}
-            value={getField('hojas', 'olor_hoja')}
-            onChange={(val) => setField('hojas', 'olor_hoja', val)}
-          />
-        </YStack>
 
-        <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.exudado_corte', el)}>
-          <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Exudado al corte</Label>{missingFields?.some(m => m.id === 'hojas.exudado_corte') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
-          <RadioSelect 
-            options={['Sí', 'No']}
-            value={getField('hojas', 'exudado_corte')}
-            onChange={(val) => setField('hojas', 'exudado_corte', val)}
-          />
-        </YStack>
       </Card>
 
       {/* V. Flores */}
