@@ -264,6 +264,9 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
           ref={previewRef} 
           src={activePlant?.galeria?.[0] ? urlForImage(activePlant.galeria[0]).width(800).auto('format').url() : ''} 
           alt="Vista previa" 
+          draggable={false}
+          onContextMenu={(e) => e.preventDefault()}
+          className="pointer-events-none select-none"
         />
       </div>
       
@@ -277,6 +280,9 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
                 data-full-src={p.galeria?.[0] ? urlForImage(p.galeria[0]).width(800).auto('format').url() : ''}
                 alt={p.nombre_cientifico || 'Planta'} 
                 loading="lazy"
+                draggable={false}
+                onContextMenu={(e) => e.preventDefault()}
+                className="pointer-events-none select-none"
                 style={{ background: !p.galeria?.[0] ? 'linear-gradient(135deg, #1a3a2a, #08130D)' : 'none' }}
               />
             </div>

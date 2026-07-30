@@ -189,16 +189,23 @@ export default function CatalogPage() {
 
         {/* Desktop Controls */}
         <div className="hidden md:flex items-center gap-4">
-          <div className="w-40">
-            <CustomSelect
-              value={selectedHabito}
-              onChange={setSelectedHabito}
-              options={habitoOptions}
-              placeholder="Hábito..."
-              className="min-w-0 w-full"
-            />
+          <div className="flex bg-secondary border border-border rounded-lg p-1">
+            <button
+              title="Galería"
+              onClick={() => setViewMode('tunnel')}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              <Box className="w-4 h-4" />
+            </button>
+            <button
+              title="Mapa"
+              onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); }}
+              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              <MapIcon className="w-4 h-4" />
+            </button>
           </div>
-          
+
           <button 
             onClick={() => setFiltersModalOpen(true)}
             className="flex items-center gap-2 px-3 py-2 bg-secondary hover:bg-secondary/80 border border-border rounded-lg text-sm font-medium transition-colors cursor-pointer text-foreground"
@@ -212,19 +219,14 @@ export default function CatalogPage() {
             )}
           </button>
 
-          <div className="flex bg-secondary border border-border rounded-lg p-1">
-            <button
-              onClick={() => setViewMode('tunnel')}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
-            >
-              <Box className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); }}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
-            >
-              <MapIcon className="w-4 h-4" />
-            </button>
+          <div className="w-40">
+            <CustomSelect
+              value={selectedHabito}
+              onChange={setSelectedHabito}
+              options={habitoOptions}
+              placeholder="Hábito..."
+              className="min-w-0 w-full"
+            />
           </div>
 
           <button
@@ -268,16 +270,23 @@ export default function CatalogPage() {
                 />
               </div>
 
-              {/* Habito */}
+              {/* View Mode */}
               <div>
-                <label className="text-xs font-bold text-muted-foreground uppercase mb-2 block">Hábito de Crecimiento</label>
-                <CustomSelect
-                  value={selectedHabito}
-                  onChange={setSelectedHabito}
-                  options={habitoOptions}
-                  placeholder="Todos"
-                  className="w-full"
-                />
+                <label className="text-xs font-bold text-muted-foreground uppercase mb-2 block">Vista</label>
+                <div className="flex bg-secondary border border-border rounded-lg p-1">
+                  <button
+                    onClick={() => { setViewMode('tunnel'); setMobileMenuOpen(false); }}
+                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+                  >
+                    <Box className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); setMobileMenuOpen(false); }}
+                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+                  >
+                    <MapIcon className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
 
               {/* Filters */}
@@ -296,23 +305,16 @@ export default function CatalogPage() {
                 )}
               </button>
 
-              {/* View Mode */}
+              {/* Habito */}
               <div>
-                <label className="text-xs font-bold text-muted-foreground uppercase mb-2 block">Vista</label>
-                <div className="flex bg-secondary border border-border rounded-lg p-1">
-                  <button
-                    onClick={() => { setViewMode('tunnel'); setMobileMenuOpen(false); }}
-                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
-                  >
-                    <Box className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); setMobileMenuOpen(false); }}
-                    className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
-                  >
-                    <MapIcon className="w-5 h-5" />
-                  </button>
-                </div>
+                <label className="text-xs font-bold text-muted-foreground uppercase mb-2 block">Hábito de Crecimiento</label>
+                <CustomSelect
+                  value={selectedHabito}
+                  onChange={setSelectedHabito}
+                  options={habitoOptions}
+                  placeholder="Todos"
+                  className="w-full"
+                />
               </div>
 
               {/* Theme Toggle */}
@@ -366,7 +368,7 @@ export default function CatalogPage() {
                     <Popup className="plant-popup dark-popup !p-0 overflow-hidden rounded-xl border border-border bg-card text-card-foreground">
                       <div className="flex flex-col w-[200px]">
                         {p.galeria?.[0] ? (
-                          <img src={urlForImage(p.galeria[0]).width(400).auto('format').url()} alt={p.nombre_cientifico} className="w-full h-32 object-cover" />
+                          <img src={urlForImage(p.galeria[0]).width(400).auto('format').url()} alt={p.nombre_cientifico} draggable={false} onContextMenu={(e) => e.preventDefault()} className="w-full h-32 object-cover pointer-events-none select-none" />
                         ) : (
                           <div className="w-full h-32 bg-secondary flex items-center justify-center">
                             <Leaf className="w-8 h-8 text-muted-foreground" />

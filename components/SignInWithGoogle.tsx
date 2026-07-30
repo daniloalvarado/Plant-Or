@@ -109,7 +109,6 @@ export default function SignInWithGoogle() {
         <Modal transparent visible animationType="fade">
           <RNView style={{ flex: 1, backgroundColor: "rgba(8,19,13,0.85)", justifyContent: "center", alignItems: "center" }}>
             <Spinner size="large" color="#1FC451" />
-            <RNText style={{ color: "#ffffff", fontWeight: "600", marginTop: 16 }}>Completando inicio de sesión...</RNText>
           </RNView>
         </Modal>
       )}
