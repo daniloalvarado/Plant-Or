@@ -471,57 +471,8 @@ const labelsMap: Record<string, string> = {
 export const getMissingSections = (habito: string, datos: any): { id: string, label: string }[] => {
   const missing: { id: string, label: string }[] = [];
 
-  // Opciones válidas de estado_individuo por hábito
-  const estadoIndividuoOptions: Record<string, string[]> = {
-    'Árbol': ['Bueno', 'Regular', 'Malo', 'Podado', 'Enfermo', 'Con plagas visibles', 'Con daño mecánico'],
-    'Palmera': ['Bueno', 'Regular', 'Malo', 'Con plagas', 'Con daño', 'Hojas secas abundantes'],
-    'Arbusto': ['Bueno', 'Regular', 'Malo', 'Podado', 'Con plagas', 'Con daño'],
-    'Liana': ['Bueno', 'Regular', 'Malo', 'Con plagas', 'Con daño'],
-    'Hierba': ['Bueno', 'Regular', 'Malo', 'Con plagas', 'Con daño'],
-  };
-
-  // Opciones válidas de impacto_urbano por hábito
-  const impactoUrbanoOptions: Record<string, string[]> = {
-    'Árbol': ['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Raíces rompen el piso', 'Raíces afectan veredas', 'Raíces afectan cimientos', 'Levanta pavimento', 'Interfiere con cableado', 'Interfiere con luminarias', 'Riesgo de caída de ramas', 'Tronco inclinado (riesgo)', 'Otro'],
-    'Palmera': ['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Frutos resbalosos', 'Raíces levantan vereda', 'Raíces afectan cimientos', 'Levanta pavimento', 'Interfiere con cableado', 'Interfiere con luminarias', 'Riesgo de caída de hojas', 'Tronco inclinado (riesgo)', 'Otro'],
-    'Arbusto': ['No genera daño', 'Frutos ensucian la vía', 'Frutos obstruyen desagüe', 'Raíces afectan vereda', 'Interfiere con infraestructura', 'Dificulta mantenimiento', 'Otro'],
-    'Liana': ['No genera daño', 'Cubre infraestructura', 'Interfiere con cableado', 'Invade estructuras', 'Dificulta mantenimiento', 'Genera humedad en paredes', 'Otro'],
-    'Hierba': ['No genera daño', 'Invade jardines', 'Invade veredas', 'Cubre drenajes', 'Dificulta mantenimiento', 'Puede ser resbalosa', 'Puede atraer plagas', 'Otro'],
-  };
-
-  // Verifica que un array tenga al menos un valor que sea una opción válida del hábito actual
-  const isFilledWithValidOptions = (value: any, validOptions: string[]): boolean => {
-    if (!Array.isArray(value) || value.length === 0) return false;
-    for (const v of value) {
-      if (typeof v !== 'string' || v.trim() === '') continue;
-      if (v.startsWith('Otro')) return true; // "Otro" o "Otro: texto" siempre es válido
-      if (validOptions.includes(v)) return true;
-    }
-    return false;
-  };
-  
   const checkField = (sectionName: string, sectionObj: any, fieldName: string) => {
     const val = sectionObj?.[fieldName];
-
-    // Para estado_individuo e impacto_urbano, verificar contra opciones válidas del hábito
-    if (fieldName === 'estado_individuo') {
-      const validOpts = estadoIndividuoOptions[habito] || [];
-      if (!isFilledWithValidOptions(val, validOpts)) {
-        const id = `${sectionName}.${fieldName}`;
-        missing.push({ id, label: labelsMap[id] || fieldName });
-        return true;
-      }
-      return false;
-    }
-    if (fieldName === 'impacto_urbano') {
-      const validOpts = impactoUrbanoOptions[habito] || [];
-      if (!isFilledWithValidOptions(val, validOpts)) {
-        const id = `${sectionName}.${fieldName}`;
-        missing.push({ id, label: labelsMap[id] || fieldName });
-        return true;
-      }
-      return false;
-    }
 
     const filled = isFilled(val);
     if (!filled) {

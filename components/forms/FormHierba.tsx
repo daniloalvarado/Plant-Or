@@ -177,7 +177,7 @@ export function FormHierba({ data, updateData , registerRef, missingFields }: Fo
             <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('reproductivo.flor_agrupacion', el)}>
               <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Agrupación</Label>{missingFields?.some(m => m.id === 'reproductivo.flor_agrupacion') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
               <RadioSelect 
-                options={['Solitaria', 'En racimo', 'En racimos', 'En manojo', 'En ramillete', 'En ramilletes', 'En espiga', 'En cabezuela', 'Otro']}
+                options={['Solitaria', 'En racimo', 'En manojo', 'En espiga', 'En cabezuela', 'Otro']}
                 value={getField('reproductivo', 'flor_agrupacion')}
                 onChange={(val) => setField('reproductivo', 'flor_agrupacion', val)}
               />

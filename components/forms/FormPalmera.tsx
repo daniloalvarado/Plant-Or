@@ -134,7 +134,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
         <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.tipo_hoja', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Tipo de hoja</Label>{missingFields?.some(m => m.id === 'hojas.tipo_hoja') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <RadioSelect 
-            options={['Pluma (pinnada)', 'Abanico (palmada)', 'Simple entera', 'Simple bífida', 'Otro']}
+            options={['Tipo pluma (pinnada)', 'Tipo abanico (palmada)', 'Simple entera', 'Simple bífida', 'Otro']}
             value={getField('hojas', 'tipo_hoja')}
             onChange={(val) => setField('hojas', 'tipo_hoja', val)}
           />
@@ -143,7 +143,7 @@ export function FormPalmera({ data, updateData , registerRef, missingFields }: F
         <YStack gap="$2" collapsable={false} ref={(el) => registerRef && registerRef('hojas.segmentos', el)}>
           <XStack style={{ alignItems: "center" }} gap="$1"><Label color="#ffffff" pressStyle={{ color: "#ffffff" }}>Segmentos (Múltiple)</Label>{missingFields?.some(m => m.id === 'hojas.segmentos') && <MaterialCommunityIcons name="alert-circle" size={14} color="#ff4444" />}</XStack>
           <MultiSelect 
-            options={['En un solo plano', 'En varios planos', 'Rígidos', 'Colgantes', 'Otro']}
+            options={['En un plano', 'En varios planos', 'Rígidos', 'Colgantes', 'Otro']}
             value={getField('hojas', 'segmentos') || []}
             onChange={(val) => setField('hojas', 'segmentos', val)}
           />
