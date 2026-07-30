@@ -401,7 +401,10 @@ export default function PlantaDetailPage() {
             </div>
             <InfoRow label="Familia" value={planta.familia} />
             <InfoRow label="Tipo de vida" value={planta.tipo_vida} />
+            <InfoRow label="Origen" value={planta.origen} />
+            {planta.origen === 'Introducida' && planta.pais_origen ? <InfoRow label="País de origen" value={planta.pais_origen} /> : null}
             {planta.estado_fenologico?.length ? <InfoRow label="Estado fenológico" value={planta.estado_fenologico.join(', ')} /> : null}
+            {planta.estado_individuo?.length ? <InfoRow label="Estado del individuo" value={planta.estado_individuo.join(', ')} /> : null}
             {planta.valor_ornamental?.length ? <InfoRow label="Valor ornamental" value={planta.valor_ornamental.join(', ')} /> : null}
             {planta.impacto_urbano?.length ? <InfoRow label="Impacto urbano" value={planta.impacto_urbano.join(', ')} /> : null}
           </Section>
