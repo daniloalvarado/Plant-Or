@@ -259,7 +259,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
         </div>
       )}
 
-      <div className="mm-img-preview" onClick={() => activePlant && onPlantClick(activePlant)}>
+      <div className="mm-img-preview">
         <img 
           ref={previewRef} 
           src={activePlant?.galeria?.[0] ? urlForImage(activePlant.galeria[0]).width(800).auto('format').url() : ''} 

@@ -86,6 +86,7 @@ export default function CatalogPage() {
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({})
   const [filtersModalOpen, setFiltersModalOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [isMobileMenuRendered, setIsMobileMenuRendered] = useState(false)
   const [isMobileMenuAnimatingOut, setIsMobileMenuAnimatingOut] = useState(false)
   const [sanityFiltros, setSanityFiltros] = useState<any[]>([])
@@ -172,9 +173,31 @@ export default function CatalogPage() {
     <div className="public-catalog-bg fixed inset-0 w-full h-full font-sans overflow-hidden flex flex-col bg-background text-foreground transition-colors duration-300">
       {/* Navbar */}
       <nav className="h-[70px] border-b border-border flex items-center justify-between px-6 flex-shrink-0 z-50 bg-background/80 backdrop-blur-md transition-colors duration-300">
-        <div className="flex items-center gap-2">
-          <TooltipLogo />
-        </div>
+        {!mobileSearchOpen && (
+          <div className="flex items-center gap-2">
+            <TooltipLogo />
+          </div>
+        )}
+
+        {mobileSearchOpen && (
+          <div className="flex-1 relative lg:hidden mr-4 animate-in fade-in slide-in-from-right-4 duration-300">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <input
+              autoFocus
+              type="text"
+              placeholder="Buscar por planta, distrito o calle..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brand-green transition-colors"
+            />
+            <button 
+              onClick={() => { setMobileSearchOpen(false); setSearchTerm(''); }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
         <div className="flex-1 max-w-xl mx-8 relative hidden lg:block">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -190,20 +213,28 @@ export default function CatalogPage() {
         {/* Desktop Controls */}
         <div className="hidden md:flex items-center gap-4">
           <div className="flex bg-secondary border border-border rounded-lg p-1">
-            <button
-              title="Galería"
-              onClick={() => setViewMode('tunnel')}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
-            >
-              <Box className="w-4 h-4" />
-            </button>
-            <button
-              title="Mapa"
-              onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); }}
-              className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
-            >
-              <MapIcon className="w-4 h-4" />
-            </button>
+            <div className="relative group/tooltip">
+              <button
+                onClick={() => setViewMode('tunnel')}
+                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <Box className="w-4 h-4" />
+              </button>
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-foreground text-xs font-bold rounded border border-border opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                Catálogo
+              </span>
+            </div>
+            <div className="relative group/tooltip">
+              <button
+                onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); }}
+                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <MapIcon className="w-4 h-4" />
+              </button>
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-popover text-foreground text-xs font-bold rounded border border-border opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                Mapa
+              </span>
+            </div>
           </div>
 
           <button 
@@ -237,13 +268,23 @@ export default function CatalogPage() {
           </button>
         </div>
 
-        {/* Mobile Menu Toggle */}
-        <button 
-          className="md:hidden p-2 text-foreground"
-          onClick={() => setMobileMenuOpen(true)}
-        >
-          <Menu className="w-6 h-6" />
-        </button>
+        {/* Mobile Buttons Toggle */}
+        <div className="flex items-center gap-2 md:hidden">
+          {!mobileSearchOpen && (
+            <button 
+              className="p-2 text-foreground rounded-full transition-colors cursor-pointer"
+              onClick={() => setMobileSearchOpen(true)}
+            >
+              <Search className="w-6 h-6" />
+            </button>
+          )}
+          <button 
+            className="p-2 text-foreground cursor-pointer"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Lateral Menu */}
@@ -292,14 +333,12 @@ export default function CatalogPage() {
               {/* Filters */}
               <button 
                 onClick={() => { setMobileMenuOpen(false); setFiltersModalOpen(true); }}
-                className="w-full flex items-center justify-between px-4 py-3 bg-secondary hover:bg-secondary/80 border border-border rounded-lg text-sm font-medium transition-colors cursor-pointer text-foreground"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-secondary hover:bg-secondary/80 border border-border rounded-lg text-sm font-medium transition-colors cursor-pointer text-foreground relative"
               >
-                <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4" />
-                  <span>Filtros Dinámicos</span>
-                </div>
+                <Filter className="w-4 h-4" />
+                <span>Filtros Dinámicos</span>
                 {Object.values(activeFilters).flat().length > 0 && (
-                  <span className="bg-brand-green text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  <span className="bg-brand-green text-white text-xs font-bold px-2 py-0.5 rounded-full ml-1">
                     {Object.values(activeFilters).flat().length}
                   </span>
                 )}
