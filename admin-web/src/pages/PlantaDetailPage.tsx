@@ -98,7 +98,7 @@ export default function PlantaDetailPage() {
   const images = planta.galeria || []
 
   const InfoRow = ({ label, value }: { label: string; value?: string | number | null }) => (
-    value ? (
+    value !== undefined && value !== null && value !== '' ? (
       <div className="flex justify-between py-1.5 border-b border-border last:border-0">
         <span className="text-xs text-muted-foreground">{label}</span>
         <span className="text-xs text-foreground font-medium text-right max-w-[60%]">{value}</span>
@@ -337,10 +337,6 @@ export default function PlantaDetailPage() {
             <InfoRow label="Tipo de vida" value={planta.tipo_vida} />
             <InfoRow label="Origen" value={planta.origen} />
             {planta.origen === 'Introducida' && planta.pais_origen ? <InfoRow label="País de origen" value={planta.pais_origen} /> : null}
-            {planta.estado_fenologico?.length ? <InfoRow label="Estado fenológico" value={planta.estado_fenologico.join(', ')} /> : null}
-            {planta.estado_individuo?.length ? <InfoRow label="Estado del individuo" value={planta.estado_individuo.join(', ')} /> : null}
-            {planta.valor_ornamental?.length ? <InfoRow label="Valor ornamental" value={planta.valor_ornamental.join(', ')} /> : null}
-            {planta.impacto_urbano?.length ? <InfoRow label="Impacto urbano" value={planta.impacto_urbano.join(', ')} /> : null}
           </Section>
 
           {/* Location */}
