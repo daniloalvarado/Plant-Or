@@ -14,108 +14,8 @@ import { useUser } from '@clerk/clerk-react'
 import { toast } from 'sonner'
 import { ValidacionModal } from '@/components/ValidacionModal'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
-
-const LABEL_MAP: Record<string, string> = {
-  'cap': 'CAP (cm)',
-  'diametro_copa_paralelo': 'Diámetro de copa paralelo',
-  'diametro_copa_perpendicular': 'Diámetro de copa perpendicular',
-  'numero_tallos': 'Número de tallos',
-  'numero_troncos': 'Número de troncos',
-  'hoja_ancho': 'Ancho de hoja',
-  'hoja_largo': 'Largo de hoja',
-  'peciolo_largo': 'Largo de pecíolo',
-  'peciolo_diametro': 'Diámetro de pecíolo',
-  'longitud_peciolo': 'Longitud de pecíolo',
-  'diametro_peciolo': 'Diámetro de pecíolo',
-  'tipo_peciolo': 'Tipo de pecíolo',
-  'peciolo_pulvino': 'Pecíolo con pulvino',
-  'fruto_tamano_ancho': 'Ancho de fruto',
-  'fruto_tamano_largo': 'Largo de fruto',
-  'semilla_tamano_ancho': 'Ancho de semilla',
-  'semilla_tamano_largo': 'Largo de semilla',
-  'semilla_numero': 'Número de semillas',
-  'altura_total': 'Altura total',
-  'altura_inicio_copa': 'Altura inicio de copa',
-  'raices_visibles': 'Raíces visibles',
-  'espinas_palmera': 'Espinas de palmera',
-  'inflorescencia_forma': 'Forma de inflorescencia',
-  'inflorescencia_espata': 'Espata de inflorescencia',
-  'inflorescencia_presencia': 'Presencia de inflorescencia',
-  'inflorescencia_posicion': 'Posición de inflorescencia',
-  'fruto_color_maduro': 'Color de fruto maduro',
-  'fruto_presencia': 'Presencia de frutos',
-  'fruto_forma': 'Forma de fruto',
-  'fruto_superficie': 'Superficie de fruto',
-  'fruto_tipo': 'Tipo de fruto',
-  'tipo_hoja': 'Tipo de hoja',
-  'forma_tronco': 'Forma de tronco',
-  'corteza_externa': 'Corteza externa',
-  'color_corteza': 'Color de corteza',
-  'olor_corteza': 'Olor de corteza',
-  'espinas_tronco': 'Espinas en tronco',
-  'exudado_presencia': 'Presencia de exudado',
-  'exudado_tipo': 'Tipo de exudado',
-  'exudado_color': 'Color de exudado',
-  'tipo_ramificacion': 'Tipo de ramificación',
-  'forma_copa': 'Forma de copa',
-  'densidad_copa': 'Densidad de copa',
-  'disposicion_hoja': 'Disposición de hoja',
-  'forma_hoja': 'Forma de hoja',
-  'borde_hoja': 'Borde de hoja',
-  'textura_hoja': 'Textura de hoja',
-  'color_enves': 'Color del envés',
-  'pelos_hoja': 'Presencia de pelos',
-  'altura_inicio_ramificacion': 'Altura inicio de ramificación',
-  'densidad_follaje': 'Densidad de follaje',
-  'tipo_tallo': 'Tipo de tallo',
-  'presencia_espinas': 'Presencia de espinas',
-  'hoja_compuesta_tipo': 'Tipo de hoja compuesta',
-  'longitud_visible': 'Longitud visible',
-  'altura_maxima': 'Altura máxima',
-  'diametro_tallo': 'Diámetro del tallo',
-  'habito_crecimiento': 'Hábito de crecimiento',
-  'mecanismo_trepador': 'Mecanismo trepador',
-  // Reproductivo fields
-  'flor_presencia': 'Presencia de flores',
-  'flor_color': 'Color de pétalos',
-  'flor_tamano': 'Tamaño de flor',
-  'flor_tamano_largo': 'Largo de flor',
-  'flor_tamano_ancho': 'Ancho de flor',
-  'flor_agrupacion': 'Agrupación de flores',
-  'flor_forma': 'Forma de flor',
-  'flor_olor': 'Olor de flor',
-  'fruto_textura': 'Textura de fruto',
-  'fruto_estado_madurar': 'Estado al madurar',
-  'fruto_tamano': 'Tamaño de fruto',
-  'semilla_presencia': 'Presencia de semillas',
-  'semilla_tamano': 'Tamaño de semilla',
-  'semilla_color': 'Color de cáscara',
-  // Missing fields for completeness
-  'cobertura': 'Cobertura',
-  'segmentos': 'Segmentos de hoja',
-  'lenticelas': 'Lenticelas',
-  'forma_tallo': 'Forma de tallo',
-  'color_tallo': 'Color de tallo',
-  'espinas_tallo': 'Espinas en tallo',
-  'hospedero': 'Hospedero',
-  'tipo_palmera': 'Tipo de palmera',
-  'tallo': 'Características del tallo',
-  'color_hoja': 'Color de hoja',
-  'forma_general': 'Forma general',
-  'mecanismo_fijacion': 'Mecanismo de fijación',
-  'forma_crecimiento': 'Forma de crecimiento',
-  'tipo_soporte': 'Tipo de soporte',
-  'tipo_tallo_liana': 'Tipo de tallo de liana',
-  'exudado_corte': 'Exudado al corte',
-  'olor_hoja': 'Olor de hoja'
-};
-
-const formatLabel = (key: string) => {
-  const normalizedKey = key.toLowerCase();
-  if (LABEL_MAP[normalizedKey]) return LABEL_MAP[normalizedKey];
-  if (LABEL_MAP[key]) return LABEL_MAP[key];
-  return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-};
+import { formatLabel } from '@/lib/labels'
+import { HABITO_GROUPS, REPRODUCTIVO_GROUPS, groupData } from '@/lib/grouping'
 
 export default function PlantaDetailPage() {
   const { user } = useUser()
@@ -349,9 +249,16 @@ export default function PlantaDetailPage() {
           {/* Botanical Data */}
           {habitoDatos && (
             <Section title={`Datos de ${planta.habito}`}>
-              <div className="grid grid-cols-2 gap-x-6">
-                {Object.entries(habitoDatos).map(([k, v]) => (
-                  <InfoRow key={k} label={formatLabel(k)} value={Array.isArray(v) ? v.join(', ') : String(v)} />
+              <div className="space-y-6">
+                {Object.entries(groupData(habitoDatos, HABITO_GROUPS)).map(([groupName, groupFields]) => (
+                  <div key={groupName}>
+                    <h4 className="text-sm font-semibold text-primary/80 uppercase tracking-wide mb-3 border-b pb-1">{groupName}</h4>
+                    <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                      {Object.entries(groupFields).map(([k, v]) => (
+                        <InfoRow key={k} label={formatLabel(k, planta.habito)} value={Array.isArray(v) ? v.join(', ') : String(v)} />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </Section>
@@ -360,10 +267,37 @@ export default function PlantaDetailPage() {
           {/* Reproductive Data */}
           {planta.reproductivo && Object.keys(planta.reproductivo).length > 0 && (
             <Section title="Datos Reproductivos">
-              <div className="grid grid-cols-2 gap-x-6">
-                {Object.entries(planta.reproductivo).map(([k, v]) => (
-                  <InfoRow key={k} label={formatLabel(k)} value={Array.isArray(v) ? v.join(', ') : String(v)} />
+              <div className="space-y-6">
+                {Object.entries(groupData(planta.reproductivo, REPRODUCTIVO_GROUPS)).map(([groupName, groupFields]) => (
+                  <div key={groupName}>
+                    <h4 className="text-sm font-semibold text-primary/80 uppercase tracking-wide mb-3 border-b pb-1">{groupName}</h4>
+                    <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                      {Object.entries(groupFields).map(([k, v]) => (
+                        <InfoRow key={k} label={formatLabel(k, planta.habito)} value={Array.isArray(v) ? v.join(', ') : String(v)} />
+                      ))}
+                    </div>
+                  </div>
                 ))}
+              </div>
+            </Section>
+          )}
+
+          {/* Base Categories (Evaluación e Impacto) */}
+          {(planta.estado_fenologico || planta.estado_individuo || planta.valor_ornamental || planta.impacto_urbano) && (
+            <Section title="Evaluación e Impacto">
+              <div className="grid grid-cols-1 gap-y-4">
+                {planta.estado_fenologico && planta.estado_fenologico.length > 0 && (
+                  <InfoRow label={formatLabel('estado_fenologico', planta.habito)} value={planta.estado_fenologico.join(', ')} />
+                )}
+                {planta.estado_individuo && planta.estado_individuo.length > 0 && (
+                  <InfoRow label={formatLabel('estado_individuo', planta.habito)} value={planta.estado_individuo.join(', ')} />
+                )}
+                {planta.valor_ornamental && planta.valor_ornamental.length > 0 && (
+                  <InfoRow label={formatLabel('valor_ornamental', planta.habito)} value={planta.valor_ornamental.join(', ')} />
+                )}
+                {planta.impacto_urbano && planta.impacto_urbano.length > 0 && (
+                  <InfoRow label={formatLabel('impacto_urbano', planta.habito)} value={planta.impacto_urbano.join(', ')} />
+                )}
               </div>
             </Section>
           )}
