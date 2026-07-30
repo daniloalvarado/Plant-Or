@@ -173,11 +173,9 @@ export default function CatalogPage() {
     <div className="public-catalog-bg fixed inset-0 w-full h-full font-sans overflow-hidden flex flex-col bg-background text-foreground transition-colors duration-300">
       {/* Navbar */}
       <nav className="h-[70px] border-b border-border flex items-center justify-between px-6 flex-shrink-0 z-50 bg-background/80 backdrop-blur-md transition-colors duration-300">
-        {!mobileSearchOpen && (
-          <div className="flex items-center gap-2">
-            <TooltipLogo />
-          </div>
-        )}
+        <div className={`flex items-center gap-2 ${mobileSearchOpen ? 'hidden lg:flex' : 'flex'}`}>
+          <TooltipLogo />
+        </div>
 
         {mobileSearchOpen && (
           <div className="flex-1 relative lg:hidden mr-4 animate-in fade-in slide-in-from-right-4 duration-300">
@@ -185,7 +183,7 @@ export default function CatalogPage() {
             <input
               autoFocus
               type="text"
-              placeholder="Buscar por planta, distrito o calle..."
+              placeholder="Buscar planta"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brand-green transition-colors"
@@ -299,18 +297,6 @@ export default function CatalogPage() {
             </div>
 
             <div className="space-y-6">
-              {/* Search */}
-              <div className="relative block lg:hidden">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Buscar planta..."
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                  className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-4 text-sm text-foreground focus:outline-none focus:border-brand-green"
-                />
-              </div>
-
               {/* View Mode */}
               <div>
                 <label className="text-xs font-bold text-muted-foreground uppercase mb-2 block">Vista</label>
