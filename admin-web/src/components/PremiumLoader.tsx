@@ -40,19 +40,19 @@ export function PremiumLoader({ isLoading }: PremiumLoaderProps) {
       
       {/* Background Map */}
       <div 
-        className={`absolute inset-0 transition-opacity duration-500 ${isExiting ? 'opacity-0' : 'opacity-100'}`}
+        className={`absolute inset-0 transition-opacity duration-500 flex items-center justify-center ${isExiting ? 'opacity-0' : 'opacity-100'}`}
       >
         <img 
           src="/loader/mapadeiquitos.webp" 
           alt="Mapa de Iquitos"
-          className={`w-full h-full object-cover loader-map-bg ${theme === 'dark' ? 'loader-map-dark' : 'loader-map-light'}`}
+          className={`w-full max-w-4xl object-contain opacity-80 loader-map-bg ${theme === 'dark' ? 'loader-map-dark' : 'loader-map-light'}`}
         />
         {/* Subtle grid overlay to make it look premium/holographic */}
         <div className="absolute inset-0 loader-grid-overlay opacity-30"></div>
       </div>
 
       {/* Scattered Points */}
-      <div className="relative w-full h-full max-w-5xl mx-auto">
+      <div className="relative w-full h-full max-w-4xl mx-auto">
         {points.map((point) => (
           <div
             key={point.id}
@@ -69,11 +69,11 @@ export function PremiumLoader({ isLoading }: PremiumLoaderProps) {
             {/* The pulsating green dot */}
             <div className="relative">
               {/* Outer ping */}
-              <div className="absolute -inset-2 rounded-full bg-[#1FC451] animate-ping opacity-75"></div>
+              <div className="absolute -inset-1.5 rounded-full bg-[#1FC451] animate-ping opacity-60" style={{ animationDuration: '2.5s' }}></div>
               {/* Inner ping to make it more complex */}
-              <div className="absolute inset-0 rounded-full bg-[#1FC451] animate-ping opacity-50" style={{ animationDelay: '300ms' }}></div>
+              <div className="absolute inset-0 rounded-full bg-[#1FC451] animate-ping opacity-40" style={{ animationDuration: '2.5s', animationDelay: '1s' }}></div>
               {/* Image container */}
-              <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full border-[3px] border-[#1FC451] overflow-hidden bg-card shadow-[0_0_20px_rgba(31,196,81,0.6)]">
+              <div className="relative w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-[#1FC451] overflow-hidden bg-card shadow-[0_0_15px_rgba(31,196,81,0.5)]">
                 <img src={point.src} alt="Planta" className="w-full h-full object-cover" />
               </div>
             </div>
