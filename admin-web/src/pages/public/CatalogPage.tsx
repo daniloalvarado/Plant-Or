@@ -13,6 +13,7 @@ import './CatalogPage.css'
 import { MinimapView } from './catalog-components/MinimapView'
 import { PlantDetailModal } from './catalog-components/PlantDetailModal'
 import { FiltersModal } from './catalog-components/FiltersModal'
+import { PremiumLoader } from '@/components/PremiumLoader'
 
 const LazyCatalogMap = React.lazy(() => import('./catalog-components/LazyCatalogMap'))
 
@@ -333,11 +334,10 @@ export default function CatalogPage() {
 
       {/* Main Content */}
       <div className="flex-1 relative">
-        {loading ? (
-          <div className="flex items-center justify-center h-full">
-            <LoadingSpinner text="Cargando catálogo botánico..." />
-          </div>
-        ) : viewMode === 'tunnel' ? (
+        {/* Premium Loading Screen Overlay */}
+        <PremiumLoader isLoading={loading} />
+
+        {viewMode === 'tunnel' ? (
           <MinimapView plants={filteredPlants} onPlantClick={setSelectedPlant} />
         ) : (
           <React.Suspense fallback={<div className="flex items-center justify-center h-[calc(100dvh-70px)]"><LoadingSpinner text="Cargando mapa..." /></div>}>
