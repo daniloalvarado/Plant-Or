@@ -266,6 +266,7 @@ export function MinimapView({ plants, onPlantClick }: { plants: Planta[], onPlan
           draggable={false}
           onContextMenu={(e) => e.preventDefault()}
           className="pointer-events-none select-none"
+          fetchPriority="high"
         />
       </div>
       
