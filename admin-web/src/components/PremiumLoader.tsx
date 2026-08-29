@@ -33,20 +33,18 @@ export function PremiumLoader({ isLoading }: PremiumLoaderProps) {
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden transition-opacity duration-500 ${isExiting ? 'pointer-events-none' : ''}`}>
       
-      {/* Background Map - original size, centered */}
-      <div 
-        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${isExiting ? 'opacity-0' : 'opacity-100'}`}
-      >
+      {/* Container perfectly hugging the map image */}
+      <div className={`relative transition-opacity duration-500 ${isExiting ? 'opacity-0' : 'opacity-100'}`}>
+        
+        {/* Background Map - Original untouched size */}
         <img 
           src="/loader/mapadeiquitos.webp" 
           alt="Mapa de Iquitos"
-          className={`max-w-full max-h-full object-contain loader-map-bg ${theme === 'dark' ? 'loader-map-dark' : 'loader-map-light'}`}
+          className={`block max-w-[90vw] max-h-[90vh] object-contain opacity-80 loader-map-bg ${theme === 'dark' ? 'loader-map-dark' : 'loader-map-light'}`}
         />
-        <div className="absolute inset-0 loader-grid-overlay opacity-30"></div>
-      </div>
+        <div className="absolute inset-0 loader-grid-overlay opacity-30 pointer-events-none"></div>
 
-      {/* Scattered Points */}
-      <div className="relative w-full h-full">
+        {/* Scattered Points relative ONLY to the map */}
         {points.map((point) => (
           <div
             key={point.id}

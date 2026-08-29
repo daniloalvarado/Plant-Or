@@ -341,7 +341,7 @@ export default function CatalogPage() {
           viewMode === 'tunnel' ? (
             <MinimapView plants={filteredPlants} onPlantClick={setSelectedPlant} />
           ) : (
-            <React.Suspense fallback={<div className="flex items-center justify-center h-[calc(100dvh-70px)]"><LoadingSpinner text="Cargando mapa..." /></div>}>
+            <React.Suspense fallback={<div className="flex items-center justify-center h-[calc(100dvh-70px)] font-medium text-brand-green">Cargando mapa...</div>}>
               <LazyCatalogMap 
                 initialMapState={initialMapState}
                 theme={theme}
