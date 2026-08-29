@@ -28,25 +28,26 @@ export function InitialLoader({ onComplete }: InitialLoaderProps) {
 
   useEffect(() => {
     // Wait for animations to finish before starting fade out
-    // Map draw: 1.5s
-    // Pins appear: 1.5s to 2.0s
-    // Text Reveal: 2.1s to 2.6s
-    // Total wait before fade out: 3.2s
+    // Text Reveal (PLANT-OR): 0.0s - 0.5s
+    // Map draw: 0.5s - 3.0s
+    // Pins appear: 3.0s - 3.4s
+    // Text Split (IQUITOS): 3.5s - 4.0s
+    // Total wait before fade out: 4.5s
     const timer = setTimeout(() => {
       setIsFadingOut(true)
       setTimeout(onComplete, 500) // 500ms fade out transition
-    }, 3200)
+    }, 4500)
 
     return () => clearTimeout(timer)
   }, [onComplete])
 
-  // Fixed decorative pins locations (approximate percentages on the map)
+  // Fixed decorative pins locations (strictly inside the main map shape)
   const fixedPins = [
-    { id: 1, top: '40%', left: '42%', animationClass: 'pin-pop-1' },
-    { id: 2, top: '55%', left: '60%', animationClass: 'pin-pop-2' },
-    { id: 3, top: '30%', left: '75%', animationClass: 'pin-pop-3' },
-    { id: 4, top: '70%', left: '45%', animationClass: 'pin-pop-4' },
-    { id: 5, top: '45%', left: '85%', animationClass: 'pin-pop-5' },
+    { id: 1, top: '45%', left: '35%', animationClass: 'pin-pop-1' },
+    { id: 2, top: '50%', left: '45%', animationClass: 'pin-pop-2' },
+    { id: 3, top: '65%', left: '30%', animationClass: 'pin-pop-3' },
+    { id: 4, top: '30%', left: '40%', animationClass: 'pin-pop-4' },
+    { id: 5, top: '35%', left: '55%', animationClass: 'pin-pop-5' },
   ]
 
   return (

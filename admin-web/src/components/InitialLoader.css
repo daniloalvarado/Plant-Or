@@ -38,7 +38,7 @@
   stroke-width: 4;
   stroke-dasharray: 8000;
   stroke-dashoffset: 8000;
-  animation: draw-map 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: draw-map 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
 }
 
 @keyframes draw-map {
@@ -82,7 +82,7 @@
   color: var(--color-foreground);
   clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
   overflow: hidden;
-  animation: split-top 0.5s ease 2.1s forwards;
+  animation: split-top 0.5s ease 3.5s forwards;
 }
 
 .split-text span:nth-child(2) {
@@ -92,7 +92,7 @@
   color: var(--color-foreground);
   clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
   overflow: hidden;
-  animation: split-bottom 0.5s ease 2.1s forwards;
+  animation: split-bottom 0.5s ease 3.5s forwards;
 }
 
 .split-text span:nth-child(3) {
@@ -100,16 +100,17 @@
   top: 50%;
   left: 0;
   transform: translateY(-50%) scaleY(0);
-  width: 95%;
+  width: 100%;
+  box-sizing: border-box;
   color: var(--color-background);
   background: var(--color-brand-green);
   font-size: 0.25em;
   font-weight: 600;
   letter-spacing: 0.7em;
   text-align: center;
-  padding-left: 20px;
-  margin-left: 5px;
-  animation: split-middle 0.5s ease 2.1s forwards;
+  padding-left: 0.7em;
+  margin-left: 0;
+  animation: split-middle 0.5s ease 3.5s forwards;
 }
 
 @keyframes split-top {
@@ -134,11 +135,11 @@
   opacity: 0;
 }
 
-.pin-pop-1 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s forwards; }
-.pin-pop-2 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.6s forwards; }
-.pin-pop-3 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.7s forwards; }
-.pin-pop-4 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.8s forwards; }
-.pin-pop-5 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.9s forwards; }
+.pin-pop-1 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 3.0s forwards; }
+.pin-pop-2 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 3.1s forwards; }
+.pin-pop-3 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 3.2s forwards; }
+.pin-pop-4 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 3.3s forwards; }
+.pin-pop-5 { animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 3.4s forwards; }
 
 @keyframes pin-pop {
   0% {
