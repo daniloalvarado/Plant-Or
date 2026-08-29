@@ -337,20 +337,22 @@ export default function CatalogPage() {
         {/* Premium Loading Screen Overlay */}
         <PremiumLoader isLoading={loading} />
 
-        {viewMode === 'tunnel' ? (
-          <MinimapView plants={filteredPlants} onPlantClick={setSelectedPlant} />
-        ) : (
-          <React.Suspense fallback={<div className="flex items-center justify-center h-[calc(100dvh-70px)]"><LoadingSpinner text="Cargando mapa..." /></div>}>
-            <LazyCatalogMap 
-              initialMapState={initialMapState}
-              theme={theme}
-              mapFocus={mapFocus}
-              markerRefs={markerRefs}
-              mapResetSignal={mapResetSignal}
-              filteredPlants={filteredPlants}
-              setSelectedPlant={setSelectedPlant}
-            />
-          </React.Suspense>
+        {!loading && (
+          viewMode === 'tunnel' ? (
+            <MinimapView plants={filteredPlants} onPlantClick={setSelectedPlant} />
+          ) : (
+            <React.Suspense fallback={<div className="flex items-center justify-center h-[calc(100dvh-70px)]"><LoadingSpinner text="Cargando mapa..." /></div>}>
+              <LazyCatalogMap 
+                initialMapState={initialMapState}
+                theme={theme}
+                mapFocus={mapFocus}
+                markerRefs={markerRefs}
+                mapResetSignal={mapResetSignal}
+                filteredPlants={filteredPlants}
+                setSelectedPlant={setSelectedPlant}
+              />
+            </React.Suspense>
+          )
         )}
       </div>
 
