@@ -1,0 +1,138 @@
+/* InitialLoader.css */
+
+.initial-loader-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.initial-loader-container.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-map-svg-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.dark .loader-map-svg-container {
+  opacity: 0.25;
+}
+
+.loader-map-path {
+  fill: none;
+  stroke: var(--color-brand-green);
+  stroke-width: 4;
+  stroke-dasharray: 8000;
+  stroke-dashoffset: 8000;
+  animation: draw-map 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes draw-map {
+  0% {
+    stroke-dashoffset: 8000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Clip-path reveal for text */
+.text-reveal-container {
+  position: relative;
+  z-index: 10;
+  padding: 10px 20px;
+}
+
+.text-reveal-content {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--color-foreground);
+  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+  animation: clip-reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s forwards;
+  transform: translateY(20px);
+}
+
+@keyframes clip-reveal {
+  0% {
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+    transform: translateY(20px);
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translateY(0);
+  }
+}
+
+.text-reveal-subtitle {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-muted-foreground);
+  opacity: 0;
+  animation: fade-in-up 1s ease 1.5s forwards;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Decorative Pins */
+.loader-pin-wrapper {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+}
+
+.pin-pop-1 {
+  animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+}
+.pin-pop-2 {
+  animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.5s forwards;
+}
+.pin-pop-3 {
+  animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.8s forwards;
+}
+.pin-pop-4 {
+  animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.1s forwards;
+}
+.pin-pop-5 {
+  animation: pin-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.4s forwards;
+}
+
+@keyframes pin-pop {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
