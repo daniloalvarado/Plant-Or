@@ -41,11 +41,21 @@ export function InitialLoader({ onComplete }: InitialLoaderProps) {
 
   // Fixed decorative pins locations (approximate percentages on the map)
   const fixedPins = [
-    { id: 1, top: '35%', left: '40%', animationClass: 'pin-pop-1' },
+    { id: 1, top: '40%', left: '42%', animationClass: 'pin-pop-1' },
     { id: 2, top: '55%', left: '60%', animationClass: 'pin-pop-2' },
     { id: 3, top: '30%', left: '75%', animationClass: 'pin-pop-3' },
     { id: 4, top: '70%', left: '45%', animationClass: 'pin-pop-4' },
     { id: 5, top: '45%', left: '85%', animationClass: 'pin-pop-5' },
+    { id: 6, top: '35%', left: '65%', animationClass: 'pin-pop-6' },
+    { id: 7, top: '65%', left: '70%', animationClass: 'pin-pop-7' },
+    { id: 8, top: '25%', left: '50%', animationClass: 'pin-pop-8' },
+    { id: 9, top: '50%', left: '35%', animationClass: 'pin-pop-9' },
+    { id: 10, top: '30%', left: '80%', animationClass: 'pin-pop-10' },
+    { id: 11, top: '45%', left: '50%', animationClass: 'pin-pop-11' },
+    { id: 12, top: '60%', left: '75%', animationClass: 'pin-pop-12' },
+    { id: 13, top: '35%', left: '88%', animationClass: 'pin-pop-13' },
+    { id: 14, top: '55%', left: '48%', animationClass: 'pin-pop-14' },
+    { id: 15, top: '40%', left: '72%', animationClass: 'pin-pop-15' },
   ]
 
   return (
@@ -75,12 +85,12 @@ export function InitialLoader({ onComplete }: InitialLoaderProps) {
       </div>
 
       <div className="text-reveal-container">
-        <div className="text-reveal-content font-sans">
+        <h2 className="split-text">
           PLANT-OR
-        </div>
-        <div className="text-reveal-subtitle font-sans">
-          Catálogo Botánico
-        </div>
+          <span>PLANT-OR</span>
+          <span>PLANT-OR</span>
+          <span>IQUITOS</span>
+        </h2>
       </div>
     </div>
   )
