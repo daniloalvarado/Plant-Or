@@ -26,6 +26,17 @@ export function InitialLoader({ onComplete }: InitialLoaderProps) {
       .catch(err => console.error('Failed to load iquitos.svg', err))
   }, [])
 
+  // Calculate the exact path length once the SVG is in the DOM
+  useEffect(() => {
+    if (svgContent) {
+      const path = document.querySelector('.loader-map-path') as SVGPathElement;
+      if (path && path.getTotalLength) {
+        const length = path.getTotalLength();
+        path.style.setProperty('--path-length', length.toString());
+      }
+    }
+  }, [svgContent])
+
   useEffect(() => {
     // Wait for animations to finish before starting fade out
     // Text Reveal (PLANT-OR): 0.0s - 0.5s

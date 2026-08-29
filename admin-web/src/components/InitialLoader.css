@@ -36,14 +36,14 @@
   fill: none;
   stroke: var(--color-brand-green);
   stroke-width: 4;
-  stroke-dasharray: 8000;
-  stroke-dashoffset: 8000;
-  animation: draw-map 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  stroke-dasharray: var(--path-length, 3500);
+  stroke-dashoffset: var(--path-length, 3500);
+  animation: draw-map 2.5s ease-in-out 0.5s forwards;
 }
 
 @keyframes draw-map {
   0% {
-    stroke-dashoffset: 8000;
+    stroke-dashoffset: var(--path-length, 3500);
   }
   100% {
     stroke-dashoffset: 0;
