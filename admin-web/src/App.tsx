@@ -7,15 +7,16 @@ import { Toaster } from 'sonner'
 import { esES } from '@clerk/localizations'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { Sidebar } from '@/components/Sidebar'
-import DashboardPage from '@/pages/DashboardPage'
-import ValidacionesPage from '@/pages/ValidacionesPage'
-import PlantaDetailPage from '@/pages/PlantaDetailPage'
-import MapaPage from '@/pages/MapaPage'
-import FiltrosPage from '@/pages/FiltrosPage'
-import ValidarCertificadoPage from '@/pages/ValidarCertificadoPage'
-import CertificadosPage from '@/pages/CertificadosPage'
-import CatalogPage from '@/pages/public/CatalogPage'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+
+const DashboardPage = React.lazy(() => import('@/pages/DashboardPage'))
+const ValidacionesPage = React.lazy(() => import('@/pages/ValidacionesPage'))
+const PlantaDetailPage = React.lazy(() => import('@/pages/PlantaDetailPage'))
+const MapaPage = React.lazy(() => import('@/pages/MapaPage'))
+const FiltrosPage = React.lazy(() => import('@/pages/FiltrosPage'))
+const ValidarCertificadoPage = React.lazy(() => import('@/pages/ValidarCertificadoPage'))
+const CertificadosPage = React.lazy(() => import('@/pages/CertificadosPage'))
+const CatalogPage = React.lazy(() => import('@/pages/public/CatalogPage'))
 import '@/index.css'
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -93,18 +94,20 @@ function MainContent() {
             <Sidebar />
             <main className="flex-1 overflow-y-auto relative z-10">
               <div className="p-6 pt-20 md:p-8 md:pt-8 max-w-7xl mx-auto">
-                <Routes>
-                  <Route path="/" element={<DashboardPage />} />
-                  <Route path="/validaciones" element={<ValidacionesPage key="pendientes" filtroEstado="En revisión" />} />
-                  <Route path="/aprobados" element={<ValidacionesPage key="aprobados" filtroEstado="Validado" />} />
-                  <Route path="/catalogo" element={<ValidacionesPage key="catalogo" />} />
-                  <Route path="/mapa" element={<MapaPage />} />
-                  <Route path="/filtros" element={<FiltrosPage />} />
-                  <Route path="/certificados" element={<CertificadosPage />} />
-                  <Route path="/planta/:id" element={<PlantaDetailPage />} />
-                  <Route path="/perfil" element={<ProfileWithLoading />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
+                <React.Suspense fallback={<div className="flex justify-center items-center h-[50vh]"><LoadingSpinner text="Cargando página..." /></div>}>
+                  <Routes>
+                    <Route path="/" element={<DashboardPage />} />
+                    <Route path="/validaciones" element={<ValidacionesPage key="pendientes" filtroEstado="En revisión" />} />
+                    <Route path="/aprobados" element={<ValidacionesPage key="aprobados" filtroEstado="Validado" />} />
+                    <Route path="/catalogo" element={<ValidacionesPage key="catalogo" />} />
+                    <Route path="/mapa" element={<MapaPage />} />
+                    <Route path="/filtros" element={<FiltrosPage />} />
+                    <Route path="/certificados" element={<CertificadosPage />} />
+                    <Route path="/planta/:id" element={<PlantaDetailPage />} />
+                    <Route path="/perfil" element={<ProfileWithLoading />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                </React.Suspense>
               </div>
             </main>
           </div>
@@ -160,14 +163,16 @@ function ClerkApp() {
     >
       <BrowserRouter>
         <Toaster richColors position="top-right" theme="dark" />
-        <Routes>
-          {/* Rutas Públicas */}
-          <Route path="/" element={<CatalogPage />} />
-          <Route path="/validar" element={<ValidarCertificadoPage />} />
-          
-          {/* Rutas Protegidas de Admin */}
-          <Route path="/admin/*" element={<MainContent />} />
-        </Routes>
+        <React.Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background"><LoadingSpinner text="Cargando..." /></div>}>
+          <Routes>
+            {/* Rutas Públicas */}
+            <Route path="/" element={<CatalogPage />} />
+            <Route path="/validar" element={<ValidarCertificadoPage />} />
+            
+            {/* Rutas Protegidas de Admin */}
+            <Route path="/admin/*" element={<MainContent />} />
+          </Routes>
+        </React.Suspense>
       </BrowserRouter>
     </ClerkProvider>
   )

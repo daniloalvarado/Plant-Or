@@ -215,6 +215,7 @@ export default function CatalogPage() {
               <button
                 onClick={() => setViewMode('tunnel')}
                 className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+                aria-label="Vista de catálogo"
               >
                 <Box className="w-4 h-4" />
               </button>
@@ -226,6 +227,7 @@ export default function CatalogPage() {
               <button
                 onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); }}
                 className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+                aria-label="Vista de mapa"
               >
                 <MapIcon className="w-4 h-4" />
               </button>
@@ -261,6 +263,7 @@ export default function CatalogPage() {
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="p-2 ml-2 bg-secondary hover:bg-secondary/80 border border-border rounded-full text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            aria-label="Alternar tema"
           >
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
@@ -272,6 +275,7 @@ export default function CatalogPage() {
             <button 
               className="p-2 text-foreground rounded-full transition-colors cursor-pointer"
               onClick={() => setMobileSearchOpen(true)}
+              aria-label="Abrir búsqueda"
             >
               <Search className="w-6 h-6" />
             </button>
@@ -279,6 +283,7 @@ export default function CatalogPage() {
           <button 
             className="p-2 text-foreground cursor-pointer"
             onClick={() => setMobileMenuOpen(true)}
+            aria-label="Abrir menú de navegación"
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -291,7 +296,7 @@ export default function CatalogPage() {
           <div className={`w-72 h-full bg-card shadow-2xl flex flex-col p-6 absolute right-0 origin-top-right ${isMobileMenuAnimatingOut ? 'animate-shrink-tr' : 'animate-grow-tr'}`} onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-8">
               <span className="font-bold text-lg text-foreground">Menú</span>
-              <button onClick={() => setMobileMenuOpen(false)} className="p-2 bg-secondary rounded-full text-muted-foreground">
+              <button onClick={() => setMobileMenuOpen(false)} className="p-2 bg-secondary rounded-full text-muted-foreground" aria-label="Cerrar menú">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -304,12 +309,14 @@ export default function CatalogPage() {
                   <button
                     onClick={() => { setViewMode('tunnel'); setMobileMenuOpen(false); }}
                     className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'tunnel' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+                    aria-label="Vista de catálogo"
                   >
                     <Box className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => { setMapFocus(null); setViewMode('map'); setMapResetSignal(s => s + 1); setMobileMenuOpen(false); }}
                     className={`flex-1 flex justify-center p-2 rounded-md transition-colors cursor-pointer ${viewMode === 'map' ? 'bg-brand-green text-white' : 'text-muted-foreground hover:text-foreground'}`}
+                    aria-label="Vista de mapa"
                   >
                     <MapIcon className="w-5 h-5" />
                   </button>
