@@ -13,7 +13,6 @@ import './CatalogPage.css'
 import { MinimapView } from './catalog-components/MinimapView'
 import { PlantDetailModal } from './catalog-components/PlantDetailModal'
 import { FiltersModal } from './catalog-components/FiltersModal'
-import { PremiumLoader } from '@/components/PremiumLoader'
 
 const LazyCatalogMap = React.lazy(() => import('./catalog-components/LazyCatalogMap'))
 
@@ -58,7 +57,7 @@ export default function CatalogPage() {
   const [isMobileMenuAnimatingOut, setIsMobileMenuAnimatingOut] = useState(false)
   const [sanityFiltros, setSanityFiltros] = useState<any[]>([])
   const [selectedPlant, setSelectedPlant] = useState<Planta | null>(null)
-  const [mapFocus, setMapFocus] = useState<{lat: number, lng: number, id: string} | null>(null)
+  const [mapFocus, setMapFocus] = useState<{ lat: number, lng: number, id: string } | null>(null)
   const markerRefs = useRef<Record<string, any>>({})
   const { theme, setTheme } = useTheme()
 
@@ -90,7 +89,7 @@ export default function CatalogPage() {
       // 3. Advanced filters
       for (const [categoria, values] of Object.entries(activeFilters)) {
         if (values.length === 0) continue
-        
+
         let match = false;
         // Check if any block has the value
         const blocks = ['arbol_datos', 'palmera_datos', 'arbusto_datos', 'liana_datos', 'hierba_datos']
@@ -106,7 +105,7 @@ export default function CatalogPage() {
             })
           }
         })
-        
+
         // Also check top level properties
         if (values.includes(p.habito || '')) match = true
         if (values.includes(p.tipo_vida || '')) match = true
@@ -114,7 +113,7 @@ export default function CatalogPage() {
         if (p.estado_individuo?.some(ei => values.includes(ei))) match = true
         if (p.valor_ornamental?.some(vo => values.includes(vo))) match = true
         if (p.impacto_urbano?.some(iu => values.includes(iu))) match = true
-        
+
         // If it didn't match ANY of the selected values for this category, fail
         if (!match) return false
       }
@@ -155,7 +154,7 @@ export default function CatalogPage() {
               onChange={e => setSearchTerm(e.target.value)}
               className="w-full bg-secondary border border-border rounded-full py-2 pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brand-green transition-colors"
             />
-            <button 
+            <button
               onClick={() => { setMobileSearchOpen(false); setSearchTerm(''); }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 cursor-pointer"
             >
@@ -204,7 +203,7 @@ export default function CatalogPage() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={() => setFiltersModalOpen(true)}
             className="flex items-center gap-2 px-3 py-2 bg-secondary hover:bg-secondary/80 border border-border rounded-lg text-sm font-medium transition-colors cursor-pointer text-foreground"
           >
@@ -239,7 +238,7 @@ export default function CatalogPage() {
         {/* Mobile Buttons Toggle */}
         <div className="flex items-center gap-2 md:hidden">
           {!mobileSearchOpen && (
-            <button 
+            <button
               className="p-2 text-foreground rounded-full transition-colors cursor-pointer"
               onClick={() => setMobileSearchOpen(true)}
               aria-label="Abrir búsqueda"
@@ -247,7 +246,7 @@ export default function CatalogPage() {
               <Search className="w-6 h-6" />
             </button>
           )}
-          <button 
+          <button
             className="p-2 text-foreground cursor-pointer"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Abrir menú de navegación"
@@ -291,7 +290,7 @@ export default function CatalogPage() {
               </div>
 
               {/* Filters */}
-              <button 
+              <button
                 onClick={() => { setMobileMenuOpen(false); setFiltersModalOpen(true); }}
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-secondary hover:bg-secondary/80 border border-border rounded-lg text-sm font-medium transition-colors cursor-pointer text-foreground relative"
               >
@@ -334,25 +333,24 @@ export default function CatalogPage() {
 
       {/* Main Content */}
       <div className="flex-1 relative">
-        {/* Premium Loading Screen Overlay */}
-        <PremiumLoader isLoading={loading} />
-
-        {!loading && (
-          viewMode === 'tunnel' ? (
-            <MinimapView plants={filteredPlants} onPlantClick={setSelectedPlant} />
-          ) : (
-            <React.Suspense fallback={<div className="flex items-center justify-center h-[calc(100dvh-70px)] font-medium text-brand-green">Cargando mapa...</div>}>
-              <LazyCatalogMap 
-                initialMapState={initialMapState}
-                theme={theme}
-                mapFocus={mapFocus}
-                markerRefs={markerRefs}
-                mapResetSignal={mapResetSignal}
-                filteredPlants={filteredPlants}
-                setSelectedPlant={setSelectedPlant}
-              />
-            </React.Suspense>
-          )
+        {loading ? (
+          <div className="flex items-center justify-center h-full">
+            <LoadingSpinner text="Cargando catálogo botánico..." />
+          </div>
+        ) : viewMode === 'tunnel' ? (
+          <MinimapView plants={filteredPlants} onPlantClick={setSelectedPlant} />
+        ) : (
+          <React.Suspense fallback={<div className="flex items-center justify-center h-[calc(100dvh-70px)]"><LoadingSpinner text="Cargando mapa..." /></div>}>
+            <LazyCatalogMap
+              initialMapState={initialMapState}
+              theme={theme}
+              mapFocus={mapFocus}
+              markerRefs={markerRefs}
+              mapResetSignal={mapResetSignal}
+              filteredPlants={filteredPlants}
+              setSelectedPlant={setSelectedPlant}
+            />
+          </React.Suspense>
         )}
       </div>
 
@@ -367,20 +365,22 @@ export default function CatalogPage() {
       />
 
       {/* Plant Detail Modal */}
-      <PlantDetailModal 
-        isOpen={!!selectedPlant} 
-        plant={selectedPlant} 
-        onClose={() => setSelectedPlant(null)} 
+      <PlantDetailModal
+        isOpen={!!selectedPlant}
+        plant={selectedPlant}
+        onClose={() => setSelectedPlant(null)}
         onShowOnMap={(plant) => {
           setSelectedPlant(null);
           setViewMode('map');
           if (plant.latitud && plant.longitud) {
-            setMapFocus({lat: plant.latitud, lng: plant.longitud, id: plant._id});
+            setMapFocus({ lat: plant.latitud, lng: plant.longitud, id: plant._id });
           }
         }}
       />
     </div>
   )
 }
+
+
 
 

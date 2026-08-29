@@ -13,12 +13,12 @@ function RouterApp() {
   return (
     <BrowserRouter>
       <Toaster richColors position="top-right" theme="dark" />
-      <React.Suspense fallback={<div className="min-h-screen bg-background"></div>}>
+      <React.Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background"><LoadingSpinner text="Cargando..." /></div>}>
         <Routes>
           {/* Rutas Públicas */}
           <Route path="/" element={<CatalogPage />} />
           <Route path="/validar" element={<ValidarCertificadoPage />} />
-          
+
           {/* Rutas Protegidas de Admin (aislado con Clerk) */}
           <Route path="/admin/*" element={<AdminApp />} />
         </Routes>
