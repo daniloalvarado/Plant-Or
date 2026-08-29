@@ -33,14 +33,14 @@ export function PremiumLoader({ isLoading }: PremiumLoaderProps) {
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden transition-opacity duration-500 ${isExiting ? 'pointer-events-none' : ''}`}>
       
-      {/* Background Map - Full size, original proportions */}
+      {/* Background Map - original size, centered */}
       <div 
-        className={`absolute inset-0 transition-opacity duration-500 ${isExiting ? 'opacity-0' : 'opacity-100'}`}
+        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${isExiting ? 'opacity-0' : 'opacity-100'}`}
       >
         <img 
           src="/loader/mapadeiquitos.webp" 
           alt="Mapa de Iquitos"
-          className={`w-full h-full object-cover loader-map-bg ${theme === 'dark' ? 'loader-map-dark' : 'loader-map-light'}`}
+          className={`max-w-full max-h-full object-contain loader-map-bg ${theme === 'dark' ? 'loader-map-dark' : 'loader-map-light'}`}
         />
         <div className="absolute inset-0 loader-grid-overlay opacity-30"></div>
       </div>

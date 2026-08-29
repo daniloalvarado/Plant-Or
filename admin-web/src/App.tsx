@@ -13,7 +13,7 @@ function RouterApp() {
   return (
     <BrowserRouter>
       <Toaster richColors position="top-right" theme="dark" />
-      <React.Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-background"><LoadingSpinner text="Cargando..." /></div>}>
+      <React.Suspense fallback={<div className="min-h-screen bg-background"></div>}>
         <Routes>
           {/* Rutas Públicas */}
           <Route path="/" element={<CatalogPage />} />
